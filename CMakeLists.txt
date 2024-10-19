@@ -6,6 +6,7 @@ endif()
 
 if (NOT DEFINED CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 20)
+    add_definitions(-D_POSIX_C_SOURCE=200809L)
 endif()
 
 # strongly encouraged to enable this globally to avoid conflicts between

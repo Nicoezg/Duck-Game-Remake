@@ -2,7 +2,28 @@ target_sources(COMMON
     PRIVATE
     # .cpp files
     foo.cpp
+        connection/connection_reader.cpp
+        connection/connection_sender.cpp
+        protocol/protocol.cpp
+        protocol/action.cpp
+        protocol/encoder.cpp
+        protocol/protocol_error.cpp
+        socket/liberror.cpp
+        socket/resolver.cpp
+        socket/resolvererror.cpp
+        socket/socket.cpp
     PUBLIC
     # .h files
     foo.h
+        connection/connection_reader.h
+        connection/connection_sender.h
+        protocol/protocol.h
+        protocol/action.h
+        protocol/encoder.h
+        protocol/protocol_error.h
+        protocol/action_macros.h
+        socket/liberror.h
+        socket/resolver.h
+        socket/resolvererror.h
+        socket/socket.h
     )
