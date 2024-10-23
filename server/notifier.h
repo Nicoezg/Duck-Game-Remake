@@ -1,24 +1,23 @@
-//
-// Created by fran on 21/04/24.
-//
 
-#ifndef TP_2_THREADS_SERVER_NOTIFIER_H
-#define TP_2_THREADS_SERVER_NOTIFIER_H
+#ifndef TALLER_TP_NOTIFIER_H
+#define TALLER_TP_NOTIFIER_H
 
 #include <list>
 #include <memory>
 
-#include "common/connection/connection_sender.h"
 #include "common/thread.h"
-#include "common/protocol/action.h"
 #include "common/queue.h"
+#include "common/events/event.h"
+#include "server_protocol.h"
+#include "common/connection/connection.h"
 
-class Notifier : public Thread {
+using ServerConnection = Connection<ServerProtocol, std::shared_ptr<Action>, std::shared_ptr<Event>>;
+
+class Notifier {
 private:
-  std::list<std::shared_ptr<ConnectionSender>> clients;
-  Queue<Action> &commands; // Comandos de los clientes
-  Queue<Action> &events; // Eventos del juego
-  std::atomic<bool> is_running;
+  std::list<std::shared_ptr<ServerConnection>> clients;
+  Queue<std::shared_ptr<Action>>* commands;
+  Queue<std::shared_ptr<Event>> events;
   std::mutex mtx_client; // mutex para la lista de clientes
 
   /**
@@ -33,7 +32,7 @@ public:
    * @param commands cola de comandos donde los clientes escriben
    * @param events cola de eventos donde el juego escribe
    */
-  Notifier(Queue<Action> &commands, Queue<Action> &events);
+  explicit Notifier(Queue<std::shared_ptr<Action>>* commands);
 
   /**
    * @brief Agrega un cliente a la lista de clientes.
@@ -44,21 +43,16 @@ public:
    * @param client socket del cliente para lectura y escritura
    * @see common_connection.h
    */
-  void subscribe(Socket client);
+  void subscribe(Socket&& client);
 
   /**
-   * @brief Publica una accion en la cola de cada cliente.
+   * @brief Publica un evento en la cola de cada cliente.
    * @param action accion a publicar.
    * @see common_action.h
    */
-  void notify(const Action &action);
+  void notify(const std::shared_ptr<Event> &event);
 
-  /**
-   * @brief Corre el hilo de Notifier.
-   * Notifier corre en un loop y notifica a los clientes de la cola de eventos
-   * cada accion recibida desde la cola de eventos del juego.
-   */
-  void run() override;
+
 
   /**
    * @brief Cambia el estado de is_running a false.
@@ -68,4 +62,4 @@ public:
   void close();
 };
 
-#endif // TP_2_THREADS_SERVER_NOTIFIER_H
+#endif // TALLER_TP_NOTIFIER_H

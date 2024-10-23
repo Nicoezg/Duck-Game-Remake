@@ -22,4 +22,4 @@ client: build
 all: clean test
 
 clean:
-	rm -Rf build-*/
+	rm -Rf build/*

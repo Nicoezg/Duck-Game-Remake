@@ -1,13 +1,13 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef TALLER_TP_SERVER_H
+#define TALLER_TP_SERVER_H
 
-#include "lobby.h"
+#include "monitor_lobby.h"
 #include "common/thread.h"
 
 class Server : public Thread {
 private:
   Socket socket;
-  Lobby lobby;
+  MonitorLobby lobby;
   std::atomic<bool> is_running;
 
 public:
@@ -30,4 +30,4 @@ public:
   void close();
 };
 
-#endif // SERVER_H
+#endif // TALLER_TP_SERVER_H

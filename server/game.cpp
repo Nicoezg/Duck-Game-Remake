@@ -7,32 +7,31 @@
 
 #include "common/queue.h"
 #include "common/thread.h"
-#include "common/protocol/action_macros.h"
+#include "common/actions/action_macros.h"
 
 #define TIME_LOOP 1500
 
 
 Game::Game()
-        : commands(), events(),
-          notifier(commands, events), running(true),
+        : commands(),
+          notifier(&commands), running(true),
           next_player_id(0) {}
 
 void Game::add(Socket &&socket) {
     notifier.subscribe(std::move(socket));
 }
 
-u_int16_t Game::get_next_player_id() { return ++next_player_id; }
+int Game::get_next_player_id() { return ++next_player_id; }
 
-
-void Game::position_command(Action &action) { notifier.notify(action); }
+void Game::notify_event(std::shared_ptr<Event>& event) { notifier.notify(event); }
 
 void Game::read_actions() {
-    Action action;
+    std::shared_ptr<Action> action;
 
     // Intenta obtener un comando de la cola de comandos de forma no bloqueante
     while (commands.try_pop(action)) {
-        if (action.get_name() == ACTION_ATTACK) {
-            notifier.notify(action);
+        if (action->get_name() == ACTION_MOVE) {
+            std::cout << "Movimiento" << std::endl;
         } else {
             std::cout << "Comando invalido" << std::endl;
         }
@@ -41,8 +40,6 @@ void Game::read_actions() {
 
 void Game::run() {
     try {
-        notifier.start();
-
         while (running) {
 
             // Leo los comandos de los clientes
@@ -51,7 +48,6 @@ void Game::run() {
             // Espero 200 ms por requerimiento del enunciado
             std::this_thread::sleep_for(std::chrono::milliseconds(TIME_LOOP));
         }
-        notifier.join();
     } catch (const ClosedQueue &e) {
     }
 }
@@ -59,7 +55,6 @@ void Game::run() {
 void Game::close() {
     running = false;
     commands.close();
-    events.close();
     notifier.close();
 }
 

@@ -5,8 +5,6 @@
 #include <iostream>
 
 #include "client/client.h"
-#include "common/protocol/action.h"
-#include "common/protocol/protocol.h"
 #include "common/socket/liberror.h"
 
 #define EXIT_CODE '|'

@@ -1,108 +1,72 @@
-//
-// Created by fran on 19/05/24.
-//
-
 #include "server/lobby.h"
+#include "server/monitor_lobby.h"
+#include "common/protocol/common/protocol_error.h"
+#include "monitor_games.h"
+#include "common/events/game_join.h"
+#include "common/events/game_creation.h"
+#include <sys/socket.h>
 
-Lobby::Lobby() : mtx(), games(), last_game_id(0), clients() {}
+Lobby::Lobby(Socket &&client, MonitorGames *games)
+        : client(std::move(client)), protocol(&this->client, Encoder()), games(games), is_running(true),
+          is_connected(false) {}
 
-void Lobby::add_client(Socket &&client) {
-    std::lock_guard<std::mutex> lock(mtx);
-
-    auto lobby_client = std::make_unique<LobbyClient>(std::move(client), this);
-
-    lobby_client->start();
-    clients.push_back(std::move(lobby_client));
-
-    clean_closed_clients();
-    clean_closed_games();
-}
-
-void Lobby::clean_closed_clients() {
-    clients.remove_if([](const std::unique_ptr<LobbyClient> &client) {
-        if (client->is_closed()) {
-            client->close();
-            client->join();
-            return true;
+void Lobby::run() {
+    try {
+        while (!is_connected) {
+            std::shared_ptr<Action> action = protocol.read_element();
+            std::shared_ptr<Event> response = process_action(action);
+            protocol.send_element(response);
+            is_connected = response->is_connected();
         }
-        return false;
-    });
-}
-
-void Lobby::clean_closed_games() {
-    for (auto it = games.begin(); it != games.end();) {
-        if (!it->second->is_running()) {
-            it->second->close();
-            it->second->join();
-            it = games.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
-
-void Lobby::set_player_id(u_int32_t game_id, u_int16_t &player_id) {
-    std::lock_guard<std::mutex> lock(mtx);
-
-    auto it = games.find(game_id);
-    if (it != games.end()) {
-        player_id = it->second->get_next_player_id();
+    } catch (const ProtocolError &e) {
+        is_running = false;
+        is_connected = false;
         return;
     }
-    throw std::runtime_error("Game not found");
+    is_running = false;
 }
 
-void Lobby::add_to_game(u_int32_t game_id, Socket &&client) {
-    std::lock_guard<std::mutex> lock(mtx);
-
-    auto it = games.find(game_id);
-    if (it != games.end()) {
-        it->second->add(std::move(client));
-        return;
+std::shared_ptr<Event> Lobby::process_action(const std::shared_ptr<Action> &action) {
+    std::shared_ptr<Event> response;
+    switch (action->get_type()) {
+        case CREATE_REQUEST:
+            response = create_game();
+            break;
+        case JOIN_REQUEST:
+            response = join_game(action->get_game_code());
+            break;
+        default:
+            response = not_connected_to_game();
     }
-    throw std::runtime_error("Game not found");
+    return response;
 }
 
-bool Lobby::game_exists(u_int32_t game_id) {
-    std::lock_guard<std::mutex> lock(mtx);
+std::shared_ptr<Event> Lobby::not_connected_to_game() {
+    return std::make_shared<GameJoin>(SIN_CODIGO, false);
+}
 
-    if (games.find(game_id) == games.end()) {
-        return false;
+std::shared_ptr<Event> Lobby::join_game(int game_code) {
+    if (!games->game_exists(game_code)) {
+        return std::make_shared<GameJoin>(SIN_CODIGO, false);
     }
-    return true;
+    int player_id = games->get_player_id(game_code);
+    std::cout << "Game: " << game_code <<" Player id: " << player_id << std::endl;
+    return std::make_shared<GameJoin>(player_id, true);
 }
 
-u_int32_t Lobby::create_game() {
-    std::lock_guard<std::mutex> lock(mtx);
-
-    last_game_id++;
-
-    games[last_game_id] = std::make_unique<Game>();
-    games[last_game_id]->start();
-
-    return last_game_id;
+std::shared_ptr<Event> Lobby::create_game() {
+    int game_code = games->create_game();
+    int player_id = games->get_player_id(game_code);
+    std::cout << "Game: " << game_code <<" Player id: " << player_id << std::endl;
+    return std::make_shared<GameCreation>(game_code, player_id);
 }
+
+bool Lobby::is_closed() const { return !is_running; }
 
 void Lobby::close() {
-    std::lock_guard<std::mutex> lock(mtx);
-
-    close_and_clean_games();
-
-    close_and_clean_clients();
-}
-
-void Lobby::close_and_clean_clients() {
-    for (auto &client: clients) {
-        client->close();
-        client->join();
-    }
-    clients.clear();
-}
-
-void Lobby::close_and_clean_games() {
-    for (auto &game: games) {
-        game.second->close();
-        game.second->join();
-    }
-    games.clear();
+    if (!is_running || is_connected)
+        return;
+    is_running = false;
+    client.shutdown(SHUT_RDWR);
+    client.close();
 }

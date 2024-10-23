@@ -1,22 +1,21 @@
-#ifndef TP_2_COMMON_GAME_H
-#define TP_2_COMMON_GAME_H
+#ifndef TALLER_TP_GAME_H
+#define TALLER_TP_GAME_H
 
 #include <list>
 
 #include "notifier.h"
-#include "common/protocol/action.h"
+#include "common/actions/create.h"
 #include "common/socket/socket.h"
 
 class Game : public Thread {
 private:
-  Queue<Action> commands;
-  Queue<Action> events;
+  Queue<std::shared_ptr<Action>> commands;
 
   Notifier notifier;
 
   std::atomic<bool> running;
 
-  std::atomic<u_int16_t> next_player_id;
+  std::atomic<int> next_player_id;
 
 
   /**
@@ -53,14 +52,14 @@ public:
    */
   void add(Socket &&socket);
 
-  void position_command(Action &action);
+  void notify_event(std::shared_ptr<Event> &event);
 
   /**
-   * @brief Incrementa el id del proximo jugador y lo devuelve.
+   * @brief Incrementa el player_id del proximo jugador y lo devuelve.
    *
-   * @return u_int16_t: id del proximo jugador.
+   * @return u_int16_t: player_id del proximo jugador.
    */
-  u_int16_t get_next_player_id();
+  int get_next_player_id();
 };
 
-#endif // TP_2_COMMON_GAME_H
+#endif // TALLER_TP_GAME_H

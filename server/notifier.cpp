@@ -4,20 +4,16 @@
 #include <utility>
 
 #include "common/queue.h"
-#include "common/protocol/action.h"
 #include "common/socket/liberror.h"
 #include "common/socket/socket.h"
-#include "common/connection/connection_sender.h"
 
-Notifier::Notifier(Queue<Action> &commands, Queue<Action> &events)
-        : commands(commands), events(events), is_running(true), mtx_client() {}
+Notifier::Notifier(Queue<std::shared_ptr<Action>> *commands) : clients(), commands(commands), events(), mtx_client() {}
 
-void Notifier::subscribe(Socket client) {
+void Notifier::subscribe(Socket &&client) {
     std::lock_guard<std::mutex> lock(mtx_client);
 
-    // Creamos un nuevo cliente con un smart pointer traspasantole el socket
-    std::shared_ptr<ConnectionSender> new_client(
-            new ConnectionSender(std::move(client), commands, Encoder()));
+    // Creamos una nueva conexión con el cliente
+    std::shared_ptr<ServerConnection> new_client(new ServerConnection(std::move(client), Encoder(), commands, &events));
 
     clients.push_back(new_client);
 
@@ -28,7 +24,7 @@ void Notifier::subscribe(Socket client) {
 }
 
 void Notifier::remove_closed_connections() {
-    clients.remove_if([](const std::shared_ptr<ConnectionSender> &client) {
+    clients.remove_if([](const std::shared_ptr<ServerConnection> &client) {
         if (client->is_closed()) {
             client->join();
             return true;
@@ -37,12 +33,12 @@ void Notifier::remove_closed_connections() {
     });
 }
 
-void Notifier::notify(const Action &action) {
+void Notifier::notify(const std::shared_ptr<Event> &event) {
     std::lock_guard<std::mutex> lock(mtx_client);
     for (auto &client: clients) {
         try {
             if (!client->is_closed()) {
-                client->push_action(action);
+                client->push(event);
             }
         } catch (const ClosedQueue &e) {
             client->close();
@@ -50,19 +46,7 @@ void Notifier::notify(const Action &action) {
     }
 }
 
-void Notifier::run() {
-    while (is_running) {
-        try {
-            // Espera bloqueado hasta que haya un evento para notificar
-            notify(events.pop());
-        } catch (const ClosedQueue &e) {
-            return;
-        }
-    }
-}
-
 void Notifier::close() {
-    is_running = false;
     for (auto &client: clients) {
         if (!client->is_closed()) {
             client->close();

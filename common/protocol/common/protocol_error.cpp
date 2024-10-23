@@ -1,8 +1,4 @@
-//
-// Created by fran on 02/05/24.
-//
-
-#include "common/protocol/protocol_error.h"
+#include "protocol_error.h"
 
 #include <cstring>
 

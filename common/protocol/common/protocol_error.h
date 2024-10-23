@@ -1,9 +1,5 @@
-//
-// Created by fran on 02/05/24.
-//
-
-#ifndef TP_2_THREADS_COMMON_PROTOCOL_ERROR_H
-#define TP_2_THREADS_COMMON_PROTOCOL_ERROR_H
+#ifndef TALLER_TP_PROTOCOL_ERROR_H
+#define TALLER_TP_PROTOCOL_ERROR_H
 
 #include <exception>
 class ProtocolError : public std::exception {
@@ -16,4 +12,4 @@ public:
   const char *what() const noexcept override;
 };
 
-#endif // TP_2_THREADS_COMMON_PROTOCOL_ERROR_H
+#endif // TALLER_TP_PROTOCOL_ERROR_H

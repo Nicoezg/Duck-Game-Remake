@@ -29,7 +29,14 @@ option(TALLER_MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
 message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
 # Define target: lib common between client, server and editor programs
-add_library(COMMON STATIC)
+add_library(COMMON STATIC
+        common/actions/join.cpp
+        common/actions/join.h
+        client/client_protocol.cpp
+        client/client_protocol.h
+        common/connection/reader.h
+        common/connection/sender.h
+        common/connection/connection.h)
 
 # add the source files that make the lib
 add_subdirectory(common/)
@@ -57,7 +64,18 @@ endif()
 # Program section
 # ---------------
 if(CLIENT)
-    add_executable(CLIENT)
+    add_executable(CLIENT
+            common/events/event.cpp
+            common/events/event.h
+            common/events/event_type.h
+            common/events/game_creation.cpp
+            common/events/game_creation.h
+            common/events/game_join.cpp
+            common/events/game_join.h
+            common/protocol/actions/actions_protocol.cpp
+            common/protocol/actions/actions_protocol.h
+            common/protocol/events/events_protocol.cpp
+            common/protocol/events/events_protocol.h)
 
     # Make them depend on COMMON lib
     add_dependencies(CLIENT COMMON SDL2pp::SDL2pp)
@@ -75,7 +93,9 @@ if(CLIENT)
 endif()
 
 if(SERVER)
-    add_executable(SERVER)
+    add_executable(SERVER
+            server/server_protocol.cpp
+            server/server_protocol.h)
 
     # Make them depend on common lib
     add_dependencies(SERVER COMMON)
