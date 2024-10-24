@@ -10,14 +10,17 @@
 
 class GameJoin : public Event {
 private:
-    int player_id;
+    int player_id_1;
+    int player_id_2;
 
     bool connected;
 
 public:
-    GameJoin(int player_id, bool connected);
+    GameJoin(int player_id_1, int player_id_2, bool connected);
 
-    int get_player_id() const override;
+    int get_player_id_1() const override;
+
+    int get_player_id_2() const override;
 
     int get_game_code() const override;
 

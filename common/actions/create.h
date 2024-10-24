@@ -11,8 +11,6 @@ class Create : public Action {
 public:
     Create(GameMode game_mode);
 
-    int get_game_code() const override;
-
     bool is_x_direction() const override;
 
     bool is_y_direction() const override;

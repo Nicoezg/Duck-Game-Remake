@@ -26,11 +26,12 @@ public:
     ActionType get_type() const;
 
 
-    virtual int get_game_code() const = 0;
     virtual bool is_x_direction() const = 0;
     virtual bool is_y_direction() const = 0;
 
     virtual ~Action() = default;
+
+    virtual int get_game_code() const;
 };
 
 

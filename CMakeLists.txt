@@ -37,7 +37,9 @@ add_library(COMMON STATIC
         common/connection/reader.h
         common/connection/sender.h
         common/connection/connection.h
-        common/game_mode.h)
+        common/game_mode.h
+        common/actions/move.cpp
+        common/actions/move.h)
 
 # add the source files that make the lib
 add_subdirectory(common/)
@@ -76,7 +78,9 @@ if(CLIENT)
             common/protocol/actions/actions_protocol.cpp
             common/protocol/actions/actions_protocol.h
             common/protocol/events/events_protocol.cpp
-            common/protocol/events/events_protocol.h)
+            common/protocol/events/events_protocol.h
+            common/events/broadcast.cpp
+            common/events/broadcast.h)
 
     # Make them depend on COMMON lib
     add_dependencies(CLIENT COMMON SDL2pp::SDL2pp)
@@ -96,7 +100,9 @@ endif()
 if(SERVER)
     add_executable(SERVER
             server/server_protocol.cpp
-            server/server_protocol.h)
+            server/server_protocol.h
+            server/player.cpp
+            server/player.h)
 
     # Make them depend on common lib
     add_dependencies(SERVER COMMON)

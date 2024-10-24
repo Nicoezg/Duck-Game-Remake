@@ -10,7 +10,7 @@
 
 Client::Client(const char *hostname, const char *service_name) : commands(), events(),
         connection(Socket(hostname, service_name), Encoder(), &this->events, &this->commands),
-        game_code(0), player_id(0), game_mode(SIN_ESPECIFICAR) {}
+        game_code(0), player_id_1(SIN_ASIGNAR), player_id_2(SIN_ASIGNAR), game_mode(SIN_ESPECIFICAR) {}
 
 std::string Client::read_command() {
     std::string action_key;
@@ -52,7 +52,7 @@ bool Client::connect_to_game() {
     if (command == ACTION_EXIT) {
         return false;
     }
-    while ((game_code == NO_CONECTADO || player_id == NO_CONECTADO) && command != ACTION_EXIT) {
+    while ((game_code == NO_CONECTADO || player_id_1 == SIN_ASIGNAR) && command != ACTION_EXIT) {
         command = read_connect_command();
         if (command == ACTION_EXIT) {
             return false;
@@ -108,17 +108,32 @@ void Client::command_create() {
 void Client::action_read() {
     std::shared_ptr<Event> event = events.pop();
     switch (event->get_type()) {
-        case JOIN_GAME:
-            player_id = event->get_player_id();
-            break;
         case CREATE_GAME:
             game_code = event->get_game_code();
-            player_id = event->get_player_id();
+            assign_player_ids(event);
+            break;
+        case JOIN_GAME:
+            assign_player_ids(event);
+            break;
+        case BROADCAST:
             break;
     }
+    show_connection_info(event);
+}
+
+void Client::show_connection_info(const std::shared_ptr<Event> &event) const {
     if (event->is_connected()) {
-        std::cout << "Conectado al juego " << game_code << " con player_id " << player_id << std::endl;
+        std::cout << "Conectado al juego " << game_code <<
+                  " con PlayerId_1: " << player_id_1 <<
+                  " con PlayerId_2: " << player_id_2 << std::endl;
     } else {
         std::cout << "No se pudo conectar al juego" << std::endl;
     }
 }
+
+void Client::assign_player_ids(std::shared_ptr<Event> &event) {
+    player_id_1 = event->get_player_id_1();
+    player_id_2 = event->get_player_id_2();
+}
+
+

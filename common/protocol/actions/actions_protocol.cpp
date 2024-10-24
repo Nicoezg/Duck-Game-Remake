@@ -38,8 +38,9 @@ std::shared_ptr<Action> ActionsProtocol::read_element() {
             return read_create_action();
         case JOIN_REQUEST:
             return read_join_action();
+        default:
+            throw std::runtime_error("ActionsProtocol try to action_read invalid action.");
     }
-    throw std::runtime_error("ActionsProtocol try to action_read invalid action.");
 }
 
 ActionType ActionsProtocol::read_action_type() {
@@ -56,8 +57,9 @@ void ActionsProtocol::send_element(const std::shared_ptr<Action>& action) {
             return send_create_action(action);
         case JOIN_REQUEST:
             return send_join_action(action);
+        default:
+            throw std::runtime_error("ActionsProtocol try to send unknown action");
     }
-    throw std::runtime_error("ActionsProtocol try to send unknown action");
 }
 
 void ActionsProtocol::send_create_action(const std::shared_ptr<Action>& action) {

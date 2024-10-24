@@ -19,7 +19,8 @@ private:
     Queue<std::shared_ptr<Event>> events;
     ClientConnection connection;
     int game_code;
-    int player_id;
+    int player_id_1;
+    int player_id_2;
     GameMode game_mode;
 
     /**
@@ -56,6 +57,10 @@ public:
     void command_create();
 
     void command_join();
+
+    void assign_player_ids(std::shared_ptr<Event> &event);
+
+    void show_connection_info(const std::shared_ptr<Event> &event) const;
 };
 
 #endif // TALLER_TP_CLIENT_H

@@ -12,3 +12,7 @@ int Action::get_player_id() const { return player_id; }
 ActionType Action::get_type() const { return type; }
 
 GameMode Action::get_game_mode() const { return game_mode; }
+
+int Action::get_game_code() const {
+    throw std::runtime_error("Move is not a game code action.");
+}

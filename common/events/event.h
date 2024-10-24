@@ -8,23 +8,27 @@
 
 #include "event_type.h"
 
+#define SIN_ASIGNAR 0
 class Event {
 private:
     EventType type;
 
 public:
-    explicit Event(EventType type);
+    Event(EventType type);
 
     EventType get_type();
 
-    virtual int get_game_code() const = 0;
+    virtual bool is_connected() const;
 
-    virtual int get_player_id() const = 0;
+    virtual int get_game_code() const;
 
-    virtual bool is_connected() const = 0;
+    virtual int get_position_x() const;
+    virtual int get_position_y() const;
+
+    virtual int get_player_id_1() const = 0;
+    virtual int get_player_id_2() const = 0;
+
     virtual ~Event() = default;
-
-
 };
 
 

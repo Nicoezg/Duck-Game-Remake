@@ -9,10 +9,6 @@
 Create::Create(GameMode game_mode) : Action("CONECTAR", CREATE_REQUEST, 0, game_mode){}
 
 
-int Create::get_game_code() const {
-    throw std::runtime_error("Create is not a game code action.");
-}
-
 bool Create::is_x_direction() const {
     throw std::runtime_error("Create is not a direction action.");
 }

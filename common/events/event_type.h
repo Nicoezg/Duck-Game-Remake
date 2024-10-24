@@ -7,7 +7,8 @@
 
 enum EventType {
     CREATE_GAME = 0x01,
-    JOIN_GAME = 0x02
+    JOIN_GAME = 0x02,
+    BROADCAST = 0x03,
 };
 
 #endif //TALLER_TP_EVENT_TYPE_H
