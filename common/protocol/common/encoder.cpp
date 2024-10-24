@@ -94,3 +94,18 @@ bool Encoder::decode_connected(std::vector<int8_t> &data) {
     data.erase(data.begin(), data.begin() + sizeof(int8_t));
     return connected;
 }
+
+size_t Encoder::encode_game_mode(GameMode game_mode, void *data) {
+    auto *game_mode_bytes = reinterpret_cast<int8_t *>(&game_mode);
+    std::memcpy(data, game_mode_bytes, sizeof(int8_t));
+    return sizeof(int8_t);
+}
+
+GameMode Encoder::decode_game_mode(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int8_t)) {
+        throw std::runtime_error("No hay suficientes bytes para decodificar el modo de juego.");
+    }
+    auto game_mode = static_cast<GameMode>(data[0]);
+    data.erase(data.begin(), data.begin() + sizeof(int8_t));
+    return game_mode;
+}

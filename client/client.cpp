@@ -10,7 +10,7 @@
 
 Client::Client(const char *hostname, const char *service_name) : commands(), events(),
         connection(Socket(hostname, service_name), Encoder(), &this->events, &this->commands),
-        game_code(0), player_id(0) {}
+        game_code(0), player_id(0), game_mode(SIN_ESPECIFICAR) {}
 
 std::string Client::read_command() {
     std::string action_key;
@@ -78,17 +78,31 @@ void Client::run_command(const std::string &command) {
     if (command == ACTION_EXIT) {
         connection.close();
     } else if (command == ACTION_JOIN) {
-        std::cin >> game_code;
-        std::shared_ptr<Action> action = std::make_shared<Join>(game_code);
-        commands.push(action);
-        action_read();
+        command_join();
     } else if (command == ACTION_CREATE) {
-        std::shared_ptr<Action> action = std::make_shared<Create>();
-        commands.push(action);
-        action_read();
+        command_create();
     } else {
         std::cout << "Comando invalido" << std::endl;
     }
+}
+
+void Client::command_join() {
+    int mode;
+    std::cin >> game_code;
+    std::cin >> mode;
+    this->game_mode = GameMode(mode);
+    std::shared_ptr<Action> action = std::make_shared<Join>(game_code, game_mode);
+    commands.push(action);
+    action_read();
+}
+
+void Client::command_create() {
+    int mode;
+    std::cin >> mode;
+    this->game_mode = GameMode(mode);
+    std::shared_ptr<Action> action = std::make_shared<Create>(game_mode);
+    commands.push(action);
+    action_read();
 }
 
 void Client::action_read() {

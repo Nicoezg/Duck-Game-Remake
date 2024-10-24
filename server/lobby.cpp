@@ -30,10 +30,10 @@ std::shared_ptr<Event> Lobby::process_action(const std::shared_ptr<Action> &acti
     std::shared_ptr<Event> response;
     switch (action->get_type()) {
         case CREATE_REQUEST:
-            response = create_game();
+            response = create_game(action->get_game_mode());
             break;
         case JOIN_REQUEST:
-            response = join_game(action->get_game_code());
+            response = join_game(action->get_game_code(), action->get_game_mode());
             break;
         default:
             response = not_connected_to_game();
@@ -45,19 +45,19 @@ std::shared_ptr<Event> Lobby::not_connected_to_game() {
     return std::make_shared<GameJoin>(SIN_CODIGO, false);
 }
 
-std::shared_ptr<Event> Lobby::join_game(int game_code) {
+std::shared_ptr<Event> Lobby::join_game(int game_code, GameMode mode) {
     if (!games->game_exists(game_code)) {
         return std::make_shared<GameJoin>(SIN_CODIGO, false);
     }
     int player_id = games->get_player_id(game_code);
-    std::cout << "Game: " << game_code <<" Player id: " << player_id << std::endl;
+    std::cout << "Game: " << game_code <<" Player id: " << player_id << " Mode: " << mode << std::endl;
     return std::make_shared<GameJoin>(player_id, true);
 }
 
-std::shared_ptr<Event> Lobby::create_game() {
+std::shared_ptr<Event> Lobby::create_game(GameMode mode) {
     int game_code = games->create_game();
     int player_id = games->get_player_id(game_code);
-    std::cout << "Game: " << game_code <<" Player id: " << player_id << std::endl;
+    std::cout << "Game: " << game_code <<" Player id: " << player_id << " Mode: " << mode << std::endl;
     return std::make_shared<GameCreation>(game_code, player_id);
 }
 

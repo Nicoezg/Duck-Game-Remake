@@ -7,6 +7,7 @@
 
 #include "common/actions/create.h"
 #include "common/events/event_type.h"
+#include "common/game_mode.h"
 
 class Encoder {
 public:
@@ -33,6 +34,10 @@ public:
     size_t encode_connected(bool is_connected, void* data);
 
     bool decode_connected(std::vector<int8_t> &data);
+
+    size_t encode_game_mode(GameMode game_mode, void* data);
+
+    GameMode decode_game_mode(std::vector<int8_t> &data);
 };
 
 #endif // TALLER_TP_ENCODER_H

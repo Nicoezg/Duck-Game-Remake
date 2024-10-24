@@ -11,9 +11,9 @@
 
 class Join : public Action {
 private:
-    uint32_t game_code;
+    int game_code;
 public:
-    explicit Join(int& game_code);
+    explicit Join(int &game_code, GameMode game_mode);
 
     int get_game_code() const override;
 

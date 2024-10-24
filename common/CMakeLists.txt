@@ -48,4 +48,6 @@ target_sources(COMMON
         events/game_creation.h
         events/game_join.h
 
+        game_mode.h
+
     )

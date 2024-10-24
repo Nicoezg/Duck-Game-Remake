@@ -36,7 +36,8 @@ add_library(COMMON STATIC
         client/client_protocol.h
         common/connection/reader.h
         common/connection/sender.h
-        common/connection/connection.h)
+        common/connection/connection.h
+        common/game_mode.h)
 
 # add the source files that make the lib
 add_subdirectory(common/)

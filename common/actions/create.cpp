@@ -6,7 +6,7 @@
 #include "common/events/game_creation.h"
 
 
-Create::Create() : Action("CONECTAR", CREATE_REQUEST, 0){}
+Create::Create(GameMode game_mode) : Action("CONECTAR", CREATE_REQUEST, 0, game_mode){}
 
 
 int Create::get_game_code() const {

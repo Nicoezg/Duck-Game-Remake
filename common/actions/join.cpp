@@ -6,7 +6,7 @@
 #include "join.h"
 
 
-Join::Join(int& game_code) : Action("UNIRSE", JOIN_REQUEST, 0), game_code(game_code) {}
+Join::Join(int &game_code, GameMode game_mode) : Action("UNIRSE", JOIN_REQUEST, 0, game_mode), game_code(game_code) {}
 
 int Join::get_game_code() const {
     return game_code;

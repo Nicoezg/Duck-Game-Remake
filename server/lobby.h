@@ -28,11 +28,11 @@ public:
 
     void close();
 
-    std::shared_ptr<Event> create_game();
+    std::shared_ptr<Event> create_game(GameMode mode);
 
     std::shared_ptr<Event> not_connected_to_game();
 
-    std::shared_ptr<Event> join_game(int game_code);
+    std::shared_ptr<Event> join_game(int game_code, GameMode mode);
 
     std::shared_ptr<Event> process_action(const std::shared_ptr<Action> &action);
 };

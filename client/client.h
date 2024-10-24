@@ -8,6 +8,7 @@
 #include "client_protocol.h"
 #include "common/events/event.h"
 #include "common/actions/action.h"
+#include "common/game_mode.h"
 
 
 using ClientConnection = Connection<ClientProtocol, std::shared_ptr<Event>, std::shared_ptr<Action>>;
@@ -19,6 +20,7 @@ private:
     ClientConnection connection;
     int game_code;
     int player_id;
+    GameMode game_mode;
 
     /**
      * @brief Ejecuta la accion de leer.
@@ -51,6 +53,9 @@ public:
 
     std::string read_connect_command();
 
+    void command_create();
+
+    void command_join();
 };
 
 #endif // TALLER_TP_CLIENT_H

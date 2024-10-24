@@ -9,7 +9,7 @@
 class Create : public Action {
 
 public:
-    Create();
+    Create(GameMode game_mode);
 
     int get_game_code() const override;
 
