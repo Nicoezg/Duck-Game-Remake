@@ -80,7 +80,11 @@ if(CLIENT)
             common/protocol/events/events_protocol.cpp
             common/protocol/events/events_protocol.h
             common/events/broadcast.cpp
-            common/events/broadcast.h)
+            common/events/broadcast.h
+            common/events/player.cpp
+            common/events/player.h
+            client/printer.cpp
+            client/printer.h)
 
     # Make them depend on COMMON lib
     add_dependencies(CLIENT COMMON SDL2pp::SDL2pp)
@@ -101,8 +105,7 @@ if(SERVER)
     add_executable(SERVER
             server/server_protocol.cpp
             server/server_protocol.h
-            server/player.cpp
-            server/player.h)
+    )
 
     # Make them depend on common lib
     add_dependencies(SERVER COMMON)

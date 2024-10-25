@@ -13,9 +13,9 @@
 enum ActionType {
   CREATE_REQUEST = 0x01,
   JOIN_REQUEST = 0x02,
-  MOVE_REQUEST = 0x03,
-  SHOOT_REQUEST = 0x04,
-  JUMP_REQUEST = 0x05,
+  MOVE = 0x03,
+  SHOOT = 0x04,
+  JUMP = 0x05,
 };
 
 #endif // TALLER_TP_ACTION_MACROS_H

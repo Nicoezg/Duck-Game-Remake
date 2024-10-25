@@ -6,7 +6,9 @@
 #define TALLER_TP_EVENT_H
 
 
+#include <list>
 #include "event_type.h"
+#include "player.h"
 
 #define SIN_ASIGNAR 0
 class Event {
@@ -25,8 +27,10 @@ public:
     virtual int get_position_x() const;
     virtual int get_position_y() const;
 
-    virtual int get_player_id_1() const = 0;
-    virtual int get_player_id_2() const = 0;
+    virtual int get_player_id_1() const;
+    virtual int get_player_id_2() const;
+
+    virtual std::list<Player> get_players();
 
     virtual ~Event() = default;
 };

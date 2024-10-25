@@ -6,20 +6,22 @@
 #define TALLER_TP_JOIN_H
 
 
+#include "common/game_mode.h"
+#include "action_macros.h"
+#include <string>
 #include <cstdint>
 #include "action.h"
 
 class Join : public Action {
 private:
     int game_code;
+    GameMode game_mode;
 public:
     explicit Join(int &game_code, GameMode game_mode);
 
     int get_game_code() const override;
 
-    bool is_x_direction() const override;
-
-    bool is_y_direction() const override;
+    GameMode get_game_mode() const override;
 
 };
 

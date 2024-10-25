@@ -15,7 +15,7 @@ int MonitorGames::create_game() {
     return last_game_id;
 }
 
-bool MonitorGames::game_exists(uint32_t game_id) {
+bool MonitorGames::game_exists(int game_id) {
     std::lock_guard<std::mutex> lock(mtx);
 
     if (games.find(game_id) == games.end()) {
@@ -24,7 +24,7 @@ bool MonitorGames::game_exists(uint32_t game_id) {
     return true;
 }
 
-uint16_t MonitorGames::get_player_id(uint32_t game_id) {
+uint16_t MonitorGames::get_player_id(int game_id) {
     std::lock_guard<std::mutex> lock(mtx);
 
     auto it = games.find(game_id);
@@ -34,7 +34,7 @@ uint16_t MonitorGames::get_player_id(uint32_t game_id) {
     throw std::runtime_error("Game not found");
 }
 
-void MonitorGames::add_to_game(uint32_t game_id, Socket &&client) {
+void MonitorGames::add_to_game(int game_id, Socket &&client) {
     std::lock_guard<std::mutex> lock(mtx);
 
     auto it = games.find(game_id);

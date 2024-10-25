@@ -2,22 +2,19 @@
 // Created by fran on 21/10/24.
 //
 
+#include <iostream>
+#include "create.h"
+#include "action.h"
 #include <stdexcept>
 #include "join.h"
 
 
-Join::Join(int &game_code, GameMode game_mode) : Action("UNIRSE", JOIN_REQUEST, 0, game_mode), game_code(game_code) {}
+Join::Join(int &game_code, GameMode game_mode) : Action(JOIN_REQUEST), game_code(game_code), game_mode(game_mode) {}
 
 int Join::get_game_code() const {
     return game_code;
 }
 
-bool Join::is_x_direction() const {
-    throw std::runtime_error("Join is not a direction action.");
+GameMode Join::get_game_mode() const {
+    return game_mode;
 }
-
-bool Join::is_y_direction() const {
-    throw std::runtime_error("Join is not a direction action.");
-}
-
-

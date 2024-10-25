@@ -43,6 +43,9 @@ public:
      */
     void send_element(const std::shared_ptr<Action> &action);
 
+    void send_move_action(const std::shared_ptr <Action> &action);
+
+    std::shared_ptr<Action> read_move_action();
 };
 
 

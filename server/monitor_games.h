@@ -10,7 +10,7 @@
 class MonitorGames {
 private:
     std::mutex mtx;
-    std::map<uint32_t , std::unique_ptr<Game>> games;
+    std::map<int , std::unique_ptr<Game>> games;
     int last_game_id;
 
 public:
@@ -28,7 +28,7 @@ public:
      * @param game_id El player_id del juego a verificar.
      * @return True si el juego existe, false en caso contrario.
      */
-    bool game_exists(uint32_t game_id);
+    bool game_exists(int game_id);
 
     /**
      * @brief Limpia los juegos cerrados.
@@ -40,14 +40,14 @@ public:
      * @param game_id El player_id del juego al que se va a unir el cliente.
      * @param player_id El player_id de jugador asignado.
      */
-    uint16_t get_player_id(uint32_t game_id);
+    uint16_t get_player_id(int game_id);
 
     /**
      * @brief Agrega un cliente a un juego.
      * @param game_id El player_id del juego al que se va a unir el cliente.
      * @param client El cliente a agregar.
      */
-    void add_to_game(uint32_t game_id, Socket &&client);
+    void add_to_game(int game_id, Socket &&client);
 
     /**
      * @brief Cierra y limpia los juegos.

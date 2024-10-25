@@ -21,6 +21,9 @@ target_sources(COMMON
         events/game_creation.cpp
         events/game_join.cpp
 
+        events/player.cpp
+        events/broadcast.cpp
+
     PUBLIC
     # .h files
     foo.h
@@ -49,5 +52,8 @@ target_sources(COMMON
         events/game_join.h
 
         game_mode.h
+
+        events/player.h
+        events/broadcast.h
 
     )

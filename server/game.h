@@ -2,6 +2,7 @@
 #define TALLER_TP_GAME_H
 
 #include <list>
+#include <map>
 
 #include "notifier.h"
 #include "common/actions/create.h"
@@ -16,6 +17,8 @@ private:
   std::atomic<bool> running;
 
   std::atomic<int> next_player_id;
+
+  std::map<int, Player> players;
 
 
   /**
@@ -60,6 +63,8 @@ public:
    * @return u_int16_t: player_id del proximo jugador.
    */
   int get_next_player_id();
+
+    std::list<Player> get_players();
 };
 
 #endif // TALLER_TP_GAME_H

@@ -12,12 +12,16 @@ Lobby::Lobby(Socket &&client, MonitorGames *games)
 
 void Lobby::run() {
     try {
+        int game_code = SIN_CODIGO;
         while (!is_connected) {
             std::shared_ptr<Action> action = protocol.read_element();
-            std::shared_ptr<Event> response = process_action(action);
+            std::shared_ptr<Event> response = process_action(action, game_code);
             protocol.send_element(response);
             is_connected = response->is_connected();
         }
+
+        games->add_to_game(game_code, std::move(client));
+
     } catch (const ProtocolError &e) {
         is_running = false;
         is_connected = false;
@@ -26,14 +30,16 @@ void Lobby::run() {
     is_running = false;
 }
 
-std::shared_ptr<Event> Lobby::process_action(const std::shared_ptr<Action> &action) {
+std::shared_ptr<Event> Lobby::process_action(const std::shared_ptr<Action> &action, int &game_code) {
     std::shared_ptr<Event> response;
     switch (action->get_type()) {
         case CREATE_REQUEST:
             response = create_game(action->get_game_mode());
+            game_code = response->get_game_code();
             break;
         case JOIN_REQUEST:
             response = join_game(action->get_game_code(), action->get_game_mode());
+            game_code = action->get_game_code();
             break;
         default:
             response = not_connected_to_game();

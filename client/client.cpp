@@ -3,6 +3,8 @@
 #include "common/protocol/common/protocol_error.h"
 #include "common/actions/join.h"
 #include "common/events/event.h"
+#include "common/actions/move.h"
+#include "printer.h"
 #include <iostream>
 
 
@@ -15,7 +17,17 @@ Client::Client(const char *hostname, const char *service_name) : commands(), eve
 std::string Client::read_command() {
     std::string action_key;
     std::cin >> action_key;
+    while ( !valid_command(action_key) ) {
+        std::cout << "Comando invalido" << std::endl;
+        std::cin >> action_key;
+    }
     return action_key;
+}
+
+bool Client::valid_command(const std::string &command) {
+    return command == ACTION_EXIT ||
+    ((command == ACTION_JOIN || command == ACTION_CREATE) && game_code == NO_CONECTADO) ||
+    (command == ACTION_MOVE && game_code != NO_CONECTADO);
 }
 
 void Client::run() {
@@ -32,6 +44,9 @@ void Client::run() {
         return;
     }
 
+    Printer printer(&events);
+    printer.start();
+
     std::string action_key = read_command();
     try {
         while (!connection.is_closed() && action_key != ACTION_EXIT) {
@@ -45,6 +60,7 @@ void Client::run() {
         connection.close();
     }
     connection.join();
+    printer.join();
 }
 
 bool Client::connect_to_game() {
@@ -81,6 +97,8 @@ void Client::run_command(const std::string &command) {
         command_join();
     } else if (command == ACTION_CREATE) {
         command_create();
+    } else if (command == ACTION_MOVE) {
+        command_move();
     } else {
         std::cout << "Comando invalido" << std::endl;
     }
@@ -105,20 +123,53 @@ void Client::command_create() {
     action_read();
 }
 
+void Client::command_move() {
+    char x;
+    std::cin >> x;
+
+    int id;
+    bool is_right;
+    switch (x) {
+        case 'a':
+            id = player_id_1;
+            is_right = false;
+            break;
+        case 'd':
+            id = player_id_1;
+            is_right = true;
+            break;
+        case 'j':
+            id = player_id_2;
+            is_right = false;
+            break;
+        case 'l':
+            id = player_id_2;
+            is_right = true;
+            break;
+        default:
+            std::cout << "Comando invalido" << std::endl;
+            return;
+    }
+    std::shared_ptr<Action> action = std::make_shared<Move>(id, is_right);
+    commands.push(action);
+}
+
 void Client::action_read() {
     std::shared_ptr<Event> event = events.pop();
     switch (event->get_type()) {
         case CREATE_GAME:
             game_code = event->get_game_code();
             assign_player_ids(event);
+            show_connection_info(event);
             break;
         case JOIN_GAME:
             assign_player_ids(event);
+            show_connection_info(event);
             break;
-        case BROADCAST:
+        default:
+            std::cout << "Mensaje no valido" << std::endl;
             break;
     }
-    show_connection_info(event);
 }
 
 void Client::show_connection_info(const std::shared_ptr<Event> &event) const {

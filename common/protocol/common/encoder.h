@@ -38,6 +38,18 @@ public:
     size_t encode_game_mode(GameMode game_mode, void* data);
 
     GameMode decode_game_mode(std::vector<int8_t> &data);
+
+    size_t encode_is_right(bool is_right, void *data);
+
+    bool decode_is_right(std::vector<int8_t> &data);
+
+    size_t encode_coordinate(int16_t coordinate, void *data);
+
+    int16_t decode_coordinate(std::vector<int8_t> &data);
+
+    int decode_players_len(std::vector<int8_t>& data);
+
+    size_t encode_players_len(uint8_t players_len, void *data);
 };
 
 #endif // TALLER_TP_ENCODER_H

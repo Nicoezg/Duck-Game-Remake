@@ -109,3 +109,55 @@ GameMode Encoder::decode_game_mode(std::vector<int8_t> &data) {
     data.erase(data.begin(), data.begin() + sizeof(int8_t));
     return game_mode;
 }
+
+size_t Encoder::encode_is_right(bool is_right, void *data) {
+    auto *is_right_bytes = reinterpret_cast<int8_t *>(&is_right);
+    std::memcpy(data, is_right_bytes, sizeof(int8_t));
+    return sizeof(int8_t);
+}
+
+bool Encoder::decode_is_right(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int8_t)) {
+        throw std::runtime_error("No hay suficientes bytes para decodificar si es correcto.");
+    }
+    auto is_right = static_cast<bool>(data[0]);
+    data.erase(data.begin(), data.begin() + sizeof(int8_t));
+    return is_right;
+}
+
+
+/* Posiciones */
+
+size_t Encoder::encode_coordinate(int16_t coordinate, void *data) {
+    int16_t network_position = htons(coordinate);
+    auto *position_x_bytes = reinterpret_cast<int8_t *>(&network_position);
+    std::memcpy(data, position_x_bytes, sizeof(int16_t));
+    return sizeof(int16_t);
+}
+
+int16_t Encoder::decode_coordinate(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int16_t)) {
+        throw std::runtime_error("No hay suficientes bytes para decodificar la posicion.");
+    }
+    int16_t coordinate;
+    std::memcpy(&coordinate, data.data(), sizeof(int16_t));
+    coordinate = ntohs(coordinate);
+    data.erase(data.begin(), data.begin() + sizeof(int16_t));
+    return coordinate;
+}
+
+int Encoder::decode_players_len(std::vector<int8_t>& data) {
+    if (data.size() < sizeof(uint8_t)) {
+        throw std::runtime_error("No hay suficientes bytes para decodificar la cantidad de jugadores.");
+    }
+    uint8_t players_len;
+    std::memcpy(&players_len, data.data(), sizeof(uint8_t));
+    data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+    return players_len;
+}
+
+size_t Encoder::encode_players_len(uint8_t players_len, void *data) {
+    auto *players_len_bytes = reinterpret_cast<int8_t *>(&players_len);
+    std::memcpy(data, players_len_bytes, sizeof(uint8_t));
+    return sizeof(uint8_t);
+}

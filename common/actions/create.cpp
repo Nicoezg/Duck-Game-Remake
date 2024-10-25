@@ -1,3 +1,4 @@
+#include "action.h"
 #include "create.h"
 
 #include <iostream>
@@ -6,13 +7,8 @@
 #include "common/events/game_creation.h"
 
 
-Create::Create(GameMode game_mode) : Action("CONECTAR", CREATE_REQUEST, 0, game_mode){}
+Create::Create(GameMode game_mode) : Action(CREATE_REQUEST), game_mode(game_mode) {}
 
-
-bool Create::is_x_direction() const {
-    throw std::runtime_error("Create is not a direction action.");
-}
-
-bool Create::is_y_direction() const {
-    throw std::runtime_error("Create is not a direction action.");
+GameMode Create::get_game_mode() const {
+    return game_mode;
 }

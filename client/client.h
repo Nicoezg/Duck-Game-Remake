@@ -61,6 +61,10 @@ public:
     void assign_player_ids(std::shared_ptr<Event> &event);
 
     void show_connection_info(const std::shared_ptr<Event> &event) const;
+
+    bool valid_command(const std::string &command);
+
+    void command_move();
 };
 
 #endif // TALLER_TP_CLIENT_H

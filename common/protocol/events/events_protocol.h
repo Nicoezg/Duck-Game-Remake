@@ -26,6 +26,9 @@ public:
 
     EventType read_event_type();
 
+    std::shared_ptr<Event> read_broadcast();
+
+    void send_broadcast(const std::shared_ptr<Event> &event);
 };
 
 
