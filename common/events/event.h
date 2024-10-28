@@ -5,35 +5,33 @@
 #ifndef TALLER_TP_EVENT_H
 #define TALLER_TP_EVENT_H
 
-
-#include <list>
 #include "event_type.h"
 #include "player.h"
+#include <list>
 
 #define SIN_ASIGNAR 0
 class Event {
 private:
-    EventType type;
+  EventType type;
 
 public:
-    Event(EventType type);
+  explicit Event(EventType type);
 
-    EventType get_type();
+  EventType get_type();
 
-    virtual bool is_connected() const;
+  virtual bool is_connected() const;
 
-    virtual int get_game_code() const;
+  virtual int get_game_code() const;
 
-    virtual int get_position_x() const;
-    virtual int get_position_y() const;
+  virtual int get_position_x() const;
+  virtual int get_position_y() const;
 
-    virtual int get_player_id_1() const;
-    virtual int get_player_id_2() const;
+  virtual int get_player_id_1() const;
+  virtual int get_player_id_2() const;
 
-    virtual std::list<Player> get_players();
+  virtual std::list<Player> get_players();
 
-    virtual ~Event() = default;
+  virtual ~Event() = default;
 };
 
-
-#endif //TALLER_TP_EVENT_H
+#endif // TALLER_TP_EVENT_H

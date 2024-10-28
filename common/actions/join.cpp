@@ -2,19 +2,15 @@
 // Created by fran on 21/10/24.
 //
 
-#include <iostream>
-#include "create.h"
-#include "action.h"
-#include <stdexcept>
 #include "join.h"
+#include "action.h"
+#include "create.h"
+#include <iostream>
+#include <stdexcept>
 
+Join::Join(int &game_code, GameMode game_mode)
+    : Action(JOIN_REQUEST), game_code(game_code), game_mode(game_mode) {}
 
-Join::Join(int &game_code, GameMode game_mode) : Action(JOIN_REQUEST), game_code(game_code), game_mode(game_mode) {}
+int Join::get_game_code() const { return game_code; }
 
-int Join::get_game_code() const {
-    return game_code;
-}
-
-GameMode Join::get_game_mode() const {
-    return game_mode;
-}
+GameMode Join::get_game_mode() const { return game_mode; }

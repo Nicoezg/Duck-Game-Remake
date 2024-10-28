@@ -5,25 +5,23 @@
 #ifndef TALLER_TP_JOIN_H
 #define TALLER_TP_JOIN_H
 
-
-#include "common/game_mode.h"
-#include "action_macros.h"
-#include <string>
-#include <cstdint>
 #include "action.h"
+#include "action_macros.h"
+#include "common/game_mode.h"
+#include <cstdint>
+#include <string>
 
 class Join : public Action {
 private:
-    int game_code;
-    GameMode game_mode;
+  int game_code;
+  GameMode game_mode;
+
 public:
-    explicit Join(int &game_code, GameMode game_mode);
+  explicit Join(int &game_code, GameMode game_mode);
 
-    int get_game_code() const override;
+  int get_game_code() const override;
 
-    GameMode get_game_mode() const override;
-
+  GameMode get_game_mode() const override;
 };
 
-
-#endif //TALLER_TP_JOIN_H
+#endif // TALLER_TP_JOIN_H

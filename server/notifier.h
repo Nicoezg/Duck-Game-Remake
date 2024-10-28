@@ -5,18 +5,19 @@
 #include <list>
 #include <memory>
 
-#include "common/thread.h"
-#include "common/queue.h"
-#include "common/events/event.h"
-#include "server_protocol.h"
 #include "common/connection/connection.h"
+#include "common/events/event.h"
+#include "common/queue.h"
+#include "common/thread.h"
+#include "server_protocol.h"
 
-using ServerConnection = Connection<ServerProtocol, std::shared_ptr<Action>, std::shared_ptr<Event>>;
+using ServerConnection =
+    Connection<ServerProtocol, std::shared_ptr<Action>, std::shared_ptr<Event>>;
 
 class Notifier {
 private:
   std::list<std::shared_ptr<ServerConnection>> clients;
-  Queue<std::shared_ptr<Action>>* commands;
+  Queue<std::shared_ptr<Action>> *commands;
   Queue<std::shared_ptr<Event>> events;
   std::mutex mtx_client; // mutex para la lista de clientes
 
@@ -32,7 +33,7 @@ public:
    * @param commands cola de comandos donde los clientes escriben
    * @param events cola de eventos donde el juego escribe
    */
-  explicit Notifier(Queue<std::shared_ptr<Action>>* commands);
+  explicit Notifier(Queue<std::shared_ptr<Action>> *commands);
 
   /**
    * @brief Agrega un cliente a la lista de clientes.
@@ -43,7 +44,7 @@ public:
    * @param client socket del cliente para lectura y escritura
    * @see common_connection.h
    */
-  void subscribe(Socket&& client);
+  void subscribe(Socket &&client);
 
   /**
    * @brief Publica un evento en la cola de cada cliente.
@@ -51,8 +52,6 @@ public:
    * @see common_action.h
    */
   void notify(const std::shared_ptr<Event> &event);
-
-
 
   /**
    * @brief Cambia el estado de is_running a false.

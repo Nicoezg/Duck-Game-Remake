@@ -13,28 +13,29 @@ const int SIN_CODIGO = 0;
 
 class Lobby : public Thread {
 private:
-    Socket client;
-    ServerProtocol protocol;
-    MonitorGames *games;
-    std::atomic<bool> is_running;
-    std::atomic<bool> is_connected;
+  Socket client;
+  ServerProtocol protocol;
+  MonitorGames *games;
+  std::atomic<bool> is_running;
+  std::atomic<bool> is_connected;
 
 public:
-    explicit Lobby(Socket &&client, MonitorGames *games);
+  explicit Lobby(Socket &&client, MonitorGames *games);
 
-    void run() override;
+  void run() override;
 
-    bool is_closed() const;
+  bool is_closed() const;
 
-    void close();
+  void close();
 
-    std::shared_ptr<Event> create_game(GameMode mode);
+  std::shared_ptr<Event> create_game(GameMode mode);
 
-    std::shared_ptr<Event> not_connected_to_game();
+  std::shared_ptr<Event> not_connected_to_game();
 
-    std::shared_ptr<Event> join_game(int game_code, GameMode mode);
+  std::shared_ptr<Event> join_game(int game_code, GameMode mode);
 
-    std::shared_ptr<Event> process_action(const std::shared_ptr<Action> &action, int &game_code);
+  std::shared_ptr<Event> process_action(const std::shared_ptr<Action> &action,
+                                        int &game_code);
 };
 
 #endif // TALLER_TP_LOBBY_H

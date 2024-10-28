@@ -4,9 +4,9 @@
 #include <list>
 #include <map>
 
-#include "notifier.h"
 #include "common/actions/create.h"
 #include "common/socket/socket.h"
+#include "notifier.h"
 
 class Game : public Thread {
 private:
@@ -20,12 +20,10 @@ private:
 
   std::map<int, Player> players;
 
-
   /**
    * @brief Lee los eventos de la cola de eventos los ejecuta.
    */
   void read_actions();
-
 
 public:
   explicit Game();
@@ -64,7 +62,7 @@ public:
    */
   int get_next_player_id();
 
-    std::list<Player> get_players();
+  std::list<Player> get_players();
 };
 
 #endif // TALLER_TP_GAME_H

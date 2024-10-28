@@ -1,8 +1,8 @@
 #ifndef TALLER_TP_SERVER_H
 #define TALLER_TP_SERVER_H
 
-#include "monitor_lobby.h"
 #include "common/thread.h"
+#include "monitor_lobby.h"
 
 class Server : public Thread {
 private:

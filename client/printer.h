@@ -5,25 +5,21 @@
 #ifndef TALLER_TP_PRINTER_H
 #define TALLER_TP_PRINTER_H
 
-
-#include <memory>
-#include "common/thread.h"
 #include "common/events/event.h"
 #include "common/queue.h"
+#include "common/thread.h"
+#include <memory>
 
 class Printer : public Thread {
 private:
-    Queue<std::shared_ptr<Event>>* events;
+  Queue<std::shared_ptr<Event>> *events;
 
 public:
-    explicit Printer(Queue<std::shared_ptr<Event>>* events);
+  explicit Printer(Queue<std::shared_ptr<Event>> *events);
 
-    void run() override;
+  void run() override;
 
-    void process_event(std::shared_ptr<Event> &event) const;
-
-
+  void process_event(std::shared_ptr<Event> &event) const;
 };
 
-
-#endif //TALLER_TP_PRINTER_H
+#endif // TALLER_TP_PRINTER_H

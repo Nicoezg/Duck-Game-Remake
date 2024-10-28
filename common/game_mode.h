@@ -6,9 +6,9 @@
 #define TALLER_TP_GAME_MODE_H
 
 enum GameMode {
-    SIN_ESPECIFICAR = 0,
-    UN_JUGADOR = 1,
-    DOS_JUGADORES = 2,
+  SIN_ESPECIFICAR = 0,
+  UN_JUGADOR = 1,
+  DOS_JUGADORES = 2,
 };
 
-#endif //TALLER_TP_GAME_MODE_H
+#endif // TALLER_TP_GAME_MODE_H

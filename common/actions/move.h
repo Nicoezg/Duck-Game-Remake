@@ -1,21 +1,19 @@
 #ifndef TALLER_TP_MOVE_H
 #define TALLER_TP_MOVE_H
 
-
 #include "action.h"
 
 class Move : public Action {
 private:
-    bool right;
-    int player_id;
+  bool right;
+  int player_id;
 
 public:
-    Move(int player_id, bool is_right);
+  Move(int player_id, bool is_right);
 
-    bool is_right() const override;
+  bool is_right() const override;
 
-    int get_player_id() const override;
+  int get_player_id() const override;
 };
 
-
-#endif //TALLER_TP_MOVE_H
+#endif // TALLER_TP_MOVE_H

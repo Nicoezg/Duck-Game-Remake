@@ -6,9 +6,7 @@
 
 #include <utility>
 
+Broadcast::Broadcast(std::list<Player> &&players)
+    : Event(BROADCAST), players(std::move(players)) {}
 
-Broadcast::Broadcast(std::list<Player>&& players) : Event(BROADCAST), players(std::move(players)) {}
-
-std::list<Player> Broadcast::get_players() {
-    return players;
-}
+std::list<Player> Broadcast::get_players() { return players; }
