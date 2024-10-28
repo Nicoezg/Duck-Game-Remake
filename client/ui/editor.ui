@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Editor</class>
+ <widget class="QWidget" name="Editor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>786</width>
+    <height>549</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#Editor QLabel {
+    border: 2px solid #FFA500; /* Color del borde */
+    border-radius: 5px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+    qproperty-alignment: 'AlignCenter'; /* Centra la imagen */
+}
+
+#Editor QLabel[scaledContents=&quot;true&quot;] {
+    qproperty-scaledContents: true;
+}
+
+#Editor QLabel:hover {
+    border: 2px solid #FFD700; /* Cambia el color del borde al pasar el mouse */
+}
+#Editor QScrollArea {
+    border: 2px solid #FFA500;
+    border-radius: 5px;
+    background-color: #000000;
+}
+
+#Editor QScrollArea QWidget {  /* Para el widget contenedor */
+    background-color: #000000;
+}
+
+#Editor QLabel {
+    border: 2px solid #FFA500;
+    border-radius: 5px;
+    padding: 2px;  /* Reducido de 5px a 2px para que estén más juntos */
+    background-color: rgba(255, 255, 255, 0.1);
+    qproperty-alignment: 'AlignCenter';
+    min-width: 80px;  /* Aumentado de 64px */
+    min-height: 80px; /* Aumentado de 64px */
+}
+
+#Editor QLabel[scaledContents=&quot;true&quot;] {
+    qproperty-scaledContents: true;
+}
+
+#Editor QLabel:hover {
+    border: 2px solid #FFD700;
+}
+
+#Editor QScrollArea QScrollBar:vertical {
+    width: 12px;
+    background: #1a1a1a;  /* Gris muy oscuro */
+    border: none;
+    margin: 0px;
+}
+
+#Editor QScrollArea QScrollBar::handle:vertical {
+    background: #FFA500;
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+#Editor QScrollArea QScrollBar::handle:vertical:hover {
+    background: #FFD700;
+}
+
+#Editor QScrollArea QScrollBar::add-line:vertical,
+#Editor QScrollArea QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+#Editor QScrollArea QScrollBar:horizontal {
+    height: 12px;
+    background: #1a1a1a;
+    border: none;
+    margin: 0px;
+}
+
+#Editor QScrollArea QScrollBar::handle:horizontal {
+    background: #FFA500;
+    border-radius: 6px;
+    min-width: 20px;
+}
+
+#Editor QScrollArea QScrollBar::handle:horizontal:hover {
+    background: #FFD700;
+}</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_5">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>377</width>
+        <height>527</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QGridLayout" name="tilesLayout"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea_2">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_8">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>377</width>
+        <height>527</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,24 @@
+{
+	"BUILD_DIR" : "/home/bautiboeri/Desktop/2c24/taller/untitled1/untitled1_autogen",
+	"CMAKE_BINARY_DIR" : "/home/bautiboeri/Desktop/2c24/taller/untitled1",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/bautiboeri/Desktop/2c24/taller/untitled1",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/bautiboeri/Desktop/2c24/taller/untitled1",
+	"CMAKE_SOURCE_DIR" : "/home/bautiboeri/Desktop/2c24/taller/untitled1",
+	"INCLUDE_DIR" : "/home/bautiboeri/Desktop/2c24/taller/untitled1/untitled1_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/bautiboeri/Desktop/2c24/taller/untitled1/images/Main_logo.webp",
+		"/home/bautiboeri/Desktop/2c24/taller/untitled1/images/join.svg",
+		"/home/bautiboeri/Desktop/2c24/taller/untitled1/images/fondo.jpg"
+	],
+	"LOCK_FILE" : "/home/bautiboeri/Desktop/2c24/taller/untitled1/CMakeFiles/untitled1_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/usr/lib/qt6/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/bautiboeri/Desktop/2c24/taller/untitled1/CMakeFiles/untitled1_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/bautiboeri/Desktop/2c24/taller/untitled1/resources.qrc",
+	"VERBOSITY" : 0
+}

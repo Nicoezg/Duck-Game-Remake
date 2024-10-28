@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/fondo.jpg</file>
+        <file>images/Main_logo.webp</file>
+        <file>images/join.svg</file>
+        <file>sound/menumusic.wav</file>
+        <file>images/sprites/LevelStructureSheet.png</file>
+        <file>images/sprites/Objects.png</file>
+    </qresource>
+</RCC>
