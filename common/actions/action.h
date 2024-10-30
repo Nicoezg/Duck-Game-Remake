@@ -23,6 +23,16 @@ public:
   virtual int get_game_code() const;
 
   virtual bool is_right() const;
+
+  virtual bool is_playing_dead() const;
+
+  virtual bool is_jumping_flapping() const;
+
+  virtual bool is_aiming_upwards() const;
+
+  virtual bool is_shooting() const;
+
+  virtual bool is_picking_dropping() const;
 };
 
 #endif // TALLER_TP_ACTION_H

@@ -22,3 +22,23 @@ GameMode Action::get_game_mode() const {
 bool Action::is_right() const {
   throw std::runtime_error("Action is not a right action.");
 }
+
+bool Action::is_playing_dead() const {
+  throw std::runtime_error("Action is not a play dead action.");
+}
+
+bool Action::is_jumping_flapping() const {
+  throw std::runtime_error("Action is not a jump flap action.");
+}
+
+bool Action::is_aiming_upwards() const {
+  throw std::runtime_error("Action is not an aim upwards action.");
+}
+
+bool Action::is_shooting() const {
+  throw std::runtime_error("Action is not a shoot action.");
+}
+
+bool Action::is_picking_dropping() const {
+  throw std::runtime_error("Action is not a pick drop action.");
+}

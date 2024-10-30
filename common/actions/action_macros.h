@@ -16,6 +16,10 @@ enum ActionType {
   MOVE = 0x03,
   SHOOT = 0x04,
   JUMP = 0x05,
+  PLAY_DEAD = 0x06,
+  JUMP_FLAP = 0x07,
+  AIM_UPWARDS = 0x08,
+  PICK_DROP = 0x09
 };
 
 #endif // TALLER_TP_ACTION_MACROS_H
