@@ -1,39 +1,21 @@
-#include "common/foo.h"
+/*This source code copyrighted by Lazy Foo' Productions 2004-2024
+and may not be redistributed without written permission.*/
 
+//Using SDL, SDL_image, standard IO, and strings
+#include "game.h"
 #include <iostream>
-#include <exception>
+#include <ostream>
+#include <string>
 
-#include <SDL2pp/SDL2pp.hh>
-#include <SDL2/SDL.h>
 
-using namespace SDL2pp;
+int main( int argc, char* args[] )
+{
+	std::cout << argc << std::endl;
+	if (args[1] == NULL){
 
-int main() try {
-	// Initialize SDL library
-	SDL sdl(SDL_INIT_VIDEO);
-
-	// Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-	Window window("SDL2pp demo",
-			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			640, 480,
-			SDL_WINDOW_RESIZABLE);
-
-	// Create accelerated video renderer with default driver
-	Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	// Clear screen
-	renderer.Clear();
-
-	// Show rendered frame
-	renderer.Present();
-
-	// 5 second delay
-	SDL_Delay(5000);
-
-	// Here all resources are automatically released and library deinitialized
+	}
+	Client client(0);
+	Game game(client);
+	game.start();
 	return 0;
-} catch (std::exception& e) {
-	// If case of error, print it and exit with error
-	std::cerr << e.what() << std::endl;
-	return 1;
 }
