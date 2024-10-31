@@ -12,9 +12,17 @@ private:
   int player_id;
   int position_x;
   int position_y;
+  bool dead;
+  bool jumping;
+  bool falling;
+  bool playing_dead;
+  bool right;
+  bool aiming_upwards;
+  bool new_movement;
+
 
 public:
-  Player(int player_id, int position_x, int position_y);
+  Player(int player_id, int position_x, int position_y, bool dead, bool jumping, bool falling, bool playing_dead, bool right, bool aiming_upwards, bool new_movement);
 
   int get_player_id() const;
 
@@ -25,6 +33,20 @@ public:
   std::string get_text() const;
 
   void move(bool is_right);
+
+  bool is_dead() const;
+
+  bool is_jumping() const;
+
+  bool is_falling() const;
+
+  bool is_playing_dead() const;
+
+  bool is_right() const;
+
+  bool is_aiming_upwards() const;
+
+  bool is_new_movement() const;
 };
 
 #endif // TALLER_TP_PLAYER_H
