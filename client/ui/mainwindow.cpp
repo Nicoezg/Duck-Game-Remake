@@ -12,7 +12,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   // Establecer un tamaño fijo para la ventana
-  this->setFixedSize(1366, 768);
 
   // Configurar la interfaz de usuario
   ui->setupUi(this);
@@ -24,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {
   delete player;
   delete audio;
+  delete editor;
   delete ui;
 }
 

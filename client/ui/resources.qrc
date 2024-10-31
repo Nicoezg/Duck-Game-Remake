@@ -6,5 +6,6 @@
         <file>sound/menumusic.wav</file>
         <file>images/sprites/LevelStructureSheet.png</file>
         <file>images/sprites/Objects.png</file>
+        <file>images/forest.png</file>
     </qresource>
 </RCC>

@@ -14,106 +14,146 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#Editor QLabel {
-    border: 2px solid #FFA500; /* Color del borde */
-    border-radius: 5px;
-    padding: 5px;
-    background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
-    qproperty-alignment: 'AlignCenter'; /* Centra la imagen */
-}
-
-#Editor QLabel[scaledContents=&quot;true&quot;] {
-    qproperty-scaledContents: true;
-}
-
-#Editor QLabel:hover {
-    border: 2px solid #FFD700; /* Cambia el color del borde al pasar el mouse */
-}
-#Editor QScrollArea {
-    border: 2px solid #FFA500;
-    border-radius: 5px;
-    background-color: #000000;
-}
-
-#Editor QScrollArea QWidget {  /* Para el widget contenedor */
-    background-color: #000000;
+   <string notr="true">#Editor {
+background-color: #1a1a1a;
 }
 
 #Editor QLabel {
-    border: 2px solid #FFA500;
-    border-radius: 5px;
-    padding: 2px;  /* Reducido de 5px a 2px para que estén más juntos */
-    background-color: rgba(255, 255, 255, 0.1);
-    qproperty-alignment: 'AlignCenter';
-    min-width: 80px;  /* Aumentado de 64px */
-    min-height: 80px; /* Aumentado de 64px */
+border: 1px solid #FFA500;
+padding: 0px;
+background-color: #000000;
+qproperty-alignment: 'AlignCenter';
+min-width: 16px;
+min-height: 16px;
+margin: 0px;
 }
 
 #Editor QLabel[scaledContents=&quot;true&quot;] {
-    qproperty-scaledContents: true;
+qproperty-scaledContents: true;
 }
 
 #Editor QLabel:hover {
-    border: 2px solid #FFD700;
+border: 1px solid #FFD700;
+background-color: rgba(255, 165, 0, 0.1);
+}
+
+#Editor QScrollArea {
+border: 2px solid #FFA500;
+background-color: #000000;
+margin: 0px;
+padding: 0px;
+}
+
+#Editor QScrollArea QWidget {
+background-color: #000000;
 }
 
 #Editor QScrollArea QScrollBar:vertical {
-    width: 12px;
-    background: #1a1a1a;  /* Gris muy oscuro */
-    border: none;
-    margin: 0px;
+width: 12px;
+background: #1a1a1a;
+border: none;
+margin: 0px;
 }
 
 #Editor QScrollArea QScrollBar::handle:vertical {
-    background: #FFA500;
-    border-radius: 6px;
-    min-height: 20px;
+background: #FFA500;
+border-radius: 6px;
+min-height: 20px;
 }
 
 #Editor QScrollArea QScrollBar::handle:vertical:hover {
-    background: #FFD700;
+background: #FFD700;
 }
 
 #Editor QScrollArea QScrollBar::add-line:vertical,
 #Editor QScrollArea QScrollBar::sub-line:vertical {
-    height: 0px;
+height: 0px;
 }
 
 #Editor QScrollArea QScrollBar:horizontal {
-    height: 12px;
-    background: #1a1a1a;
-    border: none;
-    margin: 0px;
+height: 12px;
+background: #1a1a1a;
+border: none;
+margin: 0px;
 }
 
 #Editor QScrollArea QScrollBar::handle:horizontal {
-    background: #FFA500;
-    border-radius: 6px;
-    min-width: 20px;
+background: #FFA500;
+border-radius: 6px;
+min-width: 20px;
 }
 
 #Editor QScrollArea QScrollBar::handle:horizontal:hover {
-    background: #FFD700;
+background: #FFD700;
+}
+
+#Editor QGridLayout {
+margin: 0px;
+padding: 0px;
+spacing: 0px;
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
    <item>
     <widget class="QScrollArea" name="scrollArea">
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+     </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_5">
+     <widget class="QWidget" name="tilesScroll">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>377</width>
-        <height>527</height>
+        <width>344</width>
+        <height>541</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
-        <layout class="QGridLayout" name="tilesLayout"/>
+        <layout class="QGridLayout" name="tilesLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -121,20 +161,67 @@
    </item>
    <item>
     <widget class="QScrollArea" name="scrollArea_2">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
+     </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_8">
+     <widget class="QWidget" name="mapWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>377</width>
-        <height>527</height>
+        <width>344</width>
+        <height>541</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QGridLayout" name="mapLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QPushButton" name="Menu">
+       <property name="text">
+        <string>Menu</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

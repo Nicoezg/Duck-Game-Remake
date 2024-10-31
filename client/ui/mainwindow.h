@@ -5,6 +5,7 @@
 #include <QAudioOutput>
 #include <QMainWindow>
 #include <QMediaPlayer>
+#include "editor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -49,6 +50,7 @@ private:
   Ui::MainWindow *ui;
   QMediaPlayer *player;
   QAudioOutput *audio;
+  Editor *editor;
   void setupServerList();
   void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
   void RefreshServerList();
