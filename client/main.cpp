@@ -2,7 +2,7 @@
 and may not be redistributed without written permission.*/
 
 //Using SDL, SDL_image, standard IO, and strings
-#include "game.h"
+#include "graphic/game.h"
 #include <iostream>
 #include <ostream>
 #include <string>
