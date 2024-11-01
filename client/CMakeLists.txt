@@ -2,14 +2,16 @@ target_sources(CLIENT
     PRIVATE
     # .cpp files
     main.cpp
-    game.cpp
-    action_handler.cpp
-    idea_client.cpp
-    duck.cpp
+    client.cpp
+    client_protocol.cpp
+    graphic/action_handler.cpp
+    graphic/duck.cpp
+    graphic/game.cpp
     PUBLIC
+    client.h
+    client_protocol.h
+    graphic/action_handler.h
+    graphic/duck.h
+    graphic/game.h
     # .h files
-    game.h
-    action_handler.h
-    idea_client.h
-    duck.h
     )

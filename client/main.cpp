@@ -1,21 +1,27 @@
-/*This source code copyrighted by Lazy Foo' Productions 2004-2024
-and may not be redistributed without written permission.*/
+//
+// Created by cafrada on 22/04/23.
+//
 
 //Using SDL, SDL_image, standard IO, and strings
 #include "graphic/game.h"
 #include <iostream>
-#include <ostream>
-#include <string>
 
+#include "client/client.h"
+#include "common/socket/liberror.h"
 
-int main( int argc, char* args[] )
-{
-	std::cout << argc << std::endl;
-	if (args[1] == NULL){
+#define EXIT_CODE '|'
 
-	}
-	Client client(0);
-	Game game(client);
-	game.start();
-	return 0;
+int main(int argc, const char *argv[]) try {
+  if (argc != 3) {
+    throw std::runtime_error("invalid arguments quantity");
+  }
+  Client client(argv[1], argv[2]);
+  client.run();
+  return 0;
+} catch (const std::exception &e) {
+  std::cout << "Critical error: " << e.what() << std::endl;
+  return -1;
+} catch (...) {
+  std::cout << "Unknown critical error." << std::endl;
+  return -1;
 }
