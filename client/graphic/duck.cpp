@@ -6,33 +6,7 @@ const int DUCK_HEIGHT = 32;
 
 
 
-    Duck::Duck(std::shared_ptr<SDL2pp::Texture> texture) : posX(), posY(), id(), falling(), jumping(), dead(), playDead(), direction(), aimingUp(), newAction(), texture(texture), walkClips(), jumpClips(), playDeadClips() {}
-
-    void Duck::render(SDL2pp::Renderer& renderer, int frame){
-        int angulo = 0;
-        SDL2pp::Rect rect{ posX, posY, DUCK_WIDTH, DUCK_HEIGHT };
-        if (newAction){
-            frame = 0;
-            newAction = false;
-        }
-        int flipType = direction ? 1 : 0;
-        if (dead){
-
-        }else if (falling){
-            renderer.Copy(*texture, jumpClips[1], rect, angulo, SDL2pp::NullOpt, flipType);
-
-        } else if (jumping) {
-            renderer.Copy(*texture, jumpClips[0], rect, angulo, SDL2pp::NullOpt, flipType);
-
-        } else if (playDead) {
-            renderer.Copy(*texture, playDeadClips[frame / 3 % 3], rect, angulo, SDL2pp::NullOpt, flipType);
-
-        } else {
-            renderer.Copy(*texture, walkClips[frame / 6 % 6], rect, angulo, SDL2pp::NullOpt, flipType);
-        }
-    }
-    
-    void Duck::setClips(){
+    Duck::Duck(std::shared_ptr<SDL2pp::Texture> texture) : posX(), posY(), id(0), direction(), texture(texture), animationState(), walkClips(), jumpClips(), playDeadClips() {
         for (int i = 0; i < 4; i++){
             walkClips[i].x = i * DUCK_WIDTH;
             walkClips[i].y = 0;
@@ -63,13 +37,63 @@ const int DUCK_HEIGHT = 32;
         playDeadClips[2].h = DUCK_HEIGHT;
     }
 
-    
-    
+    void Duck::render(SDL2pp::Renderer& renderer){
+        SDL2pp::Rect rect{ posX, posY, DUCK_WIDTH, DUCK_HEIGHT };
+        int flipType = direction ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+        int angle = 0;
+
+        // Select appropriate clip based on current animation state
+        SDL2pp::Rect currentClip;
+
+        switch (animationState.getCurrentType()) {
+            case Type::WALK:
+                currentClip = walkClips[animationState.getCurrentFrame()];
+                break;
+            case Type::JUMP:
+                currentClip = jumpClips[0];
+                break;
+            case Type::FALL:
+                currentClip = jumpClips[1];
+                break;
+            case Type::PLAYDEAD:
+                currentClip = playDeadClips[animationState.getCurrentFrame()];
+                break;
+            default:
+                currentClip = walkClips[0];
+                break;
+        }
+
+        renderer.Copy(*texture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
+    }
+
+    void Duck::update(const Player &player){
+        int prevX = posX;
+        posX = player.get_position_x();
+        posY = player.get_position_y();
+        direction = player.is_right();
+
+        if (player.is_playing_dead()){
+            animationState.changeState(Type::PLAYDEAD, false);
+        } else if (player.is_falling()) {
+            animationState.changeState(Type::FALL, false);
+        } else if (player.is_jumping()) {
+            animationState.changeState(Type::JUMP, false);
+        } else  if (prevX != posX) {
+            animationState.changeState(Type::WALK, true);
+        } else {
+            animationState.changeState(Type::IDLE, false);
+        }
+    }
+
+    void Duck::updateFrame(int it){
+        animationState.update(it);
+    }
+
     int Duck::getPosX() { return posX; }
+
     int Duck::getPosY() { return posY; }
 
-    bool Duck::isJumping() { return jumping; }
-
+    bool Duck::isFacingRight() { return direction; }
 
     Duck::~Duck(){
     }

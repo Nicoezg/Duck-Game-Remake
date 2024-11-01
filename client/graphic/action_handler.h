@@ -1,7 +1,7 @@
 #ifndef ACTION_HANDLER_H
 #define ACTION_HANDLER_H
 
-#include "idea_client.h"
+#include "../client.h"
 
 class ActionHandler{
     private:

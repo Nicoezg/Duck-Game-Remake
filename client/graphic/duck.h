@@ -2,9 +2,12 @@
 #define DUCK_H
 
 #include <SDL2/SDL_rect.h>
+#include "../../common/events/player.h"
 #include <SDL2pp/SDL2pp.hh>
+#include "animation_state.cpp"
 #include <map>
 #include <memory>
+
 
 class Duck
 {
@@ -18,40 +21,33 @@ class Duck
 
 		void render(SDL2pp::Renderer& renderer, int frame);
 
+		void update(const Player &player);
+
+		void updateFrame(int it = 1);
+
 		int getPosX();
 
 		int getPosY();
 
-		bool isJumping();
-
-		bool isStill();
-
-		void setClips();
+		bool isFacingRight();
 
 		//Destructor
 		~Duck();
 
+    // Duck class definition
+
     private:
 		//The X and Y offsets of the duck
+
 		int posX, posY;
 
 		uint8_t id;
 
-		bool falling;
-
-		bool jumping;
-
-		bool dead;
-
-		bool playDead;
-
 		bool direction;
 
-		bool aimingUp;
-
-		bool newAction;
-
 		std::shared_ptr<SDL2pp::Texture> texture;
+
+		AnimationState animationState;
 
 		SDL2pp::Rect walkClips[4];
 		SDL2pp::Rect jumpClips[2];

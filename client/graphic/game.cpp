@@ -37,19 +37,19 @@ int Game::start() {
         // Game Loop
         ActionHandler actionHandler(client);
 
-        Duck duck(textures[2]);
-        duck.setClips();
 
-        int it = 0; // Iterations
+
+        Duck duck(textures[2]); // Hardcodeado, despues deberia ser un atributo de la clase Game
+
         auto rate = 1000 / 60; // 60 FPS
 
         while (true)
         {
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Procesamos los eventos del pato
-            // updateGame();
+            updateGame(duck);
 
-            render(renderer, duck, it);
+            render(renderer, duck);
             
             /* IF BEHIND, KEEP WORKING */
             // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -67,7 +67,7 @@ int Game::start() {
                 auto behind = -rest;                // ¿Cuanto tiempo estamos retrasados?
                 auto lost = behind - behind % rate; // ¿Cuanto tiempo perdimos?
                 t1 += lost;                         // Ajustamos 't1' para ponernos al dia con el tiempo perdido
-                it += int(lost / rate);             // Aumentamos 'it' para reflejar las iteraciones que
+                duck.updateFrame(int(lost / rate));             // Aumentamos 'it' para reflejar las iteraciones que
                                                     // se han perdido debido al retraso
 
                 // Si 'rest' es mayor o igual a cero quiere decir que no nos estamos quedando atras
@@ -80,7 +80,7 @@ int Game::start() {
             }
 
             t1 += rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
-            it += 1;    // Aumentamos 'it' en 1 para mantener un registro del numero de iteraciones
+            duck.updateFrame();    // Aumentamos 'it' en 1 para mantener un registro del numero de iteraciones
 
             // Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace
             // 		 que se cuelgue el juego
@@ -138,35 +138,22 @@ void Game::loadTextures(Renderer &renderer) {
     // CRATES
     this->textures[29] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "props/crate.png").SetColorKey(true, 0));
 
-} 
+}
 
-// Pensar despues
-// Cada frame recibo un evento?
-/* void Game::updateGame(Duck &duck, int frame)
-{
-    Event event = client.recv_queue.pop();
+void Game::updateGame(Duck &duck){
+    // Solo permite un jugador por ahora
+    Broadcast updates = client.getUpdates(); // A implementar del lado del cliente
+    for (auto &player : updates.get_players()){
+        duck.update(player);
+    }   
 
-    switch (event.type){
-        case 0:
-            std::shared_ptr<Duck> duck = std::static_pointer_cast<DuckEvent>(event);
-            this->ducks[duck->id] = duck;
-            break;
-        case 1:
-            updateMap();
-            break;
-        case 2:
-            break;
+}
 
-        
-    }
-
-} */
-
-void Game::render(SDL2pp::Renderer &renderer, Duck& duck, int frame)
+void Game::render(SDL2pp::Renderer &renderer, Duck& duck)
 {
     renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
-    duck.render(renderer, frame);
+    duck.render(renderer);
 
     renderer.Present();
 

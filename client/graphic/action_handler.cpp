@@ -3,6 +3,13 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL_keycode.h>
 #include <exception>
+#include "../../common/actions/action.h"
+#include "../../common/actions/aim_upwards.h"
+#include "../../common/actions/pick_drop.h"
+#include "../../common/actions/move.h"
+#include "../../common/actions/play_dead.h"
+#include "../../common/actions/shoot.h"
+#include "../../common/actions/jump_flap.h"
 
 ActionHandler::ActionHandler(Client &client) : client(client){
     
@@ -15,32 +22,46 @@ void ActionHandler::processDuckEvents(){
         if (event.type == SDL_QUIT) {
             throw std::exception(); // a cambiar
         }
-
         if (event.type == SDL_KEYDOWN){
             switch (event.key.keysym.sym){
                 case SDLK_LEFT:
-                    this->client.moveLeft();
+                    Move moveLeft(this->client.getPlayerId(), false);
+                    this->client.run_command(moveLeft);
                     break;
+
                 case SDLK_RIGHT:
-                    this->client.moveRight();
+                    Move moveRight(this->client.getPlayerId(), true);
+                    this->client.run_command(moveRight);
                     break;
+
                 case SDLK_DOWN:
-                    this->client.playDead();
+                    PlayDead playDead(this->client.getPlayerId(), true);
+                    this->client.run_command(playDead);
                     break;
+
                 case SDLK_UP:
-                    this->client.up();
+                    JumpFlap jumpFlap(this->client.getPlayerId(), true);
+                    this->client.run_command(jumpFlap);
                     break;
+
                 case SDLK_y:
-                    this->client.aimUpwards();
+                    AimUpwards aimUpwards(this->client.getPlayerId(), true);
+                    this->client.run_command(aimUpwards);
                     break;
+
                 case SDLK_j:
-                    this->client.pickUp();
+                    PickDrop pickDrop(this->client.getPlayerId(), true);
+                    this->client.run_command(pickDrop);
                     break;
+
                 case SDLK_h:
-                    this->client.drop();
+                    PickDrop pickDrop(this->client.getPlayerId(), false);
+                    this->client.run_command(pickDrop);
                     break;
+
                 case SDLK_g:
-                    this->client.shoot();
+                    Shoot shoot(this->client.getPlayerId());
+                    this->client.run_command(shoot);
                     break;
                 
             }
@@ -48,11 +69,21 @@ void ActionHandler::processDuckEvents(){
         } else if (event.type == SDL_KEYUP){
             switch (event.key.keysym.sym){
                 case SDLK_LEFT:
-                    this->client.stopMoving();
                     break;
+
                 case SDLK_RIGHT:
-                    this->client.stopMoving();
                     break;
+
+                case SDLK_DOWN:
+                    PlayDead playDead(this->client.getPlayerId(), false);
+                    this->client.run_command(playDead);
+                    break;
+                
+                case SDLK_y:
+                    AimUpwards aimUpwards(this->client.getPlayerId(), false);
+                    this->client.run_command(aimUpwards);
+                    break;
+
             }
         }
     }

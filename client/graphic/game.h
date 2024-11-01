@@ -4,8 +4,9 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
 #include <memory>
-#include "idea_client.h"
+#include "../client.h"
 #include "duck.h"
+#include "../../common/events/broadcast.h"
 
 using namespace SDL2pp;
 
@@ -14,14 +15,15 @@ class Game{
         //SDLTTF ttf;
         Client &client;
         int result;
-        //std::map<std::string, Duck> ducks;
-        std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
+        // std::map<int, Duck> ducks;
 
-        // void updateGame();
+        std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
         void loadTextures(Renderer &renderer);
 
         void render(Renderer &renderer, Duck &duck, int it);
+
+        void updateGame(Duck &duck);
 
 
     public:
