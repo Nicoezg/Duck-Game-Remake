@@ -3,10 +3,11 @@
 //
 
 #include "player.h"
+#include "player_macros.h"
 #include <sstream>
 
-Player::Player(int player_id, int position_x, int position_y, bool dead, bool jumping, bool falling, bool playing_dead, bool right, bool aiming_upwards, bool new_movement)
-    : player_id(player_id), position_x(position_x), position_y(position_y), dead(), jumping(), falling(), playing_dead(), right(), aiming_upwards(), new_movement() {}
+Player::Player(int player_id, int position_x, int position_y, bool right, State state)
+    : player_id(player_id), position_x(position_x), position_y(position_y), right(right), state(state) {}
 
 int Player::get_player_id() const { return player_id; }
 
@@ -29,16 +30,14 @@ void Player::move(bool is_right) {
   }
 }
 
-bool Player::is_dead() const { return dead; }
+bool Player::is_dead() const { return state == DEAD; }
 
-bool Player::is_jumping() const { return jumping; }
+bool Player::is_jumping() const { return state == JUMPING; }
 
-bool Player::is_falling() const { return falling; }
+bool Player::is_falling() const { return state == FALLING; }
 
-bool Player::is_playing_dead() const { return playing_dead; }
+bool Player::is_playing_dead() const { return state == PLAYING_DEAD; }
 
 bool Player::is_right() const { return right; }
 
-bool Player::is_aiming_upwards() const { return aiming_upwards; }
-
-bool Player::is_new_movement() const { return new_movement; }
+bool Player::is_aiming_upwards() const { return state == AIMING_UPWARDS; }
