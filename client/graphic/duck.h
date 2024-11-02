@@ -4,7 +4,7 @@
 #include <SDL2/SDL_rect.h>
 #include "../../common/events/player.h"
 #include <SDL2pp/SDL2pp.hh>
-#include "animation_state.cpp"
+#include "animation_state.h"
 #include <map>
 #include <memory>
 
@@ -19,7 +19,7 @@ class Duck
 		//Initializes the variables
 		Duck(std::shared_ptr<SDL2pp::Texture> texture);
 
-		void render(SDL2pp::Renderer& renderer, int frame);
+		void render(SDL2pp::Renderer& renderer);
 
 		void update(const Player &player);
 

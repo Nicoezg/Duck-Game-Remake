@@ -51,12 +51,16 @@ private:
 
   void command_move();
 
+  
+
 public:
   Client(const char *hostname, const char *service_name);
 
   void run();
 
   void run_command(const std::string &command);
+
+  int get_player_id1();
 };
 
 #endif // TALLER_TP_CLIENT_H

@@ -190,3 +190,5 @@ void Client::assign_player_ids(std::shared_ptr<Event> &event) {
   player_id_1 = event->get_player_id_1();
   player_id_2 = event->get_player_id_2();
 }
+
+int Client::get_player_id1() { return player_id_1; }

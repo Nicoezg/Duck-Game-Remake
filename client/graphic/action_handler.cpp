@@ -3,6 +3,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL_keycode.h>
 #include <exception>
+#include <memory>
 #include "../../common/actions/action.h"
 #include "../../common/actions/aim_upwards.h"
 #include "../../common/actions/pick_drop.h"
@@ -22,46 +23,39 @@ void ActionHandler::processDuckEvents(){
         if (event.type == SDL_QUIT) {
             throw std::exception(); // a cambiar
         }
+        std::shared_ptr<Action> action = nullptr;
         if (event.type == SDL_KEYDOWN){
             switch (event.key.keysym.sym){
                 case SDLK_LEFT:
-                    Move moveLeft(this->client.getPlayerId(), false);
-                    this->client.run_command(moveLeft);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
                 case SDLK_RIGHT:
-                    Move moveRight(this->client.getPlayerId(), true);
-                    this->client.run_command(moveRight);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
                 case SDLK_DOWN:
-                    PlayDead playDead(this->client.getPlayerId(), true);
-                    this->client.run_command(playDead);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
                 case SDLK_UP:
-                    JumpFlap jumpFlap(this->client.getPlayerId(), true);
-                    this->client.run_command(jumpFlap);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
                 case SDLK_y:
-                    AimUpwards aimUpwards(this->client.getPlayerId(), true);
-                    this->client.run_command(aimUpwards);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
                 case SDLK_j:
-                    PickDrop pickDrop(this->client.getPlayerId(), true);
-                    this->client.run_command(pickDrop);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
                 case SDLK_h:
-                    PickDrop pickDrop(this->client.getPlayerId(), false);
-                    this->client.run_command(pickDrop);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
                 case SDLK_g:
-                    Shoot shoot(this->client.getPlayerId());
-                    this->client.run_command(shoot);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
                 
             }
@@ -75,17 +69,16 @@ void ActionHandler::processDuckEvents(){
                     break;
 
                 case SDLK_DOWN:
-                    PlayDead playDead(this->client.getPlayerId(), false);
-                    this->client.run_command(playDead);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
                 
                 case SDLK_y:
-                    AimUpwards aimUpwards(this->client.getPlayerId(), false);
-                    this->client.run_command(aimUpwards);
+                    action = std::make_shared<Move>(this->client.get_player_id1(), false);
                     break;
 
             }
         }
+        this->client.run_command("accion"); // Cambiar run_command del lado del client
     }
 }
 
