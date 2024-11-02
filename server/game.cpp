@@ -21,7 +21,7 @@ void Game::add(Socket &&socket) { notifier.subscribe(std::move(socket)); }
 
 int Game::get_next_player_id() {
   next_player_id++;
-  players.insert_or_assign(next_player_id, Player(next_player_id, 0, 0));
+  players.insert_or_assign(next_player_id, Player(next_player_id, 0, 0, true, State::BLANK));
   return next_player_id;
 }
 
