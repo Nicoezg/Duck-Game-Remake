@@ -13,6 +13,9 @@
 #define PLAYERS_ID_SIZE sizeof(uint16_t)
 #define GAME_CODE_SIZE sizeof(uint32_t)
 #define CONNECTED_SIZE sizeof(uint8_t)
+#define MAX_PLAYER_SIZE sizeof(uint8_t)
+#define ACTUAL_PLAYER_SIZE sizeof(uint8_t)
+
 
 #define PLAYERS_LEN_SIZE sizeof(uint8_t)
 #define PLAYER_COORDINATE sizeof(int16_t)
@@ -20,14 +23,18 @@
 #define PLAYER_STATE_SIZE sizeof(uint8_t)
 
 #define READ_CREATE_GAME_SIZE                                                  \
-  (GAME_CODE_SIZE + 2 * PLAYERS_ID_SIZE + CONNECTED_SIZE)
-#define READ_JOIN_GAME_SIZE (2 * PLAYERS_ID_SIZE + CONNECTED_SIZE)
+  (GAME_CODE_SIZE + 2 * PLAYERS_ID_SIZE + MAX_PLAYER_SIZE)
+
+#define READ_JOIN_GAME_SIZE (2 * PLAYERS_ID_SIZE + CONNECTED_SIZE + ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
+
 #define READ_PLAYER_SIZE (2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE)
 
 #define SEND_CREATE_GAME_SIZE                                                  \
-  (GAME_CODE_SIZE + 2 * PLAYERS_ID_SIZE + CONNECTED_SIZE + EVENT_TYPE_SIZE)
+  (GAME_CODE_SIZE + 2 * PLAYERS_ID_SIZE + EVENT_TYPE_SIZE + MAX_PLAYER_SIZE)
+
 #define SEND_JOIN_GAME_SIZE                                                    \
-  (2 * PLAYERS_ID_SIZE + CONNECTED_SIZE + EVENT_TYPE_SIZE)
+  (2 * PLAYERS_ID_SIZE + CONNECTED_SIZE + EVENT_TYPE_SIZE + ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
+
 #define SEND_PLAYER_SIZE (2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE)
 
 EventsProtocol::EventsProtocol(Socket *socket, Encoder encoder)
@@ -60,7 +67,8 @@ std::shared_ptr<Event> EventsProtocol::read_create() {
     int game_code = encoder.decode_game_code(data);
     int player_id_1 = encoder.decode_player_id(data);
     int player_id_2 = encoder.decode_player_id(data);
-    return std::make_shared<GameCreation>(game_code, player_id_1, player_id_2);
+    int max_players = encoder.decode_max_players(data);
+    return std::make_shared<GameCreation>(game_code, player_id_1, player_id_2, max_players);
 }
 
 std::shared_ptr<Event> EventsProtocol::read_join() {
@@ -69,7 +77,9 @@ std::shared_ptr<Event> EventsProtocol::read_join() {
     int player_id_1 = encoder.decode_player_id(data);
     int player_id_2 = encoder.decode_player_id(data);
     bool is_connected = encoder.decode_connected(data);
-    return std::make_shared<GameJoin>(player_id_1, player_id_2, is_connected);
+    int actual_players = encoder.decode_actual_players(data);
+    int max_players = encoder.decode_max_players(data);
+    return std::make_shared<GameJoin>(player_id_1, player_id_2, is_connected, actual_players, max_players);
 }
 
 std::shared_ptr<Event> EventsProtocol::read_element() {
@@ -93,7 +103,9 @@ void EventsProtocol::send_join(const std::shared_ptr<Event> &event) {
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
     offset += encoder.encode_player_id(event->get_player_id_1(), &data[offset]);
     offset += encoder.encode_player_id(event->get_player_id_2(), &data[offset]);
-    encoder.encode_connected(event->is_connected(), &data[offset]);
+    offset +=encoder.encode_connected(event->is_connected(), &data[offset]);
+    offset += encoder.encode_actual_players(event->get_actual_players(), &data[offset]);
+    offset += encoder.encode_max_players(event->get_max_players(), &data[offset]);
     send(data.data(), SEND_JOIN_GAME_SIZE);
 }
 
@@ -104,7 +116,7 @@ void EventsProtocol::send_create(const std::shared_ptr<Event> &event) {
     offset += encoder.encode_game_code(event->get_game_code(), &data[offset]);
     offset += encoder.encode_player_id(event->get_player_id_1(), &data[offset]);
     offset += encoder.encode_player_id(event->get_player_id_2(), &data[offset]);
-    encoder.encode_connected(event->is_connected(), &data[offset]);
+    offset += encoder.encode_max_players(event->get_max_players(), &data[offset]);
     send(data.data(), SEND_CREATE_GAME_SIZE);
 }
 

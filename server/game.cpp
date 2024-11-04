@@ -13,15 +13,20 @@
 
 #define TIME_LOOP 200
 
-Game::Game()
+Game::Game(int max_players)
     : commands(), notifier(&commands), running(true), next_player_id(0),
-      players() {}
+      players(), actual_players(0), max_players(max_players) {}
 
 void Game::add(Socket &&socket) { notifier.subscribe(std::move(socket)); }
+
+bool Game::is_full(int new_players) const {
+  return actual_players  + new_players >= max_players;
+}
 
 int Game::get_next_player_id() {
   next_player_id++;
   players.insert_or_assign(next_player_id, Player(next_player_id, 0, 0, true, State::BLANK));
+  actual_players++;
   return next_player_id;
 }
 
@@ -85,3 +90,11 @@ void Game::close() {
 }
 
 bool Game::is_running() const { return running; }
+
+int Game::get_max_players() const {
+    return max_players;
+}
+
+int Game::get_actual_players() const {
+    return actual_players;
+}

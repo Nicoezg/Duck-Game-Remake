@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QMediaPlayer>
 #include "editor.h"
+#include "client/communication/client.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,6 +20,9 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+
+private:
+    Client client;
 
 private slots:
 
@@ -54,7 +58,7 @@ private:
   void setupServerList();
   void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
   void RefreshServerList();
-  void resizeEvent(QResizeEvent *event);
+  void resizeEvent(QResizeEvent *event) override;
   void setupAudio();
   void setupEditor();
 };

@@ -12,14 +12,15 @@
 #define GAME_CODE_SIZE sizeof(uint32_t)
 #define GAME_MODE_SIZE sizeof(int8_t)
 #define PLAYER_ID_SIZE sizeof(uint16_t)
+#define MAX_PLAYER_SIZE sizeof(uint8_t)
 #define IS_RIGHT_SIZE sizeof(uint8_t)
 
 #define READ_JOIN_SIZE (GAME_CODE_SIZE + GAME_MODE_SIZE)
-#define READ_CREATE_SIZE GAME_MODE_SIZE
+#define READ_CREATE_SIZE (GAME_MODE_SIZE + MAX_PLAYER_SIZE)
 #define READ_MOVE_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
 
 #define SEND_JOIN_SIZE (ACTION_TYPE_SIZE + GAME_CODE_SIZE + GAME_MODE_SIZE)
-#define SEND_CREATE_SIZE (ACTION_TYPE_SIZE + GAME_MODE_SIZE)
+#define SEND_CREATE_SIZE (ACTION_TYPE_SIZE + GAME_MODE_SIZE + MAX_PLAYER_SIZE)
 #define SEND_MOVE_SIZE (ACTION_TYPE_SIZE + PLAYER_ID_SIZE + IS_RIGHT_SIZE)
 
 ActionsProtocol::ActionsProtocol(Socket *socket, Encoder encoder)
@@ -29,7 +30,8 @@ std::shared_ptr<Action> ActionsProtocol::read_create_action() {
   std::vector<int8_t> data(READ_CREATE_SIZE);
   read(data.data(), data.size());
   GameMode game_mode = encoder.decode_game_mode(data);
-  return std::make_shared<Create>(game_mode);
+  int max_players = encoder.decode_max_players(data);
+  return std::make_shared<Create>(game_mode, max_players);
 }
 
 std::shared_ptr<Action> ActionsProtocol::read_join_action() {
@@ -80,7 +82,8 @@ void ActionsProtocol::send_create_action(
   std::vector<int8_t> data(SEND_CREATE_SIZE);
   size_t offset = 0;
   offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-  encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
+  offset += encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
+  offset += encoder.encode_max_players(action->get_max_players(), &data[offset]);
   send(data.data(), SEND_CREATE_SIZE);
 }
 
@@ -89,7 +92,7 @@ void ActionsProtocol::send_join_action(const std::shared_ptr<Action> &action) {
   size_t offset = 0;
   offset += encoder.encode_action_type(action->get_type(), &data[offset]);
   offset += encoder.encode_game_code(action->get_game_code(), &data[offset]);
-  encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
+  offset += encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
   send(data.data(), data.size());
 }
 

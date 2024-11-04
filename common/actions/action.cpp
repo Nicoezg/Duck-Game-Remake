@@ -42,3 +42,7 @@ bool Action::is_shooting() const {
 bool Action::is_picking_dropping() const {
   throw std::runtime_error("Action is not a pick drop action.");
 }
+
+int Action::get_max_players() const {
+  throw std::runtime_error("Action is not a max players action.");
+}

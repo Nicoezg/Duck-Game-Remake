@@ -35,7 +35,7 @@ Lobby::process_action(const std::shared_ptr<Action> &action, int &game_code) {
   std::shared_ptr<Event> response;
   switch (action->get_type()) {
   case CREATE_REQUEST:
-    response = create_game(action->get_game_mode());
+    response = create_game(action->get_game_mode(), action->get_max_players());
     game_code = response->get_game_code();
     break;
   case JOIN_REQUEST:
@@ -49,43 +49,45 @@ Lobby::process_action(const std::shared_ptr<Action> &action, int &game_code) {
 }
 
 std::shared_ptr<Event> Lobby::not_connected_to_game() {
-  return std::make_shared<GameJoin>(SIN_CODIGO, SIN_CODIGO, false);
+  return std::make_shared<GameJoin>(SIN_CODIGO, SIN_CODIGO, false, 0, 0);
 }
 
 std::shared_ptr<Event> Lobby::join_game(int game_code, GameMode mode) {
   if (!games->game_exists(game_code)) {
-    return std::make_shared<GameJoin>(SIN_CODIGO, SIN_CODIGO, false);
+    return std::make_shared<GameJoin>(SIN_CODIGO, SIN_CODIGO, false, 0, 0);
   }
 
-  int player_id_1 = games->get_player_id(game_code);
+  int player_id_1 = games->get_player_id(game_code, mode);
   std::cout << "Game: " << game_code << " Player id: " << player_id_1
             << " Mode: " << mode << std::endl;
 
   int player_id_2 = SIN_ASIGNAR;
   if (mode == DOS_JUGADORES) {
-    player_id_2 = games->get_player_id(game_code);
+    player_id_2 = games->get_player_id(game_code, mode-1);
     std::cout << "Game: " << game_code << " Player id: " << player_id_2
               << " Mode: " << mode << std::endl;
   }
 
-  return std::make_shared<GameJoin>(player_id_1, player_id_2, true);
+  int max, actual;
+    games->get_max_and_actual_players(game_code, actual, max);
+  return std::make_shared<GameJoin>(player_id_1, player_id_2, true, actual, max);
 }
 
-std::shared_ptr<Event> Lobby::create_game(GameMode mode) {
-  int game_code = games->create_game();
+std::shared_ptr<Event> Lobby::create_game(GameMode mode, int max_players) {
+  int game_code = games->create_game(max_players);
 
-  int player_id_1 = games->get_player_id(game_code);
+  int player_id_1 = games->get_player_id(game_code, mode);
   std::cout << "Game: " << game_code << " Player id: " << player_id_1
             << " Mode: " << mode << std::endl;
 
   int player_id_2 = SIN_ASIGNAR;
   if (mode == DOS_JUGADORES) {
-    player_id_2 = games->get_player_id(game_code);
+    player_id_2 = games->get_player_id(game_code, mode-1);
     std::cout << "Game: " << game_code << " Player id: " << player_id_2
               << " Mode: " << mode << std::endl;
   }
 
-  return std::make_shared<GameCreation>(game_code, player_id_1, player_id_2);
+  return std::make_shared<GameCreation>(game_code, player_id_1, player_id_2, max_players);
 }
 
 bool Lobby::is_closed() const { return !is_running; }

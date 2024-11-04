@@ -54,6 +54,14 @@ public:
     size_t encode_player_state(State state, void *data);
 
     State decode_player_state(std::vector<int8_t> &data);
+
+    int decode_max_players(std::vector<int8_t> &data);
+
+    size_t encode_max_players(uint8_t max_players, void *data);
+
+    size_t encode_actual_players(uint8_t actual_players, void *data);
+
+    int decode_actual_players(std::vector<int8_t> &data);
 };
 
 #endif // TALLER_TP_ENCODER_H

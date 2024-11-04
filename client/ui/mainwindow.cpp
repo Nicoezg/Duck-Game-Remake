@@ -10,7 +10,7 @@
 #include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow) {
+    : QMainWindow(parent), client("localhost", "4040"), ui(new Ui::MainWindow) {
   // Establecer un tamaño fijo para la ventana
 
   // Configurar la interfaz de usuario
@@ -18,13 +18,17 @@ MainWindow::MainWindow(QWidget *parent)
   this->setWindowTitle("Duck Game");
   // setupAudio();
   setupEditor();
+  client.run();
 }
 
 MainWindow::~MainWindow() {
-  delete player;
+    client.close();
+
+    delete player;
   delete audio;
   delete editor;
   delete ui;
+
 }
 
 void MainWindow::RefreshServerList() {
@@ -39,7 +43,7 @@ void MainWindow::RefreshServerList() {
   ui->serverList->addItems(servers);
 
   connect(ui->serverList, &QListWidget::itemClicked, this,
-          [this](QListWidgetItem *item) {
+          [this](QListWidgetItem *) {
             ui->Player2NameJoin->hide();
             ui->stackedWidget->setCurrentIndex(3);
           });
@@ -58,7 +62,7 @@ void MainWindow::setupServerList() {
 
   // Conectar la señal de selección de servidor
   connect(ui->serverList, &QListWidget::itemClicked, this,
-          [this](QListWidgetItem *item) {
+          [this](QListWidgetItem *) {
             ui->Player2NameJoin->hide();
             ui->stackedWidget->setCurrentIndex(3);
           });
@@ -87,12 +91,12 @@ void MainWindow::setupAudio() {
   player->play();
 }
 
-void MainWindow::resizeEvent(QResizeEvent *event) {}
+void MainWindow::resizeEvent(QResizeEvent *) {}
 
 void MainWindow::setupEditor() {
-  Editor *editor = new Editor(this);
+  Editor *editor2 = new Editor(this);
 
-  ui->stackedWidget->addWidget(editor);
+  ui->stackedWidget->addWidget(editor2);
 }
 
 void MainWindow::on_Join_clicked() {
@@ -123,7 +127,22 @@ void MainWindow::on_EditorButton_clicked() {
 
 void MainWindow::on_refreshButton_clicked() { RefreshServerList(); }
 
-void MainWindow::on_Connect_clicked() { ui->stackedWidget->setCurrentIndex(4); }
+void MainWindow::on_Connect_clicked() {
+    std::shared_ptr<Action> action;
+    if (ui->QuantityPlayers->currentIndex() == 0) {
+        action = std::make_shared<Create>(UN_JUGADOR, 5);
+    } else {
+        action = std::make_shared<Create>(DOS_JUGADORES, 6);
+    }
+    auto event = client.run_command(action);
+
+    std::string ss = "Jugadores conectados: " +
+            std::to_string(action->get_game_mode()) + "/"  +
+            std::to_string(event->get_max_players());
+
+    ui->playerListLabel->setText(ss.c_str());
+    ui->stackedWidget->setCurrentIndex(4);
+}
 
 void MainWindow::on_leaveLobbyButton_clicked() {
   ui->stackedWidget->setCurrentIndex(0);

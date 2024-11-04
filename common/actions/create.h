@@ -10,11 +10,14 @@
 class Create : public Action {
 private:
   GameMode game_mode;
+  int max_players;
 
 public:
-  explicit Create(GameMode game_mode);
+  explicit Create(GameMode game_mode, int max_players);
 
   GameMode get_game_mode() const override;
+
+    int get_max_players() const override;
 };
 
 #endif // TALLER_TP_CREATE_H

@@ -9,8 +9,10 @@ private:
   int player_id_1;
   int player_id_2;
 
+  int max_players;
+
 public:
-  GameCreation(int game_code, int player_id_1, int player_id_2);
+  GameCreation(int game_code, int player_id_1, int player_id_2, int max_players);
 
   int get_game_code() const override;
 
@@ -19,6 +21,8 @@ public:
   int get_player_id_2() const override;
 
   bool is_connected() const override;
+
+  int get_max_players() const override;
 };
 
 #endif // TALLER_TP_GAME_CREATION_H

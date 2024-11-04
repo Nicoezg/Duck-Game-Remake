@@ -22,41 +22,32 @@ private:
   int player_id_1;
   int player_id_2;
   GameMode game_mode;
+  bool connected;
 
   /**
    * @brief Ejecuta la accion de leer.
    * Lee del protocolo una accion con el estado del juego.
    * Imprime por salida estandar el estado del juego.
    */
-  void action_read();
+  std::shared_ptr<Event> action_read();
 
-  /**
-   * Lee un comando de la entrada estandar.
-   */
-  std::string read_command();
-
-  bool connect_to_game();
-
-  std::string read_connect_command();
-
-  void command_create();
-
-  void command_join();
 
   void assign_player_ids(std::shared_ptr<Event> &event);
-
-  void show_connection_info(const std::shared_ptr<Event> &event) const;
-
-  bool valid_command(const std::string &command);
-
-  void command_move();
 
 public:
   Client(const char *hostname, const char *service_name);
 
   void run();
 
-  void run_command(const std::string &command);
+    std::shared_ptr<Event> run_command(std::shared_ptr<Action> &action);
+
+    void close();
+
+    int get_game_code() const;
+
+    int get_player_id_1() const;
+
+    int get_player_id_2() const;
 };
 
 #endif // TALLER_TP_CLIENT_H

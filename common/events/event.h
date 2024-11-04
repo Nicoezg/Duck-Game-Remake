@@ -31,6 +31,10 @@ public:
 
   virtual std::list<Player> get_players();
 
+  virtual int get_max_players() const;
+
+    virtual int get_actual_players() const;
+
   virtual ~Event() = default;
 };
 

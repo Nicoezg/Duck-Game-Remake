@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "client/client.h"
-#include "common/socket/liberror.h"
+#include "client.h"
+#include "../../common/socket/liberror.h"
 
 #define EXIT_CODE '|'
 

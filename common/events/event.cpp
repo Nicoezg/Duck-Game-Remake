@@ -35,3 +35,11 @@ int Event::get_player_id_1() const {
 int Event::get_player_id_2() const {
   throw std::runtime_error("Has no player id 2.");
 }
+
+int Event::get_max_players() const {
+  throw std::runtime_error("Has no max players.");
+}
+
+int Event::get_actual_players() const {
+  throw std::runtime_error("Has no actual players.");
+}

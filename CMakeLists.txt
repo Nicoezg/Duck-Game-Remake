@@ -32,14 +32,28 @@ message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 add_library(COMMON STATIC
         common/actions/join.cpp
         common/actions/join.h
-        client/client_protocol.cpp
-        client/client_protocol.h
         common/connection/reader.h
         common/connection/sender.h
         common/connection/connection.h
         common/game_mode.h
         common/actions/move.cpp
-        common/actions/move.h)
+        common/actions/move.h
+        common/events/event.cpp
+        common/events/event.h
+        common/events/event_type.h
+        common/events/game_creation.cpp
+        common/events/game_creation.h
+        common/events/game_join.cpp
+        common/events/game_join.h
+        common/protocol/actions/actions_protocol.cpp
+        common/protocol/actions/actions_protocol.h
+        common/protocol/events/events_protocol.cpp
+        common/protocol/events/events_protocol.h
+        common/events/broadcast.cpp
+        common/events/broadcast.h
+        common/events/player.cpp
+        common/events/player.h
+)
 
 # add the source files that make the lib
 add_subdirectory(common/)
@@ -67,49 +81,48 @@ if(CLIENT OR EDITOR)
     set(SDL2PP_WITH_MIXER YES)
 
     FetchContent_MakeAvailable(libSDL2pp)
+
+    set(CMAKE_AUTOUIC ON)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
+
+    find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Multimedia)
+
 endif()
 
 # Program section
 # ---------------
 if(CLIENT)
-    add_executable(CLIENT
-            common/events/event.cpp
-            common/events/event.h
-            common/events/event_type.h
-            common/events/game_creation.cpp
-            common/events/game_creation.h
-            common/events/game_join.cpp
-            common/events/game_join.h
-            common/protocol/actions/actions_protocol.cpp
-            common/protocol/actions/actions_protocol.h
-            common/protocol/events/events_protocol.cpp
-            common/protocol/events/events_protocol.h
-            common/events/broadcast.cpp
-            common/events/broadcast.h
-            common/events/player.cpp
-            common/events/player.h
-            client/printer.cpp
-            client/printer.h)
+    qt_add_executable(CLIENT
+            MANUAL_FINALIZATION
+            ${UI_HEADERS}
+            ${RESOURCES}
+    )
 
     # Make them depend on COMMON lib
     add_dependencies(CLIENT COMMON SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
-    add_subdirectory(client)
+    add_subdirectory(client/ui)
+    add_subdirectory(client/communication)
 
     set_project_warnings(CLIENT ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # add libSDL2pp's headers
     target_include_directories(CLIENT PRIVATE ${libSDL2pp_SOURCE_DIR})
 
+    include_directories(${Qt6Widgets_INCLUDE_DIRS})
+
     # Link the COMMON lib target
-    target_link_libraries(CLIENT COMMON SDL2pp::SDL2pp)
+    target_link_libraries(CLIENT PRIVATE COMMON SDL2pp::SDL2pp Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia)
+
+    qt_finalize_executable(CLIENT)
+
 endif()
 
 if(SERVER)
     add_executable(SERVER
-            server/server_protocol.cpp
-            server/server_protocol.h
     )
 
     # Make them depend on common lib

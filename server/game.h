@@ -20,13 +20,17 @@ private:
 
   std::map<int, Player> players;
 
+  std::atomic<int> actual_players;
+
+  int max_players;
+
   /**
    * @brief Lee los eventos de la cola de eventos los ejecuta.
    */
   void read_actions();
 
 public:
-  explicit Game();
+  explicit Game(int max_players);
 
   /**
    * @brief Inicia el hilo del notifier y al finalizar se encarga de
@@ -63,6 +67,11 @@ public:
   int get_next_player_id();
 
   std::list<Player> get_players();
+
+  int get_max_players() const;
+  int get_actual_players() const;
+
+    bool is_full(int new_players) const;
 };
 
 #endif // TALLER_TP_GAME_H
