@@ -1,10 +1,10 @@
 #include "create.h"
-#include "action.h"
+#include "common/actions/base/action.h"
 
 #include <iostream>
 
-#include "action_macros.h"
-#include "common/events/game_creation.h"
+#include "common/actions/base/action_macros.h"
+#include "common/events/connection/game_creation.h"
 
 Create::Create(GameMode game_mode, int max_players)
     : Action(CREATE_REQUEST), game_mode(game_mode), max_players(max_players) {}

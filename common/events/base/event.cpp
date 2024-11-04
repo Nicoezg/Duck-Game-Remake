@@ -1,7 +1,7 @@
 
 #include "event.h"
 #include "event_type.h"
-#include "game_join.h"
+#include "common/events/connection/game_join.h"
 #include <stdexcept>
 
 Event::Event(EventType type) : type(type) {}
@@ -42,4 +42,8 @@ int Event::get_max_players() const {
 
 int Event::get_actual_players() const {
   throw std::runtime_error("Has no actual players.");
+}
+
+std::list<GameRoom> Event::get_games() {
+    throw std::runtime_error("Has no games.");
 }

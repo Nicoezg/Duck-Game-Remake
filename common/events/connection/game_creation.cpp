@@ -4,9 +4,9 @@
 
 #include "game_creation.h"
 
-GameCreation::GameCreation(int game_code, int player_id_1, int player_id_2, int max_players)
+GameCreation::GameCreation(int game_code, int player_id_1, int player_id_2, int actual_players, int max_players)
     : Event(CREATE_GAME), game_code(game_code), player_id_1(player_id_1),
-      player_id_2(player_id_2), max_players(max_players) {}
+      player_id_2(player_id_2), actual_players(actual_players), max_players(max_players) {}
 
 int GameCreation::get_game_code() const { return game_code; }
 
@@ -18,4 +18,8 @@ bool GameCreation::is_connected() const { return true; }
 
 int GameCreation::get_max_players() const {
     return max_players;
+}
+
+int GameCreation::get_actual_players() const {
+    return actual_players;
 }

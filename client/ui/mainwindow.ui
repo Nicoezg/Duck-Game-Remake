@@ -238,7 +238,7 @@ QListView::item:alternate {
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QComboBox" name="CreateLocalPlayers">
+           <widget class="QComboBox" name="GameModeCreate">
             <item>
              <property name="text">
               <string>1</string>
@@ -347,7 +347,7 @@ QListView::item:alternate {
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="QuantityPlayers">
+         <widget class="QComboBox" name="GameModeJoin">
           <item>
            <property name="text">
             <string>1</string>

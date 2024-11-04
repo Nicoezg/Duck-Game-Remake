@@ -1,8 +1,8 @@
 #ifndef TALLER_TP_CREATE_H
 #define TALLER_TP_CREATE_H
 
-#include "action.h"
-#include "action_macros.h"
+#include "common/actions/base/action.h"
+#include "common/actions/base/action_macros.h"
 #include "common/game_mode.h"
 #include <cstdint>
 #include <string>

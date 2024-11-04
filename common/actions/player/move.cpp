@@ -3,8 +3,8 @@
 //
 
 #include "move.h"
-#include "action.h"
-#include "create.h"
+#include "common/actions/base/action.h"
+#include "common/actions/connection/create.h"
 #include <stdexcept>
 
 Move::Move(int player_id, bool right)

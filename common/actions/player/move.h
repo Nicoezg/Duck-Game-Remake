@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_MOVE_H
 #define TALLER_TP_MOVE_H
 
-#include "action.h"
+#include "common/actions/base/action.h"
 
 class Move : public Action {
 private:

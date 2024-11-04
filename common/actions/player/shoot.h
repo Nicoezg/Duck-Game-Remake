@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_SHOOT_H
 #define TALLER_TP_SHOOT_H
 
-#include "action.h"
+#include "common/actions/base/action.h"
 
 class Shoot : public Action {
 private:

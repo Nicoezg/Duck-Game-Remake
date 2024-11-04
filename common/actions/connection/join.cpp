@@ -3,7 +3,7 @@
 //
 
 #include "join.h"
-#include "action.h"
+#include "common/actions/base/action.h"
 #include "create.h"
 #include <iostream>
 #include <stdexcept>

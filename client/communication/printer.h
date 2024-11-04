@@ -5,7 +5,7 @@
 #ifndef TALLER_TP_PRINTER_H
 #define TALLER_TP_PRINTER_H
 
-#include "common/events/event.h"
+#include "common/events/base/event.h"
 #include "common/queue.h"
 #include "common/thread.h"
 #include <memory>

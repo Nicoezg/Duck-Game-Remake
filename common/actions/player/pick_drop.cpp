@@ -1,5 +1,5 @@
 #include "pick_drop.h"
-#include "action.h"
+#include "common/actions/base/action.h"
 
 PickDrop::PickDrop(int player_id, bool picking_dropping)
     : Action(PICK_DROP), picking_dropping(picking_dropping), player_id(player_id) {}

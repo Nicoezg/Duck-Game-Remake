@@ -30,21 +30,21 @@ message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
 # Define target: lib common between client, server and editor programs
 add_library(COMMON STATIC
-        common/actions/join.cpp
-        common/actions/join.h
+        common/actions/connection/join.cpp
+        common/actions/connection/join.h
         common/connection/reader.h
         common/connection/sender.h
         common/connection/connection.h
         common/game_mode.h
-        common/actions/move.cpp
-        common/actions/move.h
-        common/events/event.cpp
-        common/events/event.h
-        common/events/event_type.h
-        common/events/game_creation.cpp
-        common/events/game_creation.h
-        common/events/game_join.cpp
-        common/events/game_join.h
+        common/actions/player/move.cpp
+        common/actions/player/move.h
+        common/events/base/event.cpp
+        common/events/base/event.h
+        common/events/base/event_type.h
+        common/events/connection/game_creation.cpp
+        common/events/connection/game_creation.h
+        common/events/connection/game_join.cpp
+        common/events/connection/game_join.h
         common/protocol/actions/actions_protocol.cpp
         common/protocol/actions/actions_protocol.h
         common/protocol/events/events_protocol.cpp
@@ -53,6 +53,14 @@ add_library(COMMON STATIC
         common/events/broadcast.h
         common/events/player.cpp
         common/events/player.h
+        common/events/connection/new_player.cpp
+        common/events/connection/new_player.h
+        common/events/connection/refresh_games.cpp
+        common/events/connection/refresh_games.h
+        common/events/connection/game_room.cpp
+        common/events/connection/game_room.h
+        common/actions/connection/refresh_games.cpp
+        common/actions/connection/refresh_games.h
 )
 
 # add the source files that make the lib

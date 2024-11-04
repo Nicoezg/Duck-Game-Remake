@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_AIM_UPWARDS_H
 #define TALLER_TP_AIM_UPWARDS_H
 
-#include "action.h"
+#include "common/actions/base/action.h"
 
 class AimUpwards : public Action {
 private:

@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_PICK_DROP_H
 #define TALLER_TP_PICK_DROP_H
 
-#include "action.h"
+#include "common/actions/base/action.h"
 
 class PickDrop : public Action {
 private:

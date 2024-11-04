@@ -1,5 +1,5 @@
 #include "jump_flap.h"
-#include "action.h"
+#include "common/actions/base/action.h"
 
 JumpFlap::JumpFlap(int player_id, bool jump_flap)
     : Action(JUMP_FLAP), jump_flap(jump_flap), player_id(player_id) {}

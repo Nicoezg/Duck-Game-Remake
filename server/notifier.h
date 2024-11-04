@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "common/connection/connection.h"
-#include "common/events/event.h"
+#include "common/events/base/event.h"
 #include "common/queue.h"
 #include "common/thread.h"
 #include "server_protocol.h"

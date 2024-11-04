@@ -5,7 +5,7 @@
 #ifndef TALLER_TP_GAME_JOIN_H
 #define TALLER_TP_GAME_JOIN_H
 
-#include "event.h"
+#include "common/events/base/event.h"
 
 class GameJoin : public Event {
 private:

@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_PLAY_DEAD_H
 #define TALLER_TP_PLAY_DEAD_H
 
-#include "action.h"
+#include "common/actions/base/action.h"
 
 class PlayDead : public Action {
 private:

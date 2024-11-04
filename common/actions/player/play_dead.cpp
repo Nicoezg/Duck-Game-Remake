@@ -1,5 +1,5 @@
 #include "play_dead.h"
-#include "action.h"
+#include "common/actions/base/action.h"
 
 PlayDead::PlayDead(int player_id, bool play_dead)
     : Action(PLAY_DEAD), play_dead(play_dead), player_id(player_id) {}

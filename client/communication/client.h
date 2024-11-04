@@ -4,9 +4,9 @@
 #include <string>
 
 #include "client_protocol.h"
-#include "common/actions/action.h"
+#include "common/actions/base/action.h"
 #include "common/connection/connection.h"
-#include "common/events/event.h"
+#include "common/events/base/event.h"
 #include "common/game_mode.h"
 #include "common/queue.h"
 
@@ -24,6 +24,8 @@ private:
   GameMode game_mode;
   bool connected;
 
+  std::string player_1_name;
+    std::string player_2_name;
   /**
    * @brief Ejecuta la accion de leer.
    * Lee del protocolo una accion con el estado del juego.
@@ -43,11 +45,17 @@ public:
 
     void close();
 
+    void set_game_code(int code);
+
     int get_game_code() const;
 
     int get_player_id_1() const;
 
     int get_player_id_2() const;
+
+    void set_player_1_name(std::string name);
+
+    void set_player_2_name(std::string name);
 };
 
 #endif // TALLER_TP_CLIENT_H

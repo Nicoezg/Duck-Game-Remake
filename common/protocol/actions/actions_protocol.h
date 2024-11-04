@@ -19,7 +19,9 @@ private:
 
   void send_create_action(const std::shared_ptr<Action> &action);
 
-  void send_join_action(const std::shared_ptr<Action> &action);
+    void send_refresh_action(const std::shared_ptr<Action> &action);
+
+    void send_join_action(const std::shared_ptr<Action> &action);
 
   std::shared_ptr<Action> read_create_action();
 

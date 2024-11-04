@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "common/actions/create.h"
-#include "common/events/event_type.h"
+#include "common/actions/connection/create.h"
+#include "common/events/base/event_type.h"
 #include "common/game_mode.h"
 #include "common/events/player_macros.h"
 
@@ -47,9 +47,9 @@ public:
 
   int16_t decode_coordinate(std::vector<int8_t> &data);
 
-  int decode_players_len(std::vector<int8_t> &data);
+  int decode_len(std::vector<int8_t> &data);
 
-  size_t encode_players_len(uint8_t players_len, void *data);
+  size_t encode_len(uint8_t players_len, void *data);
 
     size_t encode_player_state(State state, void *data);
 

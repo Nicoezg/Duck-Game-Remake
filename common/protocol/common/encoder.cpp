@@ -165,7 +165,7 @@ int16_t Encoder::decode_coordinate(std::vector<int8_t> &data) {
   return coordinate;
 }
 
-int Encoder::decode_players_len(std::vector<int8_t> &data) {
+int Encoder::decode_len(std::vector<int8_t> &data) {
   if (data.size() < sizeof(uint8_t)) {
     throw std::runtime_error(
         "No hay suficientes bytes para decodificar la cantidad de jugadores.");
@@ -176,7 +176,7 @@ int Encoder::decode_players_len(std::vector<int8_t> &data) {
   return players_len;
 }
 
-size_t Encoder::encode_players_len(uint8_t players_len, void *data) {
+size_t Encoder::encode_len(uint8_t players_len, void *data) {
   const auto *players_len_bytes = reinterpret_cast<int8_t *>(&players_len);
   std::memcpy(data, players_len_bytes, sizeof(uint8_t));
   return sizeof(uint8_t);

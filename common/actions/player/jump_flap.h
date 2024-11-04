@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_JUMP_FLAP_H
 #define TALLER_TP_JUMP_FLAP_H
 
-#include "action.h"
+#include "common/actions/base/action.h"
 
 class JumpFlap : public Action {
 private:

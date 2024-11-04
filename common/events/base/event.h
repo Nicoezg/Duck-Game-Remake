@@ -6,7 +6,8 @@
 #define TALLER_TP_EVENT_H
 
 #include "event_type.h"
-#include "player.h"
+#include "common/events/player.h"
+#include "common/events/connection/game_room.h"
 #include <list>
 
 #define SIN_ASIGNAR 0
@@ -35,6 +36,7 @@ public:
 
     virtual int get_actual_players() const;
 
+    virtual std::list<GameRoom> get_games();
   virtual ~Event() = default;
 };
 

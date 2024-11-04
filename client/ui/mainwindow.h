@@ -46,9 +46,9 @@ private slots:
 
   void on_connectCreat_clicked();
 
-  void on_QuantityPlayers_activated(int index);
+  void on_GameModeJoin_activated(int index);
 
-  void on_CreateLocalPlayers_activated(int index);
+  void on_GameModeCreate_activated(int index);
 
 private:
   Ui::MainWindow *ui;
@@ -61,6 +61,7 @@ private:
   void resizeEvent(QResizeEvent *event) override;
   void setupAudio();
   void setupEditor();
+
 };
 
 #endif // MAINWINDOW_H

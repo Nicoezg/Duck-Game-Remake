@@ -3,7 +3,7 @@
 //
 
 #include "game_join.h"
-#include "event_type.h"
+#include "common/events/base/event_type.h"
 #include <stdexcept>
 
 GameJoin::GameJoin(int player_id_1, int player_id_2, bool connected, int actual, int max)

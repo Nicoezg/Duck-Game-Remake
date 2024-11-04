@@ -3,7 +3,7 @@
 //
 
 #include "printer.h"
-#include "common/actions/move.h"
+#include "common/actions/player/move.h"
 
 Printer::Printer(Queue<std::shared_ptr<Event>> *events) : events(events) {}
 

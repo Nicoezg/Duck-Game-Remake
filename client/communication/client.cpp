@@ -1,11 +1,12 @@
 #include "client.h"
 
-#include "common/actions/join.h"
-#include "common/actions/move.h"
-#include "common/events/event.h"
+#include "common/actions/connection/join.h"
+#include "common/actions/player/move.h"
+#include "common/events/base/event.h"
 #include "common/protocol/common/protocol_error.h"
 #include "printer.h"
 #include <iostream>
+#include <utility>
 
 #define NO_CONECTADO 0
 
@@ -14,7 +15,8 @@ Client::Client(const char *hostname, const char *service_name)
           connection(Socket(hostname, service_name), Encoder(), &this->events,
                      &this->commands),
           game_code(0), player_id_1(SIN_ASIGNAR), player_id_2(SIN_ASIGNAR),
-          game_mode(SIN_ESPECIFICAR),connected(false)  {}
+          game_mode(SIN_ESPECIFICAR),connected(false),
+          player_1_name(), player_2_name(){}
 
 
 void Client::run() {
@@ -30,7 +32,7 @@ void Client::close() {
 
 std::shared_ptr<Event> Client::run_command(std::shared_ptr<Action> &action) {
     if (game_code == NO_CONECTADO && action->get_type() != JOIN_REQUEST &&
-        action->get_type() != CREATE_REQUEST) {
+        action->get_type() != CREATE_REQUEST && action->get_type() != REFRESH_REQUEST) {
         std::cout << "No se puede realizar la accion" << std::endl;
         return nullptr;
     }
@@ -44,6 +46,8 @@ std::shared_ptr<Event> Client::run_command(std::shared_ptr<Action> &action) {
             return action_read();
         case MOVE:
             break;
+        case REFRESH_REQUEST:
+            return action_read();
         default:
             std::cout << "Comando invalido" << std::endl;
             break;
@@ -60,6 +64,8 @@ std::shared_ptr<Event> Client::action_read() {
             break;
         case JOIN_GAME:
             assign_player_ids(event);
+            break;
+            case REFRESH_GAMES:
             break;
         default:
             std::cout << "Mensaje no valido" << std::endl;
@@ -93,4 +99,16 @@ int Client::get_player_id_1() const {
 
 int Client::get_player_id_2() const {
     return player_id_2;
+}
+
+void Client::set_game_code(int code) {
+    game_code = code;
+}
+
+void Client::set_player_1_name(std::string name) {
+    player_1_name = std::move(name);
+}
+
+void Client::set_player_2_name(std::string name) {
+    player_2_name = std::move(name);
 }

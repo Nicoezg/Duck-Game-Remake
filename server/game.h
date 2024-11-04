@@ -4,7 +4,7 @@
 #include <list>
 #include <map>
 
-#include "common/actions/create.h"
+#include "common/actions/connection/create.h"
 #include "common/socket/socket.h"
 #include "notifier.h"
 
@@ -23,6 +23,9 @@ private:
   std::atomic<int> actual_players;
 
   int max_players;
+  bool started;
+
+  std::list<int> admin_ids;
 
   /**
    * @brief Lee los eventos de la cola de eventos los ejecuta.
@@ -72,6 +75,12 @@ public:
   int get_actual_players() const;
 
     bool is_full(int new_players) const;
+
+    bool is_started() const;
+
+    void start_game();
+
+    void add_admin_id(int id);
 };
 
 #endif // TALLER_TP_GAME_H

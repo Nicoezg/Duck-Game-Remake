@@ -20,4 +20,6 @@ target_sources(CLIENT
         editor.h
         mainwindow.ui
         editor.ui
+
+        resources.qrc
 )
