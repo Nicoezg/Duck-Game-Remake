@@ -8,6 +8,7 @@
 #include "common/actions/create.h"
 #include "common/events/event_type.h"
 #include "common/game_mode.h"
+#include "common/events/player_macros.h"
 
 class Encoder {
 public:
@@ -49,6 +50,10 @@ public:
   int decode_players_len(std::vector<int8_t> &data);
 
   size_t encode_players_len(uint8_t players_len, void *data);
+
+    size_t encode_player_state(State state, void *data);
+
+    State decode_player_state(std::vector<int8_t> &data);
 };
 
 #endif // TALLER_TP_ENCODER_H

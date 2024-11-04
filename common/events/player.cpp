@@ -16,7 +16,7 @@ int Player::get_position_x() const { return position_x; }
 std::string Player::get_text() const {
   std::stringstream ss;
   ss << "PlayerId: " << player_id << " Position: (" << position_x << ", "
-     << position_y << ")";
+     << position_y << ")" << " Right: " << right << " State: " << state;
   return ss.str();
 }
 

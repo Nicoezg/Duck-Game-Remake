@@ -1,4 +1,5 @@
 #include "encoder.h"
+#include "common/events/player_macros.h"
 
 #include <stdexcept>
 
@@ -125,6 +126,22 @@ bool Encoder::decode_is_right(std::vector<int8_t> &data) {
   const auto *is_right = reinterpret_cast<int8_t *>(data[0]);
   data.erase(data.begin(), data.begin() + sizeof(int8_t));
   return is_right;
+}
+
+State Encoder::decode_player_state(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(int8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el estado del jugador.");
+  }
+  auto state = static_cast<State>(data[0]);
+  data.erase(data.begin(), data.begin() + sizeof(int8_t));
+  return state;
+}
+
+size_t Encoder::encode_player_state(State state, void *data) {
+  const auto *state_bytes = reinterpret_cast<int8_t *>(&state);
+  std::memcpy(data, state_bytes, sizeof(int8_t));
+  return sizeof(int8_t);
 }
 
 /* Posiciones */
