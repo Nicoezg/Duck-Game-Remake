@@ -8,6 +8,7 @@
 #include "common/events/connection/game_join.h"
 #include "common/events/connection/refresh_games.h"
 #include "common/events/connection/new_player.h"
+#include "common/events/connection/start_game.h"
 #include <list>
 
 #define EVENT_TYPE_SIZE sizeof(int8_t)
@@ -65,6 +66,8 @@ void EventsProtocol::send_element(std::shared_ptr<Event> &event) {
         case NEW_PLAYER:
             return send_new_player(event);
 
+        case START_GAME:
+            return send_start_game(event);
         default:
             throw std::runtime_error("Tipo de evento no soportado.");
     }
@@ -112,8 +115,11 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
         case REFRESH_GAMES:
             return read_refresh_game();
 
-            case NEW_PLAYER:
+        case NEW_PLAYER:
             return read_new_player();
+
+        case START_GAME:
+            return std::make_shared<StartGame>();
         default:
             throw std::runtime_error("Tipo de evento no soportado.");
     }
@@ -125,7 +131,7 @@ void EventsProtocol::send_join(const std::shared_ptr<Event> &event) {
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
     offset += encoder.encode_player_id(event->get_player_id_1(), &data[offset]);
     offset += encoder.encode_player_id(event->get_player_id_2(), &data[offset]);
-    offset +=encoder.encode_connected(event->is_connected(), &data[offset]);
+    offset += encoder.encode_connected(event->is_connected(), &data[offset]);
     offset += encoder.encode_actual_players(event->get_actual_players(), &data[offset]);
     offset += encoder.encode_max_players(event->get_max_players(), &data[offset]);
     send(data.data(), SEND_JOIN_GAME_SIZE);
@@ -232,4 +238,11 @@ std::shared_ptr<Event> EventsProtocol::read_new_player() {
     int actual_players = encoder.decode_actual_players(data);
     int max_players = encoder.decode_max_players(data);
     return std::make_shared<NewPlayer>(actual_players, max_players);
+}
+
+void EventsProtocol::send_start_game(const std::shared_ptr<Event> &event) {
+    std::vector<int8_t> data(EVENT_TYPE_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_event_type(event->get_type(), &data[offset]);
+    send(data.data(), data.size());
 }

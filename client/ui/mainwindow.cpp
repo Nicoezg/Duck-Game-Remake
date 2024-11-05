@@ -11,22 +11,21 @@
 #include <QPalette>
 #include <QPixmap>
 
-MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), client("localhost", "4040"), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(Client *client, QWidget *parent)
+        : QMainWindow(parent),
+          client(client),
+          ui(new Ui::MainWindow) {
     // Establecer un tamaño fijo para la ventana
 
     // Configurar la interfaz de usuario
     ui->setupUi(this);
     this->setWindowTitle("Duck Game");
-    // setupAudio();
+    setupAudio();
     setupEditor();
-    client.run();
     ui->stackedWidget->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow() {
-    client.close();
-
     delete player;
     delete audio;
     delete editor;
@@ -34,12 +33,8 @@ MainWindow::~MainWindow() {
 
 }
 
-void MainWindow::RefreshServerList() {
+void MainWindow::RefreshServerList(const std::shared_ptr<Event> &event) {
     ui->serverList->clear();
-
-    std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
-    std::shared_ptr<Event> event = client.run_command(action);
-
 
     QStringList servers;
 
@@ -57,12 +52,14 @@ void MainWindow::RefreshServerList() {
             [this](QListWidgetItem *item) {
                 ui->Player2NameJoin->hide();
                 ui->stackedWidget->setCurrentIndex(3);
-                client.set_game_code(item->text().split(" ")[1].toInt());
+                client->set_game_code(item->text().split(" ")[1].toInt());
             });
 }
 
+
 void MainWindow::setupServerList() {
-    RefreshServerList();
+    std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
+    client->send_action(action);
 }
 
 void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
@@ -101,13 +98,20 @@ void MainWindow::on_Join_clicked() {
     ui->stackedWidget->setCurrentIndex(2);
 }
 
-void MainWindow::on_Exit_clicked() { close(); }
+void MainWindow::exit() {
+    close();
+}
+
+void MainWindow::on_Exit_clicked() { exit(); }
 
 void MainWindow::on_Create_clicked() {
     if (ui->GameModeCreate->currentIndex() == 0) {
         ui->player2namecreate->hide();
     } else {
         ui->player2namecreate->show();
+    }
+    if (client->get_player_id_1() != 0) {
+        ui->startGameButton->hide();
     }
     ui->stackedWidget->setCurrentIndex(1);
 }
@@ -122,29 +126,31 @@ void MainWindow::on_EditorButton_clicked() {
     ui->stackedWidget->setCurrentIndex(5);
 }
 
-void MainWindow::on_refreshButton_clicked() { RefreshServerList(); }
+void MainWindow::on_refreshButton_clicked() {
+    std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
+    client->send_action(action);
+}
 
 void MainWindow::on_Connect_clicked() {
     GameMode mode = UN_JUGADOR;
 
-    client.set_player_1_name(ui->player1namecreate->text().toStdString());
     if (ui->GameModeJoin->currentIndex() == 1) {
         mode = DOS_JUGADORES;
-        client.set_player_2_name(ui->player2namecreate->text().toStdString());
     }
 
-    int game_code = client.get_game_code();
+    int game_code = client->get_game_code();
     std::shared_ptr<Action> action = std::make_shared<Join>(game_code, mode);
 
-    auto event = client.run_command(action);
+    client->send_action(action);
+}
 
+void MainWindow::show_connected_players(const std::shared_ptr<Event> &event, const int game_code) {
     std::string ss = "Servidor " + std::to_string(game_code) +
                      " | Jugadores conectados: " +
                      std::to_string(event->get_actual_players()) + "/" +
                      std::to_string(event->get_max_players());
 
     ui->playerListLabel->setText(ss.c_str());
-    ui->stackedWidget->setCurrentIndex(4);
 }
 
 void MainWindow::on_leaveLobbyButton_clicked() {
@@ -158,18 +164,10 @@ void MainWindow::on_connectCreat_clicked() {
         action = std::make_shared<Create>(UN_JUGADOR, max_players);
     } else {
         action = std::make_shared<Create>(DOS_JUGADORES, max_players);
-        client.set_player_2_name(ui->player2namecreate->text().toStdString());
     }
 
-    client.set_player_1_name(ui->player1namecreate->text().toStdString());
-    auto event = client.run_command(action);
+    client->send_action(action);
 
-    std::string ss = "Servidor " + std::to_string(event->get_game_code()) +
-                     " | Jugadores conectados: " +
-                     std::to_string(event->get_actual_players()) + "/" +
-                     std::to_string(event->get_max_players());
-
-    ui->playerListLabel->setText(ss.c_str());
     ui->stackedWidget->setCurrentIndex(4);
 }
 
@@ -189,3 +187,7 @@ void MainWindow::on_GameModeCreate_activated(int index) {
     }
 }
 
+void MainWindow::on_startGameButton_clicked() {
+    std::shared_ptr<Action> action = std::make_shared<Action>(START);
+    client->send_action(action);
+}

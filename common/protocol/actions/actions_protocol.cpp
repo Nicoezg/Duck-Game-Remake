@@ -54,6 +54,9 @@ std::shared_ptr<Action> ActionsProtocol::read_element() {
 
         case REFRESH_REQUEST:
             return std::make_shared<RefreshGames>();
+
+        case START:
+            return std::make_shared<Action>(START);
         default:
             throw std::runtime_error(
                     "ActionsProtocol try to action_read invalid action.");
@@ -79,6 +82,9 @@ void ActionsProtocol::send_element(const std::shared_ptr<Action> &action) {
 
         case REFRESH_REQUEST:
             return send_refresh_action(action);
+
+        case START:
+            return send_start(action);
         default:
             throw std::runtime_error("ActionsProtocol try to send unknown action");
     }
@@ -125,4 +131,11 @@ std::shared_ptr<Action> ActionsProtocol::read_move_action() {
     int player_id = encoder.decode_player_id(data);
     bool is_right = encoder.decode_is_right(data);
     return std::make_shared<Move>(player_id, is_right);
+}
+
+void ActionsProtocol::send_start(const std::shared_ptr<Action> &action) {
+    std::vector<int8_t> data(ACTION_TYPE_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
+    send(data.data(), data.size());
 }

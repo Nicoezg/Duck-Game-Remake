@@ -61,6 +61,10 @@ add_library(COMMON STATIC
         common/events/connection/game_room.h
         common/actions/connection/refresh_games.cpp
         common/actions/connection/refresh_games.h
+        common/events/connection/start_game.cpp
+        common/events/connection/start_game.h
+        common/actions/connection/start.cpp
+        common/actions/connection/start.h
 )
 
 # add the source files that make the lib
@@ -106,6 +110,8 @@ if(CLIENT)
             MANUAL_FINALIZATION
             ${UI_HEADERS}
             ${RESOURCES}
+            client/ui/lobby_updater.cpp
+            client/ui/lobby_updater.h
     )
 
     # Make them depend on COMMON lib

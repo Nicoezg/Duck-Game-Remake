@@ -41,7 +41,7 @@ public:
 
   void run();
 
-    std::shared_ptr<Event> run_command(std::shared_ptr<Action> &action);
+    void send_action(std::shared_ptr<Action> &action);
 
     void close();
 
@@ -56,6 +56,8 @@ public:
     void set_player_1_name(std::string name);
 
     void set_player_2_name(std::string name);
+
+    std::shared_ptr<Event> read_event();
 };
 
 #endif // TALLER_TP_CLIENT_H

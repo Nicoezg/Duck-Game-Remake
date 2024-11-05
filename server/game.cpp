@@ -11,6 +11,7 @@
 #include "common/queue.h"
 #include "common/thread.h"
 #include "common/events/connection/new_player.h"
+#include "common/events/connection/start_game.h"
 
 #define TIME_LOOP 200
 
@@ -19,7 +20,7 @@ Game::Game(int max_players)
       players(), actual_players(0), max_players(max_players), started(false), admin_ids() {}
 
 void Game::add(Socket &&socket) {
-    //notifier.notify(std::make_shared<NewPlayer>(get_actual_players(),get_max_players()));
+    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(),get_max_players()));
     notifier.subscribe(std::move(socket));
 }
 
@@ -52,7 +53,23 @@ std::list<Player> Game::get_players() {
   return players_list;
 }
 
+void Game::valid_start(){
+    std::shared_ptr<Action> action;
+
+    bool ok = commands.try_pop(action);
+    if (!ok || action->get_type() != START) {
+        return;
+    }
+    start_game();
+    notifier.notify(std::make_shared<StartGame>());
+}
+
 void Game::read_actions() {
+    if (!started){
+        valid_start();
+        return;
+    }
+
   std::shared_ptr<Action> action;
 
   // Intenta obtener un comando de la cola de comandos de forma no bloqueante

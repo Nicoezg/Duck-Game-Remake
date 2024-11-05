@@ -45,6 +45,8 @@ public:
   void send_move_action(const std::shared_ptr<Action> &action);
 
   std::shared_ptr<Action> read_move_action();
+
+    void send_start(const std::shared_ptr<Action> &action);
 };
 
 #endif // TALLER_TP_ACTIONS_PROTOCOL_H

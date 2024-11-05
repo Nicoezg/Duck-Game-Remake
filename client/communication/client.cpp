@@ -30,50 +30,15 @@ void Client::close() {
     connection.join();
 }
 
-std::shared_ptr<Event> Client::run_command(std::shared_ptr<Action> &action) {
+void Client::send_action(std::shared_ptr<Action> &action) {
     if (game_code == NO_CONECTADO && action->get_type() != JOIN_REQUEST &&
         action->get_type() != CREATE_REQUEST && action->get_type() != REFRESH_REQUEST) {
         std::cout << "No se puede realizar la accion" << std::endl;
-        return nullptr;
+        return;
     }
 
     commands.push(action);
-    switch (action->get_type()) {
-        case JOIN_REQUEST:
-            game_code = action->get_game_code();
-            return action_read();
-        case CREATE_REQUEST:
-            return action_read();
-        case MOVE:
-            break;
-        case REFRESH_REQUEST:
-            return action_read();
-        default:
-            std::cout << "Comando invalido" << std::endl;
-            break;
-    }
-    return nullptr;
 }
-
-std::shared_ptr<Event> Client::action_read() {
-    std::shared_ptr<Event> event = events.pop();
-    switch (event->get_type()) {
-        case CREATE_GAME:
-            game_code = event->get_game_code();
-            assign_player_ids(event);
-            break;
-        case JOIN_GAME:
-            assign_player_ids(event);
-            break;
-            case REFRESH_GAMES:
-            break;
-        default:
-            std::cout << "Mensaje no valido" << std::endl;
-            return nullptr;
-    }
-    return event;
-}
-
 
 void Client::assign_player_ids(std::shared_ptr<Event> &event) {
     player_id_1 = event->get_player_id_1();
@@ -93,14 +58,6 @@ int Client::get_game_code() const {
     return game_code;
 }
 
-int Client::get_player_id_1() const {
-    return player_id_1;
-}
-
-int Client::get_player_id_2() const {
-    return player_id_2;
-}
-
 void Client::set_game_code(int code) {
     game_code = code;
 }
@@ -111,4 +68,28 @@ void Client::set_player_1_name(std::string name) {
 
 void Client::set_player_2_name(std::string name) {
     player_2_name = std::move(name);
+}
+
+std::shared_ptr<Event> Client::read_event() {
+    std::shared_ptr<Event> event = events.pop();
+    switch (event->get_type()) {
+        case CREATE_GAME:
+            game_code = event->get_game_code();
+            assign_player_ids(event);
+            break;
+        case JOIN_GAME:
+            assign_player_ids(event);
+            break;
+        default:
+            break;
+    }
+    return event;
+}
+
+int Client::get_player_id_1() const {
+    return player_id_1;
+}
+
+int Client::get_player_id_2() const {
+    return player_id_2;
 }

@@ -81,6 +81,8 @@ public:
     void start_game();
 
     void add_admin_id(int id);
+
+    void valid_start();
 };
 
 #endif // TALLER_TP_GAME_H

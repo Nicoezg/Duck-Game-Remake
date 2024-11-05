@@ -36,6 +36,8 @@ public:
     std::shared_ptr<Event> read_new_player();
 
     void send_new_player(const std::shared_ptr<Event> &event);
+
+    void send_start_game(const std::shared_ptr<Event> &event);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H
