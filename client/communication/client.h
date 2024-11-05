@@ -26,12 +26,6 @@ private:
 
   std::string player_1_name;
     std::string player_2_name;
-  /**
-   * @brief Ejecuta la accion de leer.
-   * Lee del protocolo una accion con el estado del juego.
-   * Imprime por salida estandar el estado del juego.
-   */
-  std::shared_ptr<Event> action_read();
 
 
   void assign_player_ids(std::shared_ptr<Event> &event);
@@ -58,6 +52,8 @@ public:
     void set_player_2_name(std::string name);
 
     std::shared_ptr<Event> read_event();
+
+    bool is_connected() const;
 };
 
 #endif // TALLER_TP_CLIENT_H

@@ -94,6 +94,10 @@ void MainWindow::setupEditor() {
 }
 
 void MainWindow::on_Join_clicked() {
+    if (client->is_connected()) {
+        ui->stackedWidget->setCurrentIndex(4);
+        return;
+    }
     setupServerList();
     ui->stackedWidget->setCurrentIndex(2);
 }
@@ -105,6 +109,10 @@ void MainWindow::exit() {
 void MainWindow::on_Exit_clicked() { exit(); }
 
 void MainWindow::on_Create_clicked() {
+    if (client->is_connected()) {
+        ui->stackedWidget->setCurrentIndex(4);
+        return;
+    }
     if (ui->GameModeCreate->currentIndex() == 0) {
         ui->player2namecreate->hide();
     } else {
@@ -155,6 +163,7 @@ void MainWindow::show_connected_players(const std::shared_ptr<Event> &event, con
     if (client->get_player_id_1() != 1) {
         ui->startGameButton->hide();
     }
+
 }
 
 void MainWindow::on_leaveLobbyButton_clicked() {

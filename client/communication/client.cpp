@@ -93,3 +93,7 @@ int Client::get_player_id_1() const {
 int Client::get_player_id_2() const {
     return player_id_2;
 }
+
+bool Client::is_connected() const {
+    return connected;
+}
