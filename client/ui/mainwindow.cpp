@@ -110,9 +110,7 @@ void MainWindow::on_Create_clicked() {
     } else {
         ui->player2namecreate->show();
     }
-    if (client->get_player_id_1() != 0) {
-        ui->startGameButton->hide();
-    }
+
     ui->stackedWidget->setCurrentIndex(1);
 }
 
@@ -142,6 +140,8 @@ void MainWindow::on_Connect_clicked() {
     std::shared_ptr<Action> action = std::make_shared<Join>(game_code, mode);
 
     client->send_action(action);
+
+    ui->stackedWidget->setCurrentIndex(4);
 }
 
 void MainWindow::show_connected_players(const std::shared_ptr<Event> &event, const int game_code) {
@@ -151,6 +151,10 @@ void MainWindow::show_connected_players(const std::shared_ptr<Event> &event, con
                      std::to_string(event->get_max_players());
 
     ui->playerListLabel->setText(ss.c_str());
+
+    if (client->get_player_id_1() != 1) {
+        ui->startGameButton->hide();
+    }
 }
 
 void MainWindow::on_leaveLobbyButton_clicked() {

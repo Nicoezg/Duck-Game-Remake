@@ -95,7 +95,7 @@ std::list<GameRoom> MonitorGames::get_not_active_games(){
 
     std::list<GameRoom> not_active_games;
     for (auto &game : games) {
-        if (!game.second->is_started()) {
+        if (!game.second->is_started() && !game.second->is_full(UN_JUGADOR) ) {
             not_active_games.emplace_back(game.first, game.second->get_actual_players(), game.second->get_max_players());
         }
     }
