@@ -6,7 +6,7 @@ const int DUCK_HEIGHT = 32;
 
 
 
-    Duck::Duck(std::shared_ptr<SDL2pp::Texture> texture) : posX(), posY(), id(0), direction(), texture(texture), animationState(), walkClips(), jumpClips(), playDeadClips() {
+    Duck::Duck(SDL2pp::Renderer& renderer, int id) : posX(), posY(), id(id), direction(), renderer(renderer), texture(), animationState(), walkClips(), jumpClips(), playDeadClips() {
         for (int i = 0; i < 4; i++){
             walkClips[i].x = i * DUCK_WIDTH;
             walkClips[i].y = 0;
@@ -94,6 +94,25 @@ const int DUCK_HEIGHT = 32;
     int Duck::getPosY() { return posY; }
 
     bool Duck::isFacingRight() { return direction; }
+
+    void Duck::loadTextures(){
+        switch (id){
+            case 0:
+                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/white-duck.png").SetColorKey(true, 0));
+                break;
+            case 1:
+                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/grey-duck.png").SetColorKey(true, 0));
+                break;
+            case 2:
+                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/yellow-duck.png").SetColorKey(true, 0));
+                break;
+            case 3:
+                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/orange-duck.png").SetColorKey(true, 0));
+                break;
+            default:
+                break;
+        }
+    }
 
     Duck::~Duck(){
     }

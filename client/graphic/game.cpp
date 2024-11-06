@@ -1,34 +1,26 @@
 #include <SDL2/SDL_video.h>
 #include <string>
 #include "game.h"
-#include "action_handler.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 #define DATA_PATH "../client/sprites/"
 
 
-Game::Game(Client &client) : client(client){
-
+Game::Game(Client &client) try : client(client), sdl(SDL_INIT_VIDEO), window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), renderer(window, -1, SDL_RENDERER_ACCELERATED){
+} catch (std::exception &e) {
+    throw std::exception();
 }
 
 int Game::start() {
     try {
         // Inicializar SDL
-        SDL sdl(SDL_INIT_VIDEO);
-
-        std::string title = "Duck Game";
-
-        Window window (title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 
         // window.SetIcon()
-
-        Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
         // Inicializar musica
 
         // Inicializar textures
-        loadTextures(renderer);
         // loadSounds(renderer);
         // loadColors(renderer);
 
@@ -39,7 +31,8 @@ int Game::start() {
 
 
 
-        Duck duck(textures[2]); // Hardcodeado, despues deberia ser un atributo de la clase Game
+        Duck duck(renderer, 0); // Hardcodeado, despues deberia ser un atributo de la clase Game
+        duck.loadTextures();
 
         auto rate = 1000 / 60; // 60 FPS
 
@@ -47,7 +40,7 @@ int Game::start() {
         {
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Procesamos los eventos del pato
-            updateGame(duck);
+            // updateGame(duck);
 
             render(renderer, duck);
             
@@ -140,14 +133,14 @@ void Game::loadTextures(Renderer &renderer) {
 
 }
 
-void Game::updateGame(Duck &duck){
+/* void Game::updateGame(Duck &duck){
     // Solo permite un jugador por ahora
     Broadcast updates = client.getUpdates(); // A implementar del lado del cliente
     for (auto &player : updates.get_players()){
         duck.update(player);
     }   
 
-}
+} */
 
 void Game::render(SDL2pp::Renderer &renderer, Duck& duck)
 {
@@ -158,10 +151,3 @@ void Game::render(SDL2pp::Renderer &renderer, Duck& duck)
     renderer.Present();
 
 }
-
-/* void Game::getDucks(){
-    int players = client.getPlayers();
-    for (int i = 0, i < players, i++){
-        ducks[i] = client.getDuck();
-    }
-} */

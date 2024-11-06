@@ -3,7 +3,9 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL_keycode.h>
 #include <exception>
+#include <iostream>
 #include <memory>
+#include <ostream>
 #include "../../common/actions/action.h"
 #include "../../common/actions/aim_upwards.h"
 #include "../../common/actions/pick_drop.h"
@@ -23,8 +25,8 @@ void ActionHandler::processDuckEvents(){
         if (event.type == SDL_QUIT) {
             throw std::exception(); // a cambiar
         }
-        std::shared_ptr<Action> action = nullptr;
         if (event.type == SDL_KEYDOWN){
+            std::shared_ptr<Action> action = nullptr;
             switch (event.key.keysym.sym){
                 case SDLK_LEFT:
                     action = std::make_shared<Move>(this->client.get_player_id1(), false);
@@ -59,8 +61,10 @@ void ActionHandler::processDuckEvents(){
                     break;
                 
             }
+            this->client.run_command("accion");
 
         } else if (event.type == SDL_KEYUP){
+            std::shared_ptr<Action> action = nullptr;
             switch (event.key.keysym.sym){
                 case SDLK_LEFT:
                     break;
@@ -77,8 +81,8 @@ void ActionHandler::processDuckEvents(){
                     break;
 
             }
+            this->client.run_command("accion");
         }
-        this->client.run_command("accion"); // Cambiar run_command del lado del client
     }
 }
 

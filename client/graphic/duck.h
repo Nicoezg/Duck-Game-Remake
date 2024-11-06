@@ -8,6 +8,8 @@
 #include <map>
 #include <memory>
 
+#define DATA_PATH "../client/sprites/"
+
 
 class Duck
 {
@@ -17,7 +19,7 @@ class Duck
 		static const int DUCK_HEIGHT = 32;
 
 		//Initializes the variables
-		Duck(std::shared_ptr<SDL2pp::Texture> texture);
+		Duck(SDL2pp::Renderer& renderer, int id);
 
 		void render(SDL2pp::Renderer& renderer);
 
@@ -30,6 +32,8 @@ class Duck
 		int getPosY();
 
 		bool isFacingRight();
+
+		void loadTextures();
 
 		//Destructor
 		~Duck();
@@ -45,7 +49,9 @@ class Duck
 
 		bool direction;
 
-		std::shared_ptr<SDL2pp::Texture> texture;
+		SDL2pp::Renderer &renderer;
+
+		std::shared_ptr<SDL2pp::Texture> texture = nullptr;
 
 		AnimationState animationState;
 

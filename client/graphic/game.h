@@ -16,6 +16,14 @@ class Game{
         //SDLTTF ttf;
         Client &client;
 
+        SDL sdl;
+
+        Window window;
+
+        Renderer renderer;
+
+        // std::map<int, Duck> ducks;
+
         std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
         void loadTextures(Renderer &renderer);
@@ -27,6 +35,7 @@ class Game{
 
     public:
         Game(Client &client);
+        
         int start();
 
         
