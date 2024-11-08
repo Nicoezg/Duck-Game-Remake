@@ -1,4 +1,5 @@
 #include "encoder.h"
+#include "common/events/player_macros.h"
 
 #include <stdexcept>
 
@@ -127,6 +128,22 @@ bool Encoder::decode_is_right(std::vector<int8_t> &data) {
   return is_right;
 }
 
+State Encoder::decode_player_state(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(int8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el estado del jugador.");
+  }
+  auto state = static_cast<State>(data[0]);
+  data.erase(data.begin(), data.begin() + sizeof(int8_t));
+  return state;
+}
+
+size_t Encoder::encode_player_state(State state, void *data) {
+  const auto *state_bytes = reinterpret_cast<int8_t *>(&state);
+  std::memcpy(data, state_bytes, sizeof(int8_t));
+  return sizeof(int8_t);
+}
+
 /* Posiciones */
 
 size_t Encoder::encode_coordinate(int16_t coordinate, void *data) {
@@ -148,7 +165,7 @@ int16_t Encoder::decode_coordinate(std::vector<int8_t> &data) {
   return coordinate;
 }
 
-int Encoder::decode_players_len(std::vector<int8_t> &data) {
+int Encoder::decode_len(std::vector<int8_t> &data) {
   if (data.size() < sizeof(uint8_t)) {
     throw std::runtime_error(
         "No hay suficientes bytes para decodificar la cantidad de jugadores.");
@@ -159,8 +176,42 @@ int Encoder::decode_players_len(std::vector<int8_t> &data) {
   return players_len;
 }
 
-size_t Encoder::encode_players_len(uint8_t players_len, void *data) {
+size_t Encoder::encode_len(uint8_t players_len, void *data) {
   const auto *players_len_bytes = reinterpret_cast<int8_t *>(&players_len);
   std::memcpy(data, players_len_bytes, sizeof(uint8_t));
   return sizeof(uint8_t);
+}
+
+int Encoder::decode_max_players(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar la cantidad maxima de jugadores.");
+  }
+  uint8_t max_players;
+  std::memcpy(&max_players, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return max_players;
+}
+
+size_t Encoder::encode_max_players(uint8_t max_players, void *data) {
+  const auto *max_players_bytes = reinterpret_cast<int8_t *>(&max_players);
+  std::memcpy(data, max_players_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+size_t Encoder::encode_actual_players(uint8_t actual_players, void *data) {
+  const auto *actual_players_bytes = reinterpret_cast<int8_t *>(&actual_players);
+  std::memcpy(data, actual_players_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+int Encoder::decode_actual_players(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar la cantidad actual de jugadores.");
+  }
+  uint8_t actual_players;
+  std::memcpy(&actual_players, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return actual_players;
 }

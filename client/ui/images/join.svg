@@ -1,0 +1,42 @@
+<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Contenedor principal centrado -->
+  <g>
+    <!-- Borde exterior con efecto 3D -->
+    <rect x="30" y="15" width="240" height="70" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="4"/>
+    <rect x="34" y="19" width="232" height="62" 
+          fill="none" 
+          stroke="#888888" 
+          stroke-width="2"/>
+    
+    <!-- Texto "JOIN" con efecto 3D perfectamente centrado -->
+    <g>
+      <!-- Capa base del texto -->
+      <text x="150" y="55" 
+            font-family="Arial Black" 
+            font-size="35" 
+            font-weight="bold" 
+            fill="#ffffff"
+            text-anchor="middle"
+            alignment-baseline="middle">JOIN</text>
+      
+      <!-- Capas de profundidad -->
+      <text x="148" y="57" 
+            font-family="Arial Black" 
+            font-size="35" 
+            font-weight="bold" 
+            fill="#cccccc"
+            text-anchor="middle"
+            alignment-baseline="middle">JOIN</text>
+      <text x="146" y="59" 
+            font-family="Arial Black" 
+            font-size="35" 
+            font-weight="bold" 
+            fill="#888888"
+            text-anchor="middle"
+            alignment-baseline="middle">JOIN</text>
+    </g>
+  </g>
+</svg>
