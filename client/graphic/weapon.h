@@ -3,10 +3,11 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
+#include <memory>
 
 class Weapon {
     private:
-    std::map<int, SDL2pp::Texture> textures;
+    std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
     SDL2pp::Renderer &renderer;
 

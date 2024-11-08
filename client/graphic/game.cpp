@@ -10,7 +10,7 @@
 Game::Game(Client &client, int players) try : client(client), 
 sdl(SDL_INIT_VIDEO), 
 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), 
-renderer(window, -1, SDL_RENDERER_ACCELERATED), weapon(renderer), helmet(renderer), chestplate(renderer) {
+renderer(window, -1, SDL_RENDERER_ACCELERATED), weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer) {
     for (int i = 0; i < players; i++) {
         ducks.emplace_back(renderer, i);
     }
@@ -20,7 +20,7 @@ renderer(window, -1, SDL_RENDERER_ACCELERATED), weapon(renderer), helmet(rendere
 
 int Game::start() {
     try {
-        // window.SetIcon()
+        window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png"));
 
         // Inicializar musica
 
@@ -73,8 +73,8 @@ int Game::start() {
 
             t1 += rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
             for (auto &duck : ducks) {
-                    duck.updateFrame();
-                }  
+                duck.updateFrame();
+            }  
 
             // Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace
             // 		 que se cuelgue el juego
@@ -138,8 +138,16 @@ void Game::update(Broadcast broadcast) {
     for (auto &player : broadcast.get_players()) {
         ducks[player.get_player_id()].update(player);
     }
+
+    /* for (auto &bulletDTO : broadcast.get_bullets()) {
+        bullets.push_back(bullet);
+    }
+    for (auto &weaponDTO : broadcast.get_weapon_spawns()) {
+        weapons_spawns.push_back(weapon);
+    } */
 }
 
+// Puede haber un problema de sincronizacion entre update y render.
 
 void Game::render()
 {
@@ -147,12 +155,17 @@ void Game::render()
     renderer.Clear();
     for (auto &duck : ducks) {
         duck.render(renderer);
-        weapon.render(duck.get_position_x(), duck.get_position_y(), 0); // a cambiar
-        helmet.render(duck.get_position_x(), duck.get_position_y(), 0); // si hay helmet
-        chestplate.render(duck.get_position_x(), duck.get_position_y(), 0); // si hay chestplate
-
+        weapon.render(duck.getPosX(), duck.getPosY(), 0); // a cambiar
+        helmet.render(duck.getPosX(), duck.getPosY(), 0); // si hay helmet
+        chestplate.render(duck.getPosX(), duck.getPosY(), 0); // si hay chestplate
     }
-
+    // for (auto &bullet : bullets) { // Dibujo las balas
+        // bullet.render(bullet.getPosX(), bullet.getPosY(), bullet.get_rotation(), bullet.get_type());
+    // }
+    // for (auto &weaponSpawn : weaponSpawns){ // Dibujo las arams que spawnearon
+        // weapon.render(weaponSpawn.getPosX(), weaponSpawn.getPosY(), weaponSpawn.get_type());
+    // }
+    // bullets.clear();
+    // weaponSpawns.clear();
     renderer.Present();
-
 }

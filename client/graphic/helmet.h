@@ -3,16 +3,17 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
+#include <memory>
 
 class Helmet {
     private:
 
-    std::map<int, SDL2pp::Texture> textures;
+    std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
-    SDL2_pp::Renderer &renderer;
+    SDL2pp::Renderer &renderer;
 
     public:
-    Helmet();
+    Helmet(SDL2pp::Renderer &renderer);
 
     void render(int x, int y, int helmet_id);
 

@@ -69,12 +69,12 @@ const int DUCK_HEIGHT = 32;
         posX = player.get_position_x();
         posY = player.get_position_y();
         direction = player.is_right();
-
-        if (player.is_playing_dead()){
+        auto state = player.get_state();
+        if (state == PLAYING_DEAD) {
             animationState.changeState(Type::PLAYDEAD, false);
-        } else if (player.is_falling()) {
+        } else if (state == FALLING) {
             animationState.changeState(Type::FALL, false);
-        } else if (player.is_jumping()) {
+        } else if (state == JUMPING) {
             animationState.changeState(Type::JUMP, false);
         } else  if (prevX != posX) {
             animationState.changeState(Type::WALK, true);

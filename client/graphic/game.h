@@ -5,13 +5,14 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include "../client.h"
+#include "../communication/client.h"
 #include "duck.h"
 #include "action_handler.h"
 #include "../../common/events/broadcast.h"
 #include "weapon.h"
 #include "chestplate.h"
 #include "helmet.h"
+#include "bullet.h"
 
 using namespace SDL2pp;
 
@@ -28,6 +29,10 @@ class Game{
 
         std::vector<Duck> ducks;
 
+        //std::vector<BulletDTO> bullets;
+
+        //std::vector<WeaponDTO> weaponSpawns;
+
         std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
         Weapon weapon;
@@ -35,6 +40,8 @@ class Game{
         Helmet helmet;
 
         Chestplate chestplate;
+
+        Bullet bullet;
 
         void loadTextures(Renderer &renderer);
 
@@ -44,7 +51,7 @@ class Game{
     public:
         Game(Client &client, int players);
 
-        void updateGame(Broadcast broadcast);
+        void update(Broadcast broadcast);
         
         int start();
 
