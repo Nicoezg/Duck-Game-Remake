@@ -9,6 +9,8 @@ target_sources(CLIENT
     weapon.cpp
     chestplate.cpp
     bullet.cpp
+    crate.cpp
+    
     PUBLIC
     action_handler.h
     duck.h
@@ -18,5 +20,6 @@ target_sources(CLIENT
     weapon.h
     chestplate.h
     bullet.h
+    crate.h
     # .h files
     )

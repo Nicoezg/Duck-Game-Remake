@@ -110,22 +110,6 @@ if(CLIENT)
             MANUAL_FINALIZATION
             ${UI_HEADERS}
             ${RESOURCES}
-            client/graphic/action_handler.cpp
-            client/graphic/duck.cpp
-            client/graphic/game.cpp
-            client/graphic/animation_state.cpp
-            client/graphic/helmet.cpp
-            client/graphic/weapon.cpp
-            client/graphic/chestplate.cpp
-            client/graphic/bullet.cpp
-            client/graphic/action_handler.h
-            client/graphic/duck.h
-            client/graphic/game.h
-            client/graphic/animation_state.h
-            client/graphic/helmet.h
-            client/graphic/weapon.h
-            client/graphic/chestplate.h
-            client/graphic/bullet.h
             client/ui/lobby_updater.cpp
             client/ui/lobby_updater.h
     )
@@ -136,6 +120,7 @@ if(CLIENT)
     # Add source files and enable warnings
     add_subdirectory(client/ui)
     add_subdirectory(client/communication)
+    add_subdirectory(client/graphic)
 
     set_project_warnings(CLIENT ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
