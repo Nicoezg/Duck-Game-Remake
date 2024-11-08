@@ -35,7 +35,7 @@ const int DUCK_HEIGHT = 32;
         playDeadClips[2].h = DUCK_HEIGHT;
     }
 
-    void Duck::render(SDL2pp::Renderer& renderer){
+    void Duck::render(){
         SDL2pp::Rect rect{ posX, posY, DUCK_WIDTH, DUCK_HEIGHT };
         int flipType = direction ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
         int angle = 0;

@@ -24,11 +24,8 @@ int Game::start() {
 
         // Inicializar musica
 
-        // Inicializar textures
         // loadSounds(renderer);
         // loadColors(renderer);
-
-
 
         // Game Loop
         ActionHandler actionHandler(client);
@@ -85,6 +82,49 @@ int Game::start() {
     }
 }
 
+void Game::update(Broadcast broadcast) {
+    for (auto &player : broadcast.get_players()) {
+        ducks[player.get_player_id()].update(player);
+    }
+
+    /* for (auto &bulletDTO : broadcast.get_bullets()) {
+        bullets.push_back(bullet);
+    }
+    for (auto &weaponDTO : broadcast.get_weapon_spawns()) {
+        weapons_spawns.push_back(weapon);
+
+    for (auto &crate : broadcast.get_crates()) {
+        crates[crate.get_crate_id()].update(crate);
+    } */
+}
+
+// Puede haber un problema de sincronizacion entre update y render.
+
+void Game::render()
+{
+    renderer.SetDrawColor(0,0,0,255);
+    renderer.Clear();
+    for (auto &duck : ducks) {
+        duck.render();
+        weapon.render(duck.getPosX(), duck.getPosY(), 0); // a cambiar
+        helmet.render(duck.getPosX(), duck.getPosY(), 0); // si hay helmet
+        chestplate.render(duck.getPosX(), duck.getPosY(), 0); // si hay chestplate
+    }
+    /* for (auto &crate : crates){
+        crate.render(renderer);
+    } */
+    // for (auto &bullet : bullets) { // Dibujo las balas
+        // bullet.render(bullet.getPosX(), bullet.getPosY(), bullet.get_rotation(), bullet.get_type());
+    // }
+    // for (auto &weaponSpawn : weaponSpawns){ // Dibujo las arams que spawnearon
+        // weapon.render(weaponSpawn.getPosX(), weaponSpawn.getPosY(), weaponSpawn.get_type());
+    // }
+    // bullets.clear();
+    // weaponSpawns.clear();
+    renderer.Present();
+}
+
+// Esto ya no sirve, lo tengo de referencia
 void Game::loadTextures(Renderer &renderer) {
     // FONDO
     this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "maps/background/forest.png").SetColorKey(true, 0));
@@ -132,40 +172,4 @@ void Game::loadTextures(Renderer &renderer) {
     // CRATES
     this->textures[29] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "props/crate.png").SetColorKey(true, 0));
 
-}
-
-void Game::update(Broadcast broadcast) {
-    for (auto &player : broadcast.get_players()) {
-        ducks[player.get_player_id()].update(player);
-    }
-
-    /* for (auto &bulletDTO : broadcast.get_bullets()) {
-        bullets.push_back(bullet);
-    }
-    for (auto &weaponDTO : broadcast.get_weapon_spawns()) {
-        weapons_spawns.push_back(weapon);
-    } */
-}
-
-// Puede haber un problema de sincronizacion entre update y render.
-
-void Game::render()
-{
-    renderer.SetDrawColor(0,0,0,255);
-    renderer.Clear();
-    for (auto &duck : ducks) {
-        duck.render(renderer);
-        weapon.render(duck.getPosX(), duck.getPosY(), 0); // a cambiar
-        helmet.render(duck.getPosX(), duck.getPosY(), 0); // si hay helmet
-        chestplate.render(duck.getPosX(), duck.getPosY(), 0); // si hay chestplate
-    }
-    // for (auto &bullet : bullets) { // Dibujo las balas
-        // bullet.render(bullet.getPosX(), bullet.getPosY(), bullet.get_rotation(), bullet.get_type());
-    // }
-    // for (auto &weaponSpawn : weaponSpawns){ // Dibujo las arams que spawnearon
-        // weapon.render(weaponSpawn.getPosX(), weaponSpawn.getPosY(), weaponSpawn.get_type());
-    // }
-    // bullets.clear();
-    // weaponSpawns.clear();
-    renderer.Present();
 }

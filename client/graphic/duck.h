@@ -21,7 +21,7 @@ class Duck
 		//Initializes the variables
 		Duck(SDL2pp::Renderer& renderer, int id);
 
-		void render(SDL2pp::Renderer& renderer);
+		void render();
 
 		void update(const Player &player);
 
@@ -35,14 +35,9 @@ class Duck
 
 		void loadTextures();
 
-		//Destructor
 		~Duck();
 
-    // Duck class definition
-
     private:
-		//The X and Y offsets of the duck
-
 		int posX, posY;
 
 		uint8_t id;

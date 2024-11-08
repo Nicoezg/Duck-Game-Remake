@@ -19,6 +19,7 @@ using namespace SDL2pp;
 class Game{
     private:
         //SDLTTF ttf;
+        
         Client &client;
 
         SDL sdl;
@@ -28,6 +29,8 @@ class Game{
         Renderer renderer;
 
         std::vector<Duck> ducks;
+
+        //std::vector<Crates> crates;
 
         //std::vector<BulletDTO> bullets;
 
