@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "common/actions/create.h"
+#include "common/actions/connection/create.h"
 #include "common/socket/socket.h"
 #include "encoder.h"
 

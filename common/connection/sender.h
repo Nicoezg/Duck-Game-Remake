@@ -5,7 +5,7 @@
 #ifndef TALLER_TP_SENDER_H
 #define TALLER_TP_SENDER_H
 
-#include "common/actions/action.h"
+#include "common/actions/base/action.h"
 #include "common/protocol/common/encoder.h"
 #include "common/protocol/common/protocol_error.h"
 #include "common/queue.h"

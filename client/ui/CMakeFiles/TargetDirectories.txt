@@ -1,0 +1,8 @@
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/duckgame.dir
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/edit_cache.dir
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/rebuild_cache.dir
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/list_install_components.dir
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/install.dir
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/install/local.dir
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/install/strip.dir
+/home/bautiboeri/Desktop/2c24/taller/duckgame/CMakeFiles/duckgame_autogen.dir

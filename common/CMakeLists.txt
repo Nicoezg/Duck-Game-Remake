@@ -13,13 +13,13 @@ target_sources(COMMON
         socket/resolvererror.cpp
         socket/socket.cpp
 
-        actions/action.cpp
-        actions/create.cpp
-        actions/join.cpp
+        actions/base/action.cpp
+        actions/connection/create.cpp
+        actions/connection/join.cpp
 
-        events/event.cpp
-        events/game_creation.cpp
-        events/game_join.cpp
+        events/base/event.cpp
+        events/connection/game_creation.cpp
+        events/connection/game_join.cpp
 
         events/player.cpp
         events/broadcast.cpp
@@ -42,14 +42,14 @@ target_sources(COMMON
         socket/resolvererror.h
         socket/socket.h
 
-        actions/action.h
-        actions/join.h
-        actions/action_macros.h
-        actions/create.h
+        actions/base/action.h
+        actions/connection/join.h
+        actions/base/action_macros.h
+        actions/connection/create.h
 
-        events/event.h
-        events/game_creation.h
-        events/game_join.h
+        events/base/event.h
+        events/connection/game_creation.h
+        events/connection/game_join.h
 
         game_mode.h
 

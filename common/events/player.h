@@ -32,17 +32,9 @@ public:
 
   void move(bool is_right);
 
-  bool is_dead() const;
-
-  bool is_jumping() const;
-
-  bool is_falling() const;
-
-  bool is_playing_dead() const;
+  State get_state() const;
 
   bool is_right() const;
-
-  bool is_aiming_upwards() const;
 };
 
 #endif // TALLER_TP_PLAYER_H
