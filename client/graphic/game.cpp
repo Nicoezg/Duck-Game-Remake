@@ -7,15 +7,19 @@
 #define DATA_PATH "../client/sprites/"
 
 
-Game::Game(Client &client) try : client(client), sdl(SDL_INIT_VIDEO), window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), renderer(window, -1, SDL_RENDERER_ACCELERATED){
+Game::Game(Client &client, int players) try : client(client), 
+sdl(SDL_INIT_VIDEO), 
+window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), 
+renderer(window, -1, SDL_RENDERER_ACCELERATED), weapon(renderer), helmet(renderer), chestplate(renderer) {
+    for (int i = 0; i < players; i++) {
+        ducks.emplace_back(renderer, i);
+    }
 } catch (std::exception &e) {
     throw std::exception();
 }
 
 int Game::start() {
     try {
-        // Inicializar SDL
-
         // window.SetIcon()
 
         // Inicializar musica
@@ -29,20 +33,13 @@ int Game::start() {
         // Game Loop
         ActionHandler actionHandler(client);
 
-
-
-        Duck duck(renderer, 0); // Hardcodeado, despues deberia ser un atributo de la clase Game
-        duck.loadTextures();
-
         auto rate = 1000 / 60; // 60 FPS
 
         while (true)
         {
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Procesamos los eventos del pato
-            // updateGame(duck);
-
-            render(renderer, duck);
+            render();
             
             /* IF BEHIND, KEEP WORKING */
             // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -60,8 +57,10 @@ int Game::start() {
                 auto behind = -rest;                // ¿Cuanto tiempo estamos retrasados?
                 auto lost = behind - behind % rate; // ¿Cuanto tiempo perdimos?
                 t1 += lost;                         // Ajustamos 't1' para ponernos al dia con el tiempo perdido
-                duck.updateFrame(int(lost / rate));             // Aumentamos 'it' para reflejar las iteraciones que
-                                                    // se han perdido debido al retraso
+                for (auto &duck : ducks) {
+                    duck.updateFrame(int(lost / rate));
+                }                                   
+                // Aumentamos 'it' para reflejar las iteraciones que se han perdido debido al retraso
 
                 // Si 'rest' es mayor o igual a cero quiere decir que no nos estamos quedando atras
             }
@@ -73,7 +72,9 @@ int Game::start() {
             }
 
             t1 += rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
-            duck.updateFrame();    // Aumentamos 'it' en 1 para mantener un registro del numero de iteraciones
+            for (auto &duck : ducks) {
+                    duck.updateFrame();
+                }  
 
             // Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace
             // 		 que se cuelgue el juego
@@ -133,20 +134,24 @@ void Game::loadTextures(Renderer &renderer) {
 
 }
 
-/* void Game::updateGame(Duck &duck){
-    // Solo permite un jugador por ahora
-    Broadcast updates = client.getUpdates(); // A implementar del lado del cliente
-    for (auto &player : updates.get_players()){
-        duck.update(player);
-    }   
+void Game::update(Broadcast broadcast) {
+    for (auto &player : broadcast.get_players()) {
+        ducks[player.get_player_id()].update(player);
+    }
+}
 
-} */
 
-void Game::render(SDL2pp::Renderer &renderer, Duck& duck)
+void Game::render()
 {
     renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
-    duck.render(renderer);
+    for (auto &duck : ducks) {
+        duck.render(renderer);
+        weapon.render(duck.get_position_x(), duck.get_position_y(), 0); // a cambiar
+        helmet.render(duck.get_position_x(), duck.get_position_y(), 0); // si hay helmet
+        chestplate.render(duck.get_position_x(), duck.get_position_y(), 0); // si hay chestplate
+
+    }
 
     renderer.Present();
 

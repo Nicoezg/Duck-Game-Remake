@@ -4,8 +4,6 @@
 const int DUCK_WIDTH = 32;
 const int DUCK_HEIGHT = 32;
 
-
-
     Duck::Duck(SDL2pp::Renderer& renderer, int id) : posX(), posY(), id(id), direction(), renderer(renderer), texture(), animationState(), walkClips(), jumpClips(), playDeadClips() {
         for (int i = 0; i < 4; i++){
             walkClips[i].x = i * DUCK_WIDTH;
