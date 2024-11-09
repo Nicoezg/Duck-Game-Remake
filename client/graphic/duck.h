@@ -4,7 +4,8 @@
 #include <SDL2/SDL_rect.h>
 #include "../../common/events/player.h"
 #include <SDL2pp/SDL2pp.hh>
-#include "animation_state.h"
+#include "animation_movement.h"
+#include "animation_wings.h"
 #include <map>
 #include <memory>
 
@@ -46,12 +47,20 @@ class Duck
 
 		SDL2pp::Renderer &renderer;
 
-		std::shared_ptr<SDL2pp::Texture> texture = nullptr;
+		std::shared_ptr<SDL2pp::Texture> weaponsTexture = nullptr;
 
-		AnimationState animationState;
+		std::shared_ptr<SDL2pp::Texture> wingsTexture = nullptr;
+
+		AnimationMovement animationMovement;
 
 		SDL2pp::Rect walkClips[4];
-		SDL2pp::Rect jumpClips[2];
+		SDL2pp::Rect jumpClip;
+		SDL2pp::Rect fallClip;
+		SDL2pp::Rect flappingClips[3];
 		SDL2pp::Rect playDeadClips[3];
+
+		SDL2pp::Rect walkWeaponClips[4];
+		SDL2pp::Rect jumpWeaponClip;
+		SDL2pp::Rect fallWeaponClip;
 };
 #endif

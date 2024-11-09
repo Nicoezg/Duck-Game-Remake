@@ -4,7 +4,6 @@
 
 Crate::Crate(SDL2pp::Renderer &renderer) : renderer(renderer), state(0) {
     texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "crate.png").SetColorKey(true, 0));
-
 }
 
 // falta cambiarle algunas cosas

@@ -4,7 +4,7 @@ target_sources(CLIENT
     action_handler.cpp
     duck.cpp
     game.cpp
-    animation_state.cpp
+    animation_movement.cpp
     helmet.cpp
     weapon.cpp
     chestplate.cpp
@@ -15,7 +15,7 @@ target_sources(CLIENT
     action_handler.h
     duck.h
     game.h
-    animation_state.h
+    animation_movement.h
     helmet.h
     weapon.h
     chestplate.h
