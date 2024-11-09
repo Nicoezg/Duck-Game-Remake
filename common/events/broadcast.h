@@ -24,7 +24,7 @@ private:
   std::list<Weapon> weapons; // Estos weapons son los que spawnean en el mapa
 
 public:
-  explicit Broadcast(std::list<Player> &&players);
+  explicit Broadcast(std::list<Player> &&players, std::list<Bullet> &&bullets, std::list<Crate> &&crates, std::list<Weapon> &&weapons);
 
   std::list<Player> get_players() override;
 
