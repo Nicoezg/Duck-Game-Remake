@@ -28,6 +28,18 @@ std::list<Player> Event::get_players() {
   throw std::runtime_error("Has no players.");
 }
 
+std::list<Bullet> Event::get_bullets() {
+  throw std::runtime_error("Has no bullets.");
+}
+
+std::list<Crate> Event::get_crates() {
+  throw std::runtime_error("Has no crates.");
+}
+
+std::list<Weapon> Event::get_weapons() {
+  throw std::runtime_error("Has no weapons.");
+}
+
 int Event::get_player_id_1() const {
   throw std::runtime_error("Has no player id 1.");
 }

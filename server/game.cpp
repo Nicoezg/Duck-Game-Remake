@@ -30,7 +30,9 @@ bool Game::is_full(int new_players) const {
 
 int Game::get_next_player_id() {
   next_player_id++;
-  players.insert_or_assign(next_player_id, Player(next_player_id, 0, 0, true, State::BLANK));
+  // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
+  // Hay que obtener las cosas me parece
+  players.insert_or_assign(next_player_id, Player(next_player_id, 0, 0, true, State::BLANK, weapon, helmet, chestplate));
   actual_players++;
   return next_player_id;
 }
@@ -86,7 +88,8 @@ void Game::read_actions() {
         break;
       }
       players.at(action->get_player_id()).move(action->is_right());
-      event = std::make_shared<Broadcast>(get_players());
+      // Hay que conseguir la lista de bullets, crates y weapons. La linea de abajo está de ejemplo.
+      event = std::make_shared<Broadcast>(get_players(), std::list<Bullet>(), std::list<Crate>(), std::list<Weapon>());
       notify_event(event);
       break;
     default:

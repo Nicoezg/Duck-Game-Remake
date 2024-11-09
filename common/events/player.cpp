@@ -13,23 +13,14 @@ int Player::get_player_id() const { return player_id; }
 
 int Player::get_position_x() const { return position_x; }
 
-std::string Player::get_text() const {
-  std::stringstream ss;
-  ss << "PlayerId: " << player_id << " Position: (" << position_x << ", "
-     << position_y << ")" << " Right: " << right << " State: " << state;
-  return ss.str();
-}
-
 int Player::get_position_y() const { return position_y; }
-
-void Player::move(bool is_right) {
-  if (is_right) {
-    position_x++;
-  } else {
-    position_x--;
-  }
-}
 
 bool Player::is_right() const { return right; }
 
 State Player::get_state() const { return state; }
+
+Weapon Player::get_weapon() const { return weapon; }
+
+Helmet Player::get_helmet() const { return helmet; }
+
+Chestplate Player::get_chestplate() const { return chestplate; }
