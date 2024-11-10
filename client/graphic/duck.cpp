@@ -5,8 +5,8 @@ const int DUCK_WIDTH = 32;
 const int DUCK_HEIGHT = 32;
 
     Duck::Duck(SDL2pp::Renderer& renderer, int id) : posX(), posY(), id(id), direction(), renderer(renderer), 
-    weaponsTexture(), wingsTexture(), animationMovement(), walkClips(), jumpClip(), fallClip(), 
-    flappingClips(), playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip() {
+    weaponsTexture(), wingsTexture(), animationMovement(), weapon(renderer), helmet(renderer), chestplate(renderer), 
+    walkClips(), jumpClip(), fallClip(), flappingClips(), playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip() {
         for (int i = 1; i < 6; i++){
             walkClips[i].x = i * DUCK_WIDTH;
             walkClips[i].y = 0;
@@ -79,22 +79,51 @@ const int DUCK_HEIGHT = 32;
 
         SDL2pp::Rect currentClip;
 
-        switch (animationMovement.getCurrentType()) {
-            case MovementType::WALK:
-                currentClip = walkClips[animationMovement.getCurrentFrame()];
-                break;
-            case MovementType::JUMP:
-                currentClip = jumpClip;
-                break;
-            case MovementType::FALL:
-                currentClip = fallClip;
-                break;
-            case MovementType::PLAYDEAD:
-                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
-                break;
-            default:
-                currentClip = walkClips[0];
-                break;
+        if (weapon.getId() == NO_WEAPON){
+
+            switch (animationMovement.getCurrentType()) {
+                case MovementType::WALK:
+                    currentClip = walkClips[animationMovement.getCurrentFrame()];
+                    break;
+                case MovementType::JUMP:
+                    currentClip = jumpClip;
+                    break;
+                case MovementType::FALL:
+                    currentClip = fallClip;
+                    break;
+                case MovementType::PLAYDEAD:
+                    currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+                    break;
+                default:
+                    currentClip = walkClips[0];
+                    break;
+            }
+
+        } else {    
+            switch (animationMovement.getCurrentType()) {
+                case MovementType::WALK:
+                    currentClip = walkWeaponClips[animationMovement.getCurrentFrame()];
+                    break;
+                case MovementType::JUMP:
+                    currentClip = jumpWeaponClip;
+                    break;
+                case MovementType::FALL:
+                    currentClip = fallWeaponClip;
+                    break;
+                case MovementType::PLAYDEAD:
+                    currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+                    break;
+                default:
+                    currentClip = walkWeaponClips[0];
+                    break;
+            }
+            weapon.render(posX, posY); // A determinar posiciones
+        }
+        if (chestplate.isEquipped()){
+            chestplate.render(posX, posY); // A determinar posiciones
+        }
+        if (helmet.isEquipped()){
+            helmet.render(posX, posY); // A determinar posiciones
         }
         renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
     }
@@ -104,8 +133,11 @@ const int DUCK_HEIGHT = 32;
         posX = player.get_position_x();
         posY = player.get_position_y();
         direction = player.is_right();
-        auto state = player.get_state();
+        weapon.update(player.get_weapon());
+        helmet.update(player.get_helmet());
+        chestplate.update(player.get_chestplate());
 
+        auto state = player.get_state();
         if (state == PLAYING_DEAD) {
             animationMovement.changeState(MovementType::PLAYDEAD, false);
 

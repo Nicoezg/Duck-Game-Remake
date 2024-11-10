@@ -9,10 +9,11 @@
 #include "duck.h"
 #include "action_handler.h"
 #include "../../common/events/broadcast.h"
-#include "weapon.h"
-#include "chestplate.h"
-#include "helmet.h"
-#include "bullet.h"
+#include "draw/draw_weapon.h"
+#include "draw/draw_chestplate.h"
+#include "draw/draw_helmet.h"
+#include "draw/draw_bullet.h"
+#include "draw/draw_crate.h"
 
 using namespace SDL2pp;
 
@@ -28,23 +29,27 @@ class Game{
 
         Renderer renderer;
 
-        std::vector<Duck> ducks;
+        std::vector<std::shared_ptr<Duck>> ducks;
 
-        //std::vector<Crates> crates;
+        std::list<Crate> crates;
 
-        //std::vector<BulletDTO> bullets;
+        std::list<Bullet> bullets;
 
-        //std::vector<WeaponDTO> weaponSpawns;
+        std::list<Weapon> weaponSpawns;
+
+        // std::vector<Explosion> explosions;
 
         std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
-        Weapon weapon;
+        DrawWeapon weapon;
 
-        Helmet helmet;
+        DrawHelmet helmet;
 
-        Chestplate chestplate;
+        DrawChestplate chestplate;
 
-        Bullet bullet;
+        DrawBullet bullet;
+
+        DrawCrate crate;
 
         void loadTextures(Renderer &renderer);
 

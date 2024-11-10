@@ -122,6 +122,7 @@ if(CLIENT)
     add_subdirectory(client/ui)
     add_subdirectory(client/communication)
     add_subdirectory(client/graphic)
+    add_subdirectory(client/graphic/draw)
 
     set_project_warnings(CLIENT ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 

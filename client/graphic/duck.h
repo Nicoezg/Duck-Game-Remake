@@ -6,6 +6,10 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "animation_movement.h"
 #include "animation_wings.h"
+#include "draw/draw_helmet.h"
+#include "draw/draw_chestplate.h"
+#include "draw/draw_weapon.h"
+#include "sound.h"
 #include <map>
 #include <memory>
 
@@ -36,6 +40,8 @@ class Duck
 
 		void loadTextures();
 
+		DrawWeapon& getWeapon() { return weapon; }
+
 		~Duck();
 
     private:
@@ -52,6 +58,14 @@ class Duck
 		std::shared_ptr<SDL2pp::Texture> wingsTexture = nullptr;
 
 		AnimationMovement animationMovement;
+
+		Sound sound;
+
+		DrawWeapon weapon;
+
+		DrawHelmet helmet;
+
+		DrawChestplate chestplate;
 
 		SDL2pp::Rect walkClips[4];
 		SDL2pp::Rect jumpClip;

@@ -10,9 +10,10 @@
 Game::Game(Client &client, int players) try : client(client), 
 sdl(SDL_INIT_VIDEO), 
 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), 
-renderer(window, -1, SDL_RENDERER_ACCELERATED), weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer) {
+renderer(window, -1, SDL_RENDERER_ACCELERATED), ducks(), crates(), bullets(), weaponSpawns(),  weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer), crate(renderer) {
     for (int i = 0; i < players; i++) {
-        ducks.emplace_back(renderer, i);
+        std::shared_ptr duck = std::make_shared<Duck>(renderer, i);
+        ducks.push_back(duck);
     }
 } catch (std::exception &e) {
     throw std::exception();
@@ -25,7 +26,6 @@ int Game::start() {
         // Inicializar musica
 
         // loadSounds(renderer);
-        // loadColors(renderer);
 
         // Game Loop
         ActionHandler actionHandler(client);
@@ -55,7 +55,7 @@ int Game::start() {
                 auto lost = behind - behind % rate; // ¿Cuanto tiempo perdimos?
                 t1 += lost;                         // Ajustamos 't1' para ponernos al dia con el tiempo perdido
                 for (auto &duck : ducks) {
-                    duck.updateFrame(int(lost / rate));
+                    duck->updateFrame(int(lost / rate));
                 }                                   
                 // Aumentamos 'it' para reflejar las iteraciones que se han perdido debido al retraso
 
@@ -70,7 +70,7 @@ int Game::start() {
 
             t1 += rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
             for (auto &duck : ducks) {
-                duck.updateFrame();
+                duck->updateFrame();
             }  
 
             // Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace
@@ -84,18 +84,12 @@ int Game::start() {
 
 void Game::update(Broadcast broadcast) {
     for (auto &player : broadcast.get_players()) {
-        ducks[player.get_player_id()].update(player);
+        ducks[player.get_player_id()]->update(player);
     }
 
-    /* for (auto &bulletDTO : broadcast.get_bullets()) {
-        bullets.push_back(bullet);
-    }
-    for (auto &weaponDTO : broadcast.get_weapon_spawns()) {
-        weapons_spawns.push_back(weapon);
-
-    for (auto &crate : broadcast.get_crates()) {
-        crates[crate.get_crate_id()].update(crate);
-    } */
+    bullets = broadcast.get_bullets();
+    weaponSpawns = broadcast.get_weapons();
+    crates = broadcast.get_crates();
 }
 
 // Puede haber un problema de sincronizacion entre update y render.
@@ -105,22 +99,17 @@ void Game::render()
     renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
     for (auto &duck : ducks) {
-        duck.render();
-        weapon.render(duck.getPosX(), duck.getPosY(), 0); // a cambiar
-        helmet.render(duck.getPosX(), duck.getPosY(), 0); // si hay helmet
-        chestplate.render(duck.getPosX(), duck.getPosY(), 0); // si hay chestplate
+        duck->render();
     }
-    /* for (auto &crate : crates){
-        crate.render(renderer);
-    } */
-    // for (auto &bullet : bullets) { // Dibujo las balas
-        // bullet.render(bullet.getPosX(), bullet.getPosY(), bullet.get_rotation(), bullet.get_type());
-    // }
-    // for (auto &weaponSpawn : weaponSpawns){ // Dibujo las arams que spawnearon
-        // weapon.render(weaponSpawn.getPosX(), weaponSpawn.getPosY(), weaponSpawn.get_type());
-    // }
-    // bullets.clear();
-    // weaponSpawns.clear();
+    for (auto &crateDTO : crates){ // Dibujo los crates
+        crate.render(crateDTO);
+    }
+    for (auto &bulletDTO : bullets) { // Dibujo las balas
+        bullet.render(bulletDTO);
+    }
+    for (auto &weaponDTO : weaponSpawns){ // Dibujo las arams que spawnearon
+        weapon.render(weaponDTO);
+    }
     renderer.Present();
 }
 
