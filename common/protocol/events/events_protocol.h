@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_EVENTS_PROTOCOL_H
 #define TALLER_TP_EVENTS_PROTOCOL_H
 
-#include "common/events/event.h"
+#include "common/events/base/event.h"
 #include "common/protocol/common/protocol.h"
 
 class EventsProtocol : public Protocol {
@@ -28,6 +28,16 @@ public:
   std::shared_ptr<Event> read_broadcast();
 
   void send_broadcast(const std::shared_ptr<Event> &event);
+
+    void send_refresh(const std::shared_ptr<Event> &event);
+
+    std::shared_ptr<Event> read_refresh_game();
+
+    std::shared_ptr<Event> read_new_player();
+
+    void send_new_player(const std::shared_ptr<Event> &event);
+
+    void send_start_game(const std::shared_ptr<Event> &event);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

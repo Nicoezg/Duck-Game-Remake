@@ -3,10 +3,11 @@
 //
 
 #include "player.h"
+#include "player_macros.h"
 #include <sstream>
 
-Player::Player(int player_id, int position_x, int position_y, bool dead, bool jumping, bool falling, bool playing_dead, bool right, bool aiming_upwards, bool new_movement)
-    : player_id(player_id), position_x(position_x), position_y(position_y), dead(), jumping(), falling(), playing_dead(), right(), aiming_upwards(), new_movement() {}
+Player::Player(int player_id, int position_x, int position_y, bool right, State state)
+    : player_id(player_id), position_x(position_x), position_y(position_y), right(right), state(state) {}
 
 int Player::get_player_id() const { return player_id; }
 
@@ -15,7 +16,7 @@ int Player::get_position_x() const { return position_x; }
 std::string Player::get_text() const {
   std::stringstream ss;
   ss << "PlayerId: " << player_id << " Position: (" << position_x << ", "
-     << position_y << ")";
+     << position_y << ")" << " Right: " << right << " State: " << state;
   return ss.str();
 }
 
@@ -29,16 +30,6 @@ void Player::move(bool is_right) {
   }
 }
 
-bool Player::is_dead() const { return dead; }
-
-bool Player::is_jumping() const { return jumping; }
-
-bool Player::is_falling() const { return falling; }
-
-bool Player::is_playing_dead() const { return playing_dead; }
-
 bool Player::is_right() const { return right; }
 
-bool Player::is_aiming_upwards() const { return aiming_upwards; }
-
-bool Player::is_new_movement() const { return new_movement; }
+State Player::get_state() const { return state; }

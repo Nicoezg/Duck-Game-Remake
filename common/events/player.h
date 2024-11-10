@@ -6,23 +6,21 @@
 #define TALLER_TP_PLAYER_H
 
 #include <string>
+#include "player_macros.h"
+
+
 
 class Player {
 private:
   int player_id;
   int position_x;
   int position_y;
-  bool dead;
-  bool jumping;
-  bool falling;
-  bool playing_dead;
   bool right;
-  bool aiming_upwards;
-  bool new_movement;
+  enum State state;
 
 
 public:
-  Player(int player_id, int position_x, int position_y, bool dead, bool jumping, bool falling, bool playing_dead, bool right, bool aiming_upwards, bool new_movement);
+  Player(int player_id, int position_x, int position_y, bool right, State state);
 
   int get_player_id() const;
 
@@ -34,19 +32,9 @@ public:
 
   void move(bool is_right);
 
-  bool is_dead() const;
-
-  bool is_jumping() const;
-
-  bool is_falling() const;
-
-  bool is_playing_dead() const;
+  State get_state() const;
 
   bool is_right() const;
-
-  bool is_aiming_upwards() const;
-
-  bool is_new_movement() const;
 };
 
 #endif // TALLER_TP_PLAYER_H

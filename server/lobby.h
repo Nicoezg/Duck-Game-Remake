@@ -28,7 +28,7 @@ public:
 
   void close();
 
-  std::shared_ptr<Event> create_game(GameMode mode);
+  std::shared_ptr<Event> create_game(GameMode mode, int max_players);
 
   std::shared_ptr<Event> not_connected_to_game();
 

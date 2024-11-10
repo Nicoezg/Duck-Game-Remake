@@ -5,7 +5,7 @@
 #ifndef TALLER_TP_BROADCAST_H
 #define TALLER_TP_BROADCAST_H
 
-#include "event.h"
+#include "common/events/base/event.h"
 #include "player.h"
 #include <list>
 #include <string>
