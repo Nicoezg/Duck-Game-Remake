@@ -11,11 +11,14 @@ private:
   WeaponId weapon_id;
   int position_x;
   int position_y;
+  bool shooting;
 
 public:
-  Weapon(WeaponId weapon_id = NO_WEAPON, int position_x = 0, int position_y = 0);
+  Weapon(WeaponId weapon_id = NO_WEAPON, int position_x = 0, int position_y = 0, bool shooting = false);
 
-  WeaponId get_weapon_id() const;
+  WeaponId get_id() const;
+
+  bool is_shooting() const;
 
   int get_position_x() const;
 
