@@ -15,9 +15,6 @@ renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates()
         std::shared_ptr duck = std::make_shared<Duck>(renderer, i);
         ducks.push_back(duck);
     }
-    /* map.loadFromYaml(DATA_PATH "maps/mapa.yaml");
-    SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
-    std::cout << "Window size: " << map.getWidth() << "x" << map.getHeight() << std::endl; */
 } catch (std::exception &e) {
     throw std::exception();
 }
@@ -27,7 +24,9 @@ int Game::start() {
         processEvent(); // Cargo el mapa
         SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
 
-        window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png"));
+        processEvent(); // consigo los patos
+
+        window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png")); // Creo que no funciona
 
         // Inicializar musica
 
@@ -101,17 +100,24 @@ int Game::processEvent(){
             // game.restart(std::dynamic_pointer_cast<Restart>(event))
             return 1;
         case GAME_OVER:
-            // game.end(std::dynamic_pointer_cast<GameOver>(event))
+            // game.end(std::dynamic_pointer_cast<Score>(event))
             return 2;
         case MAP_LOAD:
-            // map.load(std::dynamic_pointer_cast<Map>(event))
+            // map.load(std::dynamic_pointer_cast<Score>(event))
             return 3;
         default:
             return 0;
     }
 }
 
-void Game::update(Broadcast broadcast) {
+void Game::update(const Broadcast& broadcast) {
+    if (ducks.size() != broadcast.get_players().size()) {
+        ducks.clear();
+        for (auto &player : broadcast.get_players()) {
+            std::shared_ptr duck = std::make_shared<Duck>(renderer, player.get_player_id());
+            ducks.push_back(duck);
+        }
+    }
     for (auto &player : broadcast.get_players()) {
         ducks[player.get_player_id()]->update(player);
     }
@@ -121,7 +127,28 @@ void Game::update(Broadcast broadcast) {
     crates = broadcast.get_crates();
 }
 
-// Puede haber un problema de sincronizacion entre update y render.
+void Game::showScores(Score score) {
+    renderer.SetDrawColor(0, 0, 0, 255);
+    renderer.Clear();
+    // Render scores
+    for (size_t i = 0; i < score.size(); ++i) {
+        std::string scoreText = "Player " + std::to_string(i + 1) + ": " + std::to_string(score[i]);
+        SDL2pp::Texture scoreTexture(renderer, SDL2pp::Surface::RenderText_Blended(
+            SDL2pp::Font(DATA_PATH "font.ttf", 24), scoreText, SDL_Color{255, 255, 255, 255}));
+        renderer.Copy(scoreTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50 + i * 30, scoreTexture.GetWidth(), scoreTexture.GetHeight()));
+    }
+
+    renderer.Present();
+    SDL_Delay(5000); // Show scores for 5 seconds
+}
+
+void Game::showVictoryScreen() {
+    // a definir
+}
+
+void Game::reset() {
+
+}
 
 void Game::render()
 {
