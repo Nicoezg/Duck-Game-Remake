@@ -6,6 +6,7 @@ target_sources(CLIENT
     draw_chestplate.cpp
     draw_bullet.cpp
     draw_crate.cpp
+    draw_map.cpp
     
     PUBLIC
     draw_helmet.h
@@ -13,5 +14,6 @@ target_sources(CLIENT
     draw_chestplate.h
     draw_bullet.h
     draw_crate.h
+    draw_map.h
     # .h files
     )

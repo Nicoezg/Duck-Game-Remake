@@ -15,15 +15,18 @@ renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates()
         std::shared_ptr duck = std::make_shared<Duck>(renderer, i);
         ducks.push_back(duck);
     }
-    map.loadFromYaml(DATA_PATH "maps/mapa.yaml");
+    /* map.loadFromYaml(DATA_PATH "maps/mapa.yaml");
     SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
-    std::cout << "Window size: " << map.getWidth() << "x" << map.getHeight() << std::endl;
+    std::cout << "Window size: " << map.getWidth() << "x" << map.getHeight() << std::endl; */
 } catch (std::exception &e) {
     throw std::exception();
 }
 
 int Game::start() {
     try {
+        processEvent(); // Cargo el mapa
+        SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
+
         window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png"));
 
         // Inicializar musica
@@ -100,6 +103,9 @@ int Game::processEvent(){
         case GAME_OVER:
             // game.end(std::dynamic_pointer_cast<GameOver>(event))
             return 2;
+        case MAP_LOAD:
+            // map.load(std::dynamic_pointer_cast<Map>(event))
+            return 3;
         default:
             return 0;
     }

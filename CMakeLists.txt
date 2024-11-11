@@ -53,6 +53,10 @@ add_library(COMMON STATIC
         common/events/broadcast.h
         common/events/player.cpp
         common/events/player.h
+        common/events/map.cpp
+        common/events/map.h
+        common/events/tile.cpp
+        common/events/tile.h
         common/events/connection/new_player.cpp
         common/events/connection/new_player.h
         common/events/connection/refresh_games.cpp
@@ -125,7 +129,6 @@ if(CLIENT)
     add_subdirectory(client/communication)
     add_subdirectory(client/graphic)
     add_subdirectory(client/graphic/draw)
-    add_subdirectory(client/graphic/map)
 
     set_project_warnings(CLIENT ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
