@@ -10,11 +10,14 @@
 Game::Game(Client &client, int players) try : client(client), 
 sdl(SDL_INIT_VIDEO), 
 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), 
-renderer(window, -1, SDL_RENDERER_ACCELERATED), ducks(), crates(), bullets(), weaponSpawns(),  weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer), crate(renderer) {
+renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates(), bullets(), weaponSpawns(),  weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer), crate(renderer) {
     for (int i = 0; i < players; i++) {
         std::shared_ptr duck = std::make_shared<Duck>(renderer, i);
         ducks.push_back(duck);
     }
+    map.loadFromYaml(DATA_PATH "maps/mapa.yaml");
+    SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
+    std::cout << "Window size: " << map.getWidth() << "x" << map.getHeight() << std::endl;
 } catch (std::exception &e) {
     throw std::exception();
 }
@@ -32,11 +35,12 @@ int Game::start() {
 
         auto rate = 1000 / 60; // 60 FPS
 
-        while (true)
+        std::cout << "estoy llegando hasta aca" << std::endl;
+
+        while (processEvent() != 2)
         {
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Procesamos los eventos del pato
-            render();
             
             /* IF BEHIND, KEEP WORKING */
             // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -76,9 +80,28 @@ int Game::start() {
             // Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace
             // 		 que se cuelgue el juego
         }
+        return 0;
 
     } catch (std::exception &e) { // 
         return 1;
+    }
+}
+
+int Game::processEvent(){
+    std::shared_ptr<Event> event = client.read_event();
+    switch(event->get_type()) {
+        case BROADCAST:
+            update(*std::dynamic_pointer_cast<Broadcast>(event));
+            render();
+            return 0;
+        case RESTART_GAME:
+            // game.restart(std::dynamic_pointer_cast<Restart>(event))
+            return 1;
+        case GAME_OVER:
+            // game.end(std::dynamic_pointer_cast<GameOver>(event))
+            return 2;
+        default:
+            return 0;
     }
 }
 
@@ -98,7 +121,9 @@ void Game::render()
 {
     renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
-    for (auto &duck : ducks) {
+    map.render();
+    std::cout << "pase el map render" << std::endl;
+    /* for (auto &duck : ducks) {
         duck->render();
     }
     for (auto &crateDTO : crates){ // Dibujo los crates
@@ -109,7 +134,7 @@ void Game::render()
     }
     for (auto &weaponDTO : weaponSpawns){ // Dibujo las arams que spawnearon
         weapon.render(weaponDTO);
-    }
+    } */
     renderer.Present();
 }
 

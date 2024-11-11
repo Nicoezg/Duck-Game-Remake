@@ -1,6 +1,7 @@
 #include "draw_chestplate.h"
 #include <memory>
-#define DATA_PATH "../sprites/"
+#include <iostream>
+#define DATA_PATH "../client/sprites/"
 
 DrawChestplate::DrawChestplate(SDL2pp::Renderer &renderer, bool equipped) : renderer(renderer), equipped(equipped) {
     this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "equipment/chestplate.png").SetColorKey(true, 0));

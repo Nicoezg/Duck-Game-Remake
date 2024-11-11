@@ -1,7 +1,8 @@
 #include "draw_weapon.h"
-#define DATA_PATH "../sprites/"
+#include <iostream>
+#define DATA_PATH "../client/sprites/"
 
-DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId) : renderer(renderer), weaponId(weaponId), sound(), shoot(false) {
+DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId) : textures(), sounds(), renderer(renderer), weaponId(weaponId), sound(), shoot(false) {
     this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/grenade.png").SetColorKey(true, 0));
     this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/banana.png").SetColorKey(true, 0));
     this->textures[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/pew-pew-laser.png").SetColorKey(true, 0));
@@ -14,14 +15,14 @@ DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId) : renderer
     this->textures[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/sniper.png").SetColorKey(true, 0));
 
 
-    this->sounds[2] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/pew-pew-laser.WAV");
-    this->sounds[3] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/laserRifle.WAV");
-    this->sounds[4] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/ak47.WAV");
-    this->sounds[5] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/duelingpistol.WAV");
-    this->sounds[6] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/pistolFire.WAV");
-    this->sounds[7] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/magShot.WAV");
-    this->sounds[8] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/shotgunFire.WAV");
-    this->sounds[9] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/sniper.WAV");
+    this->sounds[2] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/pew-pew-laser.wav");
+    this->sounds[3] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/laserRifle.wav");
+    this->sounds[4] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/ak47.wav");
+    this->sounds[5] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/duelingpistol.wav");
+    this->sounds[6] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/pistolFire.wav");
+    this->sounds[7] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/magShot.wav");
+    this->sounds[8] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/shotgunFire.wav");
+    this->sounds[9] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/sniper.wav");
 }
 
 void DrawWeapon::render(int x, int y){

@@ -1,6 +1,7 @@
 #include "draw_crate.h"
+#include <iostream>
 
-#define DATA_PATH "../sprites/"
+#define DATA_PATH "../client/sprites/props/"
 
 DrawCrate::DrawCrate(SDL2pp::Renderer &renderer) : renderer(renderer) {
     texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "crate.png").SetColorKey(true, 0));
@@ -10,8 +11,8 @@ DrawCrate::DrawCrate(SDL2pp::Renderer &renderer) : renderer(renderer) {
         crateClip[i].w = 16;
         crateClip[i].h = 16;
     }
-    breakingSound = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/crateDestroy.WAV");
-    hitSound = std::make_shared<SDL2pp::Chunk>(DATA_PATH "../audio/crateHit.WAV");
+    breakingSound = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/crateDestroy.wav");
+    hitSound = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/crateHit.wav");
 }
 
 void DrawCrate::render(const Crate& crate){

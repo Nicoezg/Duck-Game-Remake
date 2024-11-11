@@ -14,6 +14,8 @@
 #include "draw/draw_helmet.h"
 #include "draw/draw_bullet.h"
 #include "draw/draw_crate.h"
+#include "map/map.h"
+#include "../../common/events/base/event.h"
 
 using namespace SDL2pp;
 
@@ -28,6 +30,8 @@ class Game{
         Window window;
 
         Renderer renderer;
+
+        Map map;
 
         std::vector<std::shared_ptr<Duck>> ducks;
 
@@ -55,6 +59,7 @@ class Game{
 
         void render();
 
+        int processEvent();
 
     public:
         Game(Client &client, int players);

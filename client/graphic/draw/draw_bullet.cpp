@@ -1,6 +1,6 @@
 #include "draw_bullet.h"
 
-#define DATA_PATH "../sprites/"
+#define DATA_PATH "../client/sprites/"
 
 DrawBullet::DrawBullet(SDL2pp::Renderer &renderer) : renderer(renderer) {
     this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/laser-flare.png").SetColorKey(true, 0));
