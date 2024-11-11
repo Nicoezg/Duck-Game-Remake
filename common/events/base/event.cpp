@@ -59,3 +59,19 @@ int Event::get_actual_players() const {
 std::list<GameRoom> Event::get_games() {
     throw std::runtime_error("Has no games.");
 }
+
+std::vector<Tile> Event::get_platforms() const {
+    throw std::runtime_error("Has no platforms.");
+}
+
+int Event::get_background_id() const {
+    throw std::runtime_error("Has no background id.");
+}
+
+int Event::get_width() const {
+    throw std::runtime_error("Has no width.");
+}
+
+int Event::get_length() const {
+    throw std::runtime_error("Has no length.");
+}

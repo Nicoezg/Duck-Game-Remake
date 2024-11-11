@@ -4,8 +4,9 @@
 #include <string>
 #include <vector>
 #include "tile.h"
+#include "base/event.h"
 
-class Map {
+class Map : public Event {
 private:
   std::vector<Tile> platforms; // Contiene todos los tiles del mapa
 
@@ -17,15 +18,15 @@ private:
 
 
 public:
-  Map(std::vector<Tile> platforms, int background_id, int width, int length);
+  explicit Map(std::vector<Tile> platforms, int background_id, int width, int length);
 
-  std::vector<Tile> get_platforms() const;
+  std::vector<Tile> get_platforms() const override;
 
-  int get_background_id() const;
+  int get_background_id() const override;
 
-  int get_width() const;
+  int get_width() const override;
 
-  int get_length() const;
+  int get_length() const override;
 
 
 };

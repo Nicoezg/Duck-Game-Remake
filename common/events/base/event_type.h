@@ -12,6 +12,9 @@ enum EventType {
     NEW_PLAYER = 0x04,
     REFRESH_GAMES = 0x05,
     START_GAME = 0x06,
+    RESTART_GAME = 0x07,
+    GAME_OVER = 0x08,
+    MAP_LOAD = 0x09
 };
 
 #endif // TALLER_TP_EVENT_TYPE_H

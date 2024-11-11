@@ -8,10 +8,12 @@
 #include "event_type.h"
 #include "common/events/player.h"
 #include "common/events/connection/game_room.h"
+#include "../tile.h"
 #include "../items/bullet.h"
 #include "../items/crate.h"
 #include "../items/weapon.h"
 #include <list>
+#include <vector>
 
 #define SIN_ASIGNAR 0
 class Event {
@@ -43,9 +45,18 @@ public:
 
   virtual int get_max_players() const;
 
-    virtual int get_actual_players() const;
+  virtual int get_actual_players() const;
 
-    virtual std::list<GameRoom> get_games();
+  virtual std::list<GameRoom> get_games();
+
+  virtual std::vector<Tile> get_platforms() const;
+
+  virtual int get_background_id() const;
+
+  virtual int get_width() const;
+
+  virtual int get_length() const;
+
   virtual ~Event() = default;
 };
 
