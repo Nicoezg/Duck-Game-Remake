@@ -24,19 +24,19 @@ int Event::get_position_y() const {
   throw std::runtime_error("Has no y position.");
 }
 
-std::list<Player> Event::get_players() {
+std::list<Player> Event::get_players() const {
   throw std::runtime_error("Has no players.");
 }
 
-std::list<Bullet> Event::get_bullets() {
+std::list<Bullet> Event::get_bullets() const {
   throw std::runtime_error("Has no bullets.");
 }
 
-std::list<Crate> Event::get_crates() {
+std::list<Crate> Event::get_crates() const {
   throw std::runtime_error("Has no crates.");
 }
 
-std::list<Weapon> Event::get_weapons() {
+std::list<Weapon> Event::get_weapons() const {
   throw std::runtime_error("Has no weapons.");
 }
 

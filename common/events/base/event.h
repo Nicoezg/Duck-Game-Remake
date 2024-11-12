@@ -35,13 +35,13 @@ public:
   virtual int get_player_id_1() const;
   virtual int get_player_id_2() const;
 
-  virtual std::list<Player> get_players();
+  virtual std::list<Player> get_players() const;
 
-  virtual std::list<Bullet> get_bullets();
+  virtual std::list<Bullet> get_bullets() const;
 
-  virtual std::list<Crate> get_crates();
+  virtual std::list<Crate> get_crates() const;
 
-  virtual std::list<Weapon> get_weapons();
+  virtual std::list<Weapon> get_weapons() const;
 
   virtual int get_max_players() const;
 

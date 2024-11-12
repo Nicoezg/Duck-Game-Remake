@@ -6,8 +6,8 @@
 #include "player_macros.h"
 #include <sstream>
 
-Player::Player(int player_id, int position_x, int position_y, bool right, State state)
-    : player_id(player_id), position_x(position_x), position_y(position_y), right(right), state(state) {}
+Player::Player(int player_id, int position_x, int position_y, bool right, State state, Weapon weapon, Helmet helmet, Chestplate chestplate)
+    : player_id(player_id), position_x(position_x), position_y(position_y), right(right), state(state), weapon(weapon), helmet(helmet), chestplate(chestplate) {}
 
 int Player::get_player_id() const { return player_id; }
 
