@@ -164,6 +164,10 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         int y = encoder.decode_coordinate(players_data);
         bool is_right = encoder.decode_is_right(players_data);
         State state = encoder.decode_player_state(players_data);
+        Weapon weapon(NO_WEAPON);
+        Helmet helmet(NO_HELMET);
+        Chestplate chestplate(false);
+
         // Weapon weapon = encoder.decode_weapon(players_data);
         // Helmet helmet = encoder.decode_helmet(players_data);
         // Chestplate chestplate = encoder.decode_chestplate(players_data);

@@ -4,7 +4,6 @@
 #include "common/actions/player/move.h"
 #include "common/events/base/event.h"
 #include "common/protocol/common/protocol_error.h"
-#include "printer.h"
 #include <iostream>
 #include <utility>
 

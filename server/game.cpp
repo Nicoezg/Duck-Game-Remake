@@ -32,6 +32,9 @@ int Game::get_next_player_id() {
   next_player_id++;
   // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
   // Hay que obtener las cosas me parece
+  Weapon weapon(NO_WEAPON);
+  Helmet helmet(NO_HELMET);
+  Chestplate chestplate(false);
   players.insert_or_assign(next_player_id, Player(next_player_id, 0, 0, true, State::BLANK, weapon, helmet, chestplate));
   actual_players++;
   return next_player_id;
@@ -87,7 +90,7 @@ void Game::read_actions() {
         std::cout << "Jugador no encontrado" << std::endl;
         break;
       }
-      players.at(action->get_player_id()).move(action->is_right());
+      // players.at(action->get_player_id()).move(action->is_right());
       // Hay que conseguir la lista de bullets, crates y weapons. La linea de abajo está de ejemplo.
       event = std::make_shared<Broadcast>(get_players(), std::list<Bullet>(), std::list<Crate>(), std::list<Weapon>());
       notify_event(event);
