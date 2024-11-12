@@ -57,6 +57,14 @@ public:
 
   virtual int get_length() const;
 
+  virtual std::vector<std::string> get_names() const;
+
+  virtual std::vector<int> get_scores() const;
+
+  virtual std::string get_winner() const;
+
+  virtual int get_score() const;
+
   virtual ~Event() = default;
 };
 

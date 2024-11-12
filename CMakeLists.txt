@@ -53,6 +53,14 @@ add_library(COMMON STATIC
         common/events/broadcast.h
         common/events/player.cpp
         common/events/player.h
+        common/events/map.cpp
+        common/events/map.h
+        common/events/tile.cpp
+        common/events/tile.h
+        common/events/score.cpp
+        common/events/score.h
+        common/events/game_over.cpp
+        common/events/game_over.h
         common/events/connection/new_player.cpp
         common/events/connection/new_player.h
         common/events/connection/refresh_games.cpp
@@ -70,6 +78,7 @@ add_library(COMMON STATIC
 # add the source files that make the lib
 add_subdirectory(common/)
 add_subdirectory(common/events/items)
+
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
@@ -99,6 +108,7 @@ if(CLIENT OR EDITOR)
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTORCC ON)
 
+    find_package(yaml-cpp REQUIRED)
     find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
     find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Multimedia)
 
@@ -121,16 +131,20 @@ if(CLIENT)
     # Add source files and enable warnings
     add_subdirectory(client/ui)
     add_subdirectory(client/communication)
+    add_subdirectory(client/graphic)
+    add_subdirectory(client/graphic/draw)
 
     set_project_warnings(CLIENT ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # add libSDL2pp's headers
     target_include_directories(CLIENT PRIVATE ${libSDL2pp_SOURCE_DIR})
+    
 
     include_directories(${Qt6Widgets_INCLUDE_DIRS})
 
     # Link the COMMON lib target
     target_link_libraries(CLIENT PRIVATE COMMON SDL2pp::SDL2pp Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia)
+    target_link_libraries(CLIENT PRIVATE yaml-cpp)
 
     qt_finalize_executable(CLIENT)
 

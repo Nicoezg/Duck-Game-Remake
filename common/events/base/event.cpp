@@ -75,3 +75,19 @@ int Event::get_width() const {
 int Event::get_length() const {
     throw std::runtime_error("Has no length.");
 }
+
+std::vector<std::string> Event::get_names() const {
+    throw std::runtime_error("Has no names.");
+}
+
+std::vector<int> Event::get_scores() const {
+    throw std::runtime_error("Has no scores.");
+}
+
+std::string Event::get_winner() const {
+    throw std::runtime_error("Has no winner.");
+}
+
+int Event::get_score() const {
+    throw std::runtime_error("Has no score.");
+}
