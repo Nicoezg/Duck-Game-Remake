@@ -62,14 +62,16 @@ class Game{
 
         int processEvent();
 
-        void showScores(const Scores& scores)
-
-        void update(const Broadcast& broadcast);
-
         void showVictoryScreen();
 
     public:
-        Game(Client &client, int players);
+        Game(Client &client);
+
+        void update(const Broadcast& broadcast);
+
+        // void showScores(const Score& score);
+
+        void end();
         
         int start();
 

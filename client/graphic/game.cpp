@@ -7,24 +7,18 @@
 #define DATA_PATH "../client/sprites/"
 
 
-Game::Game(Client &client, int players) try : client(client), 
+Game::Game(Client &client) try : client(client), 
 sdl(SDL_INIT_VIDEO), 
 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), 
 renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates(), bullets(), weaponSpawns(),  weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer), crate(renderer) {
-    for (int i = 0; i < players; i++) {
-        std::shared_ptr duck = std::make_shared<Duck>(renderer, i);
-        ducks.push_back(duck);
-    }
 } catch (std::exception &e) {
     throw std::exception();
 }
 
 int Game::start() {
     try {
-        processEvent(); // Cargo el mapa
-        SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
-
-        processEvent(); // consigo los patos
+        // processEvent(); // Cargo el mapa
+        // SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
 
         window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png")); // Creo que no funciona
 
@@ -37,12 +31,11 @@ int Game::start() {
 
         auto rate = 1000 / 60; // 60 FPS
 
-        std::cout << "estoy llegando hasta aca" << std::endl;
-
-        while (processEvent() != 2)
+        while (true)
         {
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Procesamos los eventos del pato
+            render(); // Renderizamos el juego
             
             /* IF BEHIND, KEEP WORKING */
             // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -89,27 +82,6 @@ int Game::start() {
     }
 }
 
-int Game::processEvent(){
-    std::shared_ptr<Event> event = client.read_event();
-    switch(event->get_type()) {
-        case BROADCAST:
-            update(*std::dynamic_pointer_cast<Broadcast>(event));
-            render();
-            return 0;
-        case RESTART_GAME:
-            // game.restart(std::dynamic_pointer_cast<Restart>(event))
-            return 1;
-        case GAME_OVER:
-            // game.end(std::dynamic_pointer_cast<Score>(event))
-            return 2;
-        case MAP_LOAD:
-            // map.load(std::dynamic_pointer_cast<Score>(event))
-            return 3;
-        default:
-            return 0;
-    }
-}
-
 void Game::update(const Broadcast& broadcast) {
     if (ducks.size() != broadcast.get_players().size()) {
         ducks.clear();
@@ -122,12 +94,12 @@ void Game::update(const Broadcast& broadcast) {
         ducks[player.get_player_id()]->update(player);
     }
 
-    bullets = broadcast.get_bullets();
+    /* bullets = broadcast.get_bullets();
     weaponSpawns = broadcast.get_weapons();
-    crates = broadcast.get_crates();
+    crates = broadcast.get_crates(); */
 }
 
-void Game::showScores(Score score) {
+/* void Game::showScores(const Score& score) {
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
     // Render scores
@@ -140,23 +112,22 @@ void Game::showScores(Score score) {
 
     renderer.Present();
     SDL_Delay(5000); // Show scores for 5 seconds
-}
+} */
 
 void Game::showVictoryScreen() {
     // a definir
 }
 
-void Game::reset() {
-
+void Game::end(){
+    // a definir
 }
 
 void Game::render()
 {
     renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
-    map.render();
-    std::cout << "pase el map render" << std::endl;
-    /* for (auto &duck : ducks) {
+    // map.render();
+    for (auto &duck : ducks) {
         duck->render();
     }
     for (auto &crateDTO : crates){ // Dibujo los crates
@@ -167,7 +138,7 @@ void Game::render()
     }
     for (auto &weaponDTO : weaponSpawns){ // Dibujo las arams que spawnearon
         weapon.render(weaponDTO);
-    } */
+    }
     renderer.Present();
 }
 
