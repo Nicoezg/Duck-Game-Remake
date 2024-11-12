@@ -2,12 +2,16 @@
 #define GAME_MAP_H
 
 #include "common/events/player.h"
-#include "duck.h"
 #include <vector>
 
+class Duck;
+
 class GameMap {
+private:
+  std::vector<Duck *> players;
+
 public:
-  GameMap(int &height, int &width);
+  GameMap();
 
   void addPlayer(Duck *player);
   Duck *findPlayer(int playerId);
@@ -16,11 +20,6 @@ public:
   Player getPlayerState(int playerId);
 
   void reapDead();
-
-private:
-  int height;
-  int width;
-  std::vector<Duck *> players;
 };
 
 #endif

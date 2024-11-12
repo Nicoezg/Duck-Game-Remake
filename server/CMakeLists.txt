@@ -9,6 +9,8 @@ target_sources(SERVER
         notifier.cpp
         server.cpp
         server_protocol.cpp
+        logic/game_map.cpp
+        logic/duck.cpp
 
     PUBLIC
     # .h files
@@ -19,4 +21,6 @@ target_sources(SERVER
         notifier.h
         server.h
         server_protocol.h
+        logic/game_map.h
+        logic/duck.h
     )

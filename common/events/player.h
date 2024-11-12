@@ -5,10 +5,8 @@
 #ifndef TALLER_TP_PLAYER_H
 #define TALLER_TP_PLAYER_H
 
-#include <string>
 #include "player_macros.h"
-
-
+#include <string>
 
 class Player {
 private:
@@ -18,9 +16,9 @@ private:
   bool right;
   enum State state;
 
-
 public:
-  Player(int player_id, int position_x, int position_y, bool right, State state);
+  Player(int player_id, int position_x, int position_y, bool right,
+         State state);
 
   int get_player_id() const;
 
@@ -29,8 +27,6 @@ public:
   int get_position_y() const;
 
   std::string get_text() const;
-
-  void move(bool is_right);
 
   State get_state() const;
 

@@ -1,8 +1,12 @@
 #include "game_map.h"
 #include "common/events/player.h"
+#include "duck.h"
 #include <stdexcept>
 
-GameMap::GameMap(int &height, int &width) : height(height), width(width) {}
+#define HEIGHT 500
+#define WIDTH 500
+
+GameMap::GameMap() = default;
 
 void GameMap::addPlayer(Duck *player) { players.push_back(player); }
 
@@ -26,10 +30,10 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
   if (!player)
     return true;
 
-  if (player->getPositionX() >= width || player->getPositionX() <= 0) {
+  if (player->getPositionX() >= WIDTH || player->getPositionX() <= 0) {
     return true;
   }
-  if (player->getPositionY() >= height || player->getPositionY() <= 0) {
+  if (player->getPositionY() >= HEIGHT || player->getPositionY() <= 0) {
     return true;
   }
   return false;

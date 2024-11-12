@@ -3,6 +3,9 @@
 
 #include "game_map.h"
 #include "weapons/weapon.h"
+#include <atomic>
+
+class GameMap;
 
 class Duck {
 private:
@@ -20,7 +23,7 @@ private:
   bool hasArmour;
 
 public:
-  Duck(int &id, int &posX, int &posY, GameMap &map);
+  Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
 
   void moveRight();
   void moveLeft();
@@ -29,11 +32,13 @@ public:
   void flap();
   void update();
   void shoot();
-
   void equipHelmet();
   void equipArmour();
-
+  void equipWeapon(Weapon *newWeapon);
   void takeDamage();
+  void pickUp();
+  void leave();
+  void playDead();
 
   int getPositionX() const;
   int getPositionY() const;

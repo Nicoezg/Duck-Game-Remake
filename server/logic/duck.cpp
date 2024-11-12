@@ -7,7 +7,7 @@
 #define VELOCIDAD_ALETEO 15
 #define GROUNDLEVEL 10
 
-Duck::Duck(int &id, int &posX, int &posY, GameMap &map)
+Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
     : id(id), posX(posX), posY(posY), map(map) {
   velX = 0;
   velY = 0;
@@ -93,6 +93,11 @@ void Duck::equipHelmet() { hasHelmet = true; }
 
 void Duck::equipArmour() { hasArmour = true; }
 
+void Duck::equipWeapon(Weapon* newWeapon) {
+  if (weapon) delete weapon;
+  weapon = newWeapon;
+}
+
 void Duck::takeDamage() {
   if (hasHelmet) {
     hasHelmet = false;
@@ -102,6 +107,18 @@ void Duck::takeDamage() {
     // muere
     state = State::DEAD;
   }
+}
+
+void Duck::pickUp() {
+// para agarrar
+}
+
+void Duck::leave() {
+  // para soltar
+}
+
+void Duck::playDead() {
+   
 }
 
 int Duck::getPositionX() const { return posX; }
