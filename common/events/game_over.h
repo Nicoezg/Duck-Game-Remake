@@ -10,7 +10,6 @@ private:
     std::string winner;
     int score;
 
-
 public:
   GameOver(std::string &&winner, int &&scores);
 
