@@ -57,6 +57,10 @@ add_library(COMMON STATIC
         common/events/map.h
         common/events/tile.cpp
         common/events/tile.h
+        common/events/score.cpp
+        common/events/score.h
+        common/events/game_over.cpp
+        common/events/game_over.h
         common/events/connection/new_player.cpp
         common/events/connection/new_player.h
         common/events/connection/refresh_games.cpp

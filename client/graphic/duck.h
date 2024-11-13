@@ -57,6 +57,8 @@ class Duck
 
 		std::shared_ptr<SDL2pp::Texture> wingsTexture = nullptr;
 
+		std::map<int, std::shared_ptr<SDL2pp::Chunk>> sfx;
+
 		AnimationMovement animationMovement;
 
 		Sound sound;
@@ -76,5 +78,6 @@ class Duck
 		SDL2pp::Rect walkWeaponClips[4];
 		SDL2pp::Rect jumpWeaponClip;
 		SDL2pp::Rect fallWeaponClip;
+		SDL2pp::Rect aimingUpwardsClip;
 };
 #endif

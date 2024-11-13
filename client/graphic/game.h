@@ -5,6 +5,7 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <mutex>
 #include "../communication/client.h"
 #include "duck.h"
 #include "action_handler.h"
@@ -17,6 +18,8 @@
 #include "draw/draw_map.h"
 #include "../../common/events/base/event.h"
 #include "../../common/events/map.h"
+#include "../../common/events/score.h"
+#include "../../common/events/game_over.h"
 
 using namespace SDL2pp;
 
@@ -26,7 +29,11 @@ class Game{
         
         Client &client;
 
-        SDL sdl;
+        SDL sdl; 
+
+        SDLTTF ttf;
+        
+        Font font;
 
         Window window;
 
@@ -44,8 +51,6 @@ class Game{
 
         // std::vector<Explosion> explosions;
 
-        std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
-
         DrawWeapon weapon;
 
         DrawHelmet helmet;
@@ -56,22 +61,28 @@ class Game{
 
         DrawCrate crate;
 
+        std::mutex mutex;
+
+        bool stop;
+
+        bool pause;
+
         void loadTextures(Renderer &renderer);
 
-        void render();
+        int render();
 
         int processEvent();
 
-        void showVictoryScreen();
+        void showVictoryScreen(const GameOver& gameOver);
 
     public:
         Game(Client &client);
 
         void update(const Broadcast& broadcast);
 
-        // void showScores(const Score& score);
+        void showScores();
 
-        void end();
+        void end(const GameOver& gameOver);
         
         int start();
 

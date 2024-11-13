@@ -5,8 +5,8 @@ const int DUCK_WIDTH = 32;
 const int DUCK_HEIGHT = 32;
 
     Duck::Duck(SDL2pp::Renderer& renderer, int id) : posX(), posY(), id(id), direction(), renderer(renderer), 
-    weaponsTexture(), wingsTexture(), animationMovement(), weapon(renderer), helmet(renderer), chestplate(renderer), 
-    walkClips(), jumpClip(), fallClip(), flappingClips(), playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip() {
+    weaponsTexture(), wingsTexture(), sfx(), animationMovement(), sound(), weapon(renderer), helmet(renderer), chestplate(renderer), 
+    walkClips(), jumpClip(), fallClip(), flappingClips(), playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip(), aimingUpwardsClip() {
         for (int i = 1; i < 6; i++){
             walkClips[i].x = i * DUCK_WIDTH;
             walkClips[i].y = 0;
@@ -69,6 +69,13 @@ const int DUCK_HEIGHT = 32;
         flappingClips[2].w = DUCK_WIDTH;
         flappingClips[2].h = DUCK_HEIGHT;
 
+        aimingUpwardsClip.x = DUCK_WIDTH * 3;
+        aimingUpwardsClip.y = DUCK_HEIGHT * 2;
+        aimingUpwardsClip.w = DUCK_WIDTH;
+        aimingUpwardsClip.h = DUCK_HEIGHT;
+
+        sfx[0] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk(DATA_PATH "sounds/jump.wav"));
+        sfx[1] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk(DATA_PATH "sounds/death.wav"));
         // Falta aiming_upwards. No se cual podria ser
     }
 
@@ -87,6 +94,7 @@ const int DUCK_HEIGHT = 32;
                     break;
                 case MovementType::JUMP:
                     currentClip = jumpClip;
+                    sound.play();
                     break;
                 case MovementType::FALL:
                     currentClip = fallClip;
@@ -106,12 +114,16 @@ const int DUCK_HEIGHT = 32;
                     break;
                 case MovementType::JUMP:
                     currentClip = jumpWeaponClip;
+                    sound.play();
                     break;
                 case MovementType::FALL:
                     currentClip = fallWeaponClip;
                     break;
                 case MovementType::PLAYDEAD:
                     currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+                    break;
+                case MovementType::AIMING_UPWARDS:
+                    currentClip = aimingUpwardsClip;
                     break;
                 default:
                     currentClip = walkWeaponClips[0];
@@ -125,6 +137,7 @@ const int DUCK_HEIGHT = 32;
         if (helmet.isEquipped()){
             helmet.render(posX, posY); // A determinar posiciones
         }
+        sound.play();
         renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
     }
 
@@ -138,14 +151,16 @@ const int DUCK_HEIGHT = 32;
         chestplate.update(player.get_chestplate());
 
         auto state = player.get_state();
-        if (state == PLAYING_DEAD) {
+        if (state == PLAYING_DEAD || state == DEAD) {
             animationMovement.changeState(MovementType::PLAYDEAD, false);
+            sound.change(sfx[1], 0);
 
         } else if (state == FALLING) {
             animationMovement.changeState(MovementType::FALL, false);
 
         } else if (state == JUMPING) {
             animationMovement.changeState(MovementType::JUMP, false);
+            sound.change(sfx[0], 0);
 
         } else if (state == FLAPPING) {
             animationMovement.changeState(MovementType::FALL, false);

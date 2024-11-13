@@ -39,6 +39,7 @@ void DrawWeapon::render(const Weapon &weapon){
     std::shared_ptr<SDL2pp::Texture> texture = this->textures[weapon.get_id()];
     SDL2pp::Rect dest(weapon.get_position_x(), weapon.get_position_y(), texture->GetWidth(), texture->GetHeight());
     renderer.Copy(*texture, SDL2pp::NullOpt, dest);
+    // Falta ajustar las posiciones de las armas.
 }
 
 void DrawWeapon::update(const Weapon &weapon){

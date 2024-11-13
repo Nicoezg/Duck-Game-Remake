@@ -1,16 +1,21 @@
 #include <SDL2/SDL_video.h>
 #include <string>
 #include "game.h"
+#include <SDL2/SDL_ttf.h>
+#include <SDL2pp/Font.hh>
+#include <SDL2pp/SDL2pp.hh>
 
+#define BACKGROUND_MUSIC_VOLUME SDL_MIX_MAXVOLUME / 15
+#define BACKGROUND_MUSIC_CHANNEL 0
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 #define DATA_PATH "../client/sprites/"
 
 
 Game::Game(Client &client) try : client(client), 
-sdl(SDL_INIT_VIDEO), 
+sdl(SDL_INIT_VIDEO), font("../client/sprites/font.ttf", 24),
 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), 
-renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates(), bullets(), weaponSpawns(),  weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer), crate(renderer) {
+renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates(), bullets(), weaponSpawns(),  weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer), crate(renderer), mutex(), stop(false), pause(false) {
 } catch (std::exception &e) {
     throw std::exception();
 }
@@ -20,11 +25,17 @@ int Game::start() {
         // processEvent(); // Cargo el mapa
         // SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
 
-        window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png")); // Creo que no funciona
+        window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png").SetColorKey(true, 0)); // Creo que no funciona
 
         // Inicializar musica
 
-        // loadSounds(renderer);
+        Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+
+        Chunk sound("../client/graphic/audio/background-music.wav");
+
+        sound.SetVolume(BACKGROUND_MUSIC_VOLUME);
+
+        mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, sound, -1);
 
         // Game Loop
         ActionHandler actionHandler(client);
@@ -34,8 +45,14 @@ int Game::start() {
         while (true)
         {
             auto t1 = SDL_GetTicks();
-            actionHandler.processEvents(); // Procesamos los eventos del pato
-            render(); // Renderizamos el juego
+            actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
+            int code = render(); // Renderizamos el juego
+            if (code == 1) {
+                return 0;
+            }
+            if (code == 2) {
+                continue;
+            }
             
             /* IF BEHIND, KEEP WORKING */
             // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -83,10 +100,12 @@ int Game::start() {
 }
 
 void Game::update(const Broadcast& broadcast) {
+    std::lock_guard<std::mutex> lock(mutex);
     if (ducks.size() != broadcast.get_players().size()) {
         ducks.clear();
         for (auto &player : broadcast.get_players()) {
             std::shared_ptr duck = std::make_shared<Duck>(renderer, player.get_player_id());
+            duck->loadTextures();
             ducks.push_back(duck);
         }
     }
@@ -94,36 +113,70 @@ void Game::update(const Broadcast& broadcast) {
         ducks[player.get_player_id()]->update(player);
     }
 
-    /* bullets = broadcast.get_bullets();
+    bullets = broadcast.get_bullets();
     weaponSpawns = broadcast.get_weapons();
-    crates = broadcast.get_crates(); */
+    crates = broadcast.get_crates();
 }
 
-/* void Game::showScores(const Score& score) {
+void Game::showScores() {
+    std::lock_guard<std::mutex> lock(mutex);
+    pause = true;
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
-    // Render scores
-    for (size_t i = 0; i < score.size(); ++i) {
-        std::string scoreText = "Player " + std::to_string(i + 1) + ": " + std::to_string(score[i]);
-        SDL2pp::Texture scoreTexture(renderer, SDL2pp::Surface::RenderText_Blended(
-            SDL2pp::Font(DATA_PATH "font.ttf", 24), scoreText, SDL_Color{255, 255, 255, 255}));
-        renderer.Copy(scoreTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50 + i * 30, scoreTexture.GetWidth(), scoreTexture.GetHeight()));
+    // std::vector<std::string> names = score.get_names();
+    // std::vector<int> scores = score.get_scores();
+    Uint32 startTime = SDL_GetTicks();
+    bool flash = true;
+    while (SDL_GetTicks() - startTime < 5000) { // Flash for 5 seconds
+        renderer.SetDrawColor(0, 0, 0, 255);
+        renderer.Clear();
+        if (flash) {
+            for (size_t i = 0; i < 4; ++i) {
+                std::string scoreText = "Player " + std::to_string(2);
+                SDL2pp::Texture scoreTexture(renderer, font.RenderText_Blended(scoreText, SDL_Color{255, 255, 255, 255}));
+                renderer.Copy(scoreTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50 + i * 30, scoreTexture.GetWidth(), scoreTexture.GetHeight()));
+            }
+            std::string timer = "Time until next round: " + std::to_string((5000 - (SDL_GetTicks() - startTime)) / 1000);
+            SDL2pp::Texture timerTexture(renderer, font.RenderText_Blended(timer, SDL_Color{255, 255, 255, 255}));
+            renderer.Copy(timerTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50 + 4 * 30, timerTexture.GetWidth(), timerTexture.GetHeight()));
+        }
+        
+        renderer.Present();
+        SDL_Delay(500); // Flash interval
+        flash = !flash;
     }
+}
 
+void Game::showVictoryScreen(const GameOver& gameOver) {
+    renderer.SetDrawColor(0, 0, 0, 255);
+    renderer.Clear();
+    // Le podria agregar flash
+    std::string victoryText = gameOver.get_winner() + " wins!";
+    SDL2pp::Texture victoryTexture(renderer, font.RenderText_Blended(victoryText, SDL_Color{255, 255, 255, 255}));
+    renderer.Copy(victoryTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50, victoryTexture.GetWidth(), victoryTexture.GetHeight()));
     renderer.Present();
-    SDL_Delay(5000); // Show scores for 5 seconds
-} */
+    SDL_Delay(5000); // Victory screen duration
+}
 
-void Game::showVictoryScreen() {
+void Game::end(const GameOver& gameOver){
+    std::lock_guard<std::mutex> lock(mutex);
+    stop = true;
+    showVictoryScreen(gameOver);
+
+
     // a definir
 }
 
-void Game::end(){
-    // a definir
-}
-
-void Game::render()
+int Game::render()
 {
+    std::lock_guard<std::mutex> lock(mutex);
+    if (stop){
+        return 1;
+    }
+    if (pause){
+        pause = false;
+        return 2;
+    }
     renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
     // map.render();
@@ -136,58 +189,9 @@ void Game::render()
     for (auto &bulletDTO : bullets) { // Dibujo las balas
         bullet.render(bulletDTO);
     }
-    for (auto &weaponDTO : weaponSpawns){ // Dibujo las arams que spawnearon
+    for (auto &weaponDTO : weaponSpawns){ // Dibujo las armas que spawnearon
         weapon.render(weaponDTO);
     }
     renderer.Present();
-}
-
-// Esto ya no sirve, lo tengo de referencia
-void Game::loadTextures(Renderer &renderer) {
-    // FONDO
-    this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "maps/background/forest.png").SetColorKey(true, 0));
-    
-    // PLATAFORMAS
-    this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "maps/tiles/scaffolding.png").SetColorKey(true, 0));
-
-    // PATO
-    // Separar en manos, caminar, saltar, hacerse el muerto, etc.
-    this->textures[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/white-duck.png").SetColorKey(true, 0));
-    this->textures[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/greyduck.png").SetColorKey(true, 0));
-    this->textures[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/yellowduck.png").SetColorKey(true, 0));
-    this->textures[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/orangeduck.png").SetColorKey(true, 0));
-    // Puede haber más patos
-
-    // ARMAS
-    this->textures[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/grenade.png").SetColorKey(true, 0));
-    this->textures[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/banana.png").SetColorKey(true, 0));
-    this->textures[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/pew-pew-laser.png").SetColorKey(true, 0));
-    this->textures[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/laser-rifle.png").SetColorKey(true, 0));
-    this->textures[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/ak-47.png").SetColorKey(true, 0));
-    this->textures[11] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/duel-pistol.png").SetColorKey(true, 0));
-    this->textures[12] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/cowboy-pistol.png").SetColorKey(true, 0));
-    this->textures[13] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/magnum.png").SetColorKey(true, 0));
-    this->textures[14] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/shotgun.png").SetColorKey(true, 0));
-    this->textures[15] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/sniper.png").SetColorKey(true, 0));
-
-    // BALAS
-    this->textures[16] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/laser-flare.png").SetColorKey(true, 0));
-    this->textures[17] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/laser-beam.png").SetColorKey(true, 0));
-    this->textures[18] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/laser-rebound.png").SetColorKey(true, 0));
-    this->textures[19] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/chain-bullet.png").SetColorKey(true, 0));
-    this->textures[20] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/pistol-shell.png").SetColorKey(true, 0));
-    this->textures[21] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/magnum-shell.png").SetColorKey(true, 0));
-    this->textures[22] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/shotgun-shell.png").SetColorKey(true, 0));
-
-    // ARMADURAS Y CASCOS
-    this->textures[23] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "equipment/chestplate-equipped.png").SetColorKey(true, 0));
-    this->textures[24] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "equipment/knight-helmet-equipped.png").SetColorKey(true, 0));
-    this->textures[25] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "equipment/helmet-equipped.png").SetColorKey(true, 0));
-    this->textures[26] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "equipment/chestplate.png").SetColorKey(true, 0));
-    this->textures[27] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "equipment/knight-helmet.png").SetColorKey(true, 0));
-    this->textures[28] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "equipment/helmet.png").SetColorKey(true, 0));
-
-    // CRATES
-    this->textures[29] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "props/crate.png").SetColorKey(true, 0));
-
+    return 0;
 }
