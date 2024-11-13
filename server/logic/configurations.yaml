@@ -3,3 +3,45 @@ duck:
   speed_y: 10
   flapping: 15
   gravity: 9
+
+# weapons
+
+grenade:
+  reach: 5
+  ammo: 1
+
+banana:
+  reach: 1 # ?? se queda en el lugar nose
+  ammo: 1
+
+pewpewlaser:
+  reach: 12
+  ammo:  36 # dice de 35 a 38
+
+laserrifle:
+  reach: 10
+  ammo:  30
+
+ak47:
+  reach: 30
+  ammo:  13
+
+duelos:
+  reach: 10
+  ammo: 1
+
+cowboy:
+  reach: 20
+  ammo: 6
+
+magnum:
+  reach: 20
+  ammo: 6
+
+escopeta:
+  reach: 8 # dice 7 a 9
+  ammo: 2
+
+sniper:
+  reach: 64
+  ammo: 3

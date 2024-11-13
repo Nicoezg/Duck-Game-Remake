@@ -24,8 +24,20 @@ int Event::get_position_y() const {
   throw std::runtime_error("Has no y position.");
 }
 
-std::list<Player> Event::get_players() {
+std::list<PlayerDTO> Event::get_players() {
   throw std::runtime_error("Has no players.");
+}
+
+std::list<BulletDTO> Event::get_bullets() {
+  throw std::runtime_error("Has no bullets.");
+}
+
+std::list<CrateDTO> Event::get_crates() {
+  throw std::runtime_error("Has no crates.");
+}
+
+std::list<WeaponDTO> Event::get_weapons() {
+  throw std::runtime_error("Has no weapons.");
 }
 
 int Event::get_player_id_1() const {

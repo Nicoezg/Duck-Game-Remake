@@ -81,19 +81,27 @@ uint16_t Encoder::decode_player_id(std::vector<int8_t> &data) {
 }
 
 size_t Encoder::encode_connected(bool is_connected, void *data) {
-  const auto *connected = reinterpret_cast<int8_t *>(is_connected);
-  std::memcpy(data, &connected, sizeof(int8_t));
+  return encode_bool(is_connected, data);
+}
+
+size_t Encoder::encode_bool(bool is_connected, void *data) {
+  const auto *value = reinterpret_cast<int8_t *>(&is_connected);
+  std::memcpy(data, value, sizeof(int8_t));
   return sizeof(int8_t);
 }
 
 bool Encoder::decode_connected(std::vector<int8_t> &data) {
-  if (data.size() < sizeof(int8_t)) {
-    throw std::runtime_error(
-        "No hay suficientes bytes para decodificar la conexion.");
-  }
-  const auto *connected = reinterpret_cast<int8_t *>(data[0]);
-  data.erase(data.begin(), data.begin() + sizeof(int8_t));
-  return connected;
+  return decode_bool(data);
+}
+
+bool Encoder::decode_bool(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int8_t)) {
+        throw std::runtime_error(
+                "No hay suficientes bytes para decodificar la conexion.");
+    }
+    const auto *value = reinterpret_cast<int8_t *>(data[0]);
+    data.erase(data.begin(), data.begin() + sizeof(int8_t));
+    return value;
 }
 
 size_t Encoder::encode_game_mode(GameMode game_mode, void *data) {
@@ -214,4 +222,21 @@ int Encoder::decode_actual_players(std::vector<int8_t> &data) {
   std::memcpy(&actual_players, data.data(), sizeof(uint8_t));
   data.erase(data.begin(), data.begin() + sizeof(uint8_t));
   return actual_players;
+}
+
+size_t Encoder::encode_id(uint8_t id, void *data) {
+  const auto *id_bytes = reinterpret_cast<int8_t *>(&id);
+  std::memcpy(data, id_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+uint8_t Encoder::decode_id(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el id.");
+  }
+  uint8_t id;
+  std::memcpy(&id, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return id;
 }

@@ -20,7 +20,7 @@ private:
 
   std::atomic<int> next_player_id;
 
-  std::map<int, Player> players;
+  std::map<int, PlayerDTO> players;
 
   std::atomic<int> actual_players;
 
@@ -75,7 +75,7 @@ public:
    */
   int get_next_player_id();
 
-  std::list<Player> get_players();
+  std::list<PlayerDTO> get_players();
 
   int get_max_players() const;
   int get_actual_players() const;
@@ -89,6 +89,8 @@ public:
   void add_admin_id(int id);
 
   void valid_start();
+
+    void notify_all();
 };
 
 #endif // TALLER_TP_GAME_H

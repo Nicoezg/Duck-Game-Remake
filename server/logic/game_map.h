@@ -2,26 +2,35 @@
 #define GAME_MAP_H
 
 #include "common/events/player.h"
+#include "common/actions/base/action.h"
 #include <vector>
 
 class Duck;
 
 class GameMap {
 private:
-  std::vector<Duck *> players;
+    std::vector<Duck *> players;
 
 public:
-  GameMap();
+    GameMap();
 
-  void addPlayer(Duck *player);
-  Duck *findPlayer(int playerId);
-  void update();
-  bool checkCollisionsWithBorders(int playerId);
-  Player getPlayerState(int playerId);
+    void addPlayer(int player_id);
 
-  void reapDead();
+    Duck *findPlayer(int playerId);
 
-  ~GameMap();
+    void update();
+
+    bool checkCollisionsWithBorders(int playerId);
+
+    PlayerDTO getPlayerState(int playerId);
+
+    void reapDead();
+
+    ~GameMap();
+
+    void process_action(std::shared_ptr<Action> &action);
+
+    std::list<PlayerDTO> getState();
 };
 
 #endif

@@ -1,11 +1,11 @@
 #include "duck.h"
-#include <iostream>
 #include "configurations.h"
+#include <iostream>
 
 #define CONFIG Configurations::configurations()
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
-    : id(id), posX(posX), posY(posY), map(map) {
+    : id(id), posX(posX), posY(posY), map(map), state(State::BLANK) {
   velX = 0;
   velY = 0;
   jumping = false;
@@ -13,7 +13,6 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   weapon = nullptr;
-  state = State::BLANK;
   hasHelmet = false;
   hasArmour = false;
 }
@@ -30,8 +29,8 @@ void Duck::moveRight() {
   state = State::BLANK;
 }
 
-void Duck::move(bool isRight) {
-  if (isRight) {
+void Duck::move(bool is_right) {
+  if (is_right) {
     moveRight();
   } else {
     moveLeft();
@@ -71,27 +70,28 @@ void Duck::update() {
     state = State::FALLING;
   }
 
-  if (posY >= GROUNDLEVEL) {
+  /*if (posY >= GROUNDLEVEL) {
     posY = GROUNDLEVEL;
     jumping = false;
     velY = 0;
-  }
+  } */
 }
 
-void Duck::shoot() {
+/*void Duck::shoot() {
   if (weapon) {
     weapon->shoot(this);
     shooting = true;
     state = State::BLANK;
   }
-}
+}*/
 
 void Duck::equipHelmet() { hasHelmet = true; }
 
 void Duck::equipArmour() { hasArmour = true; }
 
-void Duck::equipWeapon(Weapon* newWeapon) {
-  if (weapon) delete weapon;
+void Duck::equipWeapon(Weapon *newWeapon) {
+  if (weapon)
+    delete weapon;
   weapon = newWeapon;
 }
 
@@ -107,16 +107,14 @@ void Duck::takeDamage() {
 }
 
 void Duck::pickUp() {
-// para agarrar
+  // para agarrar
 }
 
 void Duck::leave() {
   // para soltar
 }
 
-void Duck::playDead() {
-   
-}
+void Duck::playDead() {}
 
 int Duck::getPositionX() const { return posX; }
 

@@ -5,20 +5,26 @@
 #ifndef TALLER_TP_PLAYER_H
 #define TALLER_TP_PLAYER_H
 
+#include "items/chestplate.h"
+#include "items/helmet.h"
+#include "common/events/items/weapon_dto.h"
 #include "player_macros.h"
 #include <string>
 
-class Player {
+class PlayerDTO {
 private:
   int player_id;
   int position_x;
   int position_y;
   bool right;
   enum State state;
+  WeaponDTO weapon;
+  Helmet helmet;
+  Chestplate chestplate;
 
 public:
-  Player(int player_id, int position_x, int position_y, bool right,
-         State state);
+  PlayerDTO(int player_id, int position_x, int position_y, bool right, State state,
+            WeaponDTO weapon, Helmet helmet, Chestplate chestplate);
 
   int get_player_id() const;
 
@@ -26,11 +32,15 @@ public:
 
   int get_position_y() const;
 
-  std::string get_text() const;
+  bool is_right() const;
 
   State get_state() const;
 
-  bool is_right() const;
+    WeaponDTO get_weapon() const;
+
+  Helmet get_helmet() const;
+
+  Chestplate get_chestplate() const;
 };
 
 #endif // TALLER_TP_PLAYER_H

@@ -19,10 +19,16 @@
 #define ACTUAL_PLAYER_SIZE sizeof(uint8_t)
 
 
+#define COORDINATE_SIZE sizeof(int16_t)
 #define LEN_SIZE sizeof(uint8_t)
 #define PLAYER_COORDINATE sizeof(int16_t)
 #define PLAYER_IS_RIGHT_SIZE sizeof(uint8_t)
 #define PLAYER_STATE_SIZE sizeof(uint8_t)
+
+
+#define WEAPONS_SIZE (sizeof(uint8_t) + COORDINATE_SIZE * 2 + sizeof(uint8_t))
+#define HEALTH_SIZE sizeof(uint8_t)
+#define CHESTPLATE_SIZE sizeof(uint8_t)
 
 #define GAME_ROOM_SIZE (MAX_PLAYER_SIZE + ACTUAL_PLAYER_SIZE + GAME_CODE_SIZE)
 
@@ -33,7 +39,10 @@
 
 #define READ_JOIN_GAME_SIZE (2 * PLAYERS_ID_SIZE + CONNECTED_SIZE + ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
 
-#define READ_PLAYER_SIZE (2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE)
+#define READ_PLAYER_SIZE ( \
+    2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + \
+    PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE +\
+    WEAPONS_SIZE + HEALTH_SIZE + CHESTPLATE_SIZE)
 
 
 #define SEND_CREATE_GAME_SIZE                                                  \
@@ -157,7 +166,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
     std::vector<int8_t> players_data(players_len * READ_PLAYER_SIZE);
     read(players_data.data(), players_data.size());
 
-    std::list<Player> players;
+    std::list<PlayerDTO> players;
     for (int i = 0; i < players_len; i++) {
         int player_id = encoder.decode_player_id(players_data);
         int x = encoder.decode_coordinate(players_data);
@@ -165,10 +174,49 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         bool is_right = encoder.decode_is_right(players_data);
         State state = encoder.decode_player_state(players_data);
 
-        players.emplace_back(player_id, x, y, is_right, state);
+        WeaponDTO weapon = read_weapon(players_data);
+        Helmet helmet = read_helmet(players_data);
+        Chestplate chestplate = read_chestplate(players_data);
+
+        players.emplace_back(player_id, x, y, is_right, state, weapon, helmet, chestplate);
     }
 
-    return std::make_shared<Broadcast>(std::move(players));
+    return std::make_shared<Broadcast>(std::move(players), std::list<BulletDTO>(), std::list<CrateDTO>(),
+                                       std::list<WeaponDTO>());
+}
+
+WeaponDTO EventsProtocol::read_weapon(std::vector<int8_t> &data) {
+    auto weapon_id = WeaponId(encoder.decode_id(data));
+    int x = encoder.decode_coordinate(data);
+    int y = encoder.decode_coordinate(data);
+    bool shooting = encoder.decode_bool(data);
+    return {weapon_id, x, y, shooting};
+}
+
+void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, size_t &offset) {
+    offset = encoder.encode_id(weapon.get_id(), &data[offset]);
+    offset += encoder.encode_coordinate(weapon.get_position_x(), &data[offset]);
+    offset += encoder.encode_coordinate(weapon.get_position_y(), &data[offset]);
+    offset += encoder.encode_bool(weapon.is_shooting(), &data[offset]);
+}
+
+
+Helmet EventsProtocol::read_helmet(std::vector<int8_t> &data) {
+    auto helmet_id = HelmetId(encoder.decode_id(data));
+    return {helmet_id};
+}
+
+void EventsProtocol::add_health(std::vector<int8_t> &data, Helmet helmet, size_t &offset) {
+    offset += encoder.encode_id(helmet.get_id(), &data[offset]);
+}
+
+Chestplate EventsProtocol::read_chestplate(std::vector<int8_t> &data) {
+    bool equipped = encoder.decode_bool(data);
+    return {equipped};
+}
+
+void EventsProtocol::add_chestplate(std::vector<int8_t> &data, Chestplate chestplate, size_t &offset) {
+    offset += encoder.encode_bool(chestplate.is_equipped(), &data[offset]);
 }
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
@@ -177,17 +225,26 @@ void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
                              EVENT_TYPE_SIZE);
     size_t offset = 0;
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
-    offset +=
-            encoder.encode_len(event->get_players().size(), &data[offset]);
+    offset += encoder.encode_len(event->get_players().size(), &data[offset]);
 
+    add_players(event, data, offset); // increase offset inplace
+    send(data.data(), data.size());
+}
+
+void EventsProtocol::add_players(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset) {
     for (const auto &player: event->get_players()) {
         offset += encoder.encode_player_id(player.get_player_id(), &data[offset]);
         offset += encoder.encode_coordinate(player.get_position_x(), &data[offset]);
         offset += encoder.encode_coordinate(player.get_position_y(), &data[offset]);
         offset += encoder.encode_is_right(player.is_right(), &data[offset]);
         offset += encoder.encode_player_state(player.get_state(), &data[offset]);
+
+        // increase offset inplace
+        add_weapon(data, player.get_weapon(), offset);
+        add_health(data, player.get_helmet(), offset);
+        add_chestplate(data, player.get_chestplate(), offset);
+
     }
-    send(data.data(), data.size());
 }
 
 void EventsProtocol::send_refresh(const std::shared_ptr<Event> &event) {

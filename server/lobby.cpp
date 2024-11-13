@@ -63,13 +63,13 @@ std::shared_ptr<Event> Lobby::join_game(int game_code, GameMode mode) {
     }
 
     int player_id_1 = games->get_player_id(game_code, mode);
-    std::cout << "Game: " << game_code << " Player id: " << player_id_1
+    std::cout << "Game: " << game_code << " PlayerDTO id: " << player_id_1
               << " Mode: " << mode << std::endl;
 
     int player_id_2 = SIN_ASIGNAR;
     if (mode == DOS_JUGADORES) {
         player_id_2 = games->get_player_id(game_code, mode - 1);
-        std::cout << "Game: " << game_code << " Player id: " << player_id_2
+        std::cout << "Game: " << game_code << " PlayerDTO id: " << player_id_2
                   << " Mode: " << mode << std::endl;
     }
 
@@ -82,13 +82,13 @@ std::shared_ptr<Event> Lobby::create_game(GameMode mode, int max_players) {
     int game_code = games->create_game(max_players);
 
     int player_id_1 = games->get_player_id_admin(game_code, mode);
-    std::cout << "Game: " << game_code << " Player id: " << player_id_1
+    std::cout << "Game: " << game_code << " PlayerDTO id: " << player_id_1
               << " Mode: " << mode << std::endl;
 
     int player_id_2 = SIN_ASIGNAR;
     if (mode == DOS_JUGADORES) {
         player_id_2 = games->get_player_id_admin(game_code, mode - 1);
-        std::cout << "Game: " << game_code << " Player id: " << player_id_2
+        std::cout << "Game: " << game_code << " PlayerDTO id: " << player_id_2
                   << " Mode: " << mode << std::endl;
     }
 

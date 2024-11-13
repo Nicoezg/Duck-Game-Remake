@@ -38,6 +38,20 @@ public:
     void send_new_player(const std::shared_ptr<Event> &event);
 
     void send_start_game(const std::shared_ptr<Event> &event);
+
+    WeaponDTO read_weapon(std::vector<int8_t> &data);
+
+    Helmet read_helmet(std::vector<int8_t> &data);
+
+    Chestplate read_chestplate(std::vector<int8_t> &data);
+
+    void add_chestplate(std::vector<int8_t> &data, Chestplate chestplate, size_t& offset);
+
+    void add_health(std::vector<int8_t> &data, Helmet helmet, size_t& offset);
+
+    void add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, size_t& offset);
+
+    void add_players(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t& offset);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

@@ -69,6 +69,7 @@ add_library(COMMON STATIC
 
 # add the source files that make the lib
 add_subdirectory(common/)
+add_subdirectory(common/events/items)
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
@@ -112,6 +113,8 @@ if(CLIENT)
             ${RESOURCES}
             client/ui/lobby_updater.cpp
             client/ui/lobby_updater.h
+            server/logic/weapons/weapon.cpp
+            server/logic/weapons/weapon.h
     )
 
     # Make them depend on COMMON lib
@@ -136,8 +139,8 @@ if(CLIENT)
 endif()
 
 if(SERVER)
-    add_executable(SERVER
-    )
+    add_executable(SERVER)
+
 
     # Make them depend on common lib
     add_dependencies(SERVER COMMON)

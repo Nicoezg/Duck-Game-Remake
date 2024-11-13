@@ -2,7 +2,6 @@
 #define DUCK_H
 
 #include <SDL2/SDL_rect.h>
-#include "../../common/events/player.h"
 #include <SDL2pp/SDL2pp.hh>
 #include "animation_state.h"
 #include <map>
@@ -23,7 +22,7 @@ class Duck
 
 		void render(SDL2pp::Renderer& renderer);
 
-		void update(const Player &player);
+		//void update(const Player &player);
 
 		void updateFrame(int it = 1);
 

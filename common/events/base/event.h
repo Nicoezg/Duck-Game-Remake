@@ -8,6 +8,9 @@
 #include "event_type.h"
 #include "common/events/player.h"
 #include "common/events/connection/game_room.h"
+#include "../items/bullet.h"
+#include "../items/crate.h"
+#include "common/events/items/weapon_dto.h"
 #include <list>
 
 #define SIN_ASIGNAR 0
@@ -30,7 +33,13 @@ public:
   virtual int get_player_id_1() const;
   virtual int get_player_id_2() const;
 
-  virtual std::list<Player> get_players();
+  virtual std::list<PlayerDTO> get_players();
+
+  virtual std::list<BulletDTO> get_bullets();
+
+  virtual std::list<CrateDTO> get_crates();
+
+  virtual std::list<WeaponDTO> get_weapons();
 
   virtual int get_max_players() const;
 

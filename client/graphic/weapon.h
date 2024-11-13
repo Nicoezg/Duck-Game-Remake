@@ -5,15 +5,16 @@
 #include <map>
 
 class Weapon {
-    private:
+private:
     std::map<int, SDL2pp::Texture> textures;
 
     SDL2pp::Renderer &renderer;
 
-    public:
+public:
     Weapon(SDL2pp::Renderer &renderer);
 
     void render(int x, int y, int weapon_id);
 
 };
+
 #endif
