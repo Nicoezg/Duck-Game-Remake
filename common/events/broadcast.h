@@ -29,13 +29,13 @@ public:
 
     explicit Broadcast(std::list<PlayerDTO> &&players);
 
-    std::list<PlayerDTO> get_players() override;
+    std::list<PlayerDTO> get_players() const override;
 
-    std::list<BulletDTO> get_bullets() override;
+    std::list<BulletDTO> get_bullets() const override;
 
-    std::list<CrateDTO> get_crates() override;
+    std::list<CrateDTO> get_crates() const override;
 
-    std::list<WeaponDTO> get_weapons() override;
+    std::list<WeaponDTO> get_weapons() const override;
 };
 
 #endif // TALLER_TP_BROADCAST_H

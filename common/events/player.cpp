@@ -8,9 +8,9 @@
 
 PlayerDTO::PlayerDTO(int player_id, int position_x, int position_y, bool right,
                      State state, WeaponDTO weapon, Helmet helmet, Chestplate chestplate)
-    : player_id(player_id), position_x(position_x), position_y(position_y),
-      right(right), state(state), weapon(weapon), helmet(helmet),
-      chestplate(chestplate) {}
+        : player_id(player_id), position_x(position_x), position_y(position_y),
+          right(right), state(state), weapon(weapon), helmet(helmet),
+          chestplate(chestplate) {}
 
 int PlayerDTO::get_player_id() const { return player_id; }
 

@@ -12,7 +12,7 @@ target_sources(CLIENT
         # .cpp files
         mainwindow.cpp
         editor.cpp
-        main.cpp
+        ../main.cpp
 
         PUBLIC
         # .h files

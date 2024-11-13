@@ -13,12 +13,13 @@
 #include "common/thread.h"
 #include "game.h"
 
-#define TIME_LOOP 200
+#define TIME_LOOP 1000
 
 Game::Game(int max_players)
         : commands(), notifier(&commands), running(true), next_player_id(0),
           players(), actual_players(0), max_players(max_players), started(false),
-          admin_ids(), gameMap() {}
+          admin_ids(), gameMap() {
+}
 
 void Game::add(Socket &&socket) {
     notifier.notify(
@@ -69,10 +70,13 @@ void Game::valid_start() {
 void Game::run() {
     try {
         while (running) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(TIME_LOOP));
             read_actions();
+            if (!started) {
+                continue;
+            }
             gameMap.update();
             notify_all();
-            std::this_thread::sleep_for(std::chrono::milliseconds(TIME_LOOP));
         }
     } catch (const ClosedQueue &e) {
     }
