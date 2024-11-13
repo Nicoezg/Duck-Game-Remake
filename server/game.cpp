@@ -1,4 +1,3 @@
-
 #include "server/game.h"
 
 #include <list>
@@ -33,9 +32,14 @@ bool Game::is_full(int new_players) const {
 
 int Game::get_next_player_id() {
   next_player_id++;
-  Player new_player(next_player_id, 0, 0, true, State::BLANK);
-  players.insert_or_assign(next_player_id, new_player);
-  actual_players++;
+  // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
+  // Hay que obtener las cosas me parece
+
+  /*Weapon weapon(NO_WEAPON);
+  Helmet helmet(NO_HELMET);
+  Chestplate chestplate(false);
+  players.insert_or_assign(next_player_id, Player(next_player_id, 0, 0, true,
+  State::BLANK, weapon, helmet, chestplate)); actual_players++; */
 
   Duck *duck = new Duck(next_player_id.load(), 0, 0, gameMap);
   gameMap.addPlayer(duck);
@@ -115,7 +119,8 @@ void Game::process_action(std::shared_ptr<Action> &action) {
   }
 
   auto state = gameMap.getPlayerState(player_id);
-  std::shared_ptr<Event> event = std::make_shared<Broadcast>(std::list<Player>{state});
+  std::shared_ptr<Event> event =
+      std::make_shared<Broadcast>(std::list<Player>{state});
   notify_event(event);
 }
 

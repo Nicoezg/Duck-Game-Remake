@@ -164,11 +164,15 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         int y = encoder.decode_coordinate(players_data);
         bool is_right = encoder.decode_is_right(players_data);
         State state = encoder.decode_player_state(players_data);
+        // Weapon weapon = encoder.decode_weapon(players_data);
+        // Helmet helmet = encoder.decode_helmet(players_data);
+        // Chestplate chestplate = encoder.decode_chestplate(players_data);
+        // Algo así faltaría aca
 
-        players.emplace_back(player_id, x, y, is_right, state);
+        players.emplace_back(player_id, x, y, is_right, state, weapon, helmet, chestplate);
     }
 
-    return std::make_shared<Broadcast>(std::move(players));
+    return std::make_shared<Broadcast>(std::move(players), std::list<Bullet>(), std::list<Crate>(), std::list<Weapon>());
 }
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {

@@ -69,6 +69,7 @@ add_library(COMMON STATIC
 
 # add the source files that make the lib
 add_subdirectory(common/)
+add_subdirectory(common/events/items)
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)

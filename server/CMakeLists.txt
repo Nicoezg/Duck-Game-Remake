@@ -25,6 +25,7 @@ target_sources(SERVER
         logic/game_map.h
         logic/duck.h
         logic/configurations.h
+        logic/weapons/weapon.h
     )
 
 find_package(yaml-cpp REQUIRED)
