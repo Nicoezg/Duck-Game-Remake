@@ -3,12 +3,27 @@
 
 #include "common/events/player.h"
 #include <vector>
+#include "structure.h"
+#include <string>
 
 class Duck;
 
 class GameMap {
 private:
-  std::vector<Duck *> players;
+    std::vector<Duck *> players;
+    std::vector<Structure> structures;
+    std::vector<Ramp> leftRamps;
+    std::vector<Ramp> rightRamps;
+    std::vector<Spawn> spawns; 
+    std::vector<Helmet> helmets;
+    std::vector<Armor> armors;
+    std::vector<Box> boxes;
+    int height;
+    int width;
+
+    void readMap(const std::string &mapPath);
+    void cleanMap();
+
 
 public:
   GameMap();
