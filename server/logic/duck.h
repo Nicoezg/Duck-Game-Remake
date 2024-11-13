@@ -2,6 +2,7 @@
 #define DUCK_H
 
 #include "game_map.h"
+#include "configurations.h"
 #include "weapons/weapon.h"
 #include <atomic>
 

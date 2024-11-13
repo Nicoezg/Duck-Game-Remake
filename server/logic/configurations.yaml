@@ -1,0 +1,5 @@
+duck:
+  speed_x: 10
+  speed_y: 10
+  flapping: 15
+  gravity: 9

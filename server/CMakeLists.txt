@@ -11,6 +11,7 @@ target_sources(SERVER
         server_protocol.cpp
         logic/game_map.cpp
         logic/duck.cpp
+        logic/configurations.cpp
 
     PUBLIC
     # .h files
@@ -23,4 +24,8 @@ target_sources(SERVER
         server_protocol.h
         logic/game_map.h
         logic/duck.h
+        logic/configurations.h
     )
+
+find_package(yaml-cpp REQUIRED)
+target_link_libraries(SERVER yaml-cpp)

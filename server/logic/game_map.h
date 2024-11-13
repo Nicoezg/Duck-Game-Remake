@@ -20,6 +20,8 @@ public:
   Player getPlayerState(int playerId);
 
   void reapDead();
+
+  ~GameMap();
 };
 
 #endif

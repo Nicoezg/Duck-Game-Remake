@@ -58,7 +58,15 @@ Player GameMap::getPlayerState(int playerId) {
 void GameMap::reapDead() {
   for (auto player : players) {
     if (player->getState() == State::DEAD) {
-      delete player; // ??
+      delete player; 
     }
   }
 }
+
+GameMap::~GameMap()
+{
+  for (auto player : players) {
+    delete player; 
+  }
+}
+

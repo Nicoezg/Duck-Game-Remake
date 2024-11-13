@@ -1,11 +1,8 @@
 #include "duck.h"
 #include <iostream>
+#include "configurations.h"
 
-#define GRAVEDAD 9
-#define VELOCIDAD_HORIZONTAL 10
-#define VELOCIDAD_SALTO 10
-#define VELOCIDAD_ALETEO 15
-#define GROUNDLEVEL 10
+#define CONFIG Configurations::configurations()
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
     : id(id), posX(posX), posY(posY), map(map) {
@@ -22,13 +19,13 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
 }
 
 void Duck::moveLeft() {
-  velX = -VELOCIDAD_HORIZONTAL;
+  velX = -CONFIG.getSpeedX();
   isRight = false;
   state = State::BLANK;
 }
 
 void Duck::moveRight() {
-  velX = VELOCIDAD_HORIZONTAL;
+  velX = CONFIG.getSpeedY();
   isRight = true;
   state = State::BLANK;
 }
@@ -43,7 +40,7 @@ void Duck::move(bool isRight) {
 
 void Duck::jump() {
   if (!jumping) {
-    velY = -VELOCIDAD_SALTO;
+    velY = -CONFIG.getSpeedY();
     jumping = true;
     flapping = false;
     state = State::JUMPING;
@@ -52,7 +49,7 @@ void Duck::jump() {
 
 void Duck::flap() {
   if (jumping && velY > 0) {
-    velY = -VELOCIDAD_ALETEO;
+    velY = -CONFIG.getFlappingSpeed();
     flapping = true;
     state = State::BLANK;
   }
@@ -70,7 +67,7 @@ void Duck::update() {
   }
 
   if (jumping) {
-    velY += GRAVEDAD;
+    velY += CONFIG.getGravity();
     state = State::FALLING;
   }
 
