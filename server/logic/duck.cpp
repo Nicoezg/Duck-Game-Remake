@@ -54,16 +54,15 @@ void Duck::flap() {
   }
 }
 
+void Duck::stopMoving() {
+  velX = 0;
+
+  state = State::BLANK;
+}
+
 void Duck::update() {
   posX += velX;
   posY += velY;
-
-  if (map.checkCollisionsWithBorders(id)) {
-    posX -= velX;
-    posY -= velY;
-    velX = 0;
-    velY = 0;
-  } 
 
   if (jumping) {
     velY += CONFIG.getGravity();
@@ -72,16 +71,22 @@ void Duck::update() {
     }
   }
 
-  velX = 0;
+  /*if (map.checkCollisionsWithBorders(id)) {
+    posX -= velX;
+    posY -= velY;
+    velX = 0;
+    velY = 0;
+  }*/
 
-  /*if (posY >= GROUNDLEVEL) {
-    posY = GROUNDLEVEL;
+  if (posY >= 50) { // GROUNDLEVEL
+    posY = 50;
     jumping = false;
     velY = 0;
-    state = State::BLANK;  // Cambia el estado al que sea correcto en tu caso
-  } */
+    if (velX == 0) {
+      state = State::BLANK;
+    }
+  }
 }
-
 
 /*void Duck::shoot() {
   if (weapon) {

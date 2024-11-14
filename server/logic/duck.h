@@ -31,6 +31,7 @@ public:
   void move(bool isRight);
   void jump();
   void flap();
+  void stopMoving();
   void update();
   void shoot();
   void equipHelmet();
