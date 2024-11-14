@@ -64,11 +64,19 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
             duck->move(action->is_right());
             break;
         case JUMP_FLAP:
-            std::cout << "Salto" << std::endl;
             duck->jump();
             break;
         case STILL:
             duck->stopMoving();
+            break;
+        case SHOOT:
+            // duck->shoot();
+            break;
+        case PLAY_DEAD:
+            duck->playDead();
+            break;
+        case AIM_UPWARDS:
+            // duck->aimUpwards();
             break;
         default:
             std::cout << "Acción inválida" << std::endl;

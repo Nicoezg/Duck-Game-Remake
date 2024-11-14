@@ -35,15 +35,19 @@ void ActionHandler::processDuckEvents(){
                     break;
 
                 case SDLK_j:
+                    std::cout << "drop" << std::endl;
                     action = std::make_shared<PickDrop>(this->client.get_player_id_1(), false);
                     break;
 
                 case SDLK_h:
+                    std::cout << "pick" << std::endl;
                     action = std::make_shared<PickDrop>(this->client.get_player_id_1(), true);
                     break;
 
                 case SDLK_g:
-                    action = std::make_shared<Shoot>(this->client.get_player_id_1(), false);
+                    std::cout << "shoot" << std::endl;
+                    action = std::make_shared<Shoot>(this->client.get_player_id_1(), true);
+                    std::cout << "shoot" << std::endl;
                     break;
 
                 default:

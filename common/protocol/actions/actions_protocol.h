@@ -50,6 +50,12 @@ public:
 
   void send_play_dead_action(const std::shared_ptr<Action> &action);
 
+  void send_shoot_action(const std::shared_ptr<Action> &action);
+
+  void send_aiming_upwards_action(const std::shared_ptr<Action> &action);
+
+  void send_pick_drop_action(const std::shared_ptr<Action> &action);
+
   std::shared_ptr<Action> read_move_action();
 
   std::shared_ptr<Action> read_jump_flap_action();
@@ -57,6 +63,12 @@ public:
   std::shared_ptr<Action> read_still_action();
 
   std::shared_ptr<Action> read_play_dead_action();
+
+  std::shared_ptr<Action> read_shoot_action();
+
+  std::shared_ptr<Action> read_aiming_upwards_action();
+
+  std::shared_ptr<Action> read_pick_drop_action();
 
   void send_start(const std::shared_ptr<Action> &action);
 };
