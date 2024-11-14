@@ -20,13 +20,13 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
 void Duck::moveLeft() {
   velX = -CONFIG.getSpeedX();
   isRight = false;
-  state = State::BLANK;
+  state = State::WALKING;
 }
 
 void Duck::moveRight() {
   velX = CONFIG.getSpeedY();
   isRight = true;
-  state = State::BLANK;
+  state = State::WALKING;
 }
 
 void Duck::move(bool is_right) {
@@ -50,7 +50,7 @@ void Duck::flap() {
   if (jumping && velY > 0) {
     velY = -CONFIG.getFlappingSpeed();
     flapping = true;
-    state = State::BLANK;
+    state = State::FLAPPING;
   }
 }
 
@@ -63,19 +63,25 @@ void Duck::update() {
     posY -= velY;
     velX = 0;
     velY = 0;
-  }
+  } 
 
   if (jumping) {
     velY += CONFIG.getGravity();
-    state = State::FALLING;
+    if (velY > 0) {
+      state = State::FALLING;
+    }
   }
+
+  velX = 0;
 
   /*if (posY >= GROUNDLEVEL) {
     posY = GROUNDLEVEL;
     jumping = false;
     velY = 0;
+    state = State::BLANK;  // Cambia el estado al que sea correcto en tu caso
   } */
 }
+
 
 /*void Duck::shoot() {
   if (weapon) {
