@@ -1,6 +1,6 @@
 #include "configurations.h"
 
-static const std::string configPath = "/home/fran/Documents/Facultad/Taller_Programacion/2024C2/TP_Final/server/logic/configurations.yaml";
+static const std::string configPath = "../server/logic/configurations.yaml";
 
 Configurations *Configurations::instance = nullptr;
 bool Configurations::loaded = false;

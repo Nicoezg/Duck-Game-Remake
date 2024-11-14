@@ -24,7 +24,7 @@ int Game::start() {
         // processEvent(); // Cargo el mapa
         // SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
 
-        window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png").SetColorKey(true, 0)); // Creo que no funciona
+        // window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png").SetColorKey(true, 0)); // Creo que no funciona
 
         // Inicializar musica
 

@@ -13,8 +13,6 @@
 #include <map>
 #include <memory>
 
-#define DATA_PATH "/home/fran/Documents/Facultad/Taller_Programacion/2024C2/TP_Final/client/sprites/"
-
 
 class Duck
 {
