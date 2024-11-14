@@ -154,6 +154,7 @@ const int DUCK_HEIGHT = 32;
         chestplate.update(player.get_chestplate());
 
         auto state = player.get_state();
+        std::cout << state << std::endl;
         if (state == PLAYING_DEAD || state == DEAD) {
             animationMovement.changeState(MovementType::PLAYDEAD, false);
             sound.change(sfx[1], 0);
@@ -164,12 +165,15 @@ const int DUCK_HEIGHT = 32;
         } else if (state == JUMPING) {
             animationMovement.changeState(MovementType::JUMP, false);
             sound.change(sfx[0], 0);
+            std::cout << "entre a jumping" << std::endl;
 
         } else if (state == FLAPPING) {
             animationMovement.changeState(MovementType::FALL, false);
         
         } else if (state == AIMING_UPWARDS) {
             animationMovement.changeState(MovementType::AIMING_UPWARDS, false);
+        } else if (state == WALKING) {
+            animationMovement.changeState(MovementType::WALK, true);
         }
         /* } else  if (prevX != posX) {
             animationMovement.changeState(MovementType::WALK, true);
