@@ -125,8 +125,6 @@ if(CLIENT)
             client/ui/lobby_updater.h
             server/logic/weapons/weapon.cpp
             server/logic/weapons/weapon.h
-            client/graphic/updater_game.cpp
-            client/graphic/updater_game.h
     )
 
     # Make them depend on COMMON lib

@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "lobby_updater.h"
 #include "client/graphic/game.h"
-#include "client/graphic/updater_game.h"
 
 #include <QApplication>
 
