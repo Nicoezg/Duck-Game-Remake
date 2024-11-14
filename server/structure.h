@@ -31,11 +31,6 @@ struct Armor{
     int y;
 };
 
-struct Box{
-    int x;
-    int y;
-};
-
 
 
 #endif // STRUCTURE_H
