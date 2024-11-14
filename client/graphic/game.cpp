@@ -46,9 +46,8 @@ int Game::start() {
 
         while (true)
         {
-            update_state();
-
             auto t1 = SDL_GetTicks();
+            update_state();
             actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
             int code = render(); // Renderizamos el juego
             if (code == 1) {

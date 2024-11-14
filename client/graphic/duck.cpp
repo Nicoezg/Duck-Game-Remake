@@ -6,18 +6,28 @@ const int DUCK_HEIGHT = 32;
 
     Duck::Duck(SDL2pp::Renderer& renderer, int id) : posX(0), posY(0), id(id), direction(), renderer(renderer),
     weaponsTexture(), wingsTexture(), sfx(), animationMovement(), sound(), weapon(renderer), helmet(renderer), chestplate(renderer), 
-    walkClips(), jumpClip(), fallClip(), flappingClips(), playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip(), aimingUpwardsClip() {
+    walkClips(), jumpClip(), fallClip(), stillClipWings(), flappingClips(), playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip(), stillClipWeapon(), aimingUpwardsClip() {
         for (int i = 0; i < 5; i++){
-            walkClips[i].x = i * DUCK_WIDTH;
+            walkClips[i].x = (i + 1) * DUCK_WIDTH;
             walkClips[i].y = 0;
             walkClips[i].w = DUCK_WIDTH;
             walkClips[i].h = DUCK_HEIGHT;
 
-            walkWeaponClips[i].x = i * DUCK_WIDTH;
+            walkWeaponClips[i].x = (i + 1) * DUCK_WIDTH;
             walkWeaponClips[i].y = 0;
             walkWeaponClips[i].w = DUCK_WIDTH;
             walkWeaponClips[i].h = DUCK_HEIGHT;
         }
+
+        stillClipWings.x = 0;
+        stillClipWings.y = 0;
+        stillClipWings.w = DUCK_WIDTH;
+        stillClipWings.h = DUCK_HEIGHT;
+
+        stillClipWeapon.x = 0;
+        stillClipWeapon.y = 0;
+        stillClipWeapon.w = DUCK_WIDTH;
+        stillClipWeapon.h = DUCK_HEIGHT;
 
         jumpClip.x = DUCK_WIDTH;
         jumpClip.y = DUCK_HEIGHT;
@@ -74,8 +84,8 @@ const int DUCK_HEIGHT = 32;
         aimingUpwardsClip.w = DUCK_WIDTH;
         aimingUpwardsClip.h = DUCK_HEIGHT;
 
-        //sfx[0] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk(DATA_PATH "sounds/jump.wav"));
-        //sfx[1] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk(DATA_PATH "sounds/death.wav"));
+        sfx[0] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk("../client/graphic/audio/jump.wav"));
+        sfx[1] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk("../client/graphic/audio/death.wav"));
         // Falta aiming_upwards. No se cual podria ser
     }
 
@@ -103,7 +113,7 @@ const int DUCK_HEIGHT = 32;
                     currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                     break;
                 default:
-                    currentClip = walkClips[0];
+                    currentClip = stillClipWings;
                     break;
             }
             renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
@@ -127,7 +137,7 @@ const int DUCK_HEIGHT = 32;
                     currentClip = aimingUpwardsClip;
                     break;
                 default:
-                    currentClip = walkWeaponClips[0];
+                    currentClip = stillClipWeapon;
                     break;
             }
             weapon.render(posX, posY); // A determinar posiciones
@@ -144,7 +154,6 @@ const int DUCK_HEIGHT = 32;
     }
 
     void Duck::update(const PlayerDTO &player){
-        // int prevX = posX;
         posX = player.get_position_x();
         posY = player.get_position_y();
         direction = player.is_right();
@@ -162,7 +171,7 @@ const int DUCK_HEIGHT = 32;
 
         } else if (state == JUMPING) {
             animationMovement.changeState(MovementType::JUMP, false);
-            std::cout << "entre a jumping" << std::endl;
+            sound.change(sfx[0], 0);
 
         } else if (state == FLAPPING) {
             animationMovement.changeState(MovementType::FALL, false);
@@ -172,12 +181,10 @@ const int DUCK_HEIGHT = 32;
         } else if (state == WALKING) {
             animationMovement.changeState(MovementType::WALK, true);
         }
-        /* } else  if (prevX != posX) {
-            animationMovement.changeState(MovementType::WALK, true);
-        */
         else {
             animationMovement.changeState(MovementType::IDLE, false);
         }
+        // Cambiar a switch case
     }
 
     void Duck::updateFrame(int it){
