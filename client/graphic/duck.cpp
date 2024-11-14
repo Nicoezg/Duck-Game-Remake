@@ -81,7 +81,7 @@ const int DUCK_HEIGHT = 32;
 
     void Duck::render(){
         SDL2pp::Rect rect{ posX, posY, DUCK_WIDTH, DUCK_HEIGHT };
-        int flipType = direction ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+        int flipType = direction ?  SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
         int angle = 0; // innecesario
 
         SDL2pp::Rect currentClip;
