@@ -67,15 +67,17 @@ class Duck
 
 		DrawChestplate chestplate;
 
-		SDL2pp::Rect walkClips[4];
+		SDL2pp::Rect walkClips[5];
 		SDL2pp::Rect jumpClip;
 		SDL2pp::Rect fallClip;
+		SDL2pp::Rect stillClipWings;
 		SDL2pp::Rect flappingClips[3];
 		SDL2pp::Rect playDeadClips[3];
 
 		SDL2pp::Rect walkWeaponClips[4];
 		SDL2pp::Rect jumpWeaponClip;
 		SDL2pp::Rect fallWeaponClip;
+		SDL2pp::Rect stillClipWeapon;
 		SDL2pp::Rect aimingUpwardsClip;
 };
 #endif
