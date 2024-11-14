@@ -73,6 +73,7 @@ void GameMap::readMap(const std::string &mapPath) {
 
   height = map["alto"].as<int>();
   width = map["ancho"].as<int>();
+  background = map["fondo"].as<std::string>();
 
   for (auto spawn : map["Spawns"]) {
     spawns.push_back({spawn["x"].as<int>(), spawn["y"].as<int>()});

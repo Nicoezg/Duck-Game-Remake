@@ -18,6 +18,7 @@ private:
     std::vector<Helmet> helmets;
     std::vector<Armor> armors;
     std::vector<Box> boxes;
+    std::string background;
     int height;
     int width;
 
