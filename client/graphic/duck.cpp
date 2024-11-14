@@ -7,7 +7,7 @@ const int DUCK_HEIGHT = 32;
     Duck::Duck(SDL2pp::Renderer& renderer, int id) : posX(0), posY(0), id(id), direction(), renderer(renderer),
     weaponsTexture(), wingsTexture(), sfx(), animationMovement(), sound(), weapon(renderer), helmet(renderer), chestplate(renderer), 
     walkClips(), jumpClip(), fallClip(), flappingClips(), playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip(), aimingUpwardsClip() {
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 5; i++){
             walkClips[i].x = i * DUCK_WIDTH;
             walkClips[i].y = 0;
             walkClips[i].w = DUCK_WIDTH;
@@ -103,8 +103,7 @@ const int DUCK_HEIGHT = 32;
                     currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                     break;
                 default:
-                    std::cout << "hola" << std::endl;
-                    currentClip = walkClips[1];
+                    currentClip = walkClips[0];
                     break;
             }
             renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);

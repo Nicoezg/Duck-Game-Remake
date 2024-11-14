@@ -38,6 +38,18 @@ add_library(COMMON STATIC
         common/game_mode.h
         common/actions/player/move.cpp
         common/actions/player/move.h
+        common/actions/player/aim_upwards.cpp
+        common/actions/player/aim_upwards.h
+        common/actions/player/jump_flap.cpp
+        common/actions/player/jump_flap.h
+        common/actions/player/pick_drop.cpp
+        common/actions/player/pick_drop.h
+        common/actions/player/play_dead.cpp
+        common/actions/player/play_dead.h
+        common/actions/player/shoot.cpp
+        common/actions/player/shoot.h
+        common/actions/player/still.cpp
+        common/actions/player/still.h
         common/events/base/event.cpp
         common/events/base/event.h
         common/events/base/event_type.h
