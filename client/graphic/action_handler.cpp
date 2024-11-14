@@ -13,7 +13,6 @@ void ActionHandler::processDuckEvents(){
         }
         if (event.type == SDL_KEYDOWN){
             std::shared_ptr<Action> action = nullptr;
-            std::cout << "key pressed" << event.key.keysym.sym << std::endl;
             switch (event.key.keysym.sym){
                 case SDLK_LEFT:
                     action = std::make_shared<Move>(this->client.get_player_id_1(), false);
@@ -28,7 +27,7 @@ void ActionHandler::processDuckEvents(){
                     break;
 
                 case SDLK_UP:
-                    action = std::make_shared<JumpFlap>(client.get_player_id_1(), true);
+                    action = std::make_shared<JumpFlap>(this->client.get_player_id_1(), true);
                     break;
 
                 case SDLK_y:

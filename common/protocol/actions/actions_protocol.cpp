@@ -6,6 +6,9 @@
 
 #include "common/actions/connection/join.h"
 #include "common/actions/player/move.h"
+#include "common/actions/player/jump_flap.h"
+#include "common/actions/player/still.h"
+#include "common/actions/player/play_dead.h"
 #include "common/actions/connection/refresh_games.h"
 #include <stdexcept>
 
@@ -19,10 +22,16 @@
 #define READ_JOIN_SIZE (GAME_CODE_SIZE + GAME_MODE_SIZE)
 #define READ_CREATE_SIZE (GAME_MODE_SIZE + MAX_PLAYER_SIZE)
 #define READ_MOVE_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
+#define READ_JUMP_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
+#define READ_STILL_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
+#define READ_PLAY_DEAD_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
 
 #define SEND_JOIN_SIZE (ACTION_TYPE_SIZE + READ_JOIN_SIZE)
 #define SEND_CREATE_SIZE (ACTION_TYPE_SIZE + READ_CREATE_SIZE)
 #define SEND_MOVE_SIZE (ACTION_TYPE_SIZE + READ_MOVE_SIZE)
+#define SEND_JUMP_SIZE (ACTION_TYPE_SIZE + READ_JUMP_SIZE)
+#define SEND_STILL_SIZE (ACTION_TYPE_SIZE + READ_STILL_SIZE)
+#define SEND_PLAY_DEAD_SIZE (ACTION_TYPE_SIZE + READ_PLAY_DEAD_SIZE)
 
 ActionsProtocol::ActionsProtocol(Socket *socket, Encoder encoder)
         : Protocol(socket), encoder(encoder) {}
@@ -57,6 +66,12 @@ std::shared_ptr<Action> ActionsProtocol::read_element() {
 
         case START:
             return std::make_shared<Action>(START);
+        case JUMP_FLAP:
+            return read_jump_flap_action();
+        case STILL:
+            return read_still_action();
+        case PLAY_DEAD:
+            return read_play_dead_action();
         default:
             throw std::runtime_error(
                     "ActionsProtocol try to action_read invalid action.");
@@ -85,6 +100,12 @@ void ActionsProtocol::send_element(const std::shared_ptr<Action> &action) {
 
         case START:
             return send_start(action);
+        case JUMP_FLAP:
+            return send_jump_flap_action(action);
+        case STILL:
+            return send_still_action(action);
+        case PLAY_DEAD:
+            return send_play_dead_action(action);
         default:
             throw std::runtime_error("ActionsProtocol try to send unknown action");
     }
@@ -125,6 +146,33 @@ void ActionsProtocol::send_move_action(const std::shared_ptr<Action> &action) {
     send(data.data(), data.size());
 }
 
+void ActionsProtocol::send_jump_flap_action(const std::shared_ptr<Action> &action) {
+    std::vector<int8_t> data(SEND_JUMP_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
+    encoder.encode_is_right(action->is_jumping_flapping(), &data[offset]);
+    send(data.data(), data.size());
+}
+
+void ActionsProtocol::send_still_action(const std::shared_ptr<Action> &action) {
+    std::vector<int8_t> data(SEND_STILL_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
+    encoder.encode_is_right(action->is_still(), &data[offset]);
+    send(data.data(), data.size());
+}
+
+void ActionsProtocol::send_play_dead_action(const std::shared_ptr<Action> &action) {
+    std::vector<int8_t> data(SEND_PLAY_DEAD_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
+    encoder.encode_is_right(action->is_playing_dead(), &data[offset]);
+    send(data.data(), data.size());
+}
+
 std::shared_ptr<Action> ActionsProtocol::read_move_action() {
     std::vector<int8_t> data(READ_MOVE_SIZE);
     read(data.data(), data.size());
@@ -138,4 +186,28 @@ void ActionsProtocol::send_start(const std::shared_ptr<Action> &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action->get_type(), &data[offset]);
     send(data.data(), data.size());
+}
+
+std::shared_ptr<Action> ActionsProtocol::read_jump_flap_action() {
+    std::vector<int8_t> data(READ_JUMP_SIZE);
+    read(data.data(), data.size());
+    int player_id = encoder.decode_player_id(data);
+    bool is_right = encoder.decode_is_right(data);
+    return std::make_shared<JumpFlap>(player_id, is_right);
+}
+
+std::shared_ptr<Action> ActionsProtocol::read_still_action() {
+    std::vector<int8_t> data(READ_STILL_SIZE);
+    read(data.data(), data.size());
+    int player_id = encoder.decode_player_id(data);
+    bool is_right = encoder.decode_is_right(data);
+    return std::make_shared<Still>(player_id, is_right);
+}
+
+std::shared_ptr<Action> ActionsProtocol::read_play_dead_action() {
+    std::vector<int8_t> data(READ_PLAY_DEAD_SIZE);
+    read(data.data(), data.size());
+    int player_id = encoder.decode_player_id(data);
+    bool is_right = encoder.decode_is_right(data);
+    return std::make_shared<PlayDead>(player_id, is_right);
 }

@@ -48,7 +48,6 @@ int Game::start() {
         {
             update_state();
 
-            std::cout << "Loop de sdl" << std::endl;
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
             int code = render(); // Renderizamos el juego

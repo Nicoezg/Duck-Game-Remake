@@ -15,7 +15,6 @@ enum ActionType {
   JOIN_REQUEST = 0x02,
   MOVE = 0x03,
   SHOOT = 0x04,
-  JUMP = 0x05,
   PLAY_DEAD = 0x06,
   JUMP_FLAP = 0x07,
   AIM_UPWARDS = 0x08,

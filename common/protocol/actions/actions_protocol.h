@@ -44,7 +44,19 @@ public:
 
   void send_move_action(const std::shared_ptr<Action> &action);
 
+  void send_jump_flap_action(const std::shared_ptr<Action> &action);
+
+  void send_still_action(const std::shared_ptr<Action> &action);
+
+  void send_play_dead_action(const std::shared_ptr<Action> &action);
+
   std::shared_ptr<Action> read_move_action();
+
+  std::shared_ptr<Action> read_jump_flap_action();
+
+  std::shared_ptr<Action> read_still_action();
+
+  std::shared_ptr<Action> read_play_dead_action();
 
     void send_start(const std::shared_ptr<Action> &action);
 };

@@ -63,7 +63,8 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
         case MOVE:
             duck->move(action->is_right());
             break;
-        case JUMP:
+        case JUMP_FLAP:
+            std::cout << "Salto" << std::endl;
             duck->jump();
             break;
         default:
