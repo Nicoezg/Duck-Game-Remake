@@ -96,3 +96,9 @@ int Client::get_player_id_2() const {
 bool Client::is_connected() const {
     return connected;
 }
+
+std::shared_ptr<Event> Client::try_read() {
+    std::shared_ptr<Event> event;
+    events.try_pop(event);
+    return event;
+}

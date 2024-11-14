@@ -13,7 +13,7 @@
 #include "common/thread.h"
 #include "game.h"
 
-#define TIME_LOOP 5000
+#define TIME_LOOP 20
 
 Game::Game(int max_players)
         : commands(), notifier(&commands), running(true), next_player_id(0),
@@ -35,6 +35,7 @@ int Game::get_next_player_id() {
     next_player_id++;
 
     gameMap.addPlayer(next_player_id);
+    actual_players++;
     return next_player_id;
 }
 

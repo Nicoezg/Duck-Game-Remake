@@ -22,20 +22,15 @@ int main(int argc, char *argv[]) {
         app.exec();
 
         lobbyUpdater.close();
-        //lobbyUpdater.join();
+        //lobbyUpdater.join();main
     }
     catch (const std::exception &e) {}
 
     auto sdl_game = Game(client);
 
-    UpdaterGame updaterGame(client, sdl_game);
-    updaterGame.start();
-
     sdl_game.start();
 
-    updaterGame.close();
     client.close();
-    updaterGame.join();
 
     return 0;
 }

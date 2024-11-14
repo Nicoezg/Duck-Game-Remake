@@ -44,14 +44,10 @@ int Game::start() {
 
         auto rate = 1000 / 60; // 60 FPS
 
-        std::list<PlayerDTO> players;
-        players.emplace_back(1, 10, 10, true, State::BLANK, WeaponDTO(NO_WEAPON), Helmet(NO_HELMET), Chestplate(0));
-
-        std::shared_ptr<Broadcast> event = std::make_shared<Broadcast>(std::move(players));
-        update(*event);
-
         while (true)
         {
+            update_state();
+
             std::cout << "Loop de sdl" << std::endl;
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
@@ -104,6 +100,13 @@ int Game::start() {
 
     } catch (std::exception &e) { // 
         return 1;
+    }
+}
+
+void Game::update_state() {
+    std::shared_ptr<Event> event = client.try_read();
+    if (event != nullptr) {
+        update(*event);
     }
 }
 

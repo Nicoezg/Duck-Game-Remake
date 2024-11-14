@@ -86,7 +86,7 @@ class Game{
         
         int start();
 
-        
-        
+
+    void update_state();
 };
 #endif

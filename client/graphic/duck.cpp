@@ -103,8 +103,8 @@ const int DUCK_HEIGHT = 32;
                     currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                     break;
                 default:
-                    //std::cout << "hola" << std::endl;
-                    currentClip = walkClips[0];
+                    std::cout << "hola" << std::endl;
+                    currentClip = walkClips[1];
                     break;
             }
             renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
