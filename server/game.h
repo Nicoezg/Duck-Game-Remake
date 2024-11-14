@@ -90,7 +90,7 @@ public:
 
   void valid_start();
 
-    void notify_all();
+    void notify_state();
 };
 
 #endif // TALLER_TP_GAME_H

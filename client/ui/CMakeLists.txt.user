@@ -412,7 +412,7 @@
   <value type="qlonglong">1</value>
  </data>
  <data>
-  <variable>ProjectExplorer.Project.Updater.FileVersion</variable>
+  <variable>ProjectExplorer.Project.UpdaterGame.FileVersion</variable>
   <value type="int">22</value>
  </data>
  <data>

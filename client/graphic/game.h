@@ -78,7 +78,7 @@ class Game{
     public:
         Game(Client &client);
 
-        void update(const Broadcast& broadcast);
+        void update(const Event &broadcast);
 
         void showScores();
 

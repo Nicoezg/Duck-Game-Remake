@@ -11,10 +11,13 @@
 #define WINDOW_HEIGHT 480
 
 
-Game::Game(Client &client) try : client(client), 
-sdl(SDL_INIT_VIDEO), font("../client/sprites/font.ttf", 24),
-window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN), 
-renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates(), bullets(), weaponSpawns(),  weapon(renderer), helmet(renderer), chestplate(renderer), bullet(renderer), crate(renderer), mutex(), stop(false), pause(false) {
+Game::Game(Client &client) try: client(client),
+                                sdl(SDL_INIT_VIDEO), font("../client/sprites/font.ttf", 24),
+                                window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
+                                       WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
+                                renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates(),
+                                bullets(), weaponSpawns(), weapon(renderer), helmet(renderer), chestplate(renderer),
+                                bullet(renderer), crate(renderer), mutex(), stop(false), pause(false) {
 } catch (std::exception &e) {
     throw std::exception();
 }
@@ -42,13 +45,14 @@ int Game::start() {
         auto rate = 1000 / 60; // 60 FPS
 
         std::list<PlayerDTO> players;
-        players.emplace_back(0, 10, 10, true, State::BLANK, WeaponDTO(NO_WEAPON), Helmet(NO_HELMET), Chestplate(0));
+        players.emplace_back(1, 10, 10, true, State::BLANK, WeaponDTO(NO_WEAPON), Helmet(NO_HELMET), Chestplate(0));
 
         std::shared_ptr<Broadcast> event = std::make_shared<Broadcast>(std::move(players));
         update(*event);
 
         while (true)
         {
+            std::cout << "Loop de sdl" << std::endl;
             auto t1 = SDL_GetTicks();
             actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
             int code = render(); // Renderizamos el juego
@@ -58,45 +62,44 @@ int Game::start() {
             if (code == 2) {
                 continue;
             }
-            
+
             /* IF BEHIND, KEEP WORKING */
             // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
             // a una velocidad especifica 'rate'
 
             auto t2 = SDL_GetTicks();    // Inicializamos 't2' con el tiempo actual en milisegundos
             int rest = rate - (t2 - t1); // Cantidad de tiempo que debe esperarse
-                                        // antes de la proxima iteracion. Al tiempo deseado entre iteraciones le restamos
-                                        // la diferencia entre 't2' y 't1' que es el tiempo que se tardo en actualizar y renderizar
+            // antes de la proxima iteracion. Al tiempo deseado entre iteraciones le restamos
+            // la diferencia entre 't2' y 't1' que es el tiempo que se tardo en actualizar y renderizar
 
             // Si 'rest' es menor a cero quiere decir que nos estamos retrasando en comparacion
             // con el ritmo deseado
-            if (rest < 0)
-            {
+            if (rest < 0) {
                 auto behind = -rest;                // ¿Cuanto tiempo estamos retrasados?
                 auto lost = behind - behind % rate; // ¿Cuanto tiempo perdimos?
                 t1 += lost;                         // Ajustamos 't1' para ponernos al dia con el tiempo perdido
-                for (auto &duck : ducks) {
+                for (auto &duck: ducks) {
                     duck->updateFrame(int(lost / rate));
-                }                                   
+                }
                 // Aumentamos 'it' para reflejar las iteraciones que se han perdido debido al retraso
 
                 // Si 'rest' es mayor o igual a cero quiere decir que no nos estamos quedando atras
-            }
-            else
-            {
+            } else {
                 // std::cout << rest << std::endl;
                 SDL_Delay(rest); // Descansamos el valor 'rest' antes de la proxima iteracion para
-                                // mantener un ritmo constante
+                // mantener un ritmo constante
             }
 
             t1 += rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
-            for (auto &duck : ducks) {
+            for (auto &duck: ducks) {
                 duck->updateFrame();
-            }  
+            }
 
             // Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace
             // 		 que se cuelgue el juego
+
         }
+
         return 0;
 
     } catch (std::exception &e) { // 
@@ -104,18 +107,18 @@ int Game::start() {
     }
 }
 
-void Game::update(const Broadcast& broadcast) {
+void Game::update(const Event &broadcast) {
     std::lock_guard<std::mutex> lock(mutex);
     if (ducks.size() != broadcast.get_players().size()) {
         ducks.clear();
-        for (auto &player : broadcast.get_players()) {
+        for (auto &player: broadcast.get_players()) {
             std::shared_ptr duck = std::make_shared<Duck>(renderer, player.get_player_id());
             duck->loadTextures();
             ducks.push_back(duck);
         }
     }
-    for (auto &player : broadcast.get_players()) {
-        ducks[player.get_player_id()]->update(player);
+    for (auto &player: broadcast.get_players()) {
+        ducks[player.get_player_id()-1]->update(player);
     }
 
     bullets = broadcast.get_bullets();
@@ -138,32 +141,37 @@ void Game::showScores() {
         if (flash) {
             for (size_t i = 0; i < 4; ++i) {
                 std::string scoreText = "Player " + std::to_string(2);
-                SDL2pp::Texture scoreTexture(renderer, font.RenderText_Blended(scoreText, SDL_Color{255, 255, 255, 255}));
-                renderer.Copy(scoreTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50 + i * 30, scoreTexture.GetWidth(), scoreTexture.GetHeight()));
+                SDL2pp::Texture scoreTexture(renderer,
+                                             font.RenderText_Blended(scoreText, SDL_Color{255, 255, 255, 255}));
+                renderer.Copy(scoreTexture, SDL2pp::NullOpt,
+                              SDL2pp::Rect(50, 50 + i * 30, scoreTexture.GetWidth(), scoreTexture.GetHeight()));
             }
-            std::string timer = "Time until next round: " + std::to_string((5000 - (SDL_GetTicks() - startTime)) / 1000);
+            std::string timer =
+                    "Time until next round: " + std::to_string((5000 - (SDL_GetTicks() - startTime)) / 1000);
             SDL2pp::Texture timerTexture(renderer, font.RenderText_Blended(timer, SDL_Color{255, 255, 255, 255}));
-            renderer.Copy(timerTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50 + 4 * 30, timerTexture.GetWidth(), timerTexture.GetHeight()));
+            renderer.Copy(timerTexture, SDL2pp::NullOpt,
+                          SDL2pp::Rect(50, 50 + 4 * 30, timerTexture.GetWidth(), timerTexture.GetHeight()));
         }
-        
+
         renderer.Present();
         SDL_Delay(500); // Flash interval
         flash = !flash;
     }
 }
 
-void Game::showVictoryScreen(const GameOver& gameOver) {
+void Game::showVictoryScreen(const GameOver &gameOver) {
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
     // Le podria agregar flash
     std::string victoryText = gameOver.get_winner() + " wins!";
     SDL2pp::Texture victoryTexture(renderer, font.RenderText_Blended(victoryText, SDL_Color{255, 255, 255, 255}));
-    renderer.Copy(victoryTexture, SDL2pp::NullOpt, SDL2pp::Rect(50, 50, victoryTexture.GetWidth(), victoryTexture.GetHeight()));
+    renderer.Copy(victoryTexture, SDL2pp::NullOpt,
+                  SDL2pp::Rect(50, 50, victoryTexture.GetWidth(), victoryTexture.GetHeight()));
     renderer.Present();
     SDL_Delay(5000); // Victory screen duration
 }
 
-void Game::end(const GameOver& gameOver){
+void Game::end(const GameOver &gameOver) {
     std::lock_guard<std::mutex> lock(mutex);
     stop = true;
     showVictoryScreen(gameOver);
@@ -172,29 +180,28 @@ void Game::end(const GameOver& gameOver){
     // a definir
 }
 
-int Game::render()
-{
+int Game::render() {
     std::lock_guard<std::mutex> lock(mutex);
-    if (stop){
+    if (stop) {
         return 1;
     }
-    if (pause){
+    if (pause) {
         pause = false;
         return 2;
     }
-    renderer.SetDrawColor(0,0,0,255);
+    renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
     // map.render();
-    for (auto &duck : ducks) {
+    for (auto &duck: ducks) {
         duck->render();
     }
-    for (auto &crateDTO : crates){ // Dibujo los crates
+    for (auto &crateDTO: crates) { // Dibujo los crates
         crate.render(crateDTO);
     }
-    for (auto &bulletDTO : bullets) { // Dibujo las balas
+    for (auto &bulletDTO: bullets) { // Dibujo las balas
         bullet.render(bulletDTO);
     }
-    for (auto &weaponDTO : weaponSpawns){ // Dibujo las armas que spawnearon
+    for (auto &weaponDTO: weaponSpawns) { // Dibujo las armas que spawnearon
         weapon.render(weaponDTO);
     }
     renderer.Present();

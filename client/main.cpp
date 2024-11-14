@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "lobby_updater.h"
 #include "client/graphic/game.h"
+#include "client/graphic/updater_game.h"
 
 #include <QApplication>
 
@@ -26,9 +27,15 @@ int main(int argc, char *argv[]) {
     catch (const std::exception &e) {}
 
     auto sdl_game = Game(client);
+
+    UpdaterGame updaterGame(client, sdl_game);
+    updaterGame.start();
+
     sdl_game.start();
 
+    updaterGame.close();
     client.close();
+    updaterGame.join();
 
     return 0;
 }

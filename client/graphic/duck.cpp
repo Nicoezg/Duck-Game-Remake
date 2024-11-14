@@ -103,7 +103,7 @@ const int DUCK_HEIGHT = 32;
                     currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                     break;
                 default:
-                    std::cout << "hola" << std::endl;
+                    //std::cout << "hola" << std::endl;
                     currentClip = walkClips[0];
                     break;
             }

@@ -37,6 +37,7 @@ void LobbyUpdater::update(const std::shared_ptr<Event> &event) {
             mainWindow->show_connected_players(event, client->get_game_code());
             break;
         case START_GAME:
+            running = false;
             mainWindow->exit();
             break;
         default:

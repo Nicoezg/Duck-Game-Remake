@@ -20,7 +20,7 @@ void GameMap::addPlayer(int player_id) {
     players.insert_or_assign(next_player_id, PlayerDTO(next_player_id, 0, 0, true,
     State::BLANK, weapon, helmet, chestplate)); actual_players++; */
 
-    Duck *duck = new Duck(player_id, 0, 0, *this);
+    Duck *duck = new Duck(player_id, 10 * player_id, 10 * player_id , *this);
     players.push_back(duck);
 }
 

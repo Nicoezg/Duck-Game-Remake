@@ -51,7 +51,7 @@
 #define SEND_JOIN_GAME_SIZE                                                    \
   (READ_JOIN_GAME_SIZE + EVENT_TYPE_SIZE)
 
-#define SEND_PLAYER_SIZE (READ_PLAYER_SIZE + EVENT_TYPE_SIZE)
+#define SEND_PLAYER_SIZE READ_PLAYER_SIZE
 
 #define SEND_NEW_PLAYER_SIZE (READ_NEW_PLAYER_SIZE + EVENT_TYPE_SIZE)
 
@@ -77,6 +77,7 @@ void EventsProtocol::send_element(std::shared_ptr<Event> &event) {
 
         case START_GAME:
             return send_start_game(event);
+
         default:
             throw std::runtime_error("Tipo de evento no soportado.");
     }
@@ -111,7 +112,8 @@ std::shared_ptr<Event> EventsProtocol::read_join() {
 }
 
 std::shared_ptr<Event> EventsProtocol::read_element() {
-    switch (read_event_type()) {
+    EventType event = read_event_type();
+    switch (event) {
         case CREATE_GAME: {
             return read_create();
         }
@@ -130,7 +132,8 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
         case START_GAME:
             return std::make_shared<StartGame>();
         default:
-            throw std::runtime_error("Tipo de evento no soportado.");
+            return nullptr;
+            //throw std::runtime_error("Tipo de evento no soportado.");
     }
 }
 
@@ -185,6 +188,18 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
                                        std::list<WeaponDTO>());
 }
 
+void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
+    std::vector<int8_t> data(LEN_SIZE +
+                             event->get_players().size() * SEND_PLAYER_SIZE +
+                             EVENT_TYPE_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_event_type(event->get_type(), &data[offset]);
+    offset += encoder.encode_len(event->get_players().size(), &data[offset]);
+
+    add_players(event, data, offset); // increase offset inplace
+    send(data.data(), data.size());
+}
+
 WeaponDTO EventsProtocol::read_weapon(std::vector<int8_t> &data) {
     auto weapon_id = WeaponId(encoder.decode_id(data));
     int x = encoder.decode_coordinate(data);
@@ -194,7 +209,7 @@ WeaponDTO EventsProtocol::read_weapon(std::vector<int8_t> &data) {
 }
 
 void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, size_t &offset) {
-    offset = encoder.encode_id(weapon.get_id(), &data[offset]);
+    offset += encoder.encode_id(weapon.get_id(), &data[offset]);
     offset += encoder.encode_coordinate(weapon.get_position_x(), &data[offset]);
     offset += encoder.encode_coordinate(weapon.get_position_y(), &data[offset]);
     offset += encoder.encode_bool(weapon.is_shooting(), &data[offset]);
@@ -217,18 +232,6 @@ Chestplate EventsProtocol::read_chestplate(std::vector<int8_t> &data) {
 
 void EventsProtocol::add_chestplate(std::vector<int8_t> &data, Chestplate chestplate, size_t &offset) {
     offset += encoder.encode_bool(chestplate.is_equipped(), &data[offset]);
-}
-
-void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
-    std::vector<int8_t> data(LEN_SIZE +
-                             event->get_players().size() * SEND_PLAYER_SIZE +
-                             EVENT_TYPE_SIZE);
-    size_t offset = 0;
-    offset += encoder.encode_event_type(event->get_type(), &data[offset]);
-    offset += encoder.encode_len(event->get_players().size(), &data[offset]);
-
-    add_players(event, data, offset); // increase offset inplace
-    send(data.data(), data.size());
 }
 
 void EventsProtocol::add_players(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset) {

@@ -13,7 +13,7 @@
 #include "common/thread.h"
 #include "game.h"
 
-#define TIME_LOOP 1000
+#define TIME_LOOP 5000
 
 Game::Game(int max_players)
         : commands(), notifier(&commands), running(true), next_player_id(0),
@@ -76,7 +76,7 @@ void Game::run() {
                 continue;
             }
             gameMap.update();
-            notify_all();
+            notify_state();
         }
     } catch (const ClosedQueue &e) {
     }
@@ -100,7 +100,7 @@ void Game::process_action(std::shared_ptr<Action> &action) {
     gameMap.process_action(action);
 }
 
-void Game::notify_all() {
+void Game::notify_state() {
     std::list<PlayerDTO> state = gameMap.getState();
     std::shared_ptr<Event> event = std::make_shared<Broadcast>(std::move(state));
     notify_event(event);

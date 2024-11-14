@@ -6,6 +6,7 @@ target_sources(CLIENT
     game.cpp
     animation_movement.cpp
     sound.cpp
+        updater_game.cpp
     
     PUBLIC
     action_handler.h
@@ -13,5 +14,6 @@ target_sources(CLIENT
     game.h
     animation_movement.h
     sound.h
+        updater_game.h
     # .h files
     )
