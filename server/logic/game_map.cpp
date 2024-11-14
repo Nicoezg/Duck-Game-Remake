@@ -34,6 +34,7 @@ Duck *GameMap::findPlayer(int playerId) {
 }
 
 void GameMap::update() {
+  reapDead();
   for (auto player : players) {
     player->update();
   }
@@ -96,6 +97,8 @@ std::list<PlayerDTO> GameMap::getState() {
     int posY = player->getPositionY();
     bool dir = player->getDirection();
     State state = player->getState();
+
+    std::cout << "state " << state << std::endl;
     playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
                              Helmet(NO_HELMET), Chestplate(false));
   }
@@ -114,6 +117,7 @@ PlayerDTO GameMap::getPlayerState(int playerId) {
   bool dir = duck->getDirection();
   State state = duck->getState();
 
+  
   PlayerDTO player(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
                    Helmet(NO_HELMET), Chestplate(false));
 
@@ -121,11 +125,15 @@ PlayerDTO GameMap::getPlayerState(int playerId) {
 }
 
 void GameMap::reapDead() {
-  for (auto player : players) {
+  auto it = std::remove_if(players.begin(), players.end(), [](Duck* player) {
     if (player->getState() == State::DEAD) {
-      delete player;
+      delete player;  
+      return true;  
     }
-  }
+    return false; 
+  });
+
+  players.erase(it, players.end());
 }
 
 GameMap::~GameMap() {

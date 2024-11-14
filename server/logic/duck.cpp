@@ -70,9 +70,13 @@ void Duck::update() {
   posX += velX;
   posY += velY;
 
+  /*if (map.checkCollisionsWithBorders(id)) {
+      state = State::DEAD;
+  } */
+
   if (jumping) {
     velY += flapping ? CONFIG.getFlappingSpeed() : CONFIG.getGravity();
-    if (velY > 0 && !flapping){
+    if (velY >= 0 && !flapping){
       state = State::FALLING;
     }
   }
@@ -82,9 +86,13 @@ void Duck::update() {
     jumping = false;
     flapping = false;
     velY = 0;
-    if (velX == 0) {
-      state = State::BLANK;
+
+    if (velX == 0) {  
+      state = State::BLANK; 
+    } else {
+      state = State::WALKING;
     }
+ 
   }
 
 }
