@@ -1,9 +1,9 @@
 
+#include "game_map.h"
 #include "common/events/player.h"
 #include "duck.h"
-#include <stdexcept>
 #include <iostream>
-#include "game_map.h"
+#include <stdexcept>
 
 #define HEIGHT 500
 #define WIDTH 500
@@ -11,17 +11,17 @@
 GameMap::GameMap() = default;
 
 void GameMap::addPlayer(int player_id) {
-    // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
-    // Hay que obtener las cosas me parece
+  // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
+  // Hay que obtener las cosas me parece
 
-    /*Weapon weapon(NO_WEAPON);
-    Helmet helmet(NO_HELMET);
-    Chestplate chestplate(false);
-    players.insert_or_assign(next_player_id, PlayerDTO(next_player_id, 0, 0, true,
-    State::BLANK, weapon, helmet, chestplate)); actual_players++; */
+  /*Weapon weapon(NO_WEAPON);
+  Helmet helmet(NO_HELMET);
+  Chestplate chestplate(false);
+  players.insert_or_assign(next_player_id, PlayerDTO(next_player_id, 0, 0, true,
+  State::BLANK, weapon, helmet, chestplate)); actual_players++; */
 
-    Duck *duck = new Duck(player_id, 10 * player_id,  50 , *this);
-    players.push_back(duck);
+  Duck *duck = new Duck(player_id, 10 * player_id, 400, *this);
+  players.push_back(duck);
 }
 
 Duck *GameMap::findPlayer(int playerId) {
@@ -54,34 +54,38 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
 }
 
 void GameMap::process_action(std::shared_ptr<Action> &action) {
-    int player_id = action->get_player_id();
-    Duck *duck = findPlayer(player_id);
-    if (!duck)
-        return;
+  int player_id = action->get_player_id();
+  Duck *duck = findPlayer(player_id);
+  if (!duck)
+    return;
 
-    switch (action->get_type()) {
-        case MOVE:
-            duck->move(action->is_right());
-            break;
-        case JUMP_FLAP:
-            duck->jump();
-            break;
-        case STILL:
-            duck->stopMoving();
-            break;
-        case SHOOT:
-            // duck->shoot();
-            break;
-        case PLAY_DEAD:
-            duck->playDead();
-            break;
-        case AIM_UPWARDS:
-            // duck->aimUpwards();
-            break;
-        default:
-            std::cout << "Acción inválida" << std::endl;
-            break;
+  switch (action->get_type()) {
+  case MOVE:
+    duck->move(action->is_right());
+    break;
+  case JUMP_FLAP:
+    if (!duck->isJumping()) {
+      duck->jump(); 
+    } else  {
+      duck->flap(); 
     }
+    break;
+  case STILL:
+    duck->stopMoving();
+    break;
+  case SHOOT:
+    // duck->shoot();
+    break;
+  case PLAY_DEAD:
+    duck->playDead();
+    break;
+  case AIM_UPWARDS:
+    duck->aimUpwards();
+    break;
+  default:
+    std::cout << "Acción inválida" << std::endl;
+    break;
+  }
 }
 
 std::list<PlayerDTO> GameMap::getState() {
@@ -92,7 +96,8 @@ std::list<PlayerDTO> GameMap::getState() {
     int posY = player->getPositionY();
     bool dir = player->getDirection();
     State state = player->getState();
-    playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON), Helmet(NO_HELMET), Chestplate(false));
+    playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
+                             Helmet(NO_HELMET), Chestplate(false));
   }
   return playersList;
 }
@@ -109,7 +114,8 @@ PlayerDTO GameMap::getPlayerState(int playerId) {
   bool dir = duck->getDirection();
   State state = duck->getState();
 
-  PlayerDTO player(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON), Helmet(NO_HELMET), Chestplate(false));
+  PlayerDTO player(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
+                   Helmet(NO_HELMET), Chestplate(false));
 
   return player;
 }
@@ -117,15 +123,13 @@ PlayerDTO GameMap::getPlayerState(int playerId) {
 void GameMap::reapDead() {
   for (auto player : players) {
     if (player->getState() == State::DEAD) {
-      delete player; 
+      delete player;
     }
   }
 }
 
-GameMap::~GameMap()
-{
+GameMap::~GameMap() {
   for (auto player : players) {
-    delete player; 
+    delete player;
   }
 }
-

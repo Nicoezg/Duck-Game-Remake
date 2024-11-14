@@ -1,8 +1,8 @@
 duck:
-  speed_x: 10
-  speed_y: 10
-  flapping: 15
-  gravity: 1
+  speed_x: 8    
+  speed_y: 50    
+  flapping: 1       
+  gravity: 10    
 
 # weapons
 

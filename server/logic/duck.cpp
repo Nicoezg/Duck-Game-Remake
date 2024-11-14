@@ -3,6 +3,7 @@
 #include <iostream>
 
 #define CONFIG Configurations::configurations()
+#define GROUNDLEVEL 400
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
     : id(id), posX(posX), posY(posY), map(map), state(State::BLANK) {
@@ -12,6 +13,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   flapping = false;
   shooting = false;
   isRight = true;
+  aimingUpwards = false;
   weapon = nullptr;
   hasHelmet = false;
   hasArmour = false;
@@ -24,7 +26,7 @@ void Duck::moveLeft() {
 }
 
 void Duck::moveRight() {
-  velX = CONFIG.getSpeedY();
+  velX = CONFIG.getSpeedX();
   isRight = true;
   state = State::WALKING;
 }
@@ -46,46 +48,45 @@ void Duck::jump() {
   }
 }
 
+void Duck::stopMoving() {
+  velX = 0;
+  state = State::BLANK;
+}
+
 void Duck::flap() {
   if (jumping && velY > 0) {
-    velY = -CONFIG.getFlappingSpeed();
+    velY = CONFIG.getFlappingSpeed();
     flapping = true;
     state = State::FLAPPING;
   }
 }
 
-void Duck::stopMoving() {
-  velX = 0;
-
-  state = State::BLANK;
-}
-
 void Duck::update() {
+  if (state == State::PLAYING_DEAD) {
+    velX = 0; 
+    velY = 0;  
+    posY = GROUNDLEVEL;  
+  }
   posX += velX;
   posY += velY;
 
   if (jumping) {
-    velY += CONFIG.getGravity();
-    if (velY > 0) {
+    velY += flapping ? CONFIG.getFlappingSpeed() : CONFIG.getGravity();
+    if (velY > 0 && !flapping){
       state = State::FALLING;
     }
   }
 
-  /*if (map.checkCollisionsWithBorders(id)) {
-    posX -= velX;
-    posY -= velY;
-    velX = 0;
-    velY = 0;
-  }*/
-
-  if (posY >= 50) { // GROUNDLEVEL
-    posY = 50;
+  if (posY >= GROUNDLEVEL && state != State::PLAYING_DEAD) { 
+    posY = GROUNDLEVEL;
     jumping = false;
+    flapping = false;
     velY = 0;
     if (velX == 0) {
       state = State::BLANK;
     }
   }
+
 }
 
 /*void Duck::shoot() {
@@ -125,7 +126,19 @@ void Duck::leave() {
   // para soltar
 }
 
-void Duck::playDead() {}
+void Duck::playDead() {
+  if (state != State::PLAYING_DEAD) {
+    state = State::PLAYING_DEAD;
+    velX = 0;
+    velY = 0;  
+  }
+}
+
+void Duck::aimUpwards() // faltaria en algun lado hacer q deje de aimean, supongo q dsps de disparar?
+{
+  aimingUpwards = true;
+  state = State::AIMING_UPWARDS; 
+}
 
 int Duck::getPositionX() const { return posX; }
 
@@ -136,5 +149,8 @@ int Duck::getId() const { return id; }
 bool Duck::getDirection() const { return isRight; }
 
 State Duck::getState() const { return state; }
+
+bool Duck::isJumping() const { return jumping; }
+
 
 Duck::~Duck() { delete weapon; }

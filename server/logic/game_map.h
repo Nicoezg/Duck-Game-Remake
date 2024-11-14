@@ -4,6 +4,8 @@
 #include "common/events/player.h"
 #include "common/actions/base/action.h"
 #include <vector>
+#include <list>
+#include <memory>
 
 class Duck;
 
