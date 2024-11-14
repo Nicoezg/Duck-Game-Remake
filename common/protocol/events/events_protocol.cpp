@@ -185,7 +185,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
     }
 
     return std::make_shared<Broadcast>(std::move(players), std::list<BulletDTO>(), std::list<CrateDTO>(),
-                                       std::list<WeaponDTO>());
+                                       std::list<WeaponDTO>(), std::list<Explosion>());
 }
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
