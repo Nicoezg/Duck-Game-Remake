@@ -20,7 +20,7 @@ void GameMap::addPlayer(int player_id) {
     players.insert_or_assign(next_player_id, PlayerDTO(next_player_id, 0, 0, true,
     State::BLANK, weapon, helmet, chestplate)); actual_players++; */
 
-    Duck *duck = new Duck(player_id, 10 * player_id, 10 * player_id , *this);
+    Duck *duck = new Duck(player_id, 10 * player_id,  50 , *this);
     players.push_back(duck);
 }
 
@@ -63,8 +63,20 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
         case MOVE:
             duck->move(action->is_right());
             break;
-        case JUMP:
+        case JUMP_FLAP:
             duck->jump();
+            break;
+        case STILL:
+            duck->stopMoving();
+            break;
+        case SHOOT:
+            // duck->shoot();
+            break;
+        case PLAY_DEAD:
+            duck->playDead();
+            break;
+        case AIM_UPWARDS:
+            // duck->aimUpwards();
             break;
         default:
             std::cout << "Acción inválida" << std::endl;

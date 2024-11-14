@@ -20,13 +20,13 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
 void Duck::moveLeft() {
   velX = -CONFIG.getSpeedX();
   isRight = false;
-  state = State::BLANK;
+  state = State::WALKING;
 }
 
 void Duck::moveRight() {
   velX = CONFIG.getSpeedY();
   isRight = true;
-  state = State::BLANK;
+  state = State::WALKING;
 }
 
 void Duck::move(bool is_right) {
@@ -50,31 +50,42 @@ void Duck::flap() {
   if (jumping && velY > 0) {
     velY = -CONFIG.getFlappingSpeed();
     flapping = true;
-    state = State::BLANK;
+    state = State::FLAPPING;
   }
+}
+
+void Duck::stopMoving() {
+  velX = 0;
+
+  state = State::BLANK;
 }
 
 void Duck::update() {
   posX += velX;
   posY += velY;
 
-  if (map.checkCollisionsWithBorders(id)) {
+  if (jumping) {
+    velY += CONFIG.getGravity();
+    if (velY > 0) {
+      state = State::FALLING;
+    }
+  }
+
+  /*if (map.checkCollisionsWithBorders(id)) {
     posX -= velX;
     posY -= velY;
     velX = 0;
     velY = 0;
-  }
+  }*/
 
-  if (jumping) {
-    velY += CONFIG.getGravity();
-    state = State::FALLING;
-  }
-
-  /*if (posY >= GROUNDLEVEL) {
-    posY = GROUNDLEVEL;
+  if (posY >= 50) { // GROUNDLEVEL
+    posY = 50;
     jumping = false;
     velY = 0;
-  } */
+    if (velX == 0) {
+      state = State::BLANK;
+    }
+  }
 }
 
 /*void Duck::shoot() {

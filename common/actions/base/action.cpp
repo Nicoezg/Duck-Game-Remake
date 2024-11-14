@@ -46,3 +46,7 @@ bool Action::is_picking_dropping() const {
 int Action::get_max_players() const {
   throw std::runtime_error("Action is not a max players action.");
 }
+
+bool Action::is_still() const {
+  throw std::runtime_error("Action is not a still action.");
+}
