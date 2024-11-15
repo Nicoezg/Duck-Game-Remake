@@ -13,7 +13,7 @@ Client::Client(const char *hostname, const char *service_name)
         : commands(), events(),
           connection(Socket(hostname, service_name), Encoder(), &this->events,
                      &this->commands),
-          game_code(0), player_id_1(SIN_ASIGNAR), player_id_2(SIN_ASIGNAR),
+          game_code(NO_CONECTADO), player_id_1(SIN_ASIGNAR), player_id_2(SIN_ASIGNAR),
           game_mode(SIN_ESPECIFICAR),connected(false),
           player_1_name(), player_2_name(){}
 
