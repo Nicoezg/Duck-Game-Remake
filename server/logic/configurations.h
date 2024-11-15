@@ -11,6 +11,7 @@ private:
   int flapping_speed;
   int gravity;
 
+
   int pewpewlaser_reach;
   int pewpewlaser_ammo;
 
@@ -25,6 +26,7 @@ public:
   int getSpeedX() const { return speed_x; }
   int getSpeedY() const { return speed_y; }
   int getFlappingSpeed() const { return flapping_speed; }
+ 
   int getGravity() const { return gravity; }
   int getPewPewLaserReach() const { return pewpewlaser_reach; }
   int getPewPewLaserAmmo() const { return pewpewlaser_ammo; }

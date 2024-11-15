@@ -6,16 +6,18 @@ target_sources(COMMON
     chestplate.cpp
     crate.cpp
     helmet.cpp
-        weapon_dto.cpp
+    weapon_dto.cpp
+    explosion.cpp
 
     PUBLIC
     bullet.h
     chestplate.h
     crate.h
     helmet.h
-        weapon_dto.h
+    weapon_dto.h
     bullet_macros.h
     weapon_macros.h
     helmet_macros.h
+    explosion.h
     # .h files
     )

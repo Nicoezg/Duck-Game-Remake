@@ -112,6 +112,9 @@ const int DUCK_HEIGHT = 32;
                 case MovementType::PLAYDEAD:
                     currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                     break;
+                case MovementType::FLAP:
+                    currentClip = flappingClips[animationMovement.getCurrentFrame()];
+                    break;
                 default:
                     currentClip = stillClipWings;
                     break;
@@ -166,6 +169,10 @@ const int DUCK_HEIGHT = 32;
             animationMovement.changeState(MovementType::PLAYDEAD, false);
             sound.change(sfx[1], 0);
 
+        } else if (state == FLAPPING) {
+            animationMovement.changeState(MovementType::FLAP, false);
+            std::cout << "entro aca" << std::endl;
+
         } else if (state == FALLING) {
             animationMovement.changeState(MovementType::FALL, false);
 
@@ -173,15 +180,13 @@ const int DUCK_HEIGHT = 32;
             animationMovement.changeState(MovementType::JUMP, false);
             sound.change(sfx[0], 0);
 
-        } else if (state == FLAPPING) {
-            animationMovement.changeState(MovementType::FALL, false);
-        
         } else if (state == AIMING_UPWARDS) {
             animationMovement.changeState(MovementType::AIMING_UPWARDS, false);
+
         } else if (state == WALKING) {
             animationMovement.changeState(MovementType::WALK, true);
-        }
-        else {
+
+        } else {
             animationMovement.changeState(MovementType::IDLE, false);
         }
         // Cambiar a switch case

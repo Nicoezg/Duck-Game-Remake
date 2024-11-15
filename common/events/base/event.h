@@ -11,6 +11,7 @@
 #include "../tile.h"
 #include "../items/bullet.h"
 #include "../items/crate.h"
+#include "../items/explosion.h"
 #include "common/events/items/weapon_dto.h"
 #include <list>
 #include <vector>
@@ -42,6 +43,8 @@ public:
   virtual std::list<CrateDTO> get_crates() const;
 
   virtual std::list<WeaponDTO> get_weapons() const;
+
+  virtual std::list<Explosion> get_explosions() const;
 
   virtual int get_max_players() const;
 

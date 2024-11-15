@@ -19,6 +19,7 @@ private:
   GameMap &map;
   Weapon *weapon;
   bool isRight;
+  bool aimingUpwards;
   State state;
   bool hasHelmet;
   bool hasArmour;
@@ -41,12 +42,15 @@ public:
   void pickUp();
   void leave();
   void playDead();
-
+  void aimUpwards();
   int getPositionX() const;
   int getPositionY() const;
   int getId() const;
   bool getDirection() const;
   State getState() const;
+
+  bool isJumping() const;
+
 
   ~Duck();
 };

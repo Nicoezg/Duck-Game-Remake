@@ -15,9 +15,9 @@ Game::Game(Client &client) try: client(client),
                                 sdl(SDL_INIT_VIDEO), font("../client/sprites/font.ttf", 24),
                                 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
                                        WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
-                                renderer(window, -1, SDL_RENDERER_ACCELERATED), map(renderer), ducks(), crates(),
-                                bullets(), weaponSpawns(), weapon(renderer), helmet(renderer), chestplate(renderer),
-                                bullet(renderer), crate(renderer), mutex(), stop(false), pause(false) {
+                                renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,640,480}), map(renderer), ducks(), crates(),
+                                bullets(), weaponSpawns(), explosions(), weapon(renderer), helmet(renderer), chestplate(renderer),
+                                bullet(renderer), crate(renderer), explosion(renderer), mutex(), stop(false), pause(false) {
 } catch (std::exception &e) {
     throw std::exception();
 }
@@ -110,6 +110,7 @@ void Game::update_state() {
 
 void Game::update(const Event &broadcast) {
     std::lock_guard<std::mutex> lock(mutex);
+    // std::vector<SDL2pp::Rect> playerRects;
     if (ducks.size() != broadcast.get_players().size()) {
         ducks.clear();
         for (auto &player: broadcast.get_players()) {
@@ -120,11 +121,14 @@ void Game::update(const Event &broadcast) {
     }
     for (auto &player: broadcast.get_players()) {
         ducks[player.get_player_id()-1]->update(player);
+        // playerRects.push_back(SDL2pp::Rect(player.get_position_x(), player.get_position_y(), Duck::DUCK_WIDTH, Duck::DUCK_HEIGHT));
     }
+    // camera.update(playerRects);
 
     bullets = broadcast.get_bullets();
     weaponSpawns = broadcast.get_weapons();
     crates = broadcast.get_crates();
+    // explosions = broadcast.get_explosions();
 }
 
 void Game::showScores() {
@@ -204,6 +208,9 @@ int Game::render() {
     }
     for (auto &weaponDTO: weaponSpawns) { // Dibujo las armas que spawnearon
         weapon.render(weaponDTO);
+    }
+    for (auto &explosionDTO: explosions){
+        explosion.render(explosionDTO);
     }
     renderer.Present();
     return 0;
