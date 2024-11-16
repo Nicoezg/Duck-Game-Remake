@@ -19,7 +19,7 @@ class DrawHelmet {
 
     void render(int x, int y);
 
-    void update(const Helmet &helmet);
+    void update(const HelmetDTO &helmet);
 
     bool isEquipped();
 

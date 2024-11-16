@@ -2,6 +2,7 @@
 #define CONFIGURATIONS_H
 
 #include <string>
+#include <string>
 #include <yaml-cpp/yaml.h>
 
 class Configurations {
@@ -22,6 +23,7 @@ private:
 public:
   static Configurations &configurations();
   static void loadConfig();
+
 
   int getSpeedX() const { return speed_x; }
   int getSpeedY() const { return speed_y; }

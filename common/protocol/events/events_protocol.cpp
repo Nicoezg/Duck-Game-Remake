@@ -178,7 +178,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         State state = encoder.decode_player_state(players_data);
 
         WeaponDTO weapon = read_weapon(players_data);
-        Helmet helmet = read_helmet(players_data);
+        HelmetDTO helmet = read_helmet(players_data);
         Chestplate chestplate = read_chestplate(players_data);
 
         players.emplace_back(player_id, x, y, is_right, state, weapon, helmet, chestplate);
@@ -216,12 +216,12 @@ void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, siz
 }
 
 
-Helmet EventsProtocol::read_helmet(std::vector<int8_t> &data) {
+HelmetDTO EventsProtocol::read_helmet(std::vector<int8_t> &data) {
     auto helmet_id = HelmetId(encoder.decode_id(data));
     return {helmet_id};
 }
 
-void EventsProtocol::add_health(std::vector<int8_t> &data, Helmet helmet, size_t &offset) {
+void EventsProtocol::add_health(std::vector<int8_t> &data, HelmetDTO helmet, size_t &offset) {
     offset += encoder.encode_id(helmet.get_id(), &data[offset]);
 }
 

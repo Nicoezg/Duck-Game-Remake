@@ -7,7 +7,7 @@
 #include <sstream>
 
 PlayerDTO::PlayerDTO(int player_id, int position_x, int position_y, bool right,
-                     State state, WeaponDTO weapon, Helmet helmet, Chestplate chestplate)
+                     State state, WeaponDTO weapon, HelmetDTO helmet, Chestplate chestplate)
         : player_id(player_id), position_x(position_x), position_y(position_y),
           right(right), state(state), weapon(weapon), helmet(helmet),
           chestplate(chestplate) {}
@@ -24,6 +24,6 @@ State PlayerDTO::get_state() const { return state; }
 
 WeaponDTO PlayerDTO::get_weapon() const { return weapon; }
 
-Helmet PlayerDTO::get_helmet() const { return helmet; }
+HelmetDTO PlayerDTO::get_helmet() const { return helmet; }
 
 Chestplate PlayerDTO::get_chestplate() const { return chestplate; }

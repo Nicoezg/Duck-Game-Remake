@@ -16,7 +16,7 @@ void DrawHelmet::render(int x, int y){
     renderer.Copy(*texture, SDL2pp::NullOpt, dest);
 }
 
-void DrawHelmet::update(const Helmet &helmet){
+void DrawHelmet::update(const HelmetDTO &helmet){
     helmetId = helmet.get_id();
 }
 

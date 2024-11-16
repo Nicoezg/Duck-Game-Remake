@@ -41,13 +41,13 @@ public:
 
     WeaponDTO read_weapon(std::vector<int8_t> &data);
 
-    Helmet read_helmet(std::vector<int8_t> &data);
+    HelmetDTO read_helmet(std::vector<int8_t> &data);
 
     Chestplate read_chestplate(std::vector<int8_t> &data);
 
     void add_chestplate(std::vector<int8_t> &data, Chestplate chestplate, size_t& offset);
 
-    void add_health(std::vector<int8_t> &data, Helmet helmet, size_t& offset);
+    void add_health(std::vector<int8_t> &data, HelmetDTO helmet, size_t& offset);
 
     void add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, size_t& offset);
 
