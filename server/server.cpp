@@ -29,7 +29,6 @@ void Server::run() {
 
 void Server::close() {
   is_running = false;
-  socket.shutdown(SHUT_RDWR);
-  socket.close();
+  socket.shutdown_and_close(SHUT_RDWR);
   lobby.close();
 }

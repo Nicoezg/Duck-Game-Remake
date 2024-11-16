@@ -42,7 +42,7 @@ public:
 
   void push(U element) { reader.push(element); }
 
-  bool is_closed() { return was_closed; }
+  bool is_closed() const { return was_closed; }
 
   void close() {
     if (was_closed) {
@@ -50,12 +50,11 @@ public:
     }
     was_closed = true;
     protocol.close();
-    socket.shutdown(SHUT_RDWR);
-    socket.close();
-
+    socket.shutdown_and_close(SHUT_RDWR);
     reader.close();
     sender.close();
   }
 };
+
 
 #endif // TALLER_TP_CONNECTION_H

@@ -19,16 +19,18 @@ int main(int argc, char *argv[]) {
         w.show();
 
         app.exec();
-
         lobbyUpdater.close();
-        //lobbyUpdater.join();main
     }
     catch (const std::exception &e) {}
 
+    lobbyUpdater.join();
+
+    if (client.is_closed()) {
+        return 0;
+    }
+
     auto sdl_game = Game(client);
-
     sdl_game.start();
-
     client.close();
 
     return 0;

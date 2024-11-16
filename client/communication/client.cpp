@@ -29,6 +29,10 @@ void Client::close() {
     connection.join();
 }
 
+bool Client::is_closed() const {
+    return connection.is_closed();
+}
+
 void Client::send_action(std::shared_ptr<Action> &action) {
     if (game_code == NO_CONECTADO && action->get_type() != JOIN_REQUEST &&
         action->get_type() != CREATE_REQUEST && action->get_type() != REFRESH_REQUEST) {

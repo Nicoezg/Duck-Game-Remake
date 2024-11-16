@@ -103,10 +103,13 @@ void MainWindow::on_Join_clicked() {
 }
 
 void MainWindow::exit() {
+    client->close();
     close();
 }
 
-void MainWindow::on_Exit_clicked() { exit(); }
+void MainWindow::on_Exit_clicked() {
+    exit();
+}
 
 void MainWindow::on_Create_clicked() {
     if (client->is_connected()) {

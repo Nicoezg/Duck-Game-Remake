@@ -103,6 +103,5 @@ void Lobby::close() {
     if (!is_running || is_connected)
         return;
     is_running = false;
-    client.shutdown(SHUT_RDWR);
-    client.close();
+    client.shutdown_and_close(SHUT_RDWR);
 }

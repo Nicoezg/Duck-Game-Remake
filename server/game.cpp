@@ -109,7 +109,6 @@ void Game::notify_state() {
 
 void Game::close() {
     running = false;
-    commands.close();
     notifier.close();
 }
 

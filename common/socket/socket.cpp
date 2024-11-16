@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <iostream>
 
 #include "common/socket/liberror.h"
 #include "common/socket/resolver.h"
@@ -414,6 +415,21 @@ void Socket::shutdown(int how) {
 
 int Socket::close() {
   chk_skt_or_fail();
+  this->closed = true;
+  return ::close(this->skt);
+}
+
+int Socket::shutdown_and_close(int how) {
+    if (this->closed) {
+        return 0;
+    }
+
+    try {
+        shutdown(how);
+    } catch (const std::exception &e) {
+        std::cerr << "Unexpected error: " << e.what() << std::endl;
+    }
+
   this->closed = true;
   return ::close(this->skt);
 }
