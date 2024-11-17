@@ -112,5 +112,6 @@ MapDTO MapLoader::getNextMapDTO() {
       tiles.push_back({i, i, ramp.y, ramp.id});
     }
   }
-  return MapDTO(std::move(tiles), mapa.background, mapa.width, mapa.height);
+  int background = (mapa.background == "Forest") ? 0 : 1;
+  return MapDTO(std::move(tiles), background, mapa.width, mapa.height);
 }
