@@ -101,7 +101,6 @@ std::list<PlayerDTO> GameMap::getState() {
     bool dir = player->getDirection();
     State state = player->getState();
 
-    std::cout << "state " << state << std::endl;
     playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
                              HelmetDTO(NO_HELMET), Chestplate(false));
   }
