@@ -6,12 +6,15 @@
 #include <vector>
 #include <list>
 #include <memory>
+#include "server/maploader.h"
 
 class Duck;
 
 class GameMap {
 private:
     std::vector<Duck *> players;
+    MapLoader mapLoader;
+    Map map;
 
 public:
     GameMap();

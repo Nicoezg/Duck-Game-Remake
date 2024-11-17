@@ -4,11 +4,14 @@
 #include "duck.h"
 #include <iostream>
 #include <stdexcept>
+#include <yaml-cpp/yaml.h>
 
 #define HEIGHT 500
 #define WIDTH 500
 
-GameMap::GameMap() = default;
+GameMap::GameMap() {
+  map = mapLoader.getNextMap();
+}
 
 void GameMap::addPlayer(int player_id) {
   // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
@@ -45,7 +48,7 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
   if (!player)
     return true;
 
-  if (player->getPositionX() >= WIDTH || player->getPositionX() <= 0) {
+  if (player->getPositionX() >= WIDTH|| player->getPositionX() <= 0) {
     return true;
   }
   if (player->getPositionY() >= HEIGHT || player->getPositionY() <= 0) {
@@ -98,9 +101,8 @@ std::list<PlayerDTO> GameMap::getState() {
     bool dir = player->getDirection();
     State state = player->getState();
 
-    std::cout << "state " << state << std::endl;
     playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
-                             Helmet(NO_HELMET), Chestplate(false));
+                             HelmetDTO(NO_HELMET), Chestplate(false));
   }
   return playersList;
 }
@@ -119,7 +121,7 @@ PlayerDTO GameMap::getPlayerState(int playerId) {
 
   
   PlayerDTO player(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
-                   Helmet(NO_HELMET), Chestplate(false));
+                   HelmetDTO(NO_HELMET), Chestplate(false));
 
   return player;
 }

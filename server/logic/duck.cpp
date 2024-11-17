@@ -2,11 +2,13 @@
 #include "configurations.h"
 #include <iostream>
 
+
 #define CONFIG Configurations::configurations()
 #define GROUNDLEVEL 400
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
     : id(id), posX(posX), posY(posY), map(map), state(State::BLANK) {
+
   velX = 0;
   velY = 0;
   jumping = false;
@@ -128,6 +130,7 @@ void Duck::takeDamage() {
 
 void Duck::pickUp() {
   // para agarrar
+  // para agarrar
 }
 
 void Duck::leave() {
@@ -162,3 +165,4 @@ bool Duck::isJumping() const { return jumping; }
 
 
 Duck::~Duck() { delete weapon; }
+

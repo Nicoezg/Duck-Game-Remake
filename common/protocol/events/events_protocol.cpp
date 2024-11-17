@@ -9,6 +9,8 @@
 #include "common/events/connection/refresh_games.h"
 #include "common/events/connection/new_player.h"
 #include "common/events/connection/start_game.h"
+#include "common/events/map.h"
+#include "common/events/tile.h"
 #include <list>
 
 #define EVENT_TYPE_SIZE sizeof(int8_t)
@@ -44,6 +46,8 @@
     PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE +\
     WEAPONS_SIZE + HEALTH_SIZE + CHESTPLATE_SIZE)
 
+#define READ_TILE_SIZE (COORDINATE_SIZE * 3 + sizeof(uint8_t))
+
 
 #define SEND_CREATE_GAME_SIZE                                                  \
   (READ_CREATE_GAME_SIZE + EVENT_TYPE_SIZE)
@@ -52,6 +56,8 @@
   (READ_JOIN_GAME_SIZE + EVENT_TYPE_SIZE)
 
 #define SEND_PLAYER_SIZE READ_PLAYER_SIZE
+
+#define SEND_TILE_SIZE READ_TILE_SIZE
 
 #define SEND_NEW_PLAYER_SIZE (READ_NEW_PLAYER_SIZE + EVENT_TYPE_SIZE)
 
@@ -77,6 +83,9 @@ void EventsProtocol::send_element(std::shared_ptr<Event> &event) {
 
         case START_GAME:
             return send_start_game(event);
+        
+        case MAP_LOAD:
+            return send_map(event);
 
         default:
             throw std::runtime_error("Tipo de evento no soportado.");
@@ -131,6 +140,9 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
 
         case START_GAME:
             return std::make_shared<StartGame>();
+        
+        case MAP_LOAD:
+            return read_map();
         default:
             return nullptr;
             //throw std::runtime_error("Tipo de evento no soportado.");
@@ -178,7 +190,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         State state = encoder.decode_player_state(players_data);
 
         WeaponDTO weapon = read_weapon(players_data);
-        Helmet helmet = read_helmet(players_data);
+        HelmetDTO helmet = read_helmet(players_data);
         Chestplate chestplate = read_chestplate(players_data);
 
         players.emplace_back(player_id, x, y, is_right, state, weapon, helmet, chestplate);
@@ -216,12 +228,12 @@ void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, siz
 }
 
 
-Helmet EventsProtocol::read_helmet(std::vector<int8_t> &data) {
+HelmetDTO EventsProtocol::read_helmet(std::vector<int8_t> &data) {
     auto helmet_id = HelmetId(encoder.decode_id(data));
     return {helmet_id};
 }
 
-void EventsProtocol::add_health(std::vector<int8_t> &data, Helmet helmet, size_t &offset) {
+void EventsProtocol::add_health(std::vector<int8_t> &data, HelmetDTO helmet, size_t &offset) {
     offset += encoder.encode_id(helmet.get_id(), &data[offset]);
 }
 
@@ -306,3 +318,53 @@ void EventsProtocol::send_start_game(const std::shared_ptr<Event> &event) {
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
     send(data.data(), data.size());
 }
+
+std::shared_ptr<Event> EventsProtocol::read_map() {
+    std::vector<int8_t> data(LEN_SIZE);
+    read(data.data(), data.size());
+    int tiles_len = encoder.decode_len(data);
+
+    std::vector<int8_t> tiles_data(tiles_len * READ_TILE_SIZE);
+    read(tiles_data.data(), tiles_data.size());
+
+    std::list<Tile> tiles;
+    for (int i = 0; i < tiles_len; i++) {
+        int start_x = encoder.decode_coordinate(tiles_data);
+        int end_x = encoder.decode_coordinate(tiles_data);
+        int y = encoder.decode_coordinate(tiles_data);
+        int tile_id = encoder.decode_tile_id(tiles_data);
+        tiles.emplace_back(start_x, end_x, y, tile_id);
+    }
+    int background_id = encoder.decode_background_id(tiles_data);
+    int width = encoder.decode_coordinate(tiles_data);
+    int length = encoder.decode_coordinate(tiles_data);
+    
+    return std::make_shared<MapDTO>(std::move(tiles), background_id, width, length);
+}
+
+void EventsProtocol::send_map(const std::shared_ptr<Event> &event) {
+    std::vector<int8_t> data(LEN_SIZE +
+                             event->get_platforms().size() * SEND_TILE_SIZE +
+                             EVENT_TYPE_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_event_type(event->get_type(), &data[offset]);
+    offset += encoder.encode_len(event->get_platforms().size(), &data[offset]);
+
+    add_platforms(event, data, offset);
+    offset += encoder.encode_background_id(event->get_background_id(), &data[offset]);
+    offset += encoder.encode_coordinate(event->get_width(), &data[offset]);
+    offset += encoder.encode_coordinate(event->get_length(), &data[offset]);
+    send(data.data(), data.size());
+}
+
+void EventsProtocol::add_platforms(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset) {
+    for (const auto &platform: event->get_platforms()) {
+        offset += encoder.encode_coordinate(platform.get_start_x(), &data[offset]);
+        offset += encoder.encode_coordinate(platform.get_end_x(), &data[offset]);
+        offset += encoder.encode_coordinate(platform.get_end_x(), &data[offset]);
+        offset += encoder.encode_tile_id(platform.get_tile_id(), &data[offset]);
+    }
+}
+
+
+

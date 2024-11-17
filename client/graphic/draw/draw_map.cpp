@@ -10,7 +10,7 @@ DrawMap::DrawMap(SDL2pp::Renderer& renderer) : textures(), renderer(renderer), b
 
 }
 
-void DrawMap::load(const Map& map){
+void DrawMap::load(const MapDTO& map){
     this->height = map.get_length();
     this->width = map.get_width();
     this->platforms = map.get_platforms();
@@ -55,7 +55,6 @@ void DrawMap::render(){
         int height = texture.GetHeight();
         int y = platform.get_y();
         for (int i = platform.get_start_x(); i < platform.get_end_x() + 1; i ++){
-            std::cout << "entro" << std::endl;
             SDL2pp::Rect dest(i * width, y * height, width, height);
             std::cout << dest.x << " " << dest.y << " " << dest.w << " " << dest.h << std::endl;
             renderer.Copy(texture, src, dest);

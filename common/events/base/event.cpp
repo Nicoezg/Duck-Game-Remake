@@ -64,7 +64,7 @@ std::list<GameRoom> Event::get_games() {
     throw std::runtime_error("Has no games.");
 }
 
-std::vector<Tile> Event::get_platforms() const {
+std::list<Tile> Event::get_platforms() const {
     throw std::runtime_error("Has no platforms.");
 }
 

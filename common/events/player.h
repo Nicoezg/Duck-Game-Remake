@@ -19,12 +19,12 @@ private:
   bool right;
   enum State state;
   WeaponDTO weapon;
-  Helmet helmet;
+  HelmetDTO helmet;
   Chestplate chestplate;
 
 public:
   PlayerDTO(int player_id, int position_x, int position_y, bool right, State state,
-            WeaponDTO weapon, Helmet helmet, Chestplate chestplate);
+            WeaponDTO weapon, HelmetDTO helmet, Chestplate chestplate);
 
   int get_player_id() const;
 
@@ -38,7 +38,7 @@ public:
 
     WeaponDTO get_weapon() const;
 
-  Helmet get_helmet() const;
+  HelmetDTO get_helmet() const;
 
   Chestplate get_chestplate() const;
 };

@@ -4,12 +4,12 @@
 #include <string>
 #include "helmet_macros.h"
 
-class Helmet {
+class HelmetDTO {
 private:
     HelmetId helmet_id;
   
 public:
-  Helmet(HelmetId helmet_id = NO_HELMET);
+  HelmetDTO(HelmetId helmet_id = NO_HELMET);
 
   HelmetId get_id() const;
 };

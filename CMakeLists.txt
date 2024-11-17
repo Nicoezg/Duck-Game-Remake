@@ -181,21 +181,25 @@ if(SERVER)
 endif()
 
 if(EDITOR)
-    add_executable(EDITOR)
+    qt_add_executable(EDITOR
+            MANUAL_FINALIZATION
+            ${UI_HEADERS}
+            ${RESOURCES}
+    )
 
-    # Make them depend on common lib
-    add_dependencies(EDITOR COMMON SDL2pp::SDL2pp)
-
-    # Add source files and enable warnings
-    add_subdirectory(editor)
 
     set_project_warnings(EDITOR ${TALLER_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-    # add libSDL2pp's headers
-    target_include_directories(EDITOR PRIVATE ${libSDL2pp_SOURCE_DIR})
+    
+    add_subdirectory(editor)
+    include_directories(${Qt6Widgets_INCLUDE_DIRS})
 
-    # Link the common lib target
-    target_link_libraries(EDITOR COMMON SDL2pp::SDL2pp)
+    # Link the COMMON lib target
+    target_link_libraries(EDITOR PRIVATE  Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia)
+    target_link_libraries(EDITOR PRIVATE yaml-cpp)
+
+    qt_finalize_executable(EDITOR)
+
 endif()
 
 

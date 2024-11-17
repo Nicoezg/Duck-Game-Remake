@@ -102,20 +102,19 @@ void Duck::render() {
     if (weapon.getId() == NO_WEAPON) {
 
         switch (animationMovement.getCurrentType()) {
-            case MovementType::WALK:
+            case WALKING:
                 currentClip = walkClips[animationMovement.getCurrentFrame()];
                 break;
-            case MovementType::JUMP:
+            case JUMPING:
                 currentClip = jumpClip;
-                sound.play();
                 break;
-            case MovementType::FALL:
+            case FALLING:
                 currentClip = fallClip;
                 break;
-            case MovementType::PLAYDEAD:
+            case PLAYING_DEAD:
                 currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                 break;
-            case MovementType::FLAP:
+            case FLAPPING:
                 currentClip = flappingClips[animationMovement.getCurrentFrame()];
                 break;
             default:
@@ -126,20 +125,19 @@ void Duck::render() {
 
     } else {
         switch (animationMovement.getCurrentType()) {
-            case MovementType::WALK:
+            case WALKING:
                 currentClip = walkWeaponClips[animationMovement.getCurrentFrame()];
                 break;
-            case MovementType::JUMP:
+            case JUMPING:
                 currentClip = jumpWeaponClip;
-                sound.play();
                 break;
-            case MovementType::FALL:
+            case FALLING:
                 currentClip = fallWeaponClip;
                 break;
-            case MovementType::PLAYDEAD:
+            case PLAYING_DEAD:
                 currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                 break;
-            case MovementType::AIMING_UPWARDS:
+            case AIMING_UPWARDS:
                 currentClip = aimingUpwardsClip;
                 break;
             default:
@@ -159,7 +157,7 @@ void Duck::render() {
 
 }
 
-void Duck::update(const PlayerDTO &player) {
+void Duck::update(const PlayerDTO &player){
     posX = player.get_position_x();
     posY = player.get_position_y();
     direction = player.is_right();
@@ -168,31 +166,36 @@ void Duck::update(const PlayerDTO &player) {
     chestplate.update(player.get_chestplate());
 
     auto state = player.get_state();
-    if (state == PLAYING_DEAD || state == DEAD) {
-        animationMovement.changeState(MovementType::PLAYDEAD, false);
+    if (state == animationMovement.getCurrentType()) {
+        return;
+    }
+    if (state == DEAD){
+        animationMovement.changeState(PLAYING_DEAD, false);
         sound.change(sfx[1], 0);
+    }
+    else if (state == PLAYING_DEAD) {
+        animationMovement.changeState(PLAYING_DEAD, false);
 
     } else if (state == FLAPPING) {
-        animationMovement.changeState(MovementType::FLAP, false);
-        std::cout << "entro aca" << std::endl;
+        animationMovement.changeState(FLAPPING, true);
 
     } else if (state == FALLING) {
-        animationMovement.changeState(MovementType::FALL, false);
+        animationMovement.changeState(FALLING, false);
 
     } else if (state == JUMPING) {
-        animationMovement.changeState(MovementType::JUMP, false);
+        animationMovement.changeState(JUMPING, false);
         sound.change(sfx[0], 0);
 
     } else if (state == AIMING_UPWARDS) {
-        animationMovement.changeState(MovementType::AIMING_UPWARDS, false);
+        animationMovement.changeState(AIMING_UPWARDS, false);
 
     } else if (state == WALKING) {
-        animationMovement.changeState(MovementType::WALK, true);
+        animationMovement.changeState(WALKING, true);
 
     } else {
-        animationMovement.changeState(MovementType::IDLE, false);
+        animationMovement.changeState(BLANK, false);
     }
-    // Cambiar a switch case
+        // Cambiar a switch case
 }
 
 void Duck::updateFrame(int it) {

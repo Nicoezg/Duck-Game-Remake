@@ -1,23 +1,23 @@
 #include "animation_movement.h"
 
 
-AnimationMovement::AnimationMovement() : currentType(MovementType::IDLE), frameCount(0), frameDuration(1), looping(true) {}
+AnimationMovement::AnimationMovement() : currentType(State::BLANK), frameCount(0), frameDuration(1), looping(true) {}
 
 
-int AnimationMovement::getDurationForState(MovementType type) {
+int AnimationMovement::getDurationForState(State type) {
         switch (type) {
-            case MovementType::WALK: return 5;
-            case MovementType::JUMP: return 1;
-            case MovementType::FALL: return 1;
-            case MovementType::IDLE: return 1;
-            case MovementType::FLAP: return 3;
-            case MovementType::AIMING_UPWARDS: return 1;
-            case MovementType::PLAYDEAD: return 3;
+            case State::WALKING: return 5;
+            case State::JUMPING: return 1;
+            case State::FALLING: return 1;
+            case State::BLANK: return 1;
+            case State::FLAPPING: return 3;
+            case State::AIMING_UPWARDS: return 1;
+            case State::PLAYING_DEAD: return 3;
             default: return 1;
         }
     }
 
-void AnimationMovement::changeState(MovementType newType, bool shouldLoop) {
+void AnimationMovement::changeState(State newType, bool shouldLoop) {
         if (currentType != newType) {
             currentType = newType;
             frameCount = 0;
@@ -36,4 +36,4 @@ void AnimationMovement::update(int frame) {
         frameCount += frame;
     }
 
-MovementType AnimationMovement::getCurrentType() const { return currentType; }
+State AnimationMovement::getCurrentType() const { return currentType; }

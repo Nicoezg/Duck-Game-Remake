@@ -7,9 +7,11 @@ target_sources(SERVER
         monitor_games.cpp
         lobby.cpp
         notifier.cpp
+        maploader.cpp
         server.cpp
         server_protocol.cpp
         logic/game_map.cpp
+        logic/box.cpp
         logic/duck.cpp
         logic/configurations.cpp
 
@@ -20,10 +22,12 @@ target_sources(SERVER
         monitor_lobby.h
         lobby.h
         notifier.h
+        maploader.h
         server.h
         server_protocol.h
         logic/game_map.h
         logic/duck.h
+        logic/box.h
         logic/configurations.h
         logic/weapons/weapon.h
     )

@@ -14,7 +14,7 @@ class DrawMap{
 
     SDL2pp::Renderer& renderer;
 
-    std::vector<Tile> platforms;
+    std::list<Tile> platforms;
 
     int backgroundId;
 
@@ -26,7 +26,7 @@ class DrawMap{
 
     DrawMap(SDL2pp::Renderer& renderer);
 
-    void load(const Map& map);
+    void load(const MapDTO& map);
 
     void render();
 

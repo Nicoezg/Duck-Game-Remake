@@ -41,17 +41,27 @@ public:
 
     WeaponDTO read_weapon(std::vector<int8_t> &data);
 
-    Helmet read_helmet(std::vector<int8_t> &data);
+    HelmetDTO read_helmet(std::vector<int8_t> &data);
 
     Chestplate read_chestplate(std::vector<int8_t> &data);
 
     void add_chestplate(std::vector<int8_t> &data, Chestplate chestplate, size_t& offset);
 
-    void add_health(std::vector<int8_t> &data, Helmet helmet, size_t& offset);
+    void add_health(std::vector<int8_t> &data, HelmetDTO helmet, size_t& offset);
 
     void add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, size_t& offset);
 
     void add_players(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t& offset);
+  
+  void send_map(const std::shared_ptr<Event> &event);
+
+  std::shared_ptr<Event> read_map();
+
+  void send_tile(const std::shared_ptr<Event> &event);
+
+  std::shared_ptr<Event> read_tile();
+
+  void add_platforms(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t& offset);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

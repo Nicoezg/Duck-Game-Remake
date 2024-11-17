@@ -52,7 +52,7 @@ public:
 
   virtual std::list<GameRoom> get_games();
 
-  virtual std::vector<Tile> get_platforms() const;
+  virtual std::list<Tile> get_platforms() const;
 
   virtual int get_background_id() const;
 
