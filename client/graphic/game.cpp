@@ -110,7 +110,7 @@ void Game::update_state() {
 
 void Game::update(const Event &broadcast) {
     std::lock_guard<std::mutex> lock(mutex);
-    // std::vector<SDL2pp::Rect> playerRects;
+    std::vector<SDL2pp::Rect> playerRects;
     if (ducks.size() != broadcast.get_players().size()) {
         ducks.clear();
         for (auto &player: broadcast.get_players()) {
@@ -121,9 +121,9 @@ void Game::update(const Event &broadcast) {
     }
     for (auto &player: broadcast.get_players()) {
         ducks[player.get_player_id()-1]->update(player);
-        // playerRects.push_back(SDL2pp::Rect(player.get_position_x(), player.get_position_y(), Duck::DUCK_WIDTH, Duck::DUCK_HEIGHT));
+        playerRects.push_back(SDL2pp::Rect(player.get_position_x(), player.get_position_y(), Duck::DUCK_WIDTH, Duck::DUCK_HEIGHT));
     }
-    // camera.update(playerRects);
+    camera.update(playerRects);
 
     bullets = broadcast.get_bullets();
     weaponSpawns = broadcast.get_weapons();

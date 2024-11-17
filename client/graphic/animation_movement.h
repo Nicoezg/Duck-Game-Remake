@@ -1,37 +1,28 @@
 #ifndef ANIMATION_MOVEMENT_H
 #define ANIMATION_MOVEMENT_H
 #include <algorithm>
-
-enum class MovementType {
-    WALK,
-    JUMP,
-    FALL,
-    PLAYDEAD,
-    FLAP,
-    AIMING_UPWARDS,
-    IDLE
-};
+#include "../../common/events/player_macros.h"
 
 class AnimationMovement {
     private:
-    MovementType currentType;
+    State currentType;
     int frameCount;
     int frameDuration;
     bool looping;
 
-    int getDurationForState(MovementType type);
+    int getDurationForState(State type);
 
     public:
 
     AnimationMovement();
 
-    void changeState(MovementType newType, bool shouldLoop = true);
+    void changeState(State newType, bool shouldLoop = true);
 
     int getCurrentFrame();
 
     void update(int frame);
 
-    MovementType getCurrentType() const;
+    State getCurrentType() const;
 
 };
 #endif
