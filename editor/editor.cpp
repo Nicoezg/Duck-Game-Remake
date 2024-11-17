@@ -76,7 +76,7 @@ void Editor::cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
       label->setProperty("grilla_id", 0);
       label->setProperty("tile_id", fila * columnasMax + columna);
       label->installEventFilter(this);
-      tiles.push_back(scaledTile);
+      tiles.push_back(scaledTile.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
       ui->tilesLayout->addWidget(label, fila, columna);
 
@@ -105,7 +105,7 @@ void Editor::crearMapaVacio(int filas, int columnas) {
   mapaLayout->setSpacing(0);
   mapaLayout->setContentsMargins(0, 0, 0, 0);
 
-  const int tileSide = 64;
+  const int tileSide = 32;
 
   // Limpiar el layout existente si es necesario
   while (QLayoutItem *item = mapaLayout->takeAt(0)) {
@@ -145,7 +145,8 @@ bool Editor::eventFilter(QObject *obj, QEvent *event) {
 
       if (grilla_id == "0") {
         // El label es un tile de la grilla
-        const QPixmap currentPixmap = label->pixmap();
+        const QPixmap currentPixmap = label->pixmap().scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
 
         if (sprite_actual) {
           delete sprite_actual;
