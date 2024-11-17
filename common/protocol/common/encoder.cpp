@@ -240,3 +240,37 @@ uint8_t Encoder::decode_id(std::vector<int8_t> &data) {
   data.erase(data.begin(), data.begin() + sizeof(uint8_t));
   return id;
 }
+
+size_t Encoder::encode_tile_id(uint8_t tile_id, void *data) {
+  const auto *tile_id_bytes = reinterpret_cast<int8_t *>(&tile_id);
+  std::memcpy(data, tile_id_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+uint8_t Encoder::decode_tile_id(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el id del tile.");
+  }
+  uint8_t tile_id;
+  std::memcpy(&tile_id, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return tile_id;
+}
+
+size_t Encoder::encode_background_id(uint8_t background_id, void *data) {
+  const auto *background_id_bytes = reinterpret_cast<int8_t *>(&background_id);
+  std::memcpy(data, background_id_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+uint8_t Encoder::decode_background_id(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el id del background.");
+  }
+  uint8_t background_id;
+  std::memcpy(&background_id, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return background_id;
+}

@@ -8,7 +8,7 @@
 
 class Map : public Event {
 private:
-  std::vector<Tile> platforms; // Contiene todos los tiles del mapa
+  std::list<Tile> platforms; // Contiene todos los tiles del mapa
 
   int background_id; // Id del background del mapa
 
@@ -18,9 +18,9 @@ private:
 
 
 public:
-  explicit Map(std::vector<Tile> platforms, int background_id, int width, int length);
+  Map(std::list<Tile> &&platforms, int background_id, int width, int length);
 
-  std::vector<Tile> get_platforms() const override;
+  std::list<Tile> get_platforms() const override;
 
   int get_background_id() const override;
 
