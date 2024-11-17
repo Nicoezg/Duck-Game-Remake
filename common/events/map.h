@@ -6,7 +6,7 @@
 #include "tile.h"
 #include "base/event.h"
 
-class Map : public Event {
+class MapDTO : public Event {
 private:
   std::list<Tile> platforms; // Contiene todos los tiles del mapa
 
@@ -18,7 +18,7 @@ private:
 
 
 public:
-  Map(std::list<Tile> &&platforms, int background_id, int width, int length);
+  MapDTO(std::list<Tile> &&platforms, int background_id, int width, int length);
 
   std::list<Tile> get_platforms() const override;
 

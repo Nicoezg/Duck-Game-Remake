@@ -10,7 +10,7 @@ DrawMap::DrawMap(SDL2pp::Renderer& renderer) : textures(), renderer(renderer), b
 
 }
 
-void DrawMap::load(const Map& map){
+void DrawMap::load(const MapDTO& map){
     this->height = map.get_length();
     this->width = map.get_width();
     this->platforms = map.get_platforms();

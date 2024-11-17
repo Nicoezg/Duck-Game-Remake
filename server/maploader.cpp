@@ -88,3 +88,29 @@ Map MapLoader::getNextMap() {
       lastMapIndex++;  
     return mapa;
 }
+
+Map MapLoader::getactualMap() {
+
+  return maps[lastMapIndex-1];
+}
+
+MapDTO MapLoader::getNextMapDTO() {
+  Map mapa = getactualMap();
+  std::list<Tile> tiles;
+  for (auto structure : mapa.structures) {
+    for (int i = structure.start_x; i <= structure.end_x; i++) {
+      tiles.push_back({i, i, structure.y, structure.id});
+    }
+  }
+  for (auto ramp : mapa.leftRamps) {
+    for (int i = ramp.start_x; i <= ramp.end_x; i++) {
+      tiles.push_back({i, i, ramp.y, ramp.id});
+    }
+  }
+  for (auto ramp : mapa.rightRamps) {
+    for (int i = ramp.start_x; i <= ramp.end_x; i++) {
+      tiles.push_back({i, i, ramp.y, ramp.id});
+    }
+  }
+  return MapDTO(std::move(tiles), mapa.background, mapa.width, mapa.height);
+}

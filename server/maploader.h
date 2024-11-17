@@ -5,6 +5,7 @@
 #include <string>
 #include "structure.h"
 #include "logic/box.h"
+#include "common/events/map.h"
 
 
 
@@ -30,6 +31,8 @@ class MapLoader{
         ~MapLoader();
 
         Map getNextMap();
+        Map getactualMap();
+        MapDTO getNextMapDTO();
 };
 
 
