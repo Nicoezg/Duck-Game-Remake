@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/fondo.jpg</file>
+        <file>images/sprites/LevelStructureSheet.png</file>
+        <file>images/sprites/InteractuablesDG.png</file>
+        <file>images/forest.png</file>
+        <file>images/lava.png</file>
+    </qresource>
+</RCC>

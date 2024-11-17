@@ -13,30 +13,32 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::LayoutDirection::LeftToRight</enum>
+  </property>
   <property name="styleSheet">
    <string notr="true">#Editor {
-background-color: #1a1a1a;
+      border-image: url(:/images/fondo.jpg) 0 0 0 0 stretch stretch;
 }
 
 #Editor QLabel {
-border: 1px solid #FFA500;
-padding: 0px;
-background-color: #000000;
-qproperty-alignment: 'AlignCenter';
-min-width: 16px;
-min-height: 16px;
-margin: 0px;
+    border: 1px solid #FFA500;
+    padding: 0px;
+    background-color: #000000;
+    qproperty-alignment: 'AlignCenter';
+    min-width: 32px;  /* Cambiado a 32px */
+    min-height: 32px; /* Cambiado a 32px */
+    margin: 0px;
 }
 
 #Editor QLabel[scaledContents=&quot;true&quot;] {
-qproperty-scaledContents: true;
+    qproperty-scaledContents: false;  /* Cambiado a false para evitar escalado automático */
 }
 
 #Editor QLabel:hover {
-border: 1px solid #FFD700;
-background-color: rgba(255, 165, 0, 0.1);
+    border: 1px solid #FFD700;
+    background-color: rgba(255, 165, 0, 0.1);
 }
-
 #Editor QScrollArea {
 border: 2px solid #FFA500;
 background-color: #000000;
@@ -91,6 +93,56 @@ background: #FFD700;
 margin: 0px;
 padding: 0px;
 spacing: 0px;
+} 
+QPushButton {
+    background-color: #2C1810;  
+    border: 4px solid #FFB626;  
+    border-style: solid;
+    border-bottom-width: 8px;   
+    color: #FFD700;            
+    font-family: &quot;Press Start 2P&quot;, &quot;VT323&quot;, &quot;Consolas&quot;; 
+    font-size: 28px;
+    text-transform: uppercase;
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 0px;        
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #3C2820;  
+    border-bottom-width: 10px;  
+}
+QPushButton:pressed {
+    background-color: #1C0800;  
+    border-bottom-width: 4px;   
+}
+QPushButton:disabled {
+    background-color: #1A1A1A;
+    border-color: #666666;
+    color: #888888;
+}
+QLabel {
+    background-color: #2C1810;  
+    border: 4px solid #FFB626;  
+    border-style: solid;
+    border-bottom-width: 8px;   
+    color: #FFD700;            
+    font-family: &quot;Press Start 2P&quot;, &quot;VT323&quot;, &quot;Consolas&quot;; 
+    font-size: 28px;
+    text-transform: uppercase;
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 0px;        
+}
+QLineEdit, QComboBox {
+      border: 4px solid #df9f1f; 
+      color: #df9f1f; 
+      font-family: &quot;Arial Black&quot;;
+      font-size: 35px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 15px 30px;
+      margin: 10px;
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -125,9 +177,21 @@ spacing: 0px;
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>344</width>
-        <height>541</height>
+        <width>16</width>
+        <height>16</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -178,9 +242,15 @@ spacing: 0px;
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>344</width>
+        <width>251</width>
         <height>541</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -214,12 +284,89 @@ spacing: 0px;
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
      <item>
-      <widget class="QPushButton" name="Menu">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QComboBox" name="backgroundBox">
+       <item>
+        <property name="text">
+         <string>Forest</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Lava</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="EraiserButton">
        <property name="text">
-        <string>Menu</string>
+        <string>Eraiser</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="EraseButton">
+       <property name="text">
+        <string>Erase</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="SaveButton">
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="LoadButton">
+       <property name="text">
+        <string>Load</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ExitButton">
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
