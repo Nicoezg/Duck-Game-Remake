@@ -26,10 +26,10 @@ DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId) : textures
     this->sounds[9] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/sniper.wav");
 }
 
-void DrawWeapon::render(int x, int y){
-    std::shared_ptr<SDL2pp::Texture> texture = this->textures[weaponId];
-    SDL2pp::Rect dest(x, y, texture->GetWidth(), texture->GetHeight());
-    renderer.Copy(*texture, SDL2pp::NullOpt, dest);
+void DrawWeapon::render(int x, int y, int flipType){
+    std::shared_ptr<SDL2pp::Texture> texture = this->textures[4];
+    SDL2pp::Rect dest(x + 3, y + 9, 25, 25);
+    renderer.Copy(*texture, SDL2pp::NullOpt, dest, 0.0, SDL2pp::NullOpt, flipType);
     if (shoot){
         sound.play();
         shoot = false;

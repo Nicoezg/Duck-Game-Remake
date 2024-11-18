@@ -66,6 +66,9 @@ void Game::valid_start() {
     }
     start_game();
     notifier.notify(std::make_shared<StartGame>());
+    MapDTO map = gameMap.getMapDTO();
+    std::shared_ptr<Event> event = std::make_shared<MapDTO> (std::move(map));
+    notify_event(event);
 }
 
 void Game::run() {

@@ -1,6 +1,7 @@
 #include "maploader.h"
 #include <yaml-cpp/yaml.h>
 #include <filesystem>
+#include <iostream>
 
 
 #define PATH "../server/logic/maps/"
@@ -10,6 +11,7 @@ MapLoader::MapLoader() {
     for (const auto & entry : std::filesystem::directory_iterator(PATH)) {
         maps_paths.push_back(entry.path());
     }
+    std::cout << "cargue los mapas" << std::endl;
   lastMapIndex = 0;
 }
 
@@ -85,7 +87,10 @@ Map MapLoader::getNextMap() {
     }
   }
     maps.push_back(mapa);
-      lastMapIndex++;  
+      lastMapIndex++;
+    std::cout << "consegui el mapa para la logica" << std::endl;
+    std::cout << mapa.background << std::endl;
+    std::cout << mapa.structures.size() << std::endl;
     return mapa;
 }
 
@@ -96,9 +101,13 @@ Map MapLoader::getactualMap() {
 
 MapDTO MapLoader::getNextMapDTO() {
   Map mapa = getactualMap();
+  std::cout << mapa.background << std::endl;
+  std::cout << mapa.structures.size() << std::endl;
   std::list<Tile> tiles;
   for (auto structure : mapa.structures) {
+    std::cout << "entrando" << std::endl;
     for (int i = structure.start_x; i <= structure.end_x; i++) {
+      std::cout << "entrando" << std::endl;
       tiles.push_back({i, i, structure.y, structure.id});
     }
   }
@@ -113,5 +122,6 @@ MapDTO MapLoader::getNextMapDTO() {
     }
   }
   int background = (mapa.background == "Forest") ? 0 : 1;
+  std::cout << "cargo el DTO con tamaño: "  << tiles.size() << std::endl;
   return MapDTO(std::move(tiles), background, mapa.width, mapa.height);
 }

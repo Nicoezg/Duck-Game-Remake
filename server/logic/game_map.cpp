@@ -167,3 +167,7 @@ GameMap::~GameMap() {
     delete player;
   }
 }
+
+MapDTO GameMap::getMapDTO(){
+  return mapLoader.getNextMapDTO();
+}

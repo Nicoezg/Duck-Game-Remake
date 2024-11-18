@@ -103,8 +103,10 @@ int Game::start() {
 
 void Game::update_state() {
     std::shared_ptr<Event> event = client.try_read();
-    if (event != nullptr) {
+    if (event->get_type() == BROADCAST) {
         update(*event);
+    } else if (event->get_type() == MAP_LOAD) {
+        map.load(*event);
     }
 }
 

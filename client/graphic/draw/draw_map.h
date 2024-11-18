@@ -26,7 +26,7 @@ class DrawMap{
 
     DrawMap(SDL2pp::Renderer& renderer);
 
-    void load(const MapDTO& map);
+    void load(const Event& map);
 
     void render();
 

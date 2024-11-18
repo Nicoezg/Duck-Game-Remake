@@ -43,6 +43,8 @@ public:
   std::list<PlayerDTO> getState();
 
   std::list<BulletDTO> getBulletsState();
+
+  MapDTO getMapDTO();
 };
 
 #endif

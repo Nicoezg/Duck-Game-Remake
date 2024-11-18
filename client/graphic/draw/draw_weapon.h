@@ -25,7 +25,7 @@ class DrawWeapon {
     public:
     DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON);
 
-    void render(int x, int y);
+    void render(int x, int y, int flipType);
 
     void render(const WeaponDTO& weapon);
 
