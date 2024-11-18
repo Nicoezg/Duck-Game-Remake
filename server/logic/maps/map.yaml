@@ -1,7 +1,7 @@
 fondo: Forest
 alto: 20
 ancho: 20
-tiles:
+Structures:
   - start_x: 1
     end_x: 1
     y: 6

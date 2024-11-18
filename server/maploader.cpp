@@ -105,21 +105,13 @@ MapDTO MapLoader::getNextMapDTO() {
   std::cout << mapa.structures.size() << std::endl;
   std::list<Tile> tiles;
   for (auto structure : mapa.structures) {
-    std::cout << "entrando" << std::endl;
-    for (int i = structure.start_x; i <= structure.end_x; i++) {
-      std::cout << "entrando" << std::endl;
-      tiles.push_back({i, i, structure.y, structure.id});
-    }
+    tiles.push_back({structure.start_x, structure.end_x, structure.y, structure.id});
   }
   for (auto ramp : mapa.leftRamps) {
-    for (int i = ramp.start_x; i <= ramp.end_x; i++) {
-      tiles.push_back({i, i, ramp.y, ramp.id});
-    }
+    tiles.push_back({ramp.start_x, ramp.end_x, ramp.y, ramp.id});
   }
   for (auto ramp : mapa.rightRamps) {
-    for (int i = ramp.start_x; i <= ramp.end_x; i++) {
-      tiles.push_back({i, i, ramp.y, ramp.id});
-    }
+    tiles.push_back({ramp.start_x, ramp.end_x, ramp.y, ramp.id});
   }
   int background = (mapa.background == "Forest") ? 0 : 1;
   std::cout << "cargo el DTO con tamaño: "  << tiles.size() << std::endl;

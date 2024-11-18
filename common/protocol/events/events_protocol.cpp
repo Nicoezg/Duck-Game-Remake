@@ -12,6 +12,7 @@
 #include "common/events/map.h"
 #include "common/events/tile.h"
 #include <list>
+#include <iostream>
 
 #define EVENT_TYPE_SIZE sizeof(int8_t)
 #define PLAYERS_ID_SIZE sizeof(uint16_t)
@@ -323,7 +324,7 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
     read(data.data(), data.size());
     int tiles_len = encoder.decode_len(data);
 
-    std::vector<int8_t> tiles_data(tiles_len * READ_TILE_SIZE);
+    std::vector<int8_t> tiles_data(tiles_len * READ_TILE_SIZE + COORDINATE_SIZE * 2 + sizeof(uint8_t));
     read(tiles_data.data(), tiles_data.size());
 
     std::list<Tile> tiles;
@@ -337,6 +338,7 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
     int background_id = encoder.decode_background_id(tiles_data);
     int width = encoder.decode_coordinate(tiles_data);
     int length = encoder.decode_coordinate(tiles_data);
+    std::cout << data.size() << std::endl;
     
     return std::make_shared<MapDTO>(std::move(tiles), background_id, width, length);
 }
@@ -344,7 +346,7 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
 void EventsProtocol::send_map(const std::shared_ptr<Event> &event) {
     std::vector<int8_t> data(LEN_SIZE +
                              event->get_platforms().size() * SEND_TILE_SIZE +
-                             EVENT_TYPE_SIZE);
+                             EVENT_TYPE_SIZE + COORDINATE_SIZE * 3 + sizeof(uint8_t));
     size_t offset = 0;
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
     offset += encoder.encode_len(event->get_platforms().size(), &data[offset]);
