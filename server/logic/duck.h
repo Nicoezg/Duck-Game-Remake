@@ -17,7 +17,7 @@ private:
   bool flapping;
   bool shooting;
   GameMap &map;
-  Weapon *weapon;
+  std::unique_ptr<Weapon> weapon;
   bool isRight;
   bool aimingUpwards;
   State state;
@@ -37,20 +37,23 @@ public:
   void shoot();
   void equipHelmet();
   void equipArmour();
-  void equipWeapon(Weapon *newWeapon);
+  void equipWeapon(std::unique_ptr<Weapon> newWeapon);
   void takeDamage();
   void pickUp();
   void leave();
   void playDead();
   void aimUpwards();
+  void standBack(int count);
   int getPositionX() const;
   int getPositionY() const;
   int getId() const;
   bool getDirection() const;
   State getState() const;
-
+  bool isWearingHelmet() const;
+  bool isWearingArmour() const;
   bool isJumping() const;
-
+  const Weapon *getWeapon() const;
+  bool isFlapping() const;
 
   ~Duck();
 };

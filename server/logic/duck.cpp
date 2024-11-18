@@ -2,7 +2,6 @@
 #include "configurations.h"
 #include <iostream>
 
-
 #define CONFIG Configurations::configurations()
 #define GROUNDLEVEL 400
 
@@ -65,9 +64,9 @@ void Duck::flap() {
 
 void Duck::update() {
   if (state == State::PLAYING_DEAD) {
-    velX = 0; 
-    velY = 0;  
-    posY = GROUNDLEVEL;  
+    velX = 0;
+    velY = 0;
+    posY = GROUNDLEVEL;
   }
   posX += velX;
   posY += velY;
@@ -78,25 +77,23 @@ void Duck::update() {
 
   if (jumping) {
     velY += flapping ? CONFIG.getFlappingSpeed() : CONFIG.getGravity();
-    if (velY >= 0 && !flapping){
+    if (velY >= 0 && !flapping) {
       state = State::FALLING;
     }
   }
 
-  if (posY >= GROUNDLEVEL && state != State::PLAYING_DEAD) { 
+  if (posY >= GROUNDLEVEL && state != State::PLAYING_DEAD) {
     posY = GROUNDLEVEL;
     jumping = false;
     flapping = false;
     velY = 0;
 
-    if (velX == 0) {  
-      state = State::BLANK; 
+    if (velX == 0) {
+      state = State::BLANK;
     } else {
       state = State::WALKING;
     }
- 
   }
-
 }
 
 /*void Duck::shoot() {
@@ -111,10 +108,8 @@ void Duck::equipHelmet() { hasHelmet = true; }
 
 void Duck::equipArmour() { hasArmour = true; }
 
-void Duck::equipWeapon(Weapon *newWeapon) {
-  if (weapon)
-    delete weapon;
-  weapon = newWeapon;
+void Duck::equipWeapon(std::unique_ptr<Weapon> newWeapon) {
+  weapon = std::move(newWeapon);
 }
 
 void Duck::takeDamage() {
@@ -130,7 +125,6 @@ void Duck::takeDamage() {
 
 void Duck::pickUp() {
   // para agarrar
-  // para agarrar
 }
 
 void Duck::leave() {
@@ -141,14 +135,23 @@ void Duck::playDead() {
   if (state != State::PLAYING_DEAD) {
     state = State::PLAYING_DEAD;
     velX = 0;
-    velY = 0;  
+    velY = 0;
   }
 }
 
-void Duck::aimUpwards() // faltaria en algun lado hacer q deje de aimean, supongo q dsps de disparar?
+void Duck::aimUpwards() // faltaria en algun lado hacer q deje de aimean,
+                        // supongo q dsps de disparar?
 {
   aimingUpwards = true;
-  state = State::AIMING_UPWARDS; 
+  state = State::AIMING_UPWARDS;
+}
+
+void Duck::standBack(int count) {
+  if (isRight) {
+    velX -= count;
+  } else {
+    velX += count;
+  }
 }
 
 int Duck::getPositionX() const { return posX; }
@@ -161,8 +164,12 @@ bool Duck::getDirection() const { return isRight; }
 
 State Duck::getState() const { return state; }
 
+bool Duck::isWearingHelmet() const { return false; }
+
+bool Duck::isWearingArmour() const { return false; }
+
 bool Duck::isJumping() const { return jumping; }
 
+const Weapon *Duck::getWeapon() const { return weapon.get(); }
 
-Duck::~Duck() { delete weapon; }
-
+Duck::~Duck() {}

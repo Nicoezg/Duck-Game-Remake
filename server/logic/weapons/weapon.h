@@ -1,37 +1,38 @@
-//
-// Created by fran on 13/11/24.
-//
+#ifndef WEAPON_H
+#define WEAPON_H
 
-#ifndef TALLER_TP_WEAPON_H
-#define TALLER_TP_WEAPON_H
-
-
-
-#define CONFIG Configurations::configurations()
+#include "common/events/items/weapon_macros.h"
+#include "server/logic/bullets/bullet.h"
+#include <memory>
 
 class Duck;
+class GameMap;
 
 class Weapon {
-private:
-    int reach;
-    int ammo;
-    bool reloading;
-    int lastShot;
+protected:
+  GameMap &map;
+  int ammo;
+  int reloadTime;
+  int lastShotTime;
+  bool isReloading;
+  int reach;
+  enum WeaponId id;
 
 public:
-    Weapon(int ammo, int reach);
-    virtual ~Weapon() = default;
+  Weapon(GameMap &map, int initialAmmo, int reach, enum WeaponId id)
+      : map(map), ammo(initialAmmo), reloadTime(0), lastShotTime(0),
+        isReloading(false), reach(reach), id(id) {}
 
+  virtual ~Weapon() = default;
 
-    //virtual bool shoot(Duck *shooter) = 0;
-    //virtual bool canShoot() { return !isReloading() && hasAmmo(); }
-    //virtual void reload() = 0;
+  virtual void shoot(Duck *owner) = 0;
 
-    //bool hasAmmo() { return ammo > 0; }
-    //int getAmmo() const;
-    //int getReach() const;
-    //bool isReloading() const;
+  bool hasAmmo() const { return ammo > 0; }
+  int getAmmo() const { return ammo; }
+  bool isReadyToShoot() const { return !isReloading && hasAmmo(); }
+
+  void createBullet(Duck *owner, int angle, bool canBounce, int reach,
+                    BulletId id);
 };
 
-
-#endif //TALLER_TP_WEAPON_H
+#endif // WEAPON_H

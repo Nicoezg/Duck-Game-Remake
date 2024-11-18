@@ -9,9 +9,7 @@
 #define HEIGHT 500
 #define WIDTH 500
 
-GameMap::GameMap() {
-  map = mapLoader.getNextMap();
-}
+GameMap::GameMap() { map = mapLoader.getNextMap(); }
 
 void GameMap::addPlayer(int player_id) {
   // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
@@ -25,6 +23,10 @@ void GameMap::addPlayer(int player_id) {
 
   Duck *duck = new Duck(player_id, 10 * player_id, 400, *this);
   players.push_back(duck);
+}
+
+void GameMap::addBullet(std::unique_ptr<Bullet> bullet) {
+  bullets.push_back(std::move(bullet));
 }
 
 Duck *GameMap::findPlayer(int playerId) {
@@ -48,7 +50,7 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
   if (!player)
     return true;
 
-  if (player->getPositionX() >= WIDTH|| player->getPositionX() <= 0) {
+  if (player->getPositionX() >= WIDTH || player->getPositionX() <= 0) {
     return true;
   }
   if (player->getPositionY() >= HEIGHT || player->getPositionY() <= 0) {
@@ -69,9 +71,9 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
     break;
   case JUMP_FLAP:
     if (!duck->isJumping()) {
-      duck->jump(); 
-    } else  {
-      duck->flap(); 
+      duck->jump();
+    } else {
+      duck->flap();
     }
     break;
   case STILL:
@@ -92,6 +94,21 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
   }
 }
 
+std::list<BulletDTO> GameMap::getBulletsState() {
+  std::list<BulletDTO> bulletsList;
+
+  for (const auto &bullet : bullets) {
+    int posX = bullet->getPosX();
+    int posY = bullet->getPosY();
+    float angle = bullet->getAngle();
+    enum BulletId id = bullet->getId();
+
+    bulletsList.emplace_back(posX, posY, id, angle);
+  }
+
+  return bulletsList;
+}
+
 std::list<PlayerDTO> GameMap::getState() {
   std::list<PlayerDTO> playersList;
   for (auto player : players) {
@@ -100,14 +117,21 @@ std::list<PlayerDTO> GameMap::getState() {
     int posY = player->getPositionY();
     bool dir = player->getDirection();
     State state = player->getState();
+    HelmetDTO helmet;
+
+    if (!player->isWearingHelmet()) {
+      helmet = HelmetDTO(NO_HELMET);
+    } else {
+      helmet = HelmetDTO(KNIGHT);
+    }
 
     playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
-                             HelmetDTO(NO_HELMET), Chestplate(false));
+                             helmet, Chestplate(player->isWearingArmour()));
   }
   return playersList;
 }
 
-PlayerDTO GameMap::getPlayerState(int playerId) {
+/*PlayerDTO GameMap::getPlayerState(int playerId) {
   Duck *duck = findPlayer(playerId);
   if (duck == nullptr) {
     throw std::runtime_error("Jugador no encontrado");
@@ -119,20 +143,20 @@ PlayerDTO GameMap::getPlayerState(int playerId) {
   bool dir = duck->getDirection();
   State state = duck->getState();
 
-  
+
   PlayerDTO player(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
                    HelmetDTO(NO_HELMET), Chestplate(false));
 
   return player;
-}
+} */
 
 void GameMap::reapDead() {
-  auto it = std::remove_if(players.begin(), players.end(), [](Duck* player) {
+  auto it = std::remove_if(players.begin(), players.end(), [](Duck *player) {
     if (player->getState() == State::DEAD) {
-      delete player;  
-      return true;  
+      delete player;
+      return true;
     }
-    return false; 
+    return false;
   });
 
   players.erase(it, players.end());

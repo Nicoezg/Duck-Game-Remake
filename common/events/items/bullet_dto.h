@@ -1,9 +1,9 @@
-#ifndef TALLER_TP_BULLET_H
-#define TALLER_TP_BULLET_H
+#ifndef TALLER_TP_BULLET_DTO_H
+#define TALLER_TP_BULLET_DTO_H
 
+#include "bullet_macros.h"
 #include <cstdint>
 #include <string>
-#include "bullet_macros.h"
 
 class BulletDTO {
 private:
@@ -11,7 +11,6 @@ private:
   int position_y;
   BulletId bullet_id;
   float angle;
-
 
 public:
   BulletDTO(int position_x, int position_y, BulletId bullet_id, float angle);
@@ -25,4 +24,4 @@ public:
   float get_angle() const;
 };
 
-#endif // TALLER_TP_BULLET_H
+#endif // TALLER_TP_BULLET_DTO_H

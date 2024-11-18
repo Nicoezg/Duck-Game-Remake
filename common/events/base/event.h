@@ -5,14 +5,14 @@
 #ifndef TALLER_TP_EVENT_H
 #define TALLER_TP_EVENT_H
 
-#include "event_type.h"
-#include "common/events/player.h"
-#include "common/events/connection/game_room.h"
-#include "../tile.h"
-#include "../items/bullet.h"
+#include "../items/bullet_dto.h"
 #include "../items/crate.h"
 #include "../items/explosion.h"
+#include "../tile.h"
+#include "common/events/connection/game_room.h"
 #include "common/events/items/weapon_dto.h"
+#include "common/events/player.h"
+#include "event_type.h"
 #include <list>
 #include <vector>
 

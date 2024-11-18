@@ -1,8 +1,9 @@
-#include "bullet.h"
+#include "bullet_dto.h"
 
-
-BulletDTO::BulletDTO(int position_x, int position_y, BulletId bullet_id, float angle = 0)
-    : position_x(position_x), position_y(position_y), bullet_id(bullet_id), angle(angle){}
+BulletDTO::BulletDTO(int position_x, int position_y, BulletId bullet_id,
+                     float angle = 0)
+    : position_x(position_x), position_y(position_y), bullet_id(bullet_id),
+      angle(angle) {}
 
 BulletId BulletDTO::get_id() const { return bullet_id; }
 

@@ -1,7 +1,7 @@
 target_sources(SERVER
     PRIVATE
     # .cpp files
-    main.cpp
+        main.cpp
         game.cpp
         monitor_lobby.cpp
         monitor_games.cpp
@@ -14,6 +14,15 @@ target_sources(SERVER
         logic/box.cpp
         logic/duck.cpp
         logic/configurations.cpp
+        logic/weapons/weapon.cpp
+        logic/weapons/laser_rifle.cpp
+        logic/weapons/pewpewlaser.cpp
+        logic/weapons/cowboy.cpp
+        logic/weapons/duelos.cpp
+        logic/weapons/magnum.cpp
+        logic/weapons/sniper.cpp
+        logic/bullets/bullet.cpp
+
 
     PUBLIC
     # .h files
@@ -30,6 +39,13 @@ target_sources(SERVER
         logic/box.h
         logic/configurations.h
         logic/weapons/weapon.h
+        logic/weapons/laser_rifle.h
+        logic/weapons/pewpewlaser.h
+        logic/weapons/cowboy.h
+        logic/weapons/duelos.h
+        logic/weapons/magnum.h
+        logic/weapons/sniper.h
+        logic/bullets/bullet.h
     )
 
 find_package(yaml-cpp REQUIRED)

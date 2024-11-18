@@ -2,7 +2,7 @@ target_sources(COMMON
 
     PRIVATE
     # .cpp files
-    bullet.cpp
+    bullet_dto.cpp
     chestplate.cpp
     crate.cpp
     helmet.cpp
@@ -10,7 +10,7 @@ target_sources(COMMON
     explosion.cpp
 
     PUBLIC
-    bullet.h
+    bullet_dto.h
     chestplate.h
     crate.h
     helmet.h

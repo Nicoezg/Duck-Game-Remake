@@ -135,8 +135,7 @@ if(CLIENT)
             ${RESOURCES}
             client/ui/lobby_updater.cpp
             client/ui/lobby_updater.h
-            server/logic/weapons/weapon.cpp
-            server/logic/weapons/weapon.h
+           
     )
 
     # Make them depend on COMMON lib
