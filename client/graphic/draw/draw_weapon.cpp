@@ -5,9 +5,8 @@
 
 DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id) : textures(), sounds(), renderer(renderer), weaponId(weaponId), sound(), shoot(false) {
 
-    std::cout << std::string("../client/sprites/weapons/pew-pew-laser-w-wing-") + std::to_string(id) + ".png" << std::endl;
-    this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../client/sprites/weapons/grenade.png").SetColorKey(true, 0));
-    this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "weapons/banana.png").SetColorKey(true, 0));
+    this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/grenade-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
+    this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/banana-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
     this->textures[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/pew-pew-laser-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
     this->textures[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/laser-rifle-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
     this->textures[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/ak47-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
@@ -38,16 +37,9 @@ void DrawWeapon::render(int x, int y, int flipType){
     }
 }
 
-void DrawWeapon::render(const WeaponDTO &weapon){
-    std::shared_ptr<SDL2pp::Texture> texture = this->textures[weapon.get_id()];
-    SDL2pp::Rect dest(weapon.get_position_x(), weapon.get_position_y(), texture->GetWidth(), texture->GetHeight());
-    renderer.Copy(*texture, SDL2pp::NullOpt, dest);
-    // Falta ajustar las posiciones de las armas.
-}
-
 void DrawWeapon::update(const WeaponDTO &weapon){
     weaponId = weapon.get_id();
-    // shoot = weapon.is_shooting(); // Implementar en DTO weapon
+    shoot = weapon.is_shooting();
     if (weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA){
         sound.change(sounds[weaponId]);
     }
