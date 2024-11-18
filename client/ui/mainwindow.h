@@ -30,8 +30,6 @@ public:
 
 private slots:
 
-#pragma region Eventos de Creat
-
     void on_Create_clicked();
 
     void on_GameModeCreate_activated(int index);
@@ -40,9 +38,6 @@ private slots:
 
     void on_startGameButton_clicked();
 
-#pragma endregion
-
-#pragma region Eventos de Join
     void on_Join_clicked();
 
     void on_refreshButton_clicked();
@@ -51,24 +46,16 @@ private slots:
 
     void on_GameModeJoin_activated(int index);
 
-#pragma endregion
-
-#pragma region Eventos de Lobby
 
     void on_Volver_clicked();
 
     void on_BackButton_clicked();
 
-#pragma endregion
-
-#pragma region Eventos de Salida
     void on_Exit_clicked();
 
     void on_leaveLobbyButton_clicked();
 
     void handleAboutToQuit();
-
-#pragma endregion
 
 private:
     Client *client;

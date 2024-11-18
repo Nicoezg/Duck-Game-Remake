@@ -68,7 +68,6 @@ void MainWindow::show_connected_players(const std::shared_ptr<Event> &event,
     }
 }
 
-#pragma region Navegar Lobby
 void MainWindow::on_Volver_clicked() { ui->stackedWidget->setCurrentIndex(0); }
 
 void MainWindow::on_BackButton_clicked() {
@@ -78,9 +77,7 @@ void MainWindow::on_BackButton_clicked() {
 void MainWindow::on_leaveLobbyButton_clicked() {
     ui->stackedWidget->setCurrentIndex(0);
 }
-#pragma endregion
 
-#pragma region Salidas controladas
 void MainWindow::exit() {
     client->close();
     close();
@@ -94,9 +91,7 @@ void MainWindow::handleAboutToQuit() {
     exit();
 }
 
-#pragma endregion
 
-#pragma region Acciones de Create
 void MainWindow::on_Create_clicked() {
   if (client->is_connected()) {
     ui->stackedWidget->setCurrentIndex(4);
@@ -138,9 +133,7 @@ void MainWindow::on_startGameButton_clicked() {
     std::shared_ptr<Action> action = std::make_shared<Action>(START);
     client->send_action(action);
 }
-#pragma endregion
 
-#pragma region Acciones de Join
 void MainWindow::on_Join_clicked() {
     if (client->is_connected()) {
         ui->stackedWidget->setCurrentIndex(4);
@@ -207,6 +200,5 @@ void MainWindow::setupServerList() {
     client->send_action(action);
 }
 
-#pragma endregion
 
 
