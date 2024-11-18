@@ -88,6 +88,10 @@ void MainWindow::on_Exit_clicked() {
 }
 
 void MainWindow::handleAboutToQuit() {
+    if (client->is_connected()) {
+        close();
+        return;
+    }
     exit();
 }
 
