@@ -23,7 +23,7 @@ class DrawWeapon {
     bool shoot;
 
     public:
-    DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON);
+    DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON, uint8_t id = 0);
 
     void render(int x, int y, int flipType);
 

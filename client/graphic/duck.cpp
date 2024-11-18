@@ -6,10 +6,10 @@ const int DUCK_HEIGHT = 32;
 
 Duck::Duck(SDL2pp::Renderer &renderer, int id) : posX(0), posY(0), id(id), direction(), renderer(renderer),
                                                  weaponsTexture(), wingsTexture(), sfx(), animationMovement(), sound(),
-                                                 weapon(renderer), helmet(renderer), chestplate(renderer),
+                                                 weapon(renderer, NO_WEAPON, id), helmet(renderer), chestplate(renderer),
                                                  walkClips(), jumpClip(), fallClip(), stillClipWings(), flappingClips(),
                                                  playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip(),
-                                                 stillClipWeapon(), aimingUpwardsClip() {
+                                                 stillClipWeapon(), aimingUpwardsClip(), recoilClip() {
     for (int i = 0; i < 5; i++) {
         walkClips[i].x = (i + 1) * DUCK_WIDTH;
         walkClips[i].y = 0;
@@ -87,9 +87,14 @@ Duck::Duck(SDL2pp::Renderer &renderer, int id) : posX(0), posY(0), id(id), direc
     aimingUpwardsClip.w = DUCK_WIDTH;
     aimingUpwardsClip.h = DUCK_HEIGHT;
 
+    recoilClip.x = DUCK_WIDTH * 4;
+    recoilClip.y = DUCK_HEIGHT;
+    recoilClip.w = DUCK_WIDTH;
+    recoilClip.h = DUCK_HEIGHT;
+
+
     sfx[0] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk("../client/graphic/audio/jump.wav"));
     sfx[1] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk("../client/graphic/audio/death.wav"));
-    // Falta aiming_upwards. No se cual podria ser
 }
 
 void Duck::render() {
@@ -140,12 +145,18 @@ void Duck::render() {
             case AIMING_UPWARDS:
                 currentClip = aimingUpwardsClip;
                 break;
+            /* case RECOIL:
+                currentClip = recoilClip;
+                break; */
             default:
                 currentClip = stillClipWeapon;
                 break;
         }
         renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
-        weapon.render(posX, posY, flipType);
+        if (animationMovement.getCurrentType() != PLAYING_DEAD) {
+            weapon.render(posX, posY, flipType);
+        }
+        
     }
     if (chestplate.isEquipped()) {
         chestplate.render(posX, posY); // A determinar posiciones
@@ -212,7 +223,7 @@ void Duck::loadTextures() {
     switch (id) {
         case 1:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/white-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/white-duck.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/white-duck-w-wings.png").SetColorKey(true, 0));
             break;

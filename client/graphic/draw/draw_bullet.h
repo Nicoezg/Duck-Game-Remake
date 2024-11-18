@@ -15,8 +15,6 @@ private:
 
   Sound sound;
 
-  SDL2pp::Rect explosionClip[6];
-
 public:
   DrawBullet(SDL2pp::Renderer &renderer);
 

@@ -16,7 +16,7 @@ Game::Game(Client &client) try: client(client),
                                 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
                                        WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
                                 renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,640,480}), map(renderer), ducks(), crates(),
-                                bullets(), weaponSpawns(), explosions(), weapon(renderer), helmet(renderer), chestplate(renderer),
+                                bullets(), weaponSpawns(), explosions(), weapon(renderer, NO_WEAPON, 1), helmet(renderer), chestplate(renderer),
                                 bullet(renderer), crate(renderer), explosion(renderer), mutex(), stop(false), pause(false) {
 } catch (std::exception &e) {
     throw std::exception();
