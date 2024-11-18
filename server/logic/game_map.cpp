@@ -123,14 +123,14 @@ std::list<PlayerDTO> GameMap::getState() {
     bool dir = player->getDirection();
     State state = player->getState();
     HelmetDTO helmet;
-
+    WeaponDTO weapon = WeaponDTO(player->getWeapon()->getWeaponId());
     if (!player->isWearingHelmet()) {
       helmet = HelmetDTO(NO_HELMET);
     } else {
       helmet = HelmetDTO(KNIGHT);
     }
 
-    playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(SNIPER),
+    playersList.emplace_back(id, posX, posY, dir, state, weapon,
                              helmet, Chestplate(player->isWearingArmour()));
   }
   return playersList;

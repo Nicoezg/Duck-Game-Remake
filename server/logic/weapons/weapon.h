@@ -16,7 +16,7 @@ protected:
   int lastShotTime;
   bool isReloading;
   int reach;
-  enum WeaponId id;
+  WeaponId id;
 
 public:
   Weapon(GameMap &map, int initialAmmo, int reach, enum WeaponId id)
@@ -33,6 +33,8 @@ public:
 
   void createBullet(Duck *owner, int angle, bool canBounce, int reach,
                     BulletId id);
+
+  WeaponId getWeaponId() const;
 };
 
 #endif // WEAPON_H

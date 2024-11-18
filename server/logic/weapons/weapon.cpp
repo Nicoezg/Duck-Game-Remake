@@ -11,3 +11,5 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
 
   map.addBullet(std::make_unique<Bullet>(bullet));
 }
+
+WeaponId Weapon::getWeaponId() const { return id; }

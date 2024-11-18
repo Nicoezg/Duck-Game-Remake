@@ -8,3 +8,4 @@ void Sniper::shoot(Duck *owner) {
     ammo--;
   }
 }
+
