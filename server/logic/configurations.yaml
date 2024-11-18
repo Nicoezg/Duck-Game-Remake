@@ -44,4 +44,5 @@ escopeta:
 
 sniper:
   reach: 64
-  ammo: 3
+  ammo: 10
+  speed: 4

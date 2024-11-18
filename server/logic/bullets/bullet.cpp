@@ -9,12 +9,13 @@ Bullet::Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
       range(range), canBounce(canBounce), id(id) {}
 
 void Bullet::update() {
-  double radianAngle = angle * (PI / 180.0);
+ //double radianAngle = angle * (PI / 180.0);
+  double radianAngle = 0;
 
   int deltaX =
-      static_cast<int>(CONFIG.getBulletSpeed() * std::cos(radianAngle));
+      static_cast<int>(std::cos(radianAngle)) + 5;
   int deltaY =
-      static_cast<int>(CONFIG.getBulletSpeed() * std::sin(radianAngle));
+      static_cast<int>(std::sin(radianAngle)) + 0;
 
   pos_x += deltaX;
   pos_y += deltaY;

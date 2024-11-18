@@ -131,6 +131,7 @@ void Game::update(const Event &broadcast) {
     //camera.update(playerRects);
 
     bullets = broadcast.get_bullets();
+    std::cout << "Bullets: " << bullets.size() << std::endl;
     weaponSpawns = broadcast.get_weapons();
     crates = broadcast.get_crates();
     // explosions = broadcast.get_explosions();
@@ -211,6 +212,7 @@ int Game::render() {
     for (auto &bulletDTO: bullets) { // Dibujo las balas
         bullet.render(bulletDTO);
     }
+
     for (auto &weaponDTO: weaponSpawns) { // Dibujo las armas que spawnearon
         weapon.render(weaponDTO);
     }

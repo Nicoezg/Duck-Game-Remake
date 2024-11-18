@@ -274,3 +274,23 @@ uint8_t Encoder::decode_background_id(std::vector<int8_t> &data) {
   data.erase(data.begin(), data.begin() + sizeof(uint8_t));
   return background_id;
 }
+
+size_t Encoder::encode_angle(float value, signed char *string) {
+    int16_t angle = value * 100;
+    int16_t network_angle = htons(angle);
+    const auto *angle_bytes = reinterpret_cast<int8_t *>(&network_angle);
+    std::memcpy(string, angle_bytes, sizeof(int16_t));
+    return sizeof(angle);
+}
+
+float Encoder::decode_angle(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int16_t)) {
+        throw std::runtime_error(
+                "No hay suficientes bytes para decodificar el angulo.");
+    }
+    int16_t angle;
+    std::memcpy(&angle, data.data(), sizeof(int16_t));
+    angle = ntohs(angle);
+    data.erase(data.begin(), data.begin() + sizeof(int16_t));
+    return angle / 100.0;
+}

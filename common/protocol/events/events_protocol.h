@@ -62,6 +62,8 @@ public:
   std::shared_ptr<Event> read_tile();
 
   void add_platforms(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t& offset);
+
+    void add_bullets(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

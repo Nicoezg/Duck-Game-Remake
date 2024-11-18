@@ -79,6 +79,10 @@ public:
     size_t encode_background_id(uint8_t background_id, void *data);
 
     uint8_t decode_background_id(std::vector<int8_t> &data);
+
+    size_t encode_angle(float value, signed char *string);
+
+    float decode_angle(std::vector<int8_t> &data);
 };
 
 #endif // TALLER_TP_ENCODER_H

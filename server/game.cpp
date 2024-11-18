@@ -105,8 +105,9 @@ void Game::process_action(std::shared_ptr<Action> &action) {
 }
 
 void Game::notify_state() {
-    std::list<PlayerDTO> state = gameMap.getState();
-    std::shared_ptr<Event> event = std::make_shared<Broadcast>(std::move(state));
+    std::list<PlayerDTO> playersDTO = gameMap.getState();
+    std::list<BulletDTO> bullets  = gameMap.getBulletsState();
+    std::shared_ptr<Event> event = std::make_shared<Broadcast>(std::move(playersDTO), std::move(bullets));
     notify_event(event);
 }
 

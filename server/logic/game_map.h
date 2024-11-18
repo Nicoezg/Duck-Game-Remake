@@ -15,7 +15,7 @@ class Duck;
 class GameMap {
 private:
   std::vector<Duck *> players;
-  std::vector<std::unique_ptr<Bullet>> bullets;
+  std::vector<std::shared_ptr<Bullet>> bullets;
   MapLoader mapLoader;
   Map map;
 

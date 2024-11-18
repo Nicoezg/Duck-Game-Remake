@@ -42,6 +42,8 @@
 
 #define READ_JOIN_GAME_SIZE (2 * PLAYERS_ID_SIZE + CONNECTED_SIZE + ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
 
+#define READ_BULLET_SIZE (COORDINATE_SIZE * 2 + sizeof(uint8_t) + sizeof(uint16_t))
+
 #define READ_PLAYER_SIZE ( \
     2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + \
     PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE +\
@@ -174,9 +176,9 @@ void EventsProtocol::send_create(const std::shared_ptr<Event> &event) {
 }
 
 std::shared_ptr<Event> EventsProtocol::read_broadcast() {
-    std::vector<int8_t> data(LEN_SIZE);
-    read(data.data(), data.size());
-    int players_len = encoder.decode_len(data);
+    std::vector<int8_t> size_player_data(LEN_SIZE);
+    read(size_player_data.data(), size_player_data.size());
+    int players_len = encoder.decode_len(size_player_data);
 
     std::vector<int8_t> players_data(players_len * READ_PLAYER_SIZE);
     read(players_data.data(), players_data.size());
@@ -196,21 +198,55 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         players.emplace_back(player_id, x, y, is_right, state, weapon, helmet, chestplate);
     }
 
-    return std::make_shared<Broadcast>(std::move(players), std::list<BulletDTO>(), std::list<CrateDTO>(),
+    std::vector<int8_t> size_bullet_data(LEN_SIZE);
+    read(size_bullet_data.data(), size_bullet_data.size());
+    int bullets_len = encoder.decode_len(size_bullet_data);
+
+    std::vector<int8_t> bullets_data(bullets_len * READ_BULLET_SIZE);
+    read(bullets_data.data(), bullets_data.size());
+
+    std::list<BulletDTO> bullets;
+    for (int i = 0; i < bullets_len; i++) {
+        int id = encoder.decode_id(bullets_data);
+        int x = encoder.decode_coordinate(bullets_data);
+        int y = encoder.decode_coordinate(bullets_data);
+        float angle = encoder.decode_angle(bullets_data);
+        bullets.emplace_back(x, y, BulletId(id), angle);
+    }
+
+
+    return std::make_shared<Broadcast>(std::move(players), std::move(bullets), std::list<CrateDTO>(),
                                        std::list<WeaponDTO>(), std::list<Explosion>());
 }
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
-    std::vector<int8_t> data(LEN_SIZE +
+    std::vector<int8_t> data(LEN_SIZE * 2 +
                              event->get_players().size() * SEND_PLAYER_SIZE +
+                             event->get_bullets().size() * READ_BULLET_SIZE +
                              EVENT_TYPE_SIZE);
     size_t offset = 0;
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
-    offset += encoder.encode_len(event->get_players().size(), &data[offset]);
 
+    offset += encoder.encode_len(event->get_players().size(), &data[offset]);
     add_players(event, data, offset); // increase offset inplace
+
+
+    offset += encoder.encode_len(event->get_bullets().size(), &data[offset]);
+    add_bullets(event, data, offset);
+
     send(data.data(), data.size());
 }
+
+void EventsProtocol::add_bullets(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset) {
+    for (const auto &bullet: event->get_bullets()) {
+        offset += encoder.encode_id(bullet.get_id(), &data[offset]);
+        offset += encoder.encode_coordinate(bullet.get_position_x(), &data[offset]);
+        offset += encoder.encode_coordinate(bullet.get_position_y(), &data[offset]);
+        offset += encoder.encode_angle(bullet.get_angle(), &data[offset]);
+    }
+}
+
+
 
 WeaponDTO EventsProtocol::read_weapon(std::vector<int8_t> &data) {
     auto weapon_id = WeaponId(encoder.decode_id(data));
@@ -227,6 +263,13 @@ void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, siz
     offset += encoder.encode_bool(weapon.is_shooting(), &data[offset]);
 }
 
+/*void EventsProtocol::add_player_weapon(std::vector<int8_t> &data, PlayerDTO player, size_t &offset) {
+    WeaponDTO weapon = player.get_weapon();
+    offset += encoder.encode_id(weapon.get_id(), &data[offset]);
+    offset += encoder.encode_coordinate(player.get_position_x(), &data[offset]);
+    offset += encoder.encode_coordinate(player.get_position_y(), &data[offset]);
+    offset += encoder.encode_bool(weapon.is_shooting(), &data[offset]);
+}*/
 
 HelmetDTO EventsProtocol::read_helmet(std::vector<int8_t> &data) {
     auto helmet_id = HelmetId(encoder.decode_id(data));

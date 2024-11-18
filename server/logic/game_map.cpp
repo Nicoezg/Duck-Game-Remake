@@ -43,6 +43,10 @@ void GameMap::update() {
   for (auto player : players) {
     player->update();
   }
+
+  for (const auto& bullet : bullets) {
+    bullet->update();
+  }
 }
 
 bool GameMap::checkCollisionsWithBorders(int playerId) {
@@ -81,6 +85,7 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
     break;
   case SHOOT:
     duck->shoot();
+    std::cout << "Player " << player_id << " shoots" << std::endl;
     break;
   case PLAY_DEAD:
     duck->playDead();
@@ -125,7 +130,7 @@ std::list<PlayerDTO> GameMap::getState() {
       helmet = HelmetDTO(KNIGHT);
     }
 
-    playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
+    playersList.emplace_back(id, posX, posY, dir, state, WeaponDTO(SNIPER),
                              helmet, Chestplate(player->isWearingArmour()));
   }
   return playersList;

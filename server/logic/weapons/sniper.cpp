@@ -1,6 +1,6 @@
 #include "sniper.h"
 
-Sniper::Sniper(GameMap &map) : Weapon(map, 3, 64, WeaponId::SNIPER) {}
+Sniper::Sniper(GameMap &map) : Weapon(map, 100, 64, WeaponId::SNIPER) {}
 
 void Sniper::shoot(Duck *owner) {
   if (hasAmmo()) {

@@ -1,6 +1,10 @@
 #include "duck.h"
 #include "configurations.h"
 #include "server/logic/weapons/sniper.h"
+#include "server/logic/weapons/magnum.h"
+#include "server/logic/weapons/laser_rifle.h"
+#include "server/logic/weapons/cowboy.h"
+#include "server/logic/weapons/duelos.h"
 #include <iostream>
 
 #define CONFIG Configurations::configurations()
