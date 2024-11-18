@@ -80,7 +80,7 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
     duck->stopMoving();
     break;
   case SHOOT:
-    // duck->shoot();
+    duck->shoot();
     break;
   case PLAY_DEAD:
     duck->playDead();

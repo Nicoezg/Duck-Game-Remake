@@ -103,6 +103,9 @@ int Game::start() {
 
 void Game::update_state() {
     std::shared_ptr<Event> event = client.try_read();
+    if (event == nullptr) {
+        return;
+    }
     if (event->get_type() == BROADCAST) {
         update(*event);
     } else if (event->get_type() == MAP_LOAD) {
@@ -198,7 +201,7 @@ int Game::render() {
     }
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
-    // map.render();
+    map.render();
     for (auto &duck: ducks) {
         duck->render();
     }

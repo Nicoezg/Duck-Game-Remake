@@ -1,5 +1,6 @@
 #include "duck.h"
 #include "configurations.h"
+#include "server/logic/weapons/sniper.h"
 #include <iostream>
 
 #define CONFIG Configurations::configurations()
@@ -15,7 +16,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = nullptr;
+  weapon = std::make_unique<Sniper>(map);
   hasHelmet = false;
   hasArmour = false;
 }
@@ -96,13 +97,13 @@ void Duck::update() {
   }
 }
 
-/*void Duck::shoot() {
-  if (weapon) {
-    weapon->shoot(this);
-    shooting = true;
-    state = State::BLANK;
-  }
-}*/
+void Duck::shoot() {
+    if (weapon) {
+        weapon->shoot(this);
+        shooting = true;
+        state = State::BLANK;
+    }
+}
 
 void Duck::equipHelmet() { hasHelmet = true; }
 

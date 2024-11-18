@@ -346,7 +346,7 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
 void EventsProtocol::send_map(const std::shared_ptr<Event> &event) {
     std::vector<int8_t> data(LEN_SIZE +
                              event->get_platforms().size() * SEND_TILE_SIZE +
-                             EVENT_TYPE_SIZE + COORDINATE_SIZE * 3 + sizeof(uint8_t));
+                             EVENT_TYPE_SIZE + COORDINATE_SIZE * 2 + sizeof(uint8_t));
     size_t offset = 0;
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
     offset += encoder.encode_len(event->get_platforms().size(), &data[offset]);
@@ -362,7 +362,7 @@ void EventsProtocol::add_platforms(const std::shared_ptr<Event> &event, std::vec
     for (const auto &platform: event->get_platforms()) {
         offset += encoder.encode_coordinate(platform.get_start_x(), &data[offset]);
         offset += encoder.encode_coordinate(platform.get_end_x(), &data[offset]);
-        offset += encoder.encode_coordinate(platform.get_end_x(), &data[offset]);
+        offset += encoder.encode_coordinate(platform.get_y(), &data[offset]);
         offset += encoder.encode_tile_id(platform.get_tile_id(), &data[offset]);
     }
 }
