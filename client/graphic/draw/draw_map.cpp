@@ -10,39 +10,13 @@ DrawMap::DrawMap(SDL2pp::Renderer& renderer) : textures(), renderer(renderer), b
 
 }
 
-void DrawMap::load(const MapDTO& map){
+void DrawMap::load(const Event& map){
     this->height = map.get_length();
     this->width = map.get_width();
     this->platforms = map.get_platforms();
     this->backgroundId = map.get_background_id();  
 }
 
-/* void DrawMap::loadFromYaml(const std::string& filepath) {
-    try {
-        YAML::Node config = YAML::LoadFile(filepath);
-
-        width = config["width"].as<int>();
-        std::cout << "Width: " << width << std::endl;
-        height = config["height"].as<int>();
-        
-        std::cout << "Height: " << height << std::endl;
-        
-        const YAML::Node& tiles = config["tiles"];
-        for (const auto& tile : tiles) {
-            int startX = tile["start_x"].as<int>();
-            int endX = tile["end_x"].as<int>();
-            int y = tile["y"].as<int>();
-            int tileId = tile["tile"].as<int>();
-            Tile platform(startX, endX, y, tileId);
-            platforms.push_back(platform);            
-        }
-        height = height * textures[0]->GetHeight();
-        width = width * textures[0]->GetWidth();
-    } catch (const YAML::Exception& e) {
-        std::cerr << "Error parsing YAML file: " << e.what() << std::endl;
-        throw;
-    }
-} */
 
 void DrawMap::render(){
     /* SDL2pp::Texture& background = *textures[backgroundId];

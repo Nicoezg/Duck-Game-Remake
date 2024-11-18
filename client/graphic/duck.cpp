@@ -144,8 +144,8 @@ void Duck::render() {
                 currentClip = stillClipWeapon;
                 break;
         }
-        weapon.render(posX, posY); // A determinar posiciones
         renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
+        weapon.render(posX, posY, flipType);
     }
     if (chestplate.isEquipped()) {
         chestplate.render(posX, posY); // A determinar posiciones
