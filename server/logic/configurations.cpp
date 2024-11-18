@@ -5,20 +5,24 @@ static const std::string configPath = "../server/logic/configurations.yaml";
 Configurations *Configurations::instance = nullptr;
 bool Configurations::loaded = false;
 
-Configurations &Configurations::configurations() {
+Configurations& Configurations::configurations() {
   if (!loaded) {
-    throw std::runtime_error("No se cargo el archivo de configuraciones");
+    throw std::runtime_error("No se cargó el archivo de configuraciones");
   }
 
-  return *instance;
+  static Configurations instance(YAML::LoadFile(configPath));
+  return instance;
 }
 
 void Configurations::loadConfig() {
   if (!loaded) {
-    instance = new Configurations(YAML::LoadFile(configPath));
+    static Configurations instance(YAML::LoadFile(configPath));
     loaded = true;
   }
 }
+
+
+Configurations::~Configurations(){}
 
 Configurations::Configurations(const YAML::Node &configurations) {
 

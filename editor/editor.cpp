@@ -15,7 +15,7 @@ Editor::Editor(QWidget *parent)
   
 
   cargarTodosLosTiles();
-  crearMapaVacio(20, 20);
+  crearMapaVacio(30, 40);
   connect(ui->backgroundBox, &QComboBox::currentIndexChanged, this,
           &Editor::cambiarFondo);
 }
@@ -184,12 +184,12 @@ void Editor::on_ExitButton_clicked() { QApplication::quit(); }
 
 void Editor::on_EraseButton_clicked() { cleanLayout(ui->mapLayout); }
 
-void ponerTile(YAML::Emitter &out, int fila_inicial, int fila_final,
-               int columna, int tile) {
+void ponerTile(YAML::Emitter &out, int columna_inicial, int columna_final,
+               int fila, int tile) {
   out << YAML::BeginMap;
-  out << YAML::Key << "start_x" << YAML::Value << fila_inicial;
-  out << YAML::Key << "end_x" << YAML::Value << fila_final;
-  out << YAML::Key << "y" << YAML::Value << columna;
+  out << YAML::Key << "start_x" << YAML::Value << columna_inicial;
+  out << YAML::Key << "end_x" << YAML::Value << columna_final;
+  out << YAML::Key << "y" << YAML::Value << fila;
   out << YAML::Key << "tile" << YAML::Value << tile;
   out << YAML::EndMap;
 }
@@ -205,8 +205,8 @@ void Editor::on_SaveButton_clicked() {
   // Propiedades generales del mapa
   out << YAML::Key << "fondo" << YAML::Value
       << ui->backgroundBox->currentText().toStdString();
-  out << YAML::Key << "alto" << YAML::Value << 20;
-  out << YAML::Key << "ancho" << YAML::Value << 20;
+  out << YAML::Key << "alto" << YAML::Value << ui->mapLayout->rowCount();
+  out << YAML::Key << "ancho" << YAML::Value <<ui->mapLayout->columnCount();
   // Iniciar la lista de tiles
   out << YAML::Key << "Structures" << YAML::Value << YAML::BeginSeq;
   QLabel *anterior = nullptr;

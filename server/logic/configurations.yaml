@@ -11,7 +11,7 @@ grenade:
   ammo: 1
 
 banana:
-  reach: 1 # ?? se queda en el lugar nose
+  reach: 5
   ammo: 1
 
 pewpewlaser:

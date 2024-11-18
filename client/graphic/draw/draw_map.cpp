@@ -7,21 +7,23 @@ DrawMap::DrawMap(SDL2pp::Renderer& renderer) : textures(), renderer(renderer), b
         std::string filePath = std::string(DATA_PATH) + std::to_string(i) + ".png";
         this->textures[i] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(filePath).SetColorKey(true, 0));
     }
+    this->textures[96] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/forest.png").SetColorKey(true, 0));
+    this->textures[97] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/lava.png").SetColorKey(true, 0));
 
 }
 
 void DrawMap::load(const Event& map){
-    this->height = map.get_length();
-    this->width = map.get_width();
+    this->height = map.get_length() * 16;
+    this->width = map.get_width() * 16;
     this->platforms = map.get_platforms();
     this->backgroundId = map.get_background_id();  
 }
 
 
 void DrawMap::render(){
-    /* SDL2pp::Texture& background = *textures[backgroundId];
-    SDL2pp::Rect backgroundRect(0, 0, width, height);
-    renderer.Copy(background, backgroundRect); */
+    SDL2pp::Texture& background = *textures[backgroundId + 96];
+    SDL2pp::Rect backgroundRect(0, 0, 640, 480);
+    renderer.Copy(background, backgroundRect);
     SDL2pp::Rect src(0, 0, 16, 16);
     for (auto& platform : platforms){
         SDL2pp::Texture& texture = *textures[platform.get_tile_id()];

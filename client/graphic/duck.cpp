@@ -210,37 +210,37 @@ bool Duck::isFacingRight() { return direction; }
 
 void Duck::loadTextures() {
     switch (id) {
-        case 0:
+        case 1:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/white-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/white-duck-w-wings.png").SetColorKey(true, 0));
             break;
-        case 1:
+        case 2:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/red-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/red-duck-w-wings.png").SetColorKey(true, 0));
             break;
-        case 2:
+        case 3:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/pink-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/pink-duck-w-wings.png").SetColorKey(true, 0));
             break;
-        case 3:
+        case 4:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/orange-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/orange-duck-w-wings.png").SetColorKey(true, 0));
             break;
-        case 4:
+        case 5:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/gray-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/gray-duck-w-wings.png").SetColorKey(true, 0));
             break;
-        case 5:
+        case 6:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/yellow-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(

@@ -70,6 +70,8 @@ public:
 
   Configurations(const Configurations &) = delete;
   Configurations &operator=(const Configurations &) = delete;
+
+  ~Configurations();
 };
 
 #endif // CONFIGURATIONS_H
