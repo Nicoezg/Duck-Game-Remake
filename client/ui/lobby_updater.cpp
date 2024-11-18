@@ -10,13 +10,18 @@ LobbyUpdater::LobbyUpdater(Client *client, MainWindow *mainWindow)
     : running(true), client(client), mainWindow(mainWindow) {}
 
 void LobbyUpdater::run() {
-  try {
+   try {
     while (running) {
       std::shared_ptr<Event> event = client->read_event();
       update(event);
     }
-  } catch (const std::exception &e) {
-  }
+   } catch (ProtocolError &e) {
+       // se cerro el protrocolo al terminar la conexion
+   } catch (ClosedQueue &e) {
+       // se cerro la cola de escritura
+   } catch (...) {
+       std::cerr << "Error desconocido lobby updater thread" << std::endl;
+   }
   running = false;
 }
 
@@ -36,7 +41,7 @@ void LobbyUpdater::update(const std::shared_ptr<Event> &event) {
             break;
         case START_GAME:
             running = false;
-            mainWindow->exit();
+            mainWindow->close();
             break;
         default:
             break;

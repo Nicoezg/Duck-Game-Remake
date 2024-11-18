@@ -17,7 +17,11 @@ MainWindow::MainWindow(Client *client, QWidget *parent)
   ui->setupUi(this);
   this->setWindowTitle("Duck Game");
   setupAudio();
-  ui->stackedWidget->setCurrentIndex(0);
+
+    // Conectar la señal aboutToQuit a la ranura handleAboutToQuit
+    connect(QApplication::instance(), &QApplication::aboutToQuit, this, &MainWindow::handleAboutToQuit);
+
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow() {
@@ -25,35 +29,6 @@ MainWindow::~MainWindow() {
   delete player;
   delete audio;
   delete ui;
-}
-
-void MainWindow::RefreshServerList(const std::shared_ptr<Event> &event) {
-  ui->serverList->clear();
-
-  QStringList servers;
-
-  for (auto &game : event->get_games()) {
-    std::string ss = "Servidor " + std::to_string(game.get_game_code()) +
-                     " - Online (" + std::to_string(game.get_actual_players()) +
-                     "/" + std::to_string(game.get_max_players()) +
-                     " jugadores)";
-    servers.append(ss.c_str());
-  }
-
-  // Agrega cada servidor al QListWidget
-  ui->serverList->addItems(servers);
-
-  connect(ui->serverList, &QListWidget::itemClicked, this,
-          [this](QListWidgetItem *item) {
-            ui->Player2NameJoin->hide();
-            ui->stackedWidget->setCurrentIndex(3);
-            client->set_game_code(item->text().split(" ")[1].toInt());
-          });
-}
-
-void MainWindow::setupServerList() {
-  std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
-  client->send_action(action);
 }
 
 void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
@@ -79,17 +54,33 @@ void MainWindow::setupAudio() {
   player->play();
 }
 
+void MainWindow::show_connected_players(const std::shared_ptr<Event> &event,
+                                        const int game_code) {
+    std::string ss = "Servidor " + std::to_string(game_code) +
+                     " | Jugadores conectados: " +
+                     std::to_string(event->get_actual_players()) + "/" +
+                     std::to_string(event->get_max_players());
 
-void MainWindow::on_Join_clicked() {
-  if (client->is_connected()) {
-    ui->stackedWidget->setCurrentIndex(4);
-    return;
-  }
-  setupServerList();
-  ui->stackedWidget->setCurrentIndex(2);
+    ui->playerListLabel->setText(ss.c_str());
+
+    if (client->get_player_id_1() != 1) {
+        ui->startGameButton->hide();
+    }
 }
 
-void MainWindow::exit() { close(); }
+#pragma region Navegar Lobby
+void MainWindow::on_Volver_clicked() { ui->stackedWidget->setCurrentIndex(0); }
+
+void MainWindow::on_BackButton_clicked() {
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void MainWindow::on_leaveLobbyButton_clicked() {
+    ui->stackedWidget->setCurrentIndex(0);
+}
+#pragma endregion
+
+#pragma region Salidas controladas
 void MainWindow::exit() {
     client->close();
     close();
@@ -99,6 +90,13 @@ void MainWindow::on_Exit_clicked() {
     exit();
 }
 
+void MainWindow::handleAboutToQuit() {
+    exit();
+}
+
+#pragma endregion
+
+#pragma region Acciones de Create
 void MainWindow::on_Create_clicked() {
   if (client->is_connected()) {
     ui->stackedWidget->setCurrentIndex(4);
@@ -113,17 +111,56 @@ void MainWindow::on_Create_clicked() {
   ui->stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::on_Volver_clicked() { ui->stackedWidget->setCurrentIndex(0); }
+void MainWindow::on_connectCreat_clicked() {
+    std::shared_ptr<Action> action;
+    int max_players = ui->LimitPlayerQuantity->currentText().toInt();
+    if (ui->GameModeCreate->currentIndex() == 0) {
+        action = std::make_shared<Create>(UN_JUGADOR, max_players);
+    } else {
+        action = std::make_shared<Create>(DOS_JUGADORES, max_players);
+    }
 
-void MainWindow::on_BackButton_clicked() {
-  ui->stackedWidget->setCurrentIndex(0);
+    client->send_action(action);
+
+    ui->stackedWidget->setCurrentIndex(4);
 }
 
 
+void MainWindow::on_GameModeCreate_activated(int index) {
+    if (index == 0) {
+        ui->player2namecreate->hide();
+    } else {
+        ui->player2namecreate->show();
+    }
+}
+
+void MainWindow::on_startGameButton_clicked() {
+    std::shared_ptr<Action> action = std::make_shared<Action>(START);
+    client->send_action(action);
+}
+#pragma endregion
+
+#pragma region Acciones de Join
+void MainWindow::on_Join_clicked() {
+    if (client->is_connected()) {
+        ui->stackedWidget->setCurrentIndex(4);
+        return;
+    }
+    setupServerList();
+    ui->stackedWidget->setCurrentIndex(2);
+}
+
+void MainWindow::on_GameModeJoin_activated(int index) {
+    if (index == 0) {
+        ui->Player2NameJoin->hide();
+    } else {
+        ui->Player2NameJoin->show();
+    }
+}
 
 void MainWindow::on_refreshButton_clicked() {
-  std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
-  client->send_action(action);
+    std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
+    client->send_action(action);
 }
 
 void MainWindow::on_Connect_clicked() {
@@ -141,55 +178,35 @@ void MainWindow::on_Connect_clicked() {
   ui->stackedWidget->setCurrentIndex(4);
 }
 
-void MainWindow::show_connected_players(const std::shared_ptr<Event> &event,
-                                        const int game_code) {
-  std::string ss = "Servidor " + std::to_string(game_code) +
-                   " | Jugadores conectados: " +
-                   std::to_string(event->get_actual_players()) + "/" +
-                   std::to_string(event->get_max_players());
+void MainWindow::RefreshServerList(const std::shared_ptr<Event> &event) {
+    ui->serverList->clear();
 
-  ui->playerListLabel->setText(ss.c_str());
+    QStringList servers;
 
-  if (client->get_player_id_1() != 1) {
-    ui->startGameButton->hide();
-  }
+    for (auto &game : event->get_games()) {
+        std::string ss = "Servidor " + std::to_string(game.get_game_code()) +
+                         " - Online (" + std::to_string(game.get_actual_players()) +
+                         "/" + std::to_string(game.get_max_players()) +
+                         " jugadores)";
+        servers.append(ss.c_str());
+    }
+
+    // Agrega cada servidor al QListWidget
+    ui->serverList->addItems(servers);
+
+    connect(ui->serverList, &QListWidget::itemClicked, this,
+            [this](QListWidgetItem *item) {
+                ui->Player2NameJoin->hide();
+                ui->stackedWidget->setCurrentIndex(3);
+                client->set_game_code(item->text().split(" ")[1].toInt());
+            });
 }
 
-void MainWindow::on_leaveLobbyButton_clicked() {
-  ui->stackedWidget->setCurrentIndex(0);
+void MainWindow::setupServerList() {
+    std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
+    client->send_action(action);
 }
 
-void MainWindow::on_connectCreat_clicked() {
-  std::shared_ptr<Action> action;
-  int max_players = ui->LimitPlayerQuantity->currentText().toInt();
-  if (ui->GameModeCreate->currentIndex() == 0) {
-    action = std::make_shared<Create>(UN_JUGADOR, max_players);
-  } else {
-    action = std::make_shared<Create>(DOS_JUGADORES, max_players);
-  }
+#pragma endregion
 
-  client->send_action(action);
 
-  ui->stackedWidget->setCurrentIndex(4);
-}
-
-void MainWindow::on_GameModeJoin_activated(int index) {
-  if (index == 0) {
-    ui->Player2NameJoin->hide();
-  } else {
-    ui->Player2NameJoin->show();
-  }
-}
-
-void MainWindow::on_GameModeCreate_activated(int index) {
-  if (index == 0) {
-    ui->player2namecreate->hide();
-  } else {
-    ui->player2namecreate->show();
-  }
-}
-
-void MainWindow::on_startGameButton_clicked() {
-  std::shared_ptr<Action> action = std::make_shared<Action>(START);
-  client->send_action(action);
-}

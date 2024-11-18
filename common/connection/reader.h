@@ -10,32 +10,36 @@
 #include "common/queue.h"
 #include "common/thread.h"
 
-template <typename T, typename U> class Reader : public Thread {
+template<typename T, typename U>
+class Reader : public Thread {
 private:
-  T *protocol;
-  Queue<U> *queue;
+    T *protocol;
+    Queue<U> *queue;
 
 public:
-  explicit Reader(T *protocol, Queue<U> *queue)
-      : protocol(protocol), queue(queue) {}
+    explicit Reader(T *protocol, Queue<U> *queue)
+            : protocol(protocol), queue(queue) {}
 
-  virtual void run() override {
-    try {
-      while (protocol->is_open()) {
-        U element = protocol->read_element();
-        queue->push(element);
-      }
-    } catch (const ClosedQueue &e) {
-      return;
-    } catch (const ProtocolError &e) {
-      return;
-    } catch (const std::exception &e) {
-      std::cerr << "Unexpected error: " << e.what() << std::endl;
-      return;
+    virtual void run() override {
+        try {
+            while (protocol->is_open()) {
+                U element = protocol->read_element();
+                queue->push(element);
+            }
+        } catch (ProtocolError &e) {
+            // se cerro el protrocolo al terminar la conexion
+        } catch (ClosedQueue &e) {
+            // se cerro la cola de escritura
+        } catch (std::exception &e) {
+            std::cerr << "Error reader thread: " << e.what() << std::endl;
+        } catch (...) {
+            std::cerr << "Error desconocido reader thread" << std::endl;
+        }
     }
-  }
 
-  void close() { queue->close(); }
+    void close() {
+        queue->close();
+    }
 };
 
 #endif // TALLER_TP_READER_H

@@ -24,9 +24,10 @@ void Client::run() {
 
 void Client::close() {
     if (!connection.is_closed()) {
-        connection.close();
-    }
-    connection.join();
+            connection.close();
+        }
+        connection.join();
+
 }
 
 bool Client::is_closed() const {

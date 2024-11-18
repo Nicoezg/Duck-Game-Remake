@@ -144,8 +144,7 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
         case MAP_LOAD:
             return read_map();
         default:
-            return nullptr;
-            //throw std::runtime_error("Tipo de evento no soportado.");
+            throw std::runtime_error("Tipo de evento no soportado.");
     }
 }
 

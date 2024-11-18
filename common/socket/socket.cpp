@@ -427,7 +427,7 @@ int Socket::shutdown_and_close(int how) {
     try {
         shutdown(how);
     } catch (const std::exception &e) {
-        std::cerr << "Unexpected error: " << e.what() << std::endl;
+        std::cerr << "Error shutting down socket: " << e.what() << std::endl;
     }
 
   this->closed = true;

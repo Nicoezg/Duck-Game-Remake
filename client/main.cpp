@@ -14,15 +14,12 @@ int main(int argc, char *argv[]) {
     LobbyUpdater lobbyUpdater(&client, &w);
 
     client.run();
-    try {
-        lobbyUpdater.start();
-        w.show();
+    lobbyUpdater.start();
 
-        app.exec();
-        lobbyUpdater.close();
-    }
-    catch (const std::exception &e) {}
+    w.show();
+    app.exec();
 
+    lobbyUpdater.close();
     lobbyUpdater.join();
 
     if (client.is_closed()) {

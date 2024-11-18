@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 struct ClosedQueue : public std::runtime_error {
-  ClosedQueue() : std::runtime_error("The reader_queue is closed") {}
+  ClosedQueue() : std::runtime_error("The queue is closed") {}
 };
 
 /*
@@ -120,7 +120,7 @@ public:
     std::unique_lock<std::mutex> lck(mtx);
 
     if (closed) {
-      throw std::runtime_error("The reader_queue is already closed.");
+      throw std::runtime_error("The queue is already closed.");
     }
 
     closed = true;
@@ -227,7 +227,7 @@ public:
     std::unique_lock<std::mutex> lck(mtx);
 
     if (closed) {
-      throw std::runtime_error("The reader_queue is already closed.");
+      throw std::runtime_error("The queue is already closed.");
     }
 
     closed = true;
