@@ -4,7 +4,6 @@
 #include <SDL2/SDL_rect.h>
 #include <SDL2pp/SDL2pp.hh>
 #include "animation_movement.h"
-#include "animation_wings.h"
 #include "draw/draw_helmet.h"
 #include "draw/draw_chestplate.h"
 #include "draw/draw_weapon.h"
@@ -79,5 +78,6 @@ class Duck
 		SDL2pp::Rect fallWeaponClip;
 		SDL2pp::Rect stillClipWeapon;
 		SDL2pp::Rect aimingUpwardsClip;
+		SDL2pp::Rect recoilClip;
 };
 #endif

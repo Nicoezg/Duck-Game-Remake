@@ -1,3 +1,4 @@
+#include <SDL2/SDL_keycode.h>
 #include <SDL_events.h>
 #include "action_handler.h"
 
@@ -36,19 +37,15 @@ void ActionHandler::processDuckEvents() {
                     break;
 
                 case SDLK_j:
-                    std::cout << "drop" << std::endl;
                     action = std::make_shared<PickDrop>(this->client.get_player_id_1(), false);
                     break;
 
                 case SDLK_h:
-                    std::cout << "pick" << std::endl;
                     action = std::make_shared<PickDrop>(this->client.get_player_id_1(), true);
                     break;
 
                 case SDLK_g:
-                    std::cout << "shoot" << std::endl;
                     action = std::make_shared<Shoot>(this->client.get_player_id_1(), true);
-                    std::cout << "shoot" << std::endl;
                     break;
             }
             if (!action && (client.get_player_id_2() == SIN_ASIGNAR)) {
@@ -68,6 +65,19 @@ void ActionHandler::processDuckEvents() {
                 case SDLK_s:
                     action = std::make_shared<PlayDead>(this->client.get_player_id_2(), true);
                     break;
+                case SDLK_l:
+                    action = std::make_shared<AimUpwards>(this->client.get_player_id_2(), true);
+                    break;
+                case SDLK_SEMICOLON:
+                    action = std::make_shared<Shoot>(this->client.get_player_id_2(), true);
+                    break;
+                case SDLK_COLON:
+                    action = std::make_shared<Shoot>(this->client.get_player_id_2(), true);
+                    break;
+                case SDLK_UNDERSCORE:
+                    action = std::make_shared<PickDrop>(this->client.get_player_id_2(), false);
+                    break;
+                
             }
 
             if (!action) {
@@ -99,8 +109,12 @@ void ActionHandler::processDuckEvents() {
                 case SDLK_a:
                     action = std::make_shared<Still>(this->client.get_player_id_2(), true);
                     break;
+
                 case SDLK_s:
                     action = std::make_shared<PlayDead>(this->client.get_player_id_2(), false);
+                    break;
+                case SDLK_l:
+                    action = std::make_shared<AimUpwards>(this->client.get_player_id_2(), false);
                     break;
             }
 

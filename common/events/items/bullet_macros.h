@@ -8,7 +8,6 @@ enum BulletId{
   // eso cambia la textura a esta
   THROWN_GRENADE = 0x03,
   THROWN_BANANA = 0x04,
-  EXPLOSION = 0x05 // Explosion de la granada
 };
 
 #endif // TALLER_TP_BULLET_MACROS_H
