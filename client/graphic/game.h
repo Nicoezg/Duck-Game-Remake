@@ -17,6 +17,7 @@
 #include "draw/draw_crate.h"
 #include "draw/draw_map.h"
 #include "draw/draw_explosion.h"
+#include "draw/draw_weapon_spawn.h"
 #include "../../common/events/base/event.h"
 #include "../../common/events/map.h"
 #include "../../common/events/score.h"
@@ -55,7 +56,7 @@ class Game{
 
         std::list<Explosion> explosions;
 
-        DrawWeapon weapon;
+        DrawWeaponSpawn weapon;
 
         DrawHelmet helmet;
 
