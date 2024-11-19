@@ -83,10 +83,10 @@ Duck::Duck(SDL2pp::Renderer &renderer, int id) : posX(0), posY(0), id(id), direc
     flappingClips[2].w = DUCK_WIDTH;
     flappingClips[2].h = DUCK_HEIGHT;
 
-    aimingUpwardsClip.x = DUCK_WIDTH * 3;
-    aimingUpwardsClip.y = DUCK_HEIGHT * 2;
-    aimingUpwardsClip.w = DUCK_WIDTH;
-    aimingUpwardsClip.h = DUCK_HEIGHT;
+    aimingUpwardsClip.x = jumpWeaponClip.x;
+    aimingUpwardsClip.y = jumpWeaponClip.y;
+    aimingUpwardsClip.w = jumpWeaponClip.w;
+    aimingUpwardsClip.h = jumpWeaponClip.h;
 
     recoilClip.x = DUCK_WIDTH * 4;
     recoilClip.y = DUCK_HEIGHT;
@@ -172,12 +172,14 @@ void Duck::render() {
 void Duck::update(const PlayerDTO &player){
     posX = player.get_position_x();
     posY = player.get_position_y();
+    auto state = player.get_state();
     direction = player.is_right();
-    weapon.update(player.get_weapon());
+    bool aimingUpwards = state == AIMING_UPWARDS;
+    weapon.update(player.get_weapon(), aimingUpwards);
     helmet.update(player.get_helmet());
     chestplate.update(player.get_chestplate());
 
-    auto state = player.get_state();
+    
     if (state == animationMovement.getCurrentType()) {
         return;
     }

@@ -164,7 +164,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         bullets.emplace_back(x, y, BulletId(id), angle);
     }
 
-    std::vector<int8_t> size_crates_data(LEN_SIZE);
+    /* std::vector<int8_t> size_crates_data(LEN_SIZE);
     read(size_crates_data.data(), size_crates_data.size());
     int crates_len = encoder.decode_len(size_crates_data);
 
@@ -178,10 +178,10 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         uint8_t hp = encoder.decode_is_right(crates_data);
         bool is_hit = encoder.decode_is_right(crates_data);
         crates.emplace_back(x, y, hp, is_hit);
-    }
+    } */
 
 
-    return std::make_shared<Broadcast>(std::move(players), std::move(bullets), std::move(crates),
+    return std::make_shared<Broadcast>(std::move(players), std::move(bullets), std::list<CrateDTO>(),
                                        std::list<WeaponDTO>(), std::list<Explosion>());
 }
 
@@ -200,8 +200,8 @@ void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
     offset += encoder.encode_len(event->get_bullets().size(), &data[offset]);
     add_bullets(event, data, offset);
 
-    offset += encoder.encode_len(event->get_crates().size(), &data[offset]);
-    add_crates(event, data, offset);
+    /* offset += encoder.encode_len(event->get_crates().size(), &data[offset]);
+    add_crates(event, data, offset); */
 
     send(data.data(), data.size());
 }

@@ -12,7 +12,7 @@ enum WeaponId{
   COWBOY_PISTOL = 0x07,
   MAGNUM = 0x08,
   SHOTGUN = 0x09,
-  SNIPER = 0XA
+  SNIPER = 0x0A
 };
 
 #endif // TALLER_TP_WEAPON_MACROS_H
