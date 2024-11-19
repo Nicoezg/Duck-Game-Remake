@@ -12,16 +12,8 @@
 GameMap::GameMap() { map = mapLoader.getNextMap(); }
 
 void GameMap::addPlayer(int player_id) {
-  // La línea de abajo está de ejemplo, no compila y no funciona realmente así.
-  // Hay que obtener las cosas me parece
 
-  /*Weapon weapon(NO_WEAPON);
-  Helmet helmet(NO_HELMET);
-  Chestplate chestplate(false);
-  players.insert_or_assign(next_player_id, PlayerDTO(next_player_id, 0, 0, true,
-  State::BLANK, weapon, helmet, chestplate)); actual_players++; */
-
-  Duck *duck = new Duck(player_id, 10 * player_id, 400, *this);
+  Duck *duck = new Duck(player_id, 10 * player_id, (map.getGroundLevel() * 16) + 16, *this);
   players.push_back(duck);
 }
 
@@ -44,10 +36,18 @@ void GameMap::update() {
     player->update();
   }
 
-  for (const auto& bullet : bullets) {
+   bullets.erase(
+        std::remove_if(bullets.begin(), bullets.end(), [](const std::shared_ptr<Bullet>& bullet) {
+            return bullet->outOfRange();
+        }),
+        bullets.end()
+    );
+
+    for (const auto& bullet : bullets) {
     bullet->update();
   }
 }
+
 
 bool GameMap::checkCollisionsWithBorders(int playerId) {
   Duck *player = findPlayer(playerId);
@@ -165,3 +165,5 @@ MapDTO GameMap::getMapDTO(){
 Map GameMap::getMap() {
   return map;
 }
+
+

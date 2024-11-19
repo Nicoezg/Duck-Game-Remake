@@ -18,6 +18,7 @@ private:
   BulletId id;
   bool isRight;
   bool upwards;
+  int traveledDistance;
 
 public:
   virtual ~Bullet() = default;
@@ -26,6 +27,7 @@ public:
          int range, BulletId id, bool isRight, bool upwards);
 
   void update();
+  bool outOfRange();
   void bounce(int newAngle);
   int getPosX() const;
   int getPosY() const;

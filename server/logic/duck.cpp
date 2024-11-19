@@ -10,7 +10,7 @@
 #include <iostream>
 
 #define CONFIG Configurations::configurations()
-#define GROUNDLEVEL 400
+#define GROUNDLEVEL 384
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
     : id(id), posX(posX), posY(posY), map(map), state(State::BLANK) {
@@ -22,10 +22,11 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<PewPewLaser>(map);
+  weapon = std::make_unique<Magnum>(map);
   hasWeapon = true;
   hasHelmet = false;
   hasArmour = false;
+  isOnPlatform = false;
 }
 
 void Duck::moveLeft() {
@@ -71,38 +72,77 @@ void Duck::flap() {
 }
 
 void Duck::update() {
-  if (state == State::PLAYING_DEAD) {
-    velX = 0;
-    velY = 0;
-    posY = GROUNDLEVEL;
-  }
-  posX += velX;
-  posY += velY;
-
-  /*if (map.checkCollisionsWithBorders(id)) {
-      state = State::DEAD;
-  } */
-
-  if (jumping) {
-    velY += flapping ? CONFIG.getFlappingSpeed() : CONFIG.getGravity();
-    if (velY >= 0 && !flapping) {
-      state = State::FALLING;
+    
+    if (state == State::PLAYING_DEAD) {
+        velX = 0;
+        velY = 0;
+        return;
     }
-  }
 
-  if (posY >= GROUNDLEVEL && state != State::PLAYING_DEAD) {
-    posY = GROUNDLEVEL;
-    jumping = false;
-    flapping = false;
-    velY = 0;
+    posX += velX;
+    posY += velY;
 
-    if (velX == 0) {
-      state = State::BLANK;
-    } else {
-      state = State::WALKING;
+    if ((velX < 0 && isRight) || (velX > 0 && !isRight)) {
+        velX = 0;
     }
-  }
+
+    hitBox duckBox = {posX, posY + 32, 32, 32};
+
+    isOnPlatform = false;
+
+    for (const auto &structure : map.getMap().structures) {
+        hitBox structureBox = {structure.start_x * 16, structure.y * 16,
+                               structure.end_x * 16 - structure.start_x * 16, 16}; 
+
+        if (hitBox::isColliding(duckBox, structureBox)) {
+            if (velY > 0) { 
+                posY = structure.y * 16 - 32; 
+                velY = 0;
+                jumping = false;
+                flapping = false;
+                isOnPlatform = true;
+
+                if (state != State::AIMING_UPWARDS) {
+                    aimingUpwards = false;
+                    
+                    if (velX == 0){
+                      state = State::BLANK;
+                    } else {
+                      state = State::WALKING;
+                }
+            }
+            break;
+        }
+    }
+    }
+    
+    if (jumping || !isOnPlatform) {
+        velY += flapping ? CONFIG.getFlappingSpeed() : CONFIG.getGravity();
+
+        if (state != State::AIMING_UPWARDS && jumping) {
+            std::cout << "entre " << std::endl;
+            state = State::FALLING;
+        }
+    }
+
+    if (posY + 32 >= GROUNDLEVEL) {
+        posY = GROUNDLEVEL - 32;
+        jumping = false;
+        flapping = false;
+        velY = 0;
+
+        if (state != State::PLAYING_DEAD && state != State::AIMING_UPWARDS) {
+            aimingUpwards = false;
+
+            if (velX == 0) {
+            state = State::BLANK;
+            } else {
+            state = State::WALKING;
+        }
+        }
+    }
 }
+
 
 void Duck::shoot() {
     if (weapon) {

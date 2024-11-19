@@ -47,6 +47,7 @@ public:
   MapDTO getMapDTO();
   
   Map getMap();
+  
 };
 
 #endif

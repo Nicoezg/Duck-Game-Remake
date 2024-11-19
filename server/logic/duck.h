@@ -5,6 +5,7 @@
 #include "game_map.h"
 #include "weapons/weapon.h"
 #include <atomic>
+#include "hitBox.h"
 
 
 class GameMap;
@@ -25,6 +26,7 @@ private:
   bool hasWeapon;
   bool hasHelmet;
   bool hasArmour;
+  bool isOnPlatform;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
@@ -36,6 +38,9 @@ public:
   void flap();
   void stopMoving();
   void update();
+  void resetJumpState();
+  hitBox getBoundingBox() const;
+  bool checkCollisionWithPlatform(const Structure &platform);
   void stopAiming();
   void shoot();
   void equipHelmet();

@@ -8,6 +8,7 @@ duck:
 
 bullet:
   speed: 5
+  
 # weapons
 
 grenade:
@@ -20,7 +21,7 @@ banana:
 
 pewpewlaser:
   reach: 36
-  ammo:  12 # dice de 35 a 38
+  ammo:  12 
 
 laserrifle:
   reach: 10
@@ -43,7 +44,7 @@ magnum:
   ammo: 6
 
 escopeta:
-  reach: 8 # dice 7 a 9
+  reach: 8 
   ammo: 2
 
 sniper:
