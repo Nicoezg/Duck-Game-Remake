@@ -12,6 +12,7 @@ private:
   int gravity;
 
   int bullet_speed;
+  
   int pewpewlaser_reach;
   int pewpewlaser_ammo;
   int grenade_reach;
@@ -47,6 +48,7 @@ public:
   int getGravity() const { return gravity; }
 
   int getBulletSpeed() const { return bullet_speed; }
+
   int getPewPewLaserReach() const { return pewpewlaser_reach; }
   int getPewPewLaserAmmo() const { return pewpewlaser_ammo; }
   int getGrenadeReach() const { return grenade_reach; }
@@ -67,6 +69,7 @@ public:
   int getShotgunAmmo() const { return shotgun_ammo; }
   int getSniperReach() const { return sniper_reach; }
   int getSniperAmmo() const { return sniper_ammo; }
+
 
   Configurations(const Configurations &) = delete;
   Configurations &operator=(const Configurations &) = delete;

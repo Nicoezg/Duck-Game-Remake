@@ -31,6 +31,7 @@ public:
   int getAmmo() const { return ammo; }
   bool isReadyToShoot() const { return !isReloading && hasAmmo(); }
 
+
   void createBullet(Duck *owner, int angle, bool canBounce, int reach,
                     BulletId id);
 

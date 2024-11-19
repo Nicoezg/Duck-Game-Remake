@@ -15,20 +15,22 @@ private:
   int range;
   bool isGrenade;
   bool canBounce;
-  enum BulletId id;
+  BulletId id;
+  bool isRight;
+  bool upwards;
 
 public:
   virtual ~Bullet() = default;
 
   Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
-         int range, enum BulletId id);
+         int range, BulletId id, bool isRight, bool upwards);
 
   void update();
   void bounce(int newAngle);
   int getPosX() const;
   int getPosY() const;
   float getAngle() const;
-  enum BulletId getId() const;
+  BulletId getId() const;
 };
 
 #endif // BULLET_H

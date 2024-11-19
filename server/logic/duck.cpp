@@ -5,6 +5,8 @@
 #include "server/logic/weapons/laser_rifle.h"
 #include "server/logic/weapons/cowboy.h"
 #include "server/logic/weapons/duelos.h"
+#include "server/logic/weapons/grenade.h"
+#include "server/logic/weapons/pewpewlaser.h"
 #include <iostream>
 
 #define CONFIG Configurations::configurations()
@@ -20,7 +22,8 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<Magnum>(map);
+  weapon = std::make_unique<PewPewLaser>(map);
+  hasWeapon = true;
   hasHelmet = false;
   hasArmour = false;
 }
@@ -60,7 +63,7 @@ void Duck::stopMoving() {
 }
 
 void Duck::flap() {
-  if (jumping && velY > 0) {
+  if (jumping && velY > 0 && !hasWeapon) {
     velY = CONFIG.getFlappingSpeed();
     flapping = true;
     state = State::FLAPPING;
@@ -105,7 +108,7 @@ void Duck::shoot() {
     if (weapon) {
         weapon->shoot(this);
         shooting = true;
-        state = State::BLANK;
+        //state = State::BLANK;
     }
 }
 
@@ -129,7 +132,14 @@ void Duck::takeDamage() {
 }
 
 void Duck::pickUp() {
-  // para agarrar
+  if (!hasWeapon) {
+    hasWeapon = true;
+    //equipWeapon(std::make_unique<Weapon>(map));
+  } else if (!hasHelmet) {
+    equipHelmet();
+  } else if (!hasArmour) {
+    equipArmour();
+  }
 }
 
 void Duck::leave() {
@@ -144,18 +154,21 @@ void Duck::playDead() {
   }
 }
 
-void Duck::aimUpwards() // faltaria en algun lado hacer q deje de aimean,
-                        // supongo q dsps de disparar?
+void Duck::aimUpwards() 
 {
-  aimingUpwards = true;
-  state = State::AIMING_UPWARDS;
+    aimingUpwards = true;
+    state = State::AIMING_UPWARDS;
+  
 }
 
 void Duck::standBack(int count) {
-  if (isRight) {
-    velX -= count;
-  } else {
-    velX += count;
+  if (!aimingUpwards) {
+    if (isRight) {
+      velX -= count;
+    } else {
+      velX += count;
+    }
+    state = State::RECOIL;
   }
 }
 
@@ -175,6 +188,11 @@ bool Duck::isWearingArmour() const { return false; }
 
 bool Duck::isJumping() const { return jumping; }
 
+bool Duck::isShooting() const { return shooting; }
+
+bool Duck::isAimingUpwards() const { return aimingUpwards; }
+
 const Weapon *Duck::getWeapon() const { return weapon.get(); }
+
 
 Duck::~Duck() {}

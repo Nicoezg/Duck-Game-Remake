@@ -32,6 +32,10 @@ Configurations::Configurations(const YAML::Node &configurations) {
   flapping_speed = configurations["duck"]["flapping"].as<int>();
   gravity = configurations["duck"]["gravity"].as<int>();
 
+  // bullets
+
+  bullet_speed = configurations["bullet"]["speed"].as<int>();
+
   // weapons
   pewpewlaser_reach = configurations["pewpewlaser"]["reach"].as<int>();
   pewpewlaser_ammo = configurations["pewpewlaser"]["ammo"].as<int>();

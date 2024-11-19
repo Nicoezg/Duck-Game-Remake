@@ -381,7 +381,7 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
     int background_id = encoder.decode_background_id(tiles_data);
     int width = encoder.decode_coordinate(tiles_data);
     int length = encoder.decode_coordinate(tiles_data);
-    std::cout << data.size() << std::endl;
+    //std::cout << data.size() << std::endl;
     
     return std::make_shared<MapDTO>(std::move(tiles), background_id, width, length);
 }

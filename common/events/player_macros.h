@@ -9,7 +9,8 @@ enum State{
   PLAYING_DEAD = 0x04,
   FLAPPING = 0x05,
   AIMING_UPWARDS = 0x06,
-  WALKING = 0x07
+  WALKING = 0x07,
+  RECOIL = 0x08
 };
 
 #endif // TALLER_TP_PLAYER_MACROS_H

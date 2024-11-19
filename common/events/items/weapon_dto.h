@@ -14,7 +14,7 @@ private:
 
 public:
     WeaponDTO(WeaponId weapon_id = NO_WEAPON, int position_x = 0, int position_y = 0, bool shooting = false);
-
+    
     WeaponId get_id() const;
 
     bool is_shooting() const;

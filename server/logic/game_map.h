@@ -45,6 +45,8 @@ public:
   std::list<BulletDTO> getBulletsState();
 
   MapDTO getMapDTO();
+  
+  Map getMap();
 };
 
 #endif
