@@ -4,6 +4,10 @@ duck:
   flapping: 1       
   gravity: 10    
 
+# bullet
+
+bullet:
+  speed: 5
 # weapons
 
 grenade:
@@ -15,8 +19,8 @@ banana:
   ammo: 1
 
 pewpewlaser:
-  reach: 12
-  ammo:  36 # dice de 35 a 38
+  reach: 36
+  ammo:  12 # dice de 35 a 38
 
 laserrifle:
   reach: 10

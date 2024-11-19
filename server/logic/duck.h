@@ -6,6 +6,7 @@
 #include "weapons/weapon.h"
 #include <atomic>
 
+
 class GameMap;
 
 class Duck {
@@ -21,6 +22,7 @@ private:
   bool isRight;
   bool aimingUpwards;
   State state;
+  bool hasWeapon;
   bool hasHelmet;
   bool hasArmour;
 
@@ -34,6 +36,7 @@ public:
   void flap();
   void stopMoving();
   void update();
+  void stopAiming();
   void shoot();
   void equipHelmet();
   void equipArmour();
@@ -52,6 +55,8 @@ public:
   bool isWearingHelmet() const;
   bool isWearingArmour() const;
   bool isJumping() const;
+  bool isShooting() const;
+  bool isAimingUpwards() const;
   const Weapon *getWeapon() const;
   bool isFlapping() const;
 

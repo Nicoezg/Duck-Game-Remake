@@ -39,7 +39,7 @@ Duck *GameMap::findPlayer(int playerId) {
 }
 
 void GameMap::update() {
-  reapDead();
+  //reapDead();
   for (auto player : players) {
     player->update();
   }
@@ -122,7 +122,7 @@ std::list<PlayerDTO> GameMap::getState() {
     bool dir = player->getDirection();
     State state = player->getState();
     HelmetDTO helmet;
-    WeaponDTO weapon = WeaponDTO(player->getWeapon()->getWeaponId());
+    WeaponDTO weapon = WeaponDTO(player->getWeapon()->getWeaponId(), posX, posY, player->isShooting());
     if (!player->isWearingHelmet()) {
       helmet = HelmetDTO(NO_HELMET);
     } else {
@@ -134,25 +134,6 @@ std::list<PlayerDTO> GameMap::getState() {
   }
   return playersList;
 }
-
-/*PlayerDTO GameMap::getPlayerState(int playerId) {
-  Duck *duck = findPlayer(playerId);
-  if (duck == nullptr) {
-    throw std::runtime_error("Jugador no encontrado");
-  }
-
-  int id = duck->getId();
-  int posX = duck->getPositionX();
-  int posY = duck->getPositionY();
-  bool dir = duck->getDirection();
-  State state = duck->getState();
-
-
-  PlayerDTO player(id, posX, posY, dir, state, WeaponDTO(NO_WEAPON),
-                   HelmetDTO(NO_HELMET), Chestplate(false));
-
-  return player;
-} */
 
 void GameMap::reapDead() {
   auto it = std::remove_if(players.begin(), players.end(), [](Duck *player) {
@@ -170,8 +151,16 @@ GameMap::~GameMap() {
   for (auto player : players) {
     delete player;
   }
+
+  for (auto &bullet : bullets) {
+    bullet.reset();
+  }
 }
 
 MapDTO GameMap::getMapDTO(){
   return mapLoader.getNextMapDTO();
+}
+
+Map GameMap::getMap() {
+  return map;
 }
