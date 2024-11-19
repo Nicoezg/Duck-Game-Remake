@@ -1,4 +1,5 @@
 #include "duck.h"
+#include <iostream>
 #include <SDL2/SDL_render.h>
 
 const int DUCK_WIDTH = 32;
@@ -145,9 +146,9 @@ void Duck::render() {
             case AIMING_UPWARDS:
                 currentClip = aimingUpwardsClip;
                 break;
-            /* case RECOIL:
+            case RECOIL:
                 currentClip = recoilClip;
-                break; */
+                break;
             default:
                 currentClip = stillClipWeapon;
                 break;
@@ -198,13 +199,16 @@ void Duck::update(const PlayerDTO &player){
         sound.change(sfx[0], 0);
 
     } else if (state == AIMING_UPWARDS) {
-        animationMovement.changeState(AIMING_UPWARDS, false);
+        animationMovement.changeState(AIMING_UPWARDS, true);
 
     } else if (state == WALKING) {
         animationMovement.changeState(WALKING, true);
 
+    } else if (state == RECOIL) {
+        animationMovement.changeState(RECOIL, false);
+
     } else {
-        animationMovement.changeState(BLANK, false);
+        animationMovement.changeState(BLANK, true);
     }
         // Cambiar a switch case
 }
@@ -228,7 +232,6 @@ void Duck::loadTextures() {
                     "../client/sprites/ducks/white-duck-w-wings.png").SetColorKey(true, 0));
             break;
         case 2:
-            std::cout << "llego" << std::endl;
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/red-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
