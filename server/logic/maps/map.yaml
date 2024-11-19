@@ -1,0 +1,43 @@
+fondo: Forest
+alto: 20
+ancho: 20
+Structures:
+  - start_x: 1
+    end_x: 1
+    y: 6
+    tile: 0
+  - start_x: 2
+    end_x: 7
+    y: 6
+    tile: 25
+  - start_x: 8
+    end_x: 8
+    y: 6
+    tile: 2
+  - start_x: 1
+    end_x: 1
+    y: 9
+    tile: 32
+  - start_x: 2
+    end_x: 7
+    y: 9
+    tile: 33
+  - start_x: 8
+    end_x: 8
+    y: 9
+    tile: 34
+Spawns:
+  - x: 1
+    y: 5
+  - x: 8
+    y: 5
+Interactuables:
+  - x: 1
+    y: 8
+    ID: 2
+  - x: 4
+    y: 8
+    ID: 1
+  - x: 8
+    y: 8
+    ID: 0

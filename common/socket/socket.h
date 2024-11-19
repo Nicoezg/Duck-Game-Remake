@@ -165,5 +165,7 @@ public:
    * automáticamente.
    * */
   ~Socket();
+
+    int shutdown_and_close(int how);
 };
 #endif

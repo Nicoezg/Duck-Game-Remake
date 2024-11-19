@@ -5,6 +5,7 @@
 
 #include <cstring>
 #include <netinet/in.h>
+#include <cmath>
 
 /* Comunes */
 size_t Encoder::encode_game_code(uint32_t game_code, void *data) {
@@ -81,19 +82,27 @@ uint16_t Encoder::decode_player_id(std::vector<int8_t> &data) {
 }
 
 size_t Encoder::encode_connected(bool is_connected, void *data) {
-  const auto *connected = reinterpret_cast<int8_t *>(is_connected);
-  std::memcpy(data, &connected, sizeof(int8_t));
+  return encode_bool(is_connected, data);
+}
+
+size_t Encoder::encode_bool(bool is_connected, void *data) {
+  const auto *value = reinterpret_cast<int8_t *>(&is_connected);
+  std::memcpy(data, value, sizeof(int8_t));
   return sizeof(int8_t);
 }
 
 bool Encoder::decode_connected(std::vector<int8_t> &data) {
-  if (data.size() < sizeof(int8_t)) {
-    throw std::runtime_error(
-        "No hay suficientes bytes para decodificar la conexion.");
-  }
-  const auto *connected = reinterpret_cast<int8_t *>(data[0]);
-  data.erase(data.begin(), data.begin() + sizeof(int8_t));
-  return connected;
+  return decode_bool(data);
+}
+
+bool Encoder::decode_bool(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int8_t)) {
+        throw std::runtime_error(
+                "No hay suficientes bytes para decodificar la conexion.");
+    }
+    const auto *value = reinterpret_cast<int8_t *>(data[0]);
+    data.erase(data.begin(), data.begin() + sizeof(int8_t));
+    return value;
 }
 
 size_t Encoder::encode_game_mode(GameMode game_mode, void *data) {
@@ -214,4 +223,75 @@ int Encoder::decode_actual_players(std::vector<int8_t> &data) {
   std::memcpy(&actual_players, data.data(), sizeof(uint8_t));
   data.erase(data.begin(), data.begin() + sizeof(uint8_t));
   return actual_players;
+}
+
+size_t Encoder::encode_id(uint8_t id, void *data) {
+  const auto *id_bytes = reinterpret_cast<int8_t *>(&id);
+  std::memcpy(data, id_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+uint8_t Encoder::decode_id(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el id.");
+  }
+  uint8_t id;
+  std::memcpy(&id, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return id;
+}
+
+size_t Encoder::encode_tile_id(uint8_t tile_id, void *data) {
+  const auto *tile_id_bytes = reinterpret_cast<int8_t *>(&tile_id);
+  std::memcpy(data, tile_id_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+uint8_t Encoder::decode_tile_id(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el id del tile.");
+  }
+  uint8_t tile_id;
+  std::memcpy(&tile_id, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return tile_id;
+}
+
+size_t Encoder::encode_background_id(uint8_t background_id, void *data) {
+  const auto *background_id_bytes = reinterpret_cast<int8_t *>(&background_id);
+  std::memcpy(data, background_id_bytes, sizeof(uint8_t));
+  return sizeof(uint8_t);
+}
+
+uint8_t Encoder::decode_background_id(std::vector<int8_t> &data) {
+  if (data.size() < sizeof(uint8_t)) {
+    throw std::runtime_error(
+        "No hay suficientes bytes para decodificar el id del background.");
+  }
+  uint8_t background_id;
+  std::memcpy(&background_id, data.data(), sizeof(uint8_t));
+  data.erase(data.begin(), data.begin() + sizeof(uint8_t));
+  return background_id;
+}
+
+size_t Encoder::encode_angle(float value, signed char *string) {
+    int16_t angle = value * 100;
+    int16_t network_angle = htons(angle);
+    const auto *angle_bytes = reinterpret_cast<int8_t *>(&network_angle);
+    std::memcpy(string, angle_bytes, sizeof(int16_t));
+    return sizeof(angle);
+}
+
+float Encoder::decode_angle(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int16_t)) {
+        throw std::runtime_error(
+                "No hay suficientes bytes para decodificar el angulo.");
+    }
+    int16_t angle;
+    std::memcpy(&angle, data.data(), sizeof(int16_t));
+    angle = ntohs(angle);
+    data.erase(data.begin(), data.begin() + sizeof(int16_t));
+    return roundf(static_cast<float>(angle)) ;
 }

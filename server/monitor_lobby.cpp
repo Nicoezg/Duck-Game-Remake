@@ -29,7 +29,7 @@ void MonitorLobby::clean_closed_clients() {
 void MonitorLobby::close_and_clean_clients() {
   for (auto &client : clients) {
     client->close();
-    client->join();
+        client->join();
   }
   clients.clear();
 }

@@ -35,6 +35,8 @@ public:
   virtual bool is_picking_dropping() const;
 
     virtual int get_max_players() const;
+  
+  virtual bool is_still() const;
 };
 
 #endif // TALLER_TP_ACTION_H

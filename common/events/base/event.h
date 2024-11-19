@@ -5,10 +5,16 @@
 #ifndef TALLER_TP_EVENT_H
 #define TALLER_TP_EVENT_H
 
-#include "event_type.h"
-#include "common/events/player.h"
+#include "../items/bullet_dto.h"
+#include "../items/crate.h"
+#include "../items/explosion.h"
+#include "../tile.h"
 #include "common/events/connection/game_room.h"
+#include "common/events/items/weapon_dto.h"
+#include "common/events/player.h"
+#include "event_type.h"
 #include <list>
+#include <vector>
 
 #define SIN_ASIGNAR 0
 class Event {
@@ -30,13 +36,38 @@ public:
   virtual int get_player_id_1() const;
   virtual int get_player_id_2() const;
 
-  virtual std::list<Player> get_players();
+  virtual std::list<PlayerDTO> get_players() const;
+
+  virtual std::list<BulletDTO> get_bullets() const;
+
+  virtual std::list<CrateDTO> get_crates() const;
+
+  virtual std::list<WeaponDTO> get_weapons() const;
+
+  virtual std::list<Explosion> get_explosions() const;
 
   virtual int get_max_players() const;
 
-    virtual int get_actual_players() const;
+  virtual int get_actual_players() const;
 
-    virtual std::list<GameRoom> get_games();
+  virtual std::list<GameRoom> get_games();
+
+  virtual std::list<Tile> get_platforms() const;
+
+  virtual int get_background_id() const;
+
+  virtual int get_width() const;
+
+  virtual int get_length() const;
+
+  virtual std::vector<std::string> get_names() const;
+
+  virtual std::vector<int> get_scores() const;
+
+  virtual std::string get_winner() const;
+
+  virtual int get_score() const;
+
   virtual ~Event() = default;
 };
 

@@ -6,6 +6,8 @@
 
 #include "common/actions/connection/create.h"
 #include "common/socket/socket.h"
+#include "logic/duck.h"
+#include "logic/game_map.h"
 #include "notifier.h"
 
 class Game : public Thread {
@@ -18,7 +20,7 @@ private:
 
   std::atomic<int> next_player_id;
 
-  std::map<int, Player> players;
+  std::map<int, PlayerDTO> players;
 
   std::atomic<int> actual_players;
 
@@ -27,10 +29,14 @@ private:
 
   std::list<int> admin_ids;
 
+  GameMap gameMap;
+
   /**
    * @brief Lee los eventos de la cola de eventos los ejecuta.
    */
   void read_actions();
+
+  void process_action(std::shared_ptr<Action> &action);
 
 public:
   explicit Game(int max_players);
@@ -69,20 +75,22 @@ public:
    */
   int get_next_player_id();
 
-  std::list<Player> get_players();
+  std::list<PlayerDTO> get_players();
 
   int get_max_players() const;
   int get_actual_players() const;
 
-    bool is_full(int new_players) const;
+  bool is_full(int new_players) const;
 
-    bool is_started() const;
+  bool is_started() const;
 
-    void start_game();
+  void start_game();
 
-    void add_admin_id(int id);
+  void add_admin_id(int id);
 
-    void valid_start();
+  void valid_start();
+
+    void notify_state();
 };
 
 #endif // TALLER_TP_GAME_H

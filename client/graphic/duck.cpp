@@ -4,113 +4,264 @@
 const int DUCK_WIDTH = 32;
 const int DUCK_HEIGHT = 32;
 
-    Duck::Duck(SDL2pp::Renderer& renderer, int id) : posX(), posY(), id(id), direction(), renderer(renderer), texture(), animationState(), walkClips(), jumpClips(), playDeadClips() {
-        for (int i = 0; i < 4; i++){
-            walkClips[i].x = i * DUCK_WIDTH;
-            walkClips[i].y = 0;
-            walkClips[i].w = DUCK_WIDTH;
-            walkClips[i].h = DUCK_HEIGHT;
-        }
+Duck::Duck(SDL2pp::Renderer &renderer, int id) : posX(0), posY(0), id(id), direction(), renderer(renderer),
+                                                 weaponsTexture(), wingsTexture(), sfx(), animationMovement(), sound(),
+                                                 weapon(renderer, NO_WEAPON, id), helmet(renderer), chestplate(renderer),
+                                                 walkClips(), jumpClip(), fallClip(), stillClipWings(), flappingClips(),
+                                                 playDeadClips(), walkWeaponClips(), jumpWeaponClip(), fallWeaponClip(),
+                                                 stillClipWeapon(), aimingUpwardsClip(), recoilClip() {
+    for (int i = 0; i < 5; i++) {
+        walkClips[i].x = (i + 1) * DUCK_WIDTH;
+        walkClips[i].y = 0;
+        walkClips[i].w = DUCK_WIDTH;
+        walkClips[i].h = DUCK_HEIGHT;
 
-        for (int i = 0; i < 2; i++){
-            jumpClips[i].x = i * DUCK_WIDTH;
-            jumpClips[i].y = DUCK_HEIGHT;
-            jumpClips[i].w = DUCK_WIDTH;
-            jumpClips[i].h = DUCK_HEIGHT;
-        }
-
-        playDeadClips[0].x = DUCK_WIDTH * 5;
-        playDeadClips[0].y = DUCK_HEIGHT;
-        playDeadClips[0].w = DUCK_WIDTH;
-        playDeadClips[0].h = DUCK_HEIGHT;
-
-        playDeadClips[1].x = 0;
-        playDeadClips[1].y = DUCK_HEIGHT * 2;
-        playDeadClips[1].w = DUCK_WIDTH;
-        playDeadClips[1].h = DUCK_HEIGHT;
-
-        playDeadClips[2].x = DUCK_WIDTH;
-        playDeadClips[2].y = DUCK_HEIGHT * 2;
-        playDeadClips[2].w = DUCK_WIDTH;
-        playDeadClips[2].h = DUCK_HEIGHT;
+        walkWeaponClips[i].x = (i + 1) * DUCK_WIDTH;
+        walkWeaponClips[i].y = 0;
+        walkWeaponClips[i].w = DUCK_WIDTH;
+        walkWeaponClips[i].h = DUCK_HEIGHT;
     }
 
-    void Duck::render(SDL2pp::Renderer& renderer){
-        SDL2pp::Rect rect{ posX, posY, DUCK_WIDTH, DUCK_HEIGHT };
-        int flipType = direction ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-        int angle = 0;
+    stillClipWings.x = 0;
+    stillClipWings.y = 0;
+    stillClipWings.w = DUCK_WIDTH;
+    stillClipWings.h = DUCK_HEIGHT;
 
-        // Select appropriate clip based on current animation state
-        SDL2pp::Rect currentClip;
+    stillClipWeapon.x = 0;
+    stillClipWeapon.y = 0;
+    stillClipWeapon.w = DUCK_WIDTH;
+    stillClipWeapon.h = DUCK_HEIGHT;
 
-        switch (animationState.getCurrentType()) {
-            case Type::WALK:
-                currentClip = walkClips[animationState.getCurrentFrame()];
+    jumpClip.x = DUCK_WIDTH;
+    jumpClip.y = DUCK_HEIGHT;
+    jumpClip.w = DUCK_WIDTH;
+    jumpClip.h = DUCK_HEIGHT;
+
+    jumpWeaponClip.x = DUCK_WIDTH;
+    jumpWeaponClip.y = DUCK_HEIGHT;
+    jumpWeaponClip.w = DUCK_WIDTH;
+    jumpWeaponClip.h = DUCK_HEIGHT;
+
+    fallClip.x = DUCK_WIDTH * 3;
+    fallClip.y = DUCK_HEIGHT;
+    fallClip.w = DUCK_WIDTH;
+    fallClip.h = DUCK_HEIGHT;
+
+    fallWeaponClip.x = DUCK_WIDTH * 3;
+    fallWeaponClip.y = DUCK_HEIGHT;
+    fallWeaponClip.w = DUCK_WIDTH;
+    fallWeaponClip.h = DUCK_HEIGHT;
+
+    playDeadClips[0].x = DUCK_WIDTH * 5;
+    playDeadClips[0].y = DUCK_HEIGHT;
+    playDeadClips[0].w = DUCK_WIDTH;
+    playDeadClips[0].h = DUCK_HEIGHT;
+
+    playDeadClips[1].x = 0;
+    playDeadClips[1].y = DUCK_HEIGHT * 2;
+    playDeadClips[1].w = DUCK_WIDTH;
+    playDeadClips[1].h = DUCK_HEIGHT;
+
+    playDeadClips[2].x = DUCK_WIDTH;
+    playDeadClips[2].y = DUCK_HEIGHT * 2;
+    playDeadClips[2].w = DUCK_WIDTH;
+    playDeadClips[2].h = DUCK_HEIGHT;
+
+    flappingClips[0].x = DUCK_WIDTH * 3;
+    flappingClips[0].y = DUCK_HEIGHT;
+    flappingClips[0].w = DUCK_WIDTH;
+    flappingClips[0].h = DUCK_HEIGHT;
+
+    flappingClips[1].x = DUCK_WIDTH * 2;
+    flappingClips[1].y = DUCK_HEIGHT;
+    flappingClips[1].w = DUCK_WIDTH;
+    flappingClips[1].h = DUCK_HEIGHT;
+
+    flappingClips[2].x = 0;
+    flappingClips[2].y = DUCK_HEIGHT;
+    flappingClips[2].w = DUCK_WIDTH;
+    flappingClips[2].h = DUCK_HEIGHT;
+
+    aimingUpwardsClip.x = DUCK_WIDTH * 3;
+    aimingUpwardsClip.y = DUCK_HEIGHT * 2;
+    aimingUpwardsClip.w = DUCK_WIDTH;
+    aimingUpwardsClip.h = DUCK_HEIGHT;
+
+    recoilClip.x = DUCK_WIDTH * 4;
+    recoilClip.y = DUCK_HEIGHT;
+    recoilClip.w = DUCK_WIDTH;
+    recoilClip.h = DUCK_HEIGHT;
+
+
+    sfx[0] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk("../client/graphic/audio/jump.wav"));
+    sfx[1] = std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk("../client/graphic/audio/death.wav"));
+}
+
+void Duck::render() {
+    SDL2pp::Rect rect{posX, posY, DUCK_WIDTH, DUCK_HEIGHT};
+    int flipType = direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    int angle = 0; // innecesario
+
+    SDL2pp::Rect currentClip;
+
+    if (weapon.getId() == NO_WEAPON) {
+
+        switch (animationMovement.getCurrentType()) {
+            case WALKING:
+                currentClip = walkClips[animationMovement.getCurrentFrame()];
                 break;
-            case Type::JUMP:
-                currentClip = jumpClips[0];
+            case JUMPING:
+                currentClip = jumpClip;
                 break;
-            case Type::FALL:
-                currentClip = jumpClips[1];
+            case FALLING:
+                currentClip = fallClip;
                 break;
-            case Type::PLAYDEAD:
-                currentClip = playDeadClips[animationState.getCurrentFrame()];
+            case PLAYING_DEAD:
+                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+                break;
+            case FLAPPING:
+                currentClip = flappingClips[animationMovement.getCurrentFrame()];
                 break;
             default:
-                currentClip = walkClips[0];
+                currentClip = stillClipWings;
                 break;
         }
+        renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
 
-        renderer.Copy(*texture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
-    }
-
-    void Duck::update(const Player &player){
-        int prevX = posX;
-        posX = player.get_position_x();
-        posY = player.get_position_y();
-        direction = player.is_right();
-
-        if (player.is_playing_dead()){
-            animationState.changeState(Type::PLAYDEAD, false);
-        } else if (player.is_falling()) {
-            animationState.changeState(Type::FALL, false);
-        } else if (player.is_jumping()) {
-            animationState.changeState(Type::JUMP, false);
-        } else  if (prevX != posX) {
-            animationState.changeState(Type::WALK, true);
-        } else {
-            animationState.changeState(Type::IDLE, false);
-        }
-    }
-
-    void Duck::updateFrame(int it){
-        animationState.update(it);
-    }
-
-    int Duck::getPosX() { return posX; }
-
-    int Duck::getPosY() { return posY; }
-
-    bool Duck::isFacingRight() { return direction; }
-
-    void Duck::loadTextures(){
-        switch (id){
-            case 0:
-                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/white-duck.png").SetColorKey(true, 0));
+    } else {
+        switch (animationMovement.getCurrentType()) {
+            case WALKING:
+                currentClip = walkWeaponClips[animationMovement.getCurrentFrame()];
                 break;
-            case 1:
-                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/grey-duck.png").SetColorKey(true, 0));
+            case JUMPING:
+                currentClip = jumpWeaponClip;
                 break;
-            case 2:
-                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/yellow-duck.png").SetColorKey(true, 0));
+            case FALLING:
+                currentClip = fallWeaponClip;
                 break;
-            case 3:
-                texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "ducks/orange-duck.png").SetColorKey(true, 0));
+            case PLAYING_DEAD:
+                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
                 break;
+            case AIMING_UPWARDS:
+                currentClip = aimingUpwardsClip;
+                break;
+            /* case RECOIL:
+                currentClip = recoilClip;
+                break; */
             default:
+                currentClip = stillClipWeapon;
                 break;
         }
+        renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
+        if (animationMovement.getCurrentType() != PLAYING_DEAD) {
+            weapon.render(posX, posY, flipType);
+        }
+        
     }
+    if (chestplate.isEquipped()) {
+        chestplate.render(posX, posY); // A determinar posiciones
+    }
+    if (helmet.isEquipped()) {
+        helmet.render(posX, posY); // A determinar posiciones
+    }
+    sound.play();
 
-    Duck::~Duck(){
+}
+
+void Duck::update(const PlayerDTO &player){
+    posX = player.get_position_x();
+    posY = player.get_position_y();
+    direction = player.is_right();
+    weapon.update(player.get_weapon());
+    helmet.update(player.get_helmet());
+    chestplate.update(player.get_chestplate());
+
+    auto state = player.get_state();
+    if (state == animationMovement.getCurrentType()) {
+        return;
     }
+    if (state == DEAD){
+        animationMovement.changeState(PLAYING_DEAD, false);
+        sound.change(sfx[1], 0);
+    }
+    else if (state == PLAYING_DEAD) {
+        animationMovement.changeState(PLAYING_DEAD, false);
+
+    } else if (state == FLAPPING) {
+        animationMovement.changeState(FLAPPING, true);
+
+    } else if (state == FALLING) {
+        animationMovement.changeState(FALLING, false);
+
+    } else if (state == JUMPING) {
+        animationMovement.changeState(JUMPING, false);
+        sound.change(sfx[0], 0);
+
+    } else if (state == AIMING_UPWARDS) {
+        animationMovement.changeState(AIMING_UPWARDS, false);
+
+    } else if (state == WALKING) {
+        animationMovement.changeState(WALKING, true);
+
+    } else {
+        animationMovement.changeState(BLANK, false);
+    }
+        // Cambiar a switch case
+}
+
+void Duck::updateFrame(int it) {
+    animationMovement.update(it);
+}
+
+int Duck::getPosX() { return posX; }
+
+int Duck::getPosY() { return posY; }
+
+bool Duck::isFacingRight() { return direction; }
+
+void Duck::loadTextures() {
+    switch (id) {
+        case 1:
+            weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/white-duck-w-weapon.png").SetColorKey(true, 0));
+            wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/white-duck-w-wings.png").SetColorKey(true, 0));
+            break;
+        case 2:
+            std::cout << "llego" << std::endl;
+            weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/red-duck-w-weapon.png").SetColorKey(true, 0));
+            wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/red-duck-w-wings.png").SetColorKey(true, 0));
+            break;
+        case 3:
+            weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/pink-duck-w-weapon.png").SetColorKey(true, 0));
+            wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/pink-duck-w-wings.png").SetColorKey(true, 0));
+            break;
+        case 4:
+            weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/orange-duck-w-weapon.png").SetColorKey(true, 0));
+            wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/orange-duck-w-wings.png").SetColorKey(true, 0));
+            break;
+        case 5:
+            weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/gray-duck-w-weapon.png").SetColorKey(true, 0));
+            wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/gray-duck-w-wings.png").SetColorKey(true, 0));
+            break;
+        case 6:
+            weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/yellow-duck-w-weapon.png").SetColorKey(true, 0));
+            wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
+                    "../client/sprites/ducks/yellow-duck-wings.png").SetColorKey(true, 0));
+            break;
+        default:
+            break;
+    }
+}
+
+Duck::~Duck() {
+}

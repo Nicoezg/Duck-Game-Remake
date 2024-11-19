@@ -1,0 +1,104 @@
+fondo: Forest
+alto: 30
+ancho: 40
+Structures:
+  - start_x: 0
+    end_x: 0
+    y: 21
+    tile: 24
+  - start_x: 1
+    end_x: 1
+    y: 21
+    tile: 25
+  - start_x: 2
+    end_x: 2
+    y: 21
+    tile: 26
+  - start_x: 37
+    end_x: 37
+    y: 21
+    tile: 0
+  - start_x: 38
+    end_x: 38
+    y: 21
+    tile: 1
+  - start_x: 39
+    end_x: 39
+    y: 21
+    tile: 2
+  - start_x: 0
+    end_x: 0
+    y: 24
+    tile: 0
+  - start_x: 1
+    end_x: 38
+    y: 24
+    tile: 1
+  - start_x: 39
+    end_x: 39
+    y: 24
+    tile: 2
+  - start_x: 0
+    end_x: 0
+    y: 25
+    tile: 8
+  - start_x: 1
+    end_x: 38
+    y: 25
+    tile: 9
+  - start_x: 39
+    end_x: 39
+    y: 25
+    tile: 10
+  - start_x: 0
+    end_x: 0
+    y: 26
+    tile: 8
+  - start_x: 1
+    end_x: 38
+    y: 26
+    tile: 9
+  - start_x: 39
+    end_x: 39
+    y: 26
+    tile: 10
+  - start_x: 0
+    end_x: 0
+    y: 27
+    tile: 8
+  - start_x: 1
+    end_x: 38
+    y: 27
+    tile: 9
+  - start_x: 39
+    end_x: 39
+    y: 27
+    tile: 10
+  - start_x: 0
+    end_x: 0
+    y: 28
+    tile: 8
+  - start_x: 1
+    end_x: 38
+    y: 28
+    tile: 9
+  - start_x: 39
+    end_x: 39
+    y: 28
+    tile: 10
+  - start_x: 0
+    end_x: 0
+    y: 29
+    tile: 16
+  - start_x: 1
+    end_x: 38
+    y: 29
+    tile: 17
+  - start_x: 39
+    end_x: 39
+    y: 29
+    tile: 18
+Spawns:
+  []
+Interactuables:
+  []

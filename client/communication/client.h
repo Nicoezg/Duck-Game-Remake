@@ -53,7 +53,12 @@ public:
 
     std::shared_ptr<Event> read_event();
 
+    std::shared_ptr<Event> try_read();
+
     bool is_connected() const;
+
+
+    bool is_closed() const;
 };
 
 #endif // TALLER_TP_CLIENT_H

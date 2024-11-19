@@ -4,19 +4,16 @@ target_sources(CLIENT
     action_handler.cpp
     duck.cpp
     game.cpp
-    animation_state.cpp
-    helmet.cpp
-    weapon.cpp
-    chestplate.cpp
-    bullet.cpp
+    animation_movement.cpp
+    sound.cpp
+    camera.cpp
+    
     PUBLIC
     action_handler.h
     duck.h
     game.h
-    animation_state.h
-    helmet.h
-    weapon.h
-    chestplate.h
-    bullet.h
+    animation_movement.h
+    sound.h
+    camera.h
     # .h files
     )
