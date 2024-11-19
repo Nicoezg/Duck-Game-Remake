@@ -13,5 +13,5 @@ DrawBullet::DrawBullet(SDL2pp::Renderer &renderer) : renderer(renderer) {
 void DrawBullet::render(const BulletDTO& bullet){
     std::shared_ptr<SDL2pp::Texture> texture = this->textures[bullet.get_id()];
     SDL2pp::Rect dest(bullet.get_position_x(), bullet.get_position_y(), texture->GetWidth(), texture->GetHeight());
-    renderer.Copy(*texture, SDL2pp::NullOpt, dest);
+    renderer.Copy(*texture, SDL2pp::NullOpt, dest, bullet.get_angle());
 }
