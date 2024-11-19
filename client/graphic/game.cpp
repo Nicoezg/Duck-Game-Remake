@@ -185,9 +185,6 @@ void Game::end(const GameOver &gameOver) {
     std::lock_guard<std::mutex> lock(mutex);
     stop = true;
     showVictoryScreen(gameOver);
-
-
-    // a definir
 }
 
 int Game::render() {
