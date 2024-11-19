@@ -48,6 +48,10 @@ Las mecanicas disponibles son muy acotadas pero se pueden realizar las siguiente
 - Moverse con las flechas del teclado.
 - Disparar con la G.
 
+## 5. Server
+
+Para poder cerrar el servidor se debe mandar por consola la letra q en la terminal.
+
 ## 5. Editor
 
 El editor es una herramienta que permite crear mapas para el juego. Se pueden crear mapas de 10x10 y se pueden agregar las estructuras, cascos, cajas, armaduras y spawns.
