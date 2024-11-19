@@ -228,6 +228,7 @@ void Duck::loadTextures() {
                     "../client/sprites/ducks/white-duck-w-wings.png").SetColorKey(true, 0));
             break;
         case 2:
+            std::cout << "llego" << std::endl;
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/red-duck-w-weapon.png").SetColorKey(true, 0));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(

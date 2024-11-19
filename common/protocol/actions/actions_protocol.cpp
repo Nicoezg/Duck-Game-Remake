@@ -203,9 +203,7 @@ void ActionsProtocol::send_shoot_action(const std::shared_ptr<Action> &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action->get_type(), &data[offset]);
     offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    std::cout << "llego aca" << std::endl;
     encoder.encode_is_right(action->is_shooting(), &data[offset]);
-    std::cout << "lo paso" << std::endl;
     send(data.data(), data.size());
 }
 

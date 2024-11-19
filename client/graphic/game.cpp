@@ -131,7 +131,6 @@ void Game::update(const Event &broadcast) {
     //camera.update(playerRects);
 
     bullets = broadcast.get_bullets();
-    std::cout << "Bullets: " << bullets.size() << std::endl;
     weaponSpawns = broadcast.get_weapons();
     crates = broadcast.get_crates();
     // explosions = broadcast.get_explosions();
@@ -186,9 +185,6 @@ void Game::end(const GameOver &gameOver) {
     std::lock_guard<std::mutex> lock(mutex);
     stop = true;
     showVictoryScreen(gameOver);
-
-
-    // a definir
 }
 
 int Game::render() {
