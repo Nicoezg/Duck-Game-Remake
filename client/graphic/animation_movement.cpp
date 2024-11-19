@@ -12,6 +12,7 @@ int AnimationMovement::getDurationForState(State type) {
             case State::BLANK: return 1;
             case State::FLAPPING: return 3;
             case State::AIMING_UPWARDS: return 1;
+            case State::RECOIL: return 1;
             case State::PLAYING_DEAD: return 3;
             default: return 1;
         }

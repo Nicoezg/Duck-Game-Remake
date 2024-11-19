@@ -14,56 +14,6 @@
 #include <list>
 #include <iostream>
 
-#define EVENT_TYPE_SIZE sizeof(int8_t)
-#define PLAYERS_ID_SIZE sizeof(uint16_t)
-#define GAME_CODE_SIZE sizeof(uint32_t)
-#define CONNECTED_SIZE sizeof(uint8_t)
-#define MAX_PLAYER_SIZE sizeof(uint8_t)
-#define ACTUAL_PLAYER_SIZE sizeof(uint8_t)
-
-
-#define COORDINATE_SIZE sizeof(int16_t)
-#define LEN_SIZE sizeof(uint8_t)
-#define PLAYER_COORDINATE sizeof(int16_t)
-#define PLAYER_IS_RIGHT_SIZE sizeof(uint8_t)
-#define PLAYER_STATE_SIZE sizeof(uint8_t)
-
-
-#define WEAPONS_SIZE (sizeof(uint8_t) + COORDINATE_SIZE * 2 + sizeof(uint8_t))
-#define HEALTH_SIZE sizeof(uint8_t)
-#define CHESTPLATE_SIZE sizeof(uint8_t)
-
-#define GAME_ROOM_SIZE (MAX_PLAYER_SIZE + ACTUAL_PLAYER_SIZE + GAME_CODE_SIZE)
-
-#define READ_NEW_PLAYER_SIZE (ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
-
-#define READ_CREATE_GAME_SIZE                                                  \
-  (GAME_CODE_SIZE + 2 * PLAYERS_ID_SIZE + ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
-
-#define READ_JOIN_GAME_SIZE (2 * PLAYERS_ID_SIZE + CONNECTED_SIZE + ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
-
-#define READ_BULLET_SIZE (COORDINATE_SIZE * 2 + sizeof(uint8_t) + sizeof(uint16_t))
-
-#define READ_PLAYER_SIZE ( \
-    2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + \
-    PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE +\
-    WEAPONS_SIZE + HEALTH_SIZE + CHESTPLATE_SIZE)
-
-#define READ_TILE_SIZE (COORDINATE_SIZE * 3 + sizeof(uint8_t))
-
-
-#define SEND_CREATE_GAME_SIZE                                                  \
-  (READ_CREATE_GAME_SIZE + EVENT_TYPE_SIZE)
-
-#define SEND_JOIN_GAME_SIZE                                                    \
-  (READ_JOIN_GAME_SIZE + EVENT_TYPE_SIZE)
-
-#define SEND_PLAYER_SIZE READ_PLAYER_SIZE
-
-#define SEND_TILE_SIZE READ_TILE_SIZE
-
-#define SEND_NEW_PLAYER_SIZE (READ_NEW_PLAYER_SIZE + EVENT_TYPE_SIZE)
-
 EventsProtocol::EventsProtocol(Socket *socket, Encoder encoder)
         : Protocol(socket), encoder(encoder) {}
 
@@ -214,15 +164,31 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         bullets.emplace_back(x, y, BulletId(id), angle);
     }
 
+    std::vector<int8_t> size_crates_data(LEN_SIZE);
+    read(size_crates_data.data(), size_crates_data.size());
+    int crates_len = encoder.decode_len(size_crates_data);
 
-    return std::make_shared<Broadcast>(std::move(players), std::move(bullets), std::list<CrateDTO>(),
+    std::vector<int8_t> crates_data(crates_len * READ_CRATE_SIZE);
+    read(crates_data.data(), crates_data.size());
+    
+    std::list<CrateDTO> crates;
+    for (int i = 0; i < crates_len; i++) {
+        int x = encoder.decode_coordinate(crates_data);
+        int y = encoder.decode_coordinate(crates_data);
+        uint8_t hp = encoder.decode_is_right(crates_data);
+        bool is_hit = encoder.decode_is_right(crates_data);
+        crates.emplace_back(x, y, hp, is_hit);
+    }
+
+
+    return std::make_shared<Broadcast>(std::move(players), std::move(bullets), std::move(crates),
                                        std::list<WeaponDTO>(), std::list<Explosion>());
 }
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
     std::vector<int8_t> data(LEN_SIZE * 2 +
                              event->get_players().size() * SEND_PLAYER_SIZE +
-                             event->get_bullets().size() * READ_BULLET_SIZE +
+                             event->get_bullets().size() * SEND_BULLET_SIZE +
                              EVENT_TYPE_SIZE);
     size_t offset = 0;
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
@@ -234,6 +200,9 @@ void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
     offset += encoder.encode_len(event->get_bullets().size(), &data[offset]);
     add_bullets(event, data, offset);
 
+    offset += encoder.encode_len(event->get_crates().size(), &data[offset]);
+    add_crates(event, data, offset);
+
     send(data.data(), data.size());
 }
 
@@ -243,6 +212,15 @@ void EventsProtocol::add_bullets(const std::shared_ptr<Event> &event, std::vecto
         offset += encoder.encode_coordinate(bullet.get_position_x(), &data[offset]);
         offset += encoder.encode_coordinate(bullet.get_position_y(), &data[offset]);
         offset += encoder.encode_angle(bullet.get_angle(), &data[offset]);
+    }
+}
+
+void EventsProtocol::add_crates(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset) {
+    for (const auto &crate: event->get_crates()) {
+        offset += encoder.encode_coordinate(crate.get_position_x(), &data[offset]);
+        offset += encoder.encode_coordinate(crate.get_position_y(), &data[offset]);
+        offset += encoder.encode_is_right(crate.get_hp(), &data[offset]);
+        offset += encoder.encode_is_right(crate.was_hit(), &data[offset]);
     }
 }
 
@@ -367,7 +345,7 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
     read(data.data(), data.size());
     int tiles_len = encoder.decode_len(data);
 
-    std::vector<int8_t> tiles_data(tiles_len * READ_TILE_SIZE + COORDINATE_SIZE * 2 + sizeof(uint8_t));
+    std::vector<int8_t> tiles_data(tiles_len * READ_TILE_SIZE + READ_BACKGROUND_SIZE);
     read(tiles_data.data(), tiles_data.size());
 
     std::list<Tile> tiles;
@@ -389,7 +367,7 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
 void EventsProtocol::send_map(const std::shared_ptr<Event> &event) {
     std::vector<int8_t> data(LEN_SIZE +
                              event->get_platforms().size() * SEND_TILE_SIZE +
-                             EVENT_TYPE_SIZE + COORDINATE_SIZE * 2 + sizeof(uint8_t));
+                             EVENT_TYPE_SIZE + SEND_BACKGROUND_SIZE);
     size_t offset = 0;
     offset += encoder.encode_event_type(event->get_type(), &data[offset]);
     offset += encoder.encode_len(event->get_platforms().size(), &data[offset]);

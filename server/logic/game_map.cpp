@@ -85,7 +85,6 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
     break;
   case SHOOT:
     duck->shoot();
-    std::cout << "Player " << player_id << " shoots" << std::endl;
     break;
   case PLAY_DEAD:
     duck->playDead();
