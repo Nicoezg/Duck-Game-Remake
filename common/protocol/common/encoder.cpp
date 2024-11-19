@@ -5,6 +5,7 @@
 
 #include <cstring>
 #include <netinet/in.h>
+#include <cmath>
 
 /* Comunes */
 size_t Encoder::encode_game_code(uint32_t game_code, void *data) {
@@ -292,5 +293,5 @@ float Encoder::decode_angle(std::vector<int8_t> &data) {
     std::memcpy(&angle, data.data(), sizeof(int16_t));
     angle = ntohs(angle);
     data.erase(data.begin(), data.begin() + sizeof(int16_t));
-    return angle / 100.0;
+    return roundf(static_cast<float>(angle)) ;
 }

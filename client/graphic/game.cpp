@@ -131,7 +131,6 @@ void Game::update(const Event &broadcast) {
     //camera.update(playerRects);
 
     bullets = broadcast.get_bullets();
-    std::cout << "Bullets: " << bullets.size() << std::endl;
     weaponSpawns = broadcast.get_weapons();
     crates = broadcast.get_crates();
     // explosions = broadcast.get_explosions();

@@ -1,7 +1,7 @@
 target_sources(TESTS
     PRIVATE
     # .cpp files
-    foo.cpp
+        test_encoder.cpp
     PUBLIC
     # .h files
     )
