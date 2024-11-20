@@ -186,12 +186,14 @@ void Duck::leave() {
 }
 
 void Duck::playDead() {
-  if (state != State::PLAYING_DEAD) {
-    state = State::PLAYING_DEAD;
+  if (state != PLAYING_DEAD && !isFalling()) {
+    state = PLAYING_DEAD;
     velX = 0;
     velY = 0;
   }
 }
+
+bool Duck::isFalling() const { return jumping || flapping; }
 
 void Duck::aimUpwards() 
 {

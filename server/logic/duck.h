@@ -63,7 +63,7 @@ public:
   bool isShooting() const;
   bool isAimingUpwards() const;
   const Weapon *getWeapon() const;
-  bool isFlapping() const;
+  bool isFalling() const;
 
   ~Duck();
 };
