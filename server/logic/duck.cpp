@@ -86,13 +86,13 @@ void Duck::update() {
         velX = 0;
     }
 
-    hitBox duckBox = {posX, posY + 32, 32, 32};
+    hitBox duckBox = {posX + 7, posY + 32, 16, 23};
 
     isOnPlatform = false;
 
     for (const auto &structure : map.getMap().structures) {
-        hitBox structureBox = {(structure.start_x + 1)* 16, structure.y * 16,
-                                (structure.end_x - structure.start_x) * 16 , 16}; 
+        hitBox structureBox = {structure.start_x* 16, structure.y * 16,
+                                (structure.end_x + 1 - structure.start_x) * 16 , 16}; 
 
         if (hitBox::isColliding(duckBox, structureBox)) {
             if (velY > 0) { 
@@ -124,7 +124,7 @@ void Duck::update() {
         }
     }
 
-    if (posY + 32 >= GROUNDLEVEL) {
+    if (posY + 16 >= GROUNDLEVEL) {
         posY = GROUNDLEVEL - 32;
         jumping = false;
         flapping = false;
