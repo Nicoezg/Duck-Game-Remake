@@ -91,8 +91,8 @@ void Duck::update() {
     isOnPlatform = false;
 
     for (const auto &structure : map.getMap().structures) {
-        hitBox structureBox = {structure.start_x * 16, structure.y * 16,
-                               structure.end_x * 16 - structure.start_x * 16, 16}; 
+        hitBox structureBox = {(structure.start_x + 1)* 16, structure.y * 16,
+                                (structure.end_x - structure.start_x) * 16 , 16}; 
 
         if (hitBox::isColliding(duckBox, structureBox)) {
             if (velY > 0) { 
@@ -120,7 +120,6 @@ void Duck::update() {
         velY += flapping ? CONFIG.getFlappingSpeed() : CONFIG.getGravity();
 
         if (state != State::AIMING_UPWARDS && jumping) {
-            std::cout << "entre " << std::endl;
             state = State::FALLING;
         }
     }
