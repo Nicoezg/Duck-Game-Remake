@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/fondo.jpg</file>
+        <file>sound/menumusic.wav</file>
+    </qresource>
+</RCC>

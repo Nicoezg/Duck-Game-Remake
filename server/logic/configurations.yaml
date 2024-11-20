@@ -1,0 +1,53 @@
+duck:
+  speed_x: 2    
+  speed_y: 50    
+  flapping: 1       
+  gravity: 10    
+
+# bullet
+
+bullet:
+  speed: 5
+  
+# weapons
+
+grenade:
+  reach: 5
+  ammo: 1
+
+banana:
+  reach: 5
+  ammo: 1
+
+pewpewlaser:
+  reach: 36
+  ammo:  12 
+
+laserrifle:
+  reach: 10
+  ammo:  30
+
+ak47:
+  reach: 30
+  ammo:  13
+
+duelos:
+  reach: 10
+  ammo: 1
+
+cowboy:
+  reach: 20
+  ammo: 6
+
+magnum:
+  reach: 20
+  ammo: 6
+
+escopeta:
+  reach: 8 
+  ammo: 2
+
+sniper:
+  reach: 64
+  ammo: 10
+  speed: 4
