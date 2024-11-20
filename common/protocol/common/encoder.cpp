@@ -293,5 +293,5 @@ float Encoder::decode_angle(std::vector<int8_t> &data) {
     std::memcpy(&angle, data.data(), sizeof(int16_t));
     angle = ntohs(angle);
     data.erase(data.begin(), data.begin() + sizeof(int16_t));
-    return roundf(static_cast<float>(angle)) ;
+    return angle / 100.0;
 }
