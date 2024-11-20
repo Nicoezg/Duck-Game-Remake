@@ -104,32 +104,28 @@ void Duck::render() {
     int angle = 0; // innecesario
 
     SDL2pp::Rect currentClip;
+    switch (animationMovement.getCurrentType()) {
+        case WALKING:
+            currentClip = walkClips[animationMovement.getCurrentFrame()];
+            break;
+        case JUMPING:
+            currentClip = jumpClip;
+            break;
+        case FALLING:
+            currentClip = fallClip;
+            break;
+        case PLAYING_DEAD:
+            currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+            break;
+        case FLAPPING:
+            currentClip = flappingClips[animationMovement.getCurrentFrame()];
+            break;
+        default:
+            currentClip = stillClipWings;
+            break;
+    }
 
-    if (weapon.getId() == NO_WEAPON) {
-
-        switch (animationMovement.getCurrentType()) {
-            case WALKING:
-                currentClip = walkClips[animationMovement.getCurrentFrame()];
-                break;
-            case JUMPING:
-                currentClip = jumpClip;
-                break;
-            case FALLING:
-                currentClip = fallClip;
-                break;
-            case PLAYING_DEAD:
-                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
-                break;
-            case FLAPPING:
-                currentClip = flappingClips[animationMovement.getCurrentFrame()];
-                break;
-            default:
-                currentClip = stillClipWings;
-                break;
-        }
-        renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
-
-    } else {
+    if (weapon.getId() != NO_WEAPON) {
         switch (animationMovement.getCurrentType()) {
             case WALKING:
                 currentClip = walkWeaponClips[animationMovement.getCurrentFrame()];
@@ -153,18 +149,20 @@ void Duck::render() {
                 currentClip = stillClipWeapon;
                 break;
         }
-        renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
-        if (animationMovement.getCurrentType() != PLAYING_DEAD) {
-            if (chestplate.isEquipped()) {
-                chestplate.render(posX, posY, direction); // A determinar posiciones
-            }
-            if (helmet.isEquipped()){
-                helmet.render(posX, posY, direction); // A determinar posiciones
-            }
-            weapon.render(posX, posY, flipType);
-            
+    }
+
+    renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
+
+    if (animationMovement.getCurrentType() != PLAYING_DEAD) {
+        if (chestplate.isEquipped()) {
+            chestplate.render(posX, posY, direction); // A determinar posiciones
         }
-        
+        if (helmet.isEquipped()){
+            helmet.render(posX, posY, direction); // A determinar posiciones
+        }
+        if (weapon.getId() != NO_WEAPON) {
+            weapon.render(posX, posY, flipType);
+        }
     }
     sound.play();
 

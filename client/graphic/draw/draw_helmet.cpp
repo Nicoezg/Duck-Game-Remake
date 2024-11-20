@@ -28,5 +28,5 @@ void DrawHelmet::update(const HelmetDTO &helmet){
 }
 
 bool DrawHelmet::isEquipped(){
-    return helmetId;
+    return helmetId != HelmetId::NO_HELMET;
 }

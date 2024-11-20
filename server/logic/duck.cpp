@@ -7,6 +7,7 @@
 #include "server/logic/weapons/duelos.h"
 #include "server/logic/weapons/grenade.h"
 #include "server/logic/weapons/pewpewlaser.h"
+#include "server/logic/weapons/no_weapon.h"
 #include <iostream>
 
 #define CONFIG Configurations::configurations()
@@ -158,7 +159,11 @@ void Duck::shoot() {
         weapon->shoot(this);
         shootingCooldown = 1;
         shooting = true;
-        //state = State::BLANK;
+        if (!weapon->hasAmmo()){
+            weapon = std::make_unique<NoWeapon>(map);
+            state = State::BLANK;
+            hasWeapon = false;
+        }
     }
 }
 

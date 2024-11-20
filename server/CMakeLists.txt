@@ -22,6 +22,8 @@ target_sources(SERVER
         logic/weapons/magnum.cpp
         logic/weapons/sniper.cpp
         logic/weapons/grenade.cpp
+        logic/weapons/no_weapon.cpp
+        logic/weapons/no_weapon.h
         logic/bullets/bullet.cpp
         logic/throwables/throwable.cpp
         logic/throwables/grenade.cpp

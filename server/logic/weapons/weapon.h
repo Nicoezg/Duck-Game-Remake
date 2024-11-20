@@ -33,7 +33,8 @@ public:
 
   bool hasAmmo() const { return ammo > 0; }
   int getAmmo() const { return ammo; }
-  bool isReadyToShoot() const;
+
+    virtual bool isReadyToShoot() const;
 
 
   void createBullet(Duck *owner, int angle, bool canBounce, int reach,
