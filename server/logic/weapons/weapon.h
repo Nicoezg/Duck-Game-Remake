@@ -3,6 +3,9 @@
 
 #include "common/events/items/weapon_macros.h"
 #include "server/logic/bullets/bullet.h"
+#include "server/logic/throwables/throwable.h"
+#include "server/logic/throwables/grenade.h"
+
 #include <memory>
 
 class Duck;
@@ -34,6 +37,9 @@ public:
 
   void createBullet(Duck *owner, int angle, bool canBounce, int reach,
                     BulletId id);
+
+  void createThrowable(Duck *owner,bool isGrenade);
+  
 
   WeaponId getWeaponId() const;
 };

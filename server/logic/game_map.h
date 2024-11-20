@@ -2,6 +2,7 @@
 #define GAME_MAP_H
 
 #include "bullets/bullet.h"
+#include "throwables/throwable.h"
 #include "common/actions/base/action.h"
 #include "common/events/items/bullet_dto.h"
 #include "common/events/player.h"
@@ -16,6 +17,7 @@ class GameMap {
 private:
   std::vector<Duck *> players;
   std::vector<std::shared_ptr<Bullet>> bullets;
+  std::vector<std::shared_ptr<Throwable>> throwables;
   MapLoader mapLoader;
   Map map;
 
@@ -25,6 +27,8 @@ public:
   void addPlayer(int player_id);
 
   void addBullet(std::unique_ptr<Bullet> bullet);
+
+  void addThrowable(std::unique_ptr<Throwable> throwable);
 
   Duck *findPlayer(int playerId);
 

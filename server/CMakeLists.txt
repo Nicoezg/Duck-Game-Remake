@@ -21,7 +21,10 @@ target_sources(SERVER
         logic/weapons/duelos.cpp
         logic/weapons/magnum.cpp
         logic/weapons/sniper.cpp
+        logic/weapons/grenade.cpp
         logic/bullets/bullet.cpp
+        logic/throwables/throwable.cpp
+        logic/throwables/grenade.cpp
 
 
     PUBLIC
@@ -45,7 +48,10 @@ target_sources(SERVER
         logic/weapons/duelos.h
         logic/weapons/magnum.h
         logic/weapons/sniper.h
+        logic/weapons/grenade.h
         logic/bullets/bullet.h
+        logic/throwables/throwable.h
+        logic/throwables/grenade.h
     )
 
 find_package(yaml-cpp REQUIRED)

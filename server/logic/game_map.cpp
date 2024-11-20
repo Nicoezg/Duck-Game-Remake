@@ -21,6 +21,10 @@ void GameMap::addBullet(std::unique_ptr<Bullet> bullet) {
   bullets.push_back(std::move(bullet));
 }
 
+void GameMap::addThrowable(std::unique_ptr<Throwable> throwable) {
+  throwables.push_back(std::move(throwable));
+}
+
 Duck *GameMap::findPlayer(int playerId) {
   for (auto player : players) {
     if (player->getId() == playerId) {
@@ -45,6 +49,10 @@ void GameMap::update() {
 
     for (const auto& bullet : bullets) {
     bullet->update();
+  }
+
+  for (const auto &throwable : throwables) {
+    throwable->update();
   }
 }
 
@@ -106,6 +114,15 @@ std::list<BulletDTO> GameMap::getBulletsState() {
     int posY = bullet->getPosY();
     float angle = bullet->getAngle();
     enum BulletId id = bullet->getId();
+
+    bulletsList.emplace_back(posX, posY, id, angle);
+  }
+
+  for (const auto &throwable : throwables) {
+    int posX = throwable->getPosX();
+    int posY = throwable->getPosY();
+    float angle = 0;
+    enum BulletId id = BulletId::THROWN_GRENADE;
 
     bulletsList.emplace_back(posX, posY, id, angle);
   }

@@ -11,7 +11,6 @@ MapLoader::MapLoader() {
     for (const auto & entry : std::filesystem::directory_iterator(PATH)) {
         maps_paths.push_back(entry.path());
     }
-    std::cout << "cargue los mapas" << std::endl;
   lastMapIndex = 0;
 }
 
@@ -88,7 +87,7 @@ Map MapLoader::getNextMap() {
   }
     maps.push_back(mapa);
       lastMapIndex++;
-    std::cout << "consegui el mapa para la logica" << std::endl;
+
     std::cout << mapa.background << std::endl;
     std::cout << mapa.structures.size() << std::endl;
     return mapa;

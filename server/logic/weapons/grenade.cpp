@@ -2,10 +2,13 @@
 #include "server/logic/duck.h"
 
 Grenade::Grenade(GameMap &map)
-    : Weapon(map, 1, 5, WeaponId::GRENADE), isArmed(false), framesToExplode(0) {}
+    : Weapon(map, 1, 5, WeaponId::GRENADE) {}
 
 void Grenade::shoot(Duck *owner) {
-
+    if (hasAmmo()) {
+        createThrowable(owner,true);
+        ammo--;
+    }
 }
 
 

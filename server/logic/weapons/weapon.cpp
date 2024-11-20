@@ -18,3 +18,10 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
 }
 
 WeaponId Weapon::getWeaponId() const { return id; }
+
+void Weapon::createThrowable(Duck *owner,bool isGrenade) {
+  if (isGrenade){
+    map.addThrowable(std::make_unique<Grenade>(map,owner->getDirection(),owner->getPositionX(),owner->getPositionY()));
+  }
+
+} 
