@@ -158,13 +158,13 @@ void Duck::render() {
             if (chestplate.isEquipped()) {
                 chestplate.render(posX, posY, direction); // A determinar posiciones
             }
+            if (helmet.isEquipped()){
+                helmet.render(posX, posY, direction); // A determinar posiciones
+            }
             weapon.render(posX, posY, flipType);
             
         }
         
-    }
-    if (helmet.isEquipped()) {
-        helmet.render(posX, posY); // A determinar posiciones
     }
     sound.play();
 

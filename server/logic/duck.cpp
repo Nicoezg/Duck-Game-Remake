@@ -24,7 +24,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   aimingUpwards = false;
   weapon = std::make_unique<Magnum>(map);
   hasWeapon = true;
-  hasHelmet = false;
+  hasHelmet = true;
   hasArmour = true;
   isOnPlatform = false;
 }
@@ -221,7 +221,7 @@ bool Duck::getDirection() const { return isRight; }
 
 State Duck::getState() const { return state; }
 
-bool Duck::isWearingHelmet() const { return false; }
+bool Duck::isWearingHelmet() const { return hasHelmet; }
 
 bool Duck::isWearingArmour() const { return hasArmour; }
 
