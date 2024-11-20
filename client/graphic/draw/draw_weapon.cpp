@@ -5,16 +5,16 @@
 
 DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id) : textures(), sounds(), renderer(renderer), weaponId(weaponId), sound(), shoot(false), aimingUpwards(false) {
 
-    this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/grenade-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/banana-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/pew-pew-laser-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/laser-rifle-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/ak47-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/duel-pistol-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/cowboy-pistol-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/magnum-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/shotgun-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
-    this->textures[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/sniper-w-wing-") + std::to_string(id) + ".png").SetColorKey(true, 0));
+    this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/grenade-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/banana-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/pew-pew-laser-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/laser-rifle-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/ak47-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/duel-pistol-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/cowboy-pistol-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/magnum-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/shotgun-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/sniper-w-wing-") + std::to_string(id) + ".png"));
 
 
     this->sounds[2] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/pew-pew-laser.wav");

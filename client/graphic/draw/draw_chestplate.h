@@ -17,7 +17,7 @@ class DrawChestplate {
     public:
     DrawChestplate(SDL2pp::Renderer &renderer, bool equipped = false);
 
-    void render(int x, int y);
+    void render(int x, int y, bool direction);
 
     void update(const Chestplate &chestplate);
 

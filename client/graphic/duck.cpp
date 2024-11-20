@@ -155,12 +155,13 @@ void Duck::render() {
         }
         renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
         if (animationMovement.getCurrentType() != PLAYING_DEAD) {
+            if (chestplate.isEquipped()) {
+                chestplate.render(posX, posY, direction); // A determinar posiciones
+            }
             weapon.render(posX, posY, flipType);
+            
         }
         
-    }
-    if (chestplate.isEquipped()) {
-        chestplate.render(posX, posY); // A determinar posiciones
     }
     if (helmet.isEquipped()) {
         helmet.render(posX, posY); // A determinar posiciones
@@ -229,39 +230,39 @@ void Duck::loadTextures() {
     switch (id) {
         case 1:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/white-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/white-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/white-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/white-duck-w-wings.png"));
             break;
         case 2:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/red-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/red-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/red-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/red-duck-w-wings.png"));
             break;
         case 3:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/pink-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/pink-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/pink-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/pink-duck-w-wings.png"));
             break;
         case 4:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/orange-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/orange-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/orange-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/orange-duck-w-wings.png"));
             break;
         case 5:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/gray-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/gray-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/gray-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/gray-duck-w-wings.png"));
             break;
         case 6:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/yellow-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/yellow-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/yellow-duck-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/yellow-duck-wings.png"));
             break;
         default:
             break;
