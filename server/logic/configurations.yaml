@@ -51,3 +51,4 @@ sniper:
   reach: 64
   ammo: 10
   speed: 4
+  cooldown: 5

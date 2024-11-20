@@ -22,11 +22,13 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<Magnum>(map);
+  weapon = std::make_unique<Sniper>(map);
   hasWeapon = true;
   hasHelmet = true;
   hasArmour = true;
   isOnPlatform = false;
+
+  shootingCooldown = 0;
 }
 
 void Duck::moveLeft() {
@@ -72,7 +74,11 @@ void Duck::flap() {
 }
 
 void Duck::update() {
-    
+    shooting = shootingCooldown > 0;
+    if (shooting) {
+        shootingCooldown--;
+    }
+
     if (state == State::PLAYING_DEAD) {
         velX = 0;
         velY = 0;
@@ -140,12 +146,17 @@ void Duck::update() {
         }
         }
     }
+
+    if (weapon) {
+        weapon->decreaseCooldown();
+    }
 }
 
 
 void Duck::shoot() {
-    if (weapon) {
+    if (weapon && weapon->isReadyToShoot()) {
         weapon->shoot(this);
+        shootingCooldown = 1;
         shooting = true;
         //state = State::BLANK;
     }

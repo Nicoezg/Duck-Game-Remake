@@ -24,4 +24,19 @@ void Weapon::createThrowable(Duck *owner,bool isGrenade) {
     map.addThrowable(std::make_unique<Grenade>(map,owner->getDirection(),owner->getPositionX(),owner->getPositionY()));
   }
 
-} 
+}
+
+bool Weapon::isReadyToShoot() const  { return !isReloading && hasAmmo() && cooldown == 0; }
+
+void Weapon::increaseCooldown(int cooldownToAdd) {
+      cooldown += cooldownToAdd;
+      if (cooldown < 0){
+        cooldown = 0;
+      }
+}
+
+void Weapon::decreaseCooldown() {
+  if (cooldown > 0){
+    cooldown--;
+  }
+}

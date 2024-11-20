@@ -182,4 +182,3 @@ Map GameMap::getMap() {
   return map;
 }
 
-

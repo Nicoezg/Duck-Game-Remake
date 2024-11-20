@@ -65,6 +65,8 @@ public:
   const Weapon *getWeapon() const;
   bool isFalling() const;
 
+  int shootingCooldown;
+
   ~Duck();
 };
 

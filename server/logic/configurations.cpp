@@ -57,4 +57,9 @@ Configurations::Configurations(const YAML::Node &configurations) {
   shotgun_ammo = configurations["escopeta"]["ammo"].as<int>();
   sniper_reach = configurations["sniper"]["reach"].as<int>();
   sniper_ammo = configurations["sniper"]["ammo"].as<int>();
+    sniper_cooldown = configurations["sniper"]["cooldown"].as<int>();
+}
+
+int Configurations::getSniperCooldown() const {
+    return sniper_cooldown;
 }

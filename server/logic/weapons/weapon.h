@@ -20,11 +20,12 @@ protected:
   bool isReloading;
   int reach;
   WeaponId id;
+  int cooldown;
 
 public:
   Weapon(GameMap &map, int initialAmmo, int reach, enum WeaponId id)
       : map(map), ammo(initialAmmo), reloadTime(0), lastShotTime(0),
-        isReloading(false), reach(reach), id(id) {}
+        isReloading(false), reach(reach), id(id), cooldown(0) {}
 
   virtual ~Weapon() = default;
 
@@ -32,7 +33,7 @@ public:
 
   bool hasAmmo() const { return ammo > 0; }
   int getAmmo() const { return ammo; }
-  bool isReadyToShoot() const { return !isReloading && hasAmmo(); }
+  bool isReadyToShoot() const;
 
 
   void createBullet(Duck *owner, int angle, bool canBounce, int reach,
@@ -42,6 +43,9 @@ public:
   
 
   WeaponId getWeaponId() const;
+
+    void increaseCooldown(int cooldownToAdd);
+    void decreaseCooldown();
 };
 
 #endif // WEAPON_H

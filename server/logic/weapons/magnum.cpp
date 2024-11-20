@@ -7,8 +7,9 @@
 Magnum::Magnum(GameMap &map) : Weapon(map, AMMO, REACH, WeaponId::MAGNUM) {}
 
 void Magnum::shoot(Duck *owner) {
-  if (hasAmmo()) {
+  if (hasAmmo() && isReadyToShoot()) {
     createBullet(owner, 2, false, reach, BulletId::SHOT);
+    increaseCooldown(10);
     owner->standBack(5);
     ammo--;
   }

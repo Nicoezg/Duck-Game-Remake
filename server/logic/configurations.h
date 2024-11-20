@@ -33,6 +33,7 @@ private:
   int shotgun_ammo;
   int sniper_reach;
   int sniper_ammo;
+  int sniper_cooldown;
 
   explicit Configurations(const YAML::Node &configurations);
   static Configurations *instance;
@@ -69,6 +70,7 @@ public:
   int getShotgunAmmo() const { return shotgun_ammo; }
   int getSniperReach() const { return sniper_reach; }
   int getSniperAmmo() const { return sniper_ammo; }
+  int getSniperCooldown() const;
 
 
   Configurations(const Configurations &) = delete;
