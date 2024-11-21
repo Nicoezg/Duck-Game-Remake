@@ -3,6 +3,7 @@
 
 #include "common/events/items/bullet_macros.h"
 #include "server/configs/configurations.h"
+#include "common/events/items/bullet_dto.h"
 
 class Bullet {
 private:
@@ -31,6 +32,8 @@ public:
   int getPosY() const;
   float getAngle() const;
   BulletId getId() const;
+
+    BulletDTO toDTO() const;
 };
 
 #endif // BULLET_H

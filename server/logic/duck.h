@@ -67,6 +67,7 @@ public:
 
   int shootingCooldown;
 
+  PlayerDTO toDTO() const;
   ~Duck();
 };
 

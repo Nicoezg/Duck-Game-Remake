@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include "common/events/items/bullet_dto.h"
 #include <cmath>
 
 const double PI = 3.14159265358979323846;
@@ -49,4 +50,8 @@ int Bullet::getPosY() const { return pos_y; }
 float Bullet::getAngle() const { return angle; }
 
 BulletId Bullet::getId() const { return id; }
+
+BulletDTO Bullet::toDTO() const {
+  return {pos_x, pos_y, id, angle};
+}
 
