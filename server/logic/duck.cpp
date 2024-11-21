@@ -16,6 +16,11 @@ const int SPEED_Y = CONFIG.getDuckConfig().getSpeedY();
 const int GRAVITY = CONFIG.getDuckConfig().getGravity();
 const int FLAPPING_SPEED = CONFIG.getDuckConfig().getFlappingSpeed();
 
+const int WIDTH = CONFIG.getDuckConfig().getWidth();
+const int HEIGHT = CONFIG.getDuckConfig().getHeight();
+const int CENTER_X = CONFIG.getDuckConfig().getCenterX();
+const int CENTER_Y = CONFIG.getDuckConfig().getCenterY();
+
 #define GROUNDLEVEL 384
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
@@ -98,7 +103,7 @@ void Duck::update() {
         velX = 0;
     }
 
-    hitBox duckBox = {posX + 7, posY + 32, 16, 23};
+    hitBox duckBox = {posX + CENTER_X, posY + CENTER_Y, WIDTH, HEIGHT};
 
     isOnPlatform = false;
 

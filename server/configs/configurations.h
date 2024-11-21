@@ -37,6 +37,10 @@ public:
     const DuckConfig &getDuckConfig() const;
 
     explicit Configurations(const YAML::Node &configurations);
+
+    DuckConfig read_duck_config(const YAML::Node &configurations);
+
+    std::map<std::string, BulletConfig> read_weapons_configs(const YAML::Node &configurations);
 };
 
 #endif // CONFIGURATIONS_H

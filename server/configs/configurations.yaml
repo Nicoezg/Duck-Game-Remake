@@ -2,7 +2,12 @@ duck:
   speed_x: 2    
   speed_y: 50    
   flapping: 1       
-  gravity: 10    
+  gravity: 10
+
+  width: 16
+  height: 5
+  center_x: 7
+  center_y: 32
 
 # bullet
 

@@ -13,15 +13,22 @@ private:
     int speed_y;
     int flapping_speed;
     int gravity;
+    int width;
+    int height;
+    int center_x;
+    int center_y;
 public:
-    DuckConfig(int speed_x, int speed_y, int flapping_speed, int gravity);
+    DuckConfig(int speed_x, int speed_y, int flapping_speed,
+               int gravity, int width, int height, int center_x, int center_y);
 
     int getSpeedX() const;
     int getSpeedY() const;
     int getFlappingSpeed() const;
     int getGravity() const;
-
-    DuckConfig();
+    int getWidth() const;
+    int getHeight() const;
+    int getCenterX() const;
+    int getCenterY() const;
 };
 
 
