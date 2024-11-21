@@ -2,9 +2,7 @@
 #define BULLET_H
 
 #include "common/events/items/bullet_macros.h"
-#include "server/logic/configurations.h"
-
-#define CONFIG Configurations::configurations()
+#include "server/configs/configurations.h"
 
 class Bullet {
 private:

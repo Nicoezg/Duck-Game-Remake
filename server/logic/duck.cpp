@@ -1,5 +1,5 @@
 #include "duck.h"
-#include "configurations.h"
+#include "server/configs/configurations.h"
 #include "server/logic/weapons/sniper.h"
 #include "server/logic/weapons/magnum.h"
 #include "server/logic/weapons/laser_rifle.h"
@@ -10,7 +10,12 @@
 #include "server/logic/weapons/no_weapon.h"
 #include <iostream>
 
-#define CONFIG Configurations::configurations()
+
+const int SPEED_X = CONFIG.getDuckConfig().getSpeedX();
+const int SPEED_Y = CONFIG.getDuckConfig().getSpeedY();
+const int GRAVITY = CONFIG.getDuckConfig().getGravity();
+const int FLAPPING_SPEED = CONFIG.getDuckConfig().getFlappingSpeed();
+
 #define GROUNDLEVEL 384
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
@@ -33,13 +38,13 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
 }
 
 void Duck::moveLeft() {
-  velX = -CONFIG.getSpeedX();
+  velX = -SPEED_X;
   isRight = false;
   state = State::WALKING;
 }
 
 void Duck::moveRight() {
-  velX = CONFIG.getSpeedX();
+  velX = SPEED_X;
   isRight = true;
   state = State::WALKING;
 }
@@ -54,7 +59,7 @@ void Duck::move(bool is_right) {
 
 void Duck::jump() {
   if (!jumping) {
-    velY = -CONFIG.getSpeedY();
+    velY = -SPEED_Y;
     jumping = true;
     flapping = false;
     state = State::JUMPING;
@@ -68,7 +73,7 @@ void Duck::stopMoving() {
 
 void Duck::flap() {
   if (jumping && velY > 0 && !hasWeapon) {
-    velY = CONFIG.getFlappingSpeed();
+    velY = FLAPPING_SPEED;
     flapping = true;
     state = State::FLAPPING;
   }
@@ -124,7 +129,7 @@ void Duck::update() {
     }
     
     if (jumping || !isOnPlatform) {
-        velY += flapping ? CONFIG.getFlappingSpeed() : CONFIG.getGravity();
+        velY += flapping ? FLAPPING_SPEED : GRAVITY;
 
         if (state != State::AIMING_UPWARDS && jumping) {
             state = State::FALLING;

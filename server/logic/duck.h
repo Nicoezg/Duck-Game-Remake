@@ -1,7 +1,7 @@
 #ifndef DUCK_H
 #define DUCK_H
 
-#include "configurations.h"
+#include "server/configs/configurations.h"
 #include "game_map.h"
 #include "weapons/weapon.h"
 #include <atomic>

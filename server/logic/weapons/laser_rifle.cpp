@@ -1,8 +1,14 @@
 #include "laser_rifle.h"
 #include "server/logic/duck.h"
 
+#define NAME LASER_RIFLE_NAME
+const int AMMO = CONFIG.getBulletConfig(NAME).getAmmo();
+const int REACH = CONFIG.getBulletConfig(NAME).getReach();
+const int COOLDOWN = CONFIG.getBulletConfig(NAME).getCooldown();
+
+
 LaserRifle::LaserRifle(GameMap &map)
-    : Weapon(map, 30, 10, WeaponId::LASER_RIFLE) {
+    : Weapon(map, AMMO, REACH, WeaponId::LASER_RIFLE) {
   reloadTime = 0.1f;
   shotCount = 0;
 }

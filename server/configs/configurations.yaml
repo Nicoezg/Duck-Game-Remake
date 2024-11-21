@@ -1,0 +1,63 @@
+duck:
+  speed_x: 2    
+  speed_y: 50    
+  flapping: 1       
+  gravity: 10    
+
+# bullet
+
+bullet:
+  speed: 5
+  
+# weapons
+weapons:
+  grenade:
+    reach: 5
+    ammo: 1
+    cooldown: 5
+
+  banana:
+    reach: 5
+    ammo: 1
+    cooldown: 5
+
+  pewpewlaser:
+    reach: 36
+    ammo:  12
+    cooldown: 5
+
+  laserrifle:
+    reach: 10
+    ammo:  30
+    cooldown: 5
+
+  ak47:
+    reach: 30
+    ammo:  13
+    cooldown: 5
+
+  duelos:
+    reach: 10
+    ammo: 1
+    cooldown: 5
+
+  cowboy:
+    reach: 20
+    ammo: 6
+    cooldown: 5
+
+  magnum:
+    reach: 20
+    ammo: 6
+    cooldown: 5
+
+  escopeta:
+    reach: 8
+    ammo: 2
+    cooldown: 5
+
+  sniper:
+    reach: 64
+    ammo: 10
+    speed: 4
+    cooldown: 5
