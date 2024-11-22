@@ -1,10 +1,10 @@
 #ifndef CONFIGURATIONS_H
 #define CONFIGURATIONS_H
 
-#include <string>
-#include <yaml-cpp/yaml.h>
 #include "bullet_config.h"
 #include "duck_config.h"
+#include <string>
+#include <yaml-cpp/yaml.h>
 
 #define SNIPER_NAME "sniper"
 #define PEW_PEW_LASER_NAME "pewpewlaser"
@@ -15,32 +15,33 @@
 #define DUELOS_NAME "duelos"
 #define COWBOY_NAME "cowboy"
 #define MAGNUM_NAME "magnum"
-#define ESCOPETA_NAME "escopeta"
+#define SHOTGUN_NAME "escopeta"
 
 #define CONFIG Configurations::configurations()
 
 class Configurations {
 private:
-    int bullet_speed;
+  int bullet_speed;
 
-    DuckConfig duck;
+  DuckConfig duck;
 
-    std::map<std::string, BulletConfig> weapons;
+  std::map<std::string, BulletConfig> weapons;
 
 public:
-    static const Configurations &configurations();
+  static const Configurations &configurations();
 
-    int getBulletSpeed() const;
+  int getBulletSpeed() const;
 
-    const BulletConfig &getBulletConfig(const std::string &weapon_name) const;
+  const BulletConfig &getBulletConfig(const std::string &weapon_name) const;
 
-    const DuckConfig &getDuckConfig() const;
+  const DuckConfig &getDuckConfig() const;
 
-    explicit Configurations(const YAML::Node &configurations);
+  explicit Configurations(const YAML::Node &configurations);
 
-    DuckConfig read_duck_config(const YAML::Node &configurations);
+  DuckConfig read_duck_config(const YAML::Node &configurations);
 
-    std::map<std::string, BulletConfig> read_weapons_configs(const YAML::Node &configurations);
+  std::map<std::string, BulletConfig>
+  read_weapons_configs(const YAML::Node &configurations);
 };
 
 #endif // CONFIGURATIONS_H

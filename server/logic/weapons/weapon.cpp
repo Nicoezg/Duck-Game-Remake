@@ -3,38 +3,52 @@
 
 void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
                           BulletId id) {
-  int posX = owner->getPositionX() + 15;
-  int posY = owner->getPositionY() + 15;
+
+  int posX;
+  int posY;
 
   if (owner->isAimingUpwards()) {
-    angle = angle + 90;
-    posX = owner->getPositionX();
-    posY = owner->getPositionY() -15;
+    angle += 90;
+    posX = owner->getPositionX() + 10;
+    posY = owner->getPositionY() - 20;
+  } else {
+    if (owner->getDirection()) {
+      posX = owner->getPositionX() + 15;
+      posY = owner->getPositionY() + 15;
+    } else if (!owner->getDirection()) {
+      posX = owner->getPositionX() - 15;
+      posY = owner->getPositionY() + 15;
+    }
   }
 
-  map.addBullet(std::make_unique<Bullet>(owner->getId(), posX, posY, angle, canBounce, reach, id, owner->getDirection()));
+  map.addBullet(std::make_unique<Bullet>(
+      owner->getId(), posX, posY, angle, canBounce, reach, id,
+      owner->getDirection(), owner->isAimingUpwards()));
 }
 
 WeaponId Weapon::getWeaponId() const { return id; }
 
-void Weapon::createThrowable(Duck *owner,bool isGrenade) {
-  if (isGrenade){
-    map.addThrowable(std::make_unique<Grenade>(map,owner->getDirection(),owner->getPositionX(),owner->getPositionY()));
+void Weapon::createThrowable(Duck *owner, bool isGrenade) {
+  if (isGrenade) {
+    map.addThrowable(std::make_unique<Grenade>(map, owner->getDirection(),
+                                               owner->getPositionX(),
+                                               owner->getPositionY()));
   }
-
 }
 
-bool Weapon::isReadyToShoot() const  { return !isReloading && hasAmmo() && cooldown == 0; }
+bool Weapon::isReadyToShoot() const {
+  return !isReloading && hasAmmo() && cooldown == 0;
+}
 
 void Weapon::increaseCooldown(int cooldownToAdd) {
-      cooldown += cooldownToAdd;
-      if (cooldown < 0){
-        cooldown = 0;
-      }
+  cooldown += cooldownToAdd;
+  if (cooldown < 0) {
+    cooldown = 0;
+  }
 }
 
 void Weapon::decreaseCooldown() {
-  if (cooldown > 0){
+  if (cooldown > 0) {
     cooldown--;
   }
 }

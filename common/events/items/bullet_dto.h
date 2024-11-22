@@ -11,9 +11,11 @@ private:
   int position_y;
   BulletId bullet_id;
   float angle;
+  bool direction;
 
 public:
-  BulletDTO(int position_x, int position_y, BulletId bullet_id, float angle);
+  BulletDTO(int position_x, int position_y, BulletId bullet_id, float angle,
+            bool direction);
 
   int get_position_x() const;
 
@@ -22,6 +24,8 @@ public:
   BulletId get_id() const;
 
   float get_angle() const;
+
+  bool get_direction() const;
 };
 
 #endif // TALLER_TP_BULLET_DTO_H

@@ -1,9 +1,9 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+#include "common/events/items/bullet_dto.h"
 #include "common/events/items/bullet_macros.h"
 #include "server/configs/configurations.h"
-#include "common/events/items/bullet_dto.h"
 
 class Bullet {
 private:
@@ -16,14 +16,14 @@ private:
   bool canBounce;
   BulletId id;
   bool isRight;
-  bool upwards;
   int traveledDistance;
+  bool upwards;
 
 public:
   virtual ~Bullet() = default;
 
   Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
-         int range, BulletId id, bool isRight);
+         int range, BulletId id, bool isRight, bool upwards);
 
   void update();
   bool outOfRange();
@@ -33,7 +33,7 @@ public:
   float getAngle() const;
   BulletId getId() const;
 
-    BulletDTO toDTO() const;
+  BulletDTO toDTO() const;
 };
 
 #endif // BULLET_H
