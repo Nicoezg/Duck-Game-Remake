@@ -17,7 +17,7 @@ class DrawHelmet {
     public:
     DrawHelmet(SDL2pp::Renderer &renderer, HelmetId helmetId = NO_HELMET);
 
-    void render(int x, int y);
+    void render(int x, int y, bool direction = false);
 
     void update(const HelmetDTO &helmet);
 

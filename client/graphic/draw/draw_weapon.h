@@ -22,12 +22,14 @@ class DrawWeapon {
 
     bool shoot;
 
+    bool aimingUpwards;
+
     public:
     DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON, uint8_t id = 0);
 
     void render(int x, int y, int flipType);
 
-    void update(const WeaponDTO &weapon);
+    void update(const WeaponDTO &weapon, bool aimingUpwards);
 
     WeaponId getId();
 

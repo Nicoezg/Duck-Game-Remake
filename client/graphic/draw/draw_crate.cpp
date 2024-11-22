@@ -4,7 +4,7 @@
 #define DATA_PATH "../client/sprites/props/"
 
 DrawCrate::DrawCrate(SDL2pp::Renderer &renderer) : renderer(renderer) {
-    texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "crate.png").SetColorKey(true, 0));
+    texture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "crate.png"));
     for (int i = 0; i < 4; i++){
         crateClip[i].x = i * 16;
         crateClip[i].y = 0;

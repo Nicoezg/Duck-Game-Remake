@@ -1,10 +1,11 @@
 #ifndef DUCK_H
 #define DUCK_H
 
-#include "configurations.h"
+#include "server/configs/configurations.h"
 #include "game_map.h"
 #include "weapons/weapon.h"
 #include <atomic>
+#include "hitBox.h"
 
 
 class GameMap;
@@ -25,6 +26,7 @@ private:
   bool hasWeapon;
   bool hasHelmet;
   bool hasArmour;
+  bool isOnPlatform;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
@@ -36,11 +38,14 @@ public:
   void flap();
   void stopMoving();
   void update();
+  void resetJumpState();
+  hitBox getBoundingBox() const;
+  bool checkCollisionWithPlatform(const Structure &platform);
   void stopAiming();
   void shoot();
   void equipHelmet();
   void equipArmour();
-  void equipWeapon(std::unique_ptr<Weapon> newWeapon);
+  void equipWeapon(std::unique_ptr<Weapon>&& newWeapon);
   void takeDamage();
   void pickUp();
   void leave();
@@ -58,9 +63,18 @@ public:
   bool isShooting() const;
   bool isAimingUpwards() const;
   const Weapon *getWeapon() const;
-  bool isFlapping() const;
+  bool isFalling() const;
 
+  int shootingCooldown;
+
+  PlayerDTO toDTO() const;
   ~Duck();
+
+    void dropHelmet();
+
+    void dropArmour();
+
+    bool dropWeapon();
 };
 
 #endif // DUCK_H

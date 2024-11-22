@@ -38,6 +38,9 @@
 #define READ_BULLET_SIZE (COORDINATE_SIZE * 2 + BULLET_ID_SIZE + ANGLE_SIZE)
 #define SEND_BULLET_SIZE READ_BULLET_SIZE
 
+#define READ_CRATE_SIZE (COORDINATE_SIZE * 2 + sizeof(uint8_t) * 2)
+#define SEND_CRATE_SIZE READ_CRATE_SIZE
+
 #define READ_PLAYER_SIZE ( \
     2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + \
     PLAYER_STATE_SIZE + PLAYER_IS_RIGHT_SIZE +\
@@ -123,6 +126,9 @@ public:
   void add_platforms(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t& offset);
 
     void add_bullets(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset);
+  
+  void add_crates(const std::shared_ptr<Event> &event, std::vector<int8_t> &data, size_t &offset);
+
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

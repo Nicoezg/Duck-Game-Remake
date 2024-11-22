@@ -4,9 +4,6 @@
 #include "weapon.h"
 
 class Grenade : public Weapon {
-private:
-  bool isArmed;         
-  int framesToExplode; 
 
 public:
   Grenade(GameMap &map);

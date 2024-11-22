@@ -2,6 +2,18 @@ fondo: Forest
 alto: 30
 ancho: 40
 Structures:
+  - start_x: 5
+    end_x: 5
+    y: 18
+    tile: 0
+  - start_x: 6
+    end_x: 9
+    y: 18
+    tile: 1
+  - start_x: 10
+    end_x: 10
+    y: 18
+    tile: 2
   - start_x: 0
     end_x: 0
     y: 21
@@ -14,6 +26,26 @@ Structures:
     end_x: 2
     y: 21
     tile: 26
+  - start_x: 13
+    end_x: 13
+    y: 21
+    tile: 0
+  - start_x: 14
+    end_x: 17
+    y: 21
+    tile: 1
+  - start_x: 22
+    end_x: 22
+    y: 21
+    tile: 0
+  - start_x: 23
+    end_x: 25
+    y: 21
+    tile: 1
+  - start_x: 26
+    end_x: 26
+    y: 21
+    tile: 2
   - start_x: 37
     end_x: 37
     y: 21

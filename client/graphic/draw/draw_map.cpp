@@ -5,10 +5,10 @@
 DrawMap::DrawMap(SDL2pp::Renderer& renderer) : textures(), renderer(renderer), backgroundId(0), height(0), width(0) {
     for (int i = 0; i < 96; i++){
         std::string filePath = std::string(DATA_PATH) + std::to_string(i) + ".png";
-        this->textures[i] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(filePath).SetColorKey(true, 0));
+        this->textures[i] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(filePath));
     }
-    this->textures[96] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/forest.png").SetColorKey(true, 0));
-    this->textures[97] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/lava.png").SetColorKey(true, 0));
+    this->textures[96] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/forest.png"));
+    this->textures[97] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/lava.png"));
 
 }
 

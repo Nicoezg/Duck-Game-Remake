@@ -1,4 +1,5 @@
 #include "duck.h"
+#include <iostream>
 #include <SDL2/SDL_render.h>
 
 const int DUCK_WIDTH = 32;
@@ -82,10 +83,10 @@ Duck::Duck(SDL2pp::Renderer &renderer, int id) : posX(0), posY(0), id(id), direc
     flappingClips[2].w = DUCK_WIDTH;
     flappingClips[2].h = DUCK_HEIGHT;
 
-    aimingUpwardsClip.x = DUCK_WIDTH * 3;
-    aimingUpwardsClip.y = DUCK_HEIGHT * 2;
-    aimingUpwardsClip.w = DUCK_WIDTH;
-    aimingUpwardsClip.h = DUCK_HEIGHT;
+    aimingUpwardsClip.x = jumpWeaponClip.x;
+    aimingUpwardsClip.y = jumpWeaponClip.y;
+    aimingUpwardsClip.w = jumpWeaponClip.w;
+    aimingUpwardsClip.h = jumpWeaponClip.h;
 
     recoilClip.x = DUCK_WIDTH * 4;
     recoilClip.y = DUCK_HEIGHT;
@@ -103,32 +104,28 @@ void Duck::render() {
     int angle = 0; // innecesario
 
     SDL2pp::Rect currentClip;
+    switch (animationMovement.getCurrentType()) {
+        case WALKING:
+            currentClip = walkClips[animationMovement.getCurrentFrame()];
+            break;
+        case JUMPING:
+            currentClip = jumpClip;
+            break;
+        case FALLING:
+            currentClip = fallClip;
+            break;
+        case PLAYING_DEAD:
+            currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+            break;
+        case FLAPPING:
+            currentClip = flappingClips[animationMovement.getCurrentFrame()];
+            break;
+        default:
+            currentClip = stillClipWings;
+            break;
+    }
 
-    if (weapon.getId() == NO_WEAPON) {
-
-        switch (animationMovement.getCurrentType()) {
-            case WALKING:
-                currentClip = walkClips[animationMovement.getCurrentFrame()];
-                break;
-            case JUMPING:
-                currentClip = jumpClip;
-                break;
-            case FALLING:
-                currentClip = fallClip;
-                break;
-            case PLAYING_DEAD:
-                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
-                break;
-            case FLAPPING:
-                currentClip = flappingClips[animationMovement.getCurrentFrame()];
-                break;
-            default:
-                currentClip = stillClipWings;
-                break;
-        }
-        renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
-
-    } else {
+    if (weapon.getId() != NO_WEAPON) {
         switch (animationMovement.getCurrentType()) {
             case WALKING:
                 currentClip = walkWeaponClips[animationMovement.getCurrentFrame()];
@@ -145,24 +142,27 @@ void Duck::render() {
             case AIMING_UPWARDS:
                 currentClip = aimingUpwardsClip;
                 break;
-            /* case RECOIL:
+            case RECOIL:
                 currentClip = recoilClip;
-                break; */
+                break;
             default:
                 currentClip = stillClipWeapon;
                 break;
         }
-        renderer.Copy(*weaponsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
-        if (animationMovement.getCurrentType() != PLAYING_DEAD) {
+    }
+
+    renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
+
+    if (animationMovement.getCurrentType() != PLAYING_DEAD) {
+        if (chestplate.isEquipped()) {
+            chestplate.render(posX, posY, direction); // A determinar posiciones
+        }
+        if (helmet.isEquipped()){
+            helmet.render(posX, posY, direction); // A determinar posiciones
+        }
+        if (weapon.getId() != NO_WEAPON) {
             weapon.render(posX, posY, flipType);
         }
-        
-    }
-    if (chestplate.isEquipped()) {
-        chestplate.render(posX, posY); // A determinar posiciones
-    }
-    if (helmet.isEquipped()) {
-        helmet.render(posX, posY); // A determinar posiciones
     }
     sound.play();
 
@@ -171,12 +171,14 @@ void Duck::render() {
 void Duck::update(const PlayerDTO &player){
     posX = player.get_position_x();
     posY = player.get_position_y();
+    auto state = player.get_state();
     direction = player.is_right();
-    weapon.update(player.get_weapon());
+    bool aimingUpwards = state == AIMING_UPWARDS;
+    weapon.update(player.get_weapon(), aimingUpwards);
     helmet.update(player.get_helmet());
     chestplate.update(player.get_chestplate());
 
-    auto state = player.get_state();
+    
     if (state == animationMovement.getCurrentType()) {
         return;
     }
@@ -198,13 +200,16 @@ void Duck::update(const PlayerDTO &player){
         sound.change(sfx[0], 0);
 
     } else if (state == AIMING_UPWARDS) {
-        animationMovement.changeState(AIMING_UPWARDS, false);
+        animationMovement.changeState(AIMING_UPWARDS, true);
 
     } else if (state == WALKING) {
         animationMovement.changeState(WALKING, true);
 
+    } else if (state == RECOIL) {
+        animationMovement.changeState(RECOIL, false);
+
     } else {
-        animationMovement.changeState(BLANK, false);
+        animationMovement.changeState(BLANK, true);
     }
         // Cambiar a switch case
 }
@@ -223,40 +228,39 @@ void Duck::loadTextures() {
     switch (id) {
         case 1:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/white-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/white-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/white-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/white-duck-w-wings.png"));
             break;
         case 2:
-            std::cout << "llego" << std::endl;
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/red-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/red-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/red-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/red-duck-w-wings.png"));
             break;
         case 3:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/pink-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/pink-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/pink-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/pink-duck-w-wings.png"));
             break;
         case 4:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/orange-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/orange-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/orange-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/orange-duck-w-wings.png"));
             break;
         case 5:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/gray-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/gray-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/gray-duck-w-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/gray-duck-w-wings.png"));
             break;
         case 6:
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/yellow-duck-w-weapon.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/yellow-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/yellow-duck-wings.png").SetColorKey(true, 0));
+                    "../client/sprites/ducks/yellow-duck-wings.png"));
             break;
         default:
             break;

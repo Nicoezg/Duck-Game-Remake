@@ -13,7 +13,6 @@
 
 Server::Server(const char *service_name)
     : socket(service_name), lobby(), is_running(true) {
-    Configurations::loadConfig();
 }
 
 void Server::run() {
