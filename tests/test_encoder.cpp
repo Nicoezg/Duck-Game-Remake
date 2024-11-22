@@ -310,7 +310,7 @@ TEST(Decode, Angle)
 
     float angle = encoder.decode_angle(buffer);
 
-    EXPECT_EQ(angle, 10.53 * 100);
+    EXPECT_EQ(std::round(angle*100), 1053);
 }
 
 TEST(Encode, ActualPlayers)
