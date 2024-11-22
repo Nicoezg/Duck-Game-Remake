@@ -11,7 +11,7 @@ void Grenade::update() {
       pos_x -= 1;
     }
   }
-  pos_y-=CONFIG.getGravity();
+  pos_y-=CONFIG.getDuckConfig().getGravity();
 
   if (framesToExplode == 0) {
     

@@ -2,9 +2,8 @@
 #define BULLET_H
 
 #include "common/events/items/bullet_macros.h"
-#include "server/logic/configurations.h"
-
-#define CONFIG Configurations::configurations()
+#include "server/configs/configurations.h"
+#include "common/events/items/bullet_dto.h"
 
 class Bullet {
 private:
@@ -24,7 +23,7 @@ public:
   virtual ~Bullet() = default;
 
   Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
-         int range, BulletId id, bool isRight, bool upwards);
+         int range, BulletId id, bool isRight);
 
   void update();
   bool outOfRange();
@@ -33,6 +32,8 @@ public:
   int getPosY() const;
   float getAngle() const;
   BulletId getId() const;
+
+    BulletDTO toDTO() const;
 };
 
 #endif // BULLET_H

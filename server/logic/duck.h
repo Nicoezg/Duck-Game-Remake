@@ -1,7 +1,7 @@
 #ifndef DUCK_H
 #define DUCK_H
 
-#include "configurations.h"
+#include "server/configs/configurations.h"
 #include "game_map.h"
 #include "weapons/weapon.h"
 #include <atomic>
@@ -45,7 +45,7 @@ public:
   void shoot();
   void equipHelmet();
   void equipArmour();
-  void equipWeapon(std::unique_ptr<Weapon> newWeapon);
+  void equipWeapon(std::unique_ptr<Weapon>&& newWeapon);
   void takeDamage();
   void pickUp();
   void leave();
@@ -63,9 +63,18 @@ public:
   bool isShooting() const;
   bool isAimingUpwards() const;
   const Weapon *getWeapon() const;
-  bool isFlapping() const;
+  bool isFalling() const;
 
+  int shootingCooldown;
+
+  PlayerDTO toDTO() const;
   ~Duck();
+
+    void dropHelmet();
+
+    void dropArmour();
+
+    bool dropWeapon();
 };
 
 #endif // DUCK_H

@@ -8,6 +8,9 @@
 #include "common/events/map.h"
 
 
+#define HELMENT_ID 2
+
+#define ARMOR_ID 1
 
 // En Map.h
 struct Map {

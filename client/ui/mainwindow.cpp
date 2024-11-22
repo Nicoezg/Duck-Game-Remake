@@ -43,7 +43,7 @@ void MainWindow::setupAudio() {
   audio = new QAudioOutput(this);
   player->setAudioOutput(audio);
 
-  audio->setVolume(0);
+  audio->setVolume(0.1);
 
   player->setSource(QUrl("qrc:/sound/menumusic.wav"));
 

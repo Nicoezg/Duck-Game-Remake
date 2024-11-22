@@ -23,8 +23,8 @@ private:
   Chestplate chestplate;
 
 public:
-  PlayerDTO(int player_id, int position_x, int position_y, bool right, State state,
-            WeaponDTO weapon, HelmetDTO helmet, Chestplate chestplate);
+  PlayerDTO(int player_id, int position_x, int position_y, bool right, State state, WeaponDTO weapon,
+            HelmetDTO helmet, Chestplate chestplate);
 
   int get_player_id() const;
 

@@ -21,6 +21,7 @@ private:
   MapLoader mapLoader;
   Map map;
 
+
 public:
   GameMap();
 
