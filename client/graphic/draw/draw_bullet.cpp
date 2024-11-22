@@ -21,8 +21,15 @@ void DrawBullet::render(const BulletDTO &bullet) {
                     texture->GetWidth(), texture->GetHeight());
 
   SDL_RendererFlip flip = SDL_FLIP_NONE;
+  int direction = bullet.get_direction();
   if (bullet.get_direction() && bullet.get_angle() < 90) {
     flip = SDL_FLIP_HORIZONTAL;
+  }
+  if (direction == 1 && bullet.get_angle() > 90){
+    dest.x -= 5;
+  }
+  else if (direction == 0 && bullet.get_angle() > 90){
+    dest.x += 13;
   }
 
   renderer.Copy(*texture, SDL2pp::NullOpt, dest, bullet.get_angle(),
