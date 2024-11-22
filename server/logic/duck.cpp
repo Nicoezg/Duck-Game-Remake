@@ -163,7 +163,6 @@ void Duck::update() {
     }
 }
 
-
 void Duck::shoot() {
     if (weapon && weapon->isReadyToShoot()) {
         weapon->shoot(this);
@@ -181,8 +180,9 @@ void Duck::equipHelmet() { hasHelmet = true; }
 
 void Duck::equipArmour() { hasArmour = true; }
 
-void Duck::equipWeapon(std::unique_ptr<Weapon> newWeapon) {
+void Duck::equipWeapon(std::unique_ptr<Weapon>&& newWeapon) {
     weapon = std::move(newWeapon);
+    hasWeapon = true;
 }
 
 void Duck::takeDamage() {
@@ -198,8 +198,7 @@ void Duck::takeDamage() {
 
 void Duck::pickUp() {
     if (!hasWeapon) {
-        hasWeapon = true;
-        //equipWeapon(std::make_unique<Weapon>(map));
+        equipWeapon(std::make_unique<PewPewLaser>(map));
     } else if (!hasHelmet) {
         equipHelmet();
     } else if (!hasArmour) {

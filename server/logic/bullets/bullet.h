@@ -23,7 +23,7 @@ public:
   virtual ~Bullet() = default;
 
   Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
-         int range, BulletId id, bool isRight, bool upwards);
+         int range, BulletId id, bool isRight);
 
   void update();
   bool outOfRange();

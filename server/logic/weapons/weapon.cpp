@@ -3,17 +3,16 @@
 
 void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
                           BulletId id) {
-  int posX = owner->getPositionX() + 10;
-  int posY = owner->getPositionY() + 10;
-  int ownerId = owner->getId();
-  bool isRight = owner->getDirection();
-  bool upwards = owner->isAimingUpwards();
+  int posX = owner->getPositionX() + 15;
+  int posY = owner->getPositionY() + 15;
 
-  if (upwards) {
-    angle = 90;
+  if (owner->isAimingUpwards()) {
+    angle = angle + 90;
+    posX = owner->getPositionX();
+    posY = owner->getPositionY() -15;
   }
 
-  map.addBullet(std::make_unique<Bullet>(ownerId, posX, posY, angle, canBounce, reach, id, isRight, upwards));
+  map.addBullet(std::make_unique<Bullet>(owner->getId(), posX, posY, angle, canBounce, reach, id, owner->getDirection()));
 }
 
 WeaponId Weapon::getWeaponId() const { return id; }

@@ -100,6 +100,9 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
         case AIM_UPWARDS:
             duck->aimUpwards();
             break;
+        case PICK_DROP:
+            duck->pickUp();
+            break;
         default:
             std::cout << "Acción inválida" << std::endl;
             break;

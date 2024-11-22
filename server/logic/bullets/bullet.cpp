@@ -8,22 +8,18 @@ const int SPEED = CONFIG.getBulletSpeed();
 
 
 Bullet::Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
-               int range, BulletId id, bool isRight, bool upwards)
+               int range, BulletId id, bool isRight)
         : owner_Id(owner_Id), pos_x(pos_x), pos_y(pos_y), angle(angle),
-          range(range), canBounce(canBounce), id(id), isRight(isRight), upwards(upwards), traveledDistance(0) {}
+          range(range), canBounce(canBounce), id(id), isRight(isRight), traveledDistance(0) {}
 
 void Bullet::update() {
     double radianAngle = angle * (PI / 180.0);
 
     int deltaX = static_cast<int>((isRight ? 1:-1) * SPEED * std::cos(radianAngle));
-    int deltaY = static_cast<int>(10 * std::sin(radianAngle));
+    int deltaY = static_cast<int>(- SPEED * std::sin(radianAngle));
 
-    if (upwards) {
-        pos_y -= SPEED;
-    } else {
-        pos_x += deltaX;
-        pos_y += deltaY;
-    }
+    pos_x += deltaX;
+    pos_y += deltaY;
 
     int distanceMoved = std::sqrt(deltaX * deltaX + deltaY * deltaY);
     traveledDistance += distanceMoved;

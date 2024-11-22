@@ -45,7 +45,7 @@ public:
   void shoot();
   void equipHelmet();
   void equipArmour();
-  void equipWeapon(std::unique_ptr<Weapon> newWeapon);
+  void equipWeapon(std::unique_ptr<Weapon>&& newWeapon);
   void takeDamage();
   void pickUp();
   void leave();
@@ -69,6 +69,12 @@ public:
 
   PlayerDTO toDTO() const;
   ~Duck();
+
+    void dropHelmet();
+
+    void dropArmour();
+
+    bool dropWeapon();
 };
 
 #endif // DUCK_H
