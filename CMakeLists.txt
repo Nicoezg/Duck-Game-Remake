@@ -135,7 +135,7 @@ if(CLIENT)
             ${RESOURCES}
             client/ui/lobby_updater.cpp
             client/ui/lobby_updater.h
-           
+
     )
 
     # Make them depend on COMMON lib

@@ -11,15 +11,21 @@ private:
     int ammo;
     int reach;
     int cooldown;
+    int height;
+    int width;
 
 public:
-    BulletConfig(int ammo, int reach, int cooldown);
+    BulletConfig(int ammo, int reach, int cooldown, int height, int width);
 
     int getAmmo() const;
 
     int getReach() const;
 
     int getCooldown() const;
+
+    int getHeight() const;
+
+    int getWidth() const;
 };
 
 

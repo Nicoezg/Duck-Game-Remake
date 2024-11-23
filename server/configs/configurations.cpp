@@ -17,12 +17,17 @@ DuckConfig Configurations::read_duck_config(const YAML::Node &configurations) {
 }
 
 std::map<std::string, BulletConfig> Configurations::read_weapons_configs(const YAML::Node &configurations) {
+    int bullet_height = configurations["bullet"]["height"].as<int>();
+    int bullet_width = configurations["bullet"]["width"].as<int>();
+
     std::map<std::string, BulletConfig> weapons_configs;
     for (const auto &weapon: configurations["weapons"]) {
         weapons.insert_or_assign(weapon.first.as<std::string>(), BulletConfig(
                 weapon.second["ammo"].as<int>(),
                 weapon.second["reach"].as<int>(),
-                weapon.second["cooldown"].as<int>()
+                weapon.second["cooldown"].as<int>(),
+                bullet_height,
+                bullet_width
         ));
     }
     return weapons_configs;

@@ -80,7 +80,7 @@ class Game{
 
         int processEvent();
 
-        void showVictoryScreen(const GameOver& gameOver);
+        void showVictoryScreen(const Event& gameOver);
 
     public:
         Game(Client &client);
@@ -89,7 +89,7 @@ class Game{
 
         void showScores();
 
-        void end(const GameOver& gameOver);
+        void end(const Event& gameOver);
         
         int start();
 

@@ -65,6 +65,10 @@
 
 #define SEND_NEW_PLAYER_SIZE (READ_NEW_PLAYER_SIZE + EVENT_TYPE_SIZE)
 
+#define SCORE_SIZE sizeof(uint16_t)
+#define READ_GAME_OVER_SIZE (READ_PLAYER_SIZE + SCORE_SIZE)
+#define SEND_GAME_OVER_SIZE (READ_GAME_OVER_SIZE + EVENT_TYPE_SIZE)
+
 class EventsProtocol : public Protocol {
 private:
   Encoder encoder;
@@ -135,6 +139,10 @@ public:
   
   void add_explosions(const std::shared_ptr<Event> &event,
                       std::vector<int8_t> &data, size_t &offset);
+
+    void send_game_over(const std::shared_ptr<Event> &event);
+
+    std::shared_ptr<Event> read_game_over();
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

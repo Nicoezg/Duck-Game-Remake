@@ -12,6 +12,7 @@
 #include "common/queue.h"
 #include "common/thread.h"
 #include "game.h"
+#include "common/events/game_over.h"
 
 #define TIME_LOOP 20
 
@@ -22,8 +23,7 @@ Game::Game(int max_players)
 }
 
 void Game::add(Socket &&socket) {
-    notifier.notify(
-            std::make_shared<NewPlayer>(get_actual_players(), get_max_players()));
+    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(), get_max_players()));
     notifier.subscribe(std::move(socket));
 }
 
@@ -64,10 +64,9 @@ void Game::valid_start() {
     if (!ok || action->get_type() != START) {
         return;
     }
+
     start_game();
-    notifier.notify(std::make_shared<StartGame>());
-    MapDTO map = gameMap.getMapDTO();
-    std::shared_ptr<Event> event = std::make_shared<MapDTO> (std::move(map));
+    std::shared_ptr<Event> event = std::make_shared<MapDTO>(gameMap.getMapDTO());
     notify_event(event);
 }
 
@@ -81,6 +80,12 @@ void Game::run() {
             }
             gameMap.update();
             notify_state();
+
+            if (gameMap.checkFinished()) {
+                std::shared_ptr<Event> event = std::make_shared<GameOver>(1, 10);
+                notify_event(event);
+                running = false;
+            }
         }
     } catch (const ClosedQueue &e) {
     }
@@ -105,9 +110,7 @@ void Game::process_action(std::shared_ptr<Action> &action) {
 }
 
 void Game::notify_state() {
-    std::list<PlayerDTO> playersDTO = gameMap.getState();
-    std::list<BulletDTO> bullets  = gameMap.getBulletsState();
-    std::shared_ptr<Event> event = std::make_shared<Broadcast>(std::move(playersDTO), std::move(bullets));
+    std::shared_ptr<Event> event = std::make_shared<Broadcast>(gameMap.getState(), gameMap.getBulletsState());
     notify_event(event);
 }
 
@@ -124,4 +127,7 @@ int Game::get_actual_players() const { return actual_players; }
 
 bool Game::is_started() const { return started; }
 
-void Game::start_game() { started = true; }
+void Game::start_game() {
+    started = true;
+    notifier.notify(std::make_shared<StartGame>());
+}

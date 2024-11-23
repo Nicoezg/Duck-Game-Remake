@@ -295,3 +295,22 @@ float Encoder::decode_angle(std::vector<int8_t> &data) {
     data.erase(data.begin(), data.begin() + sizeof(int16_t));
     return angle / 100.0;
 }
+
+size_t Encoder::encode_score(int16_t score, void *data) {
+    int16_t network_score = htons(score);
+    const auto *score_bytes = reinterpret_cast<int8_t *>(&network_score);
+    std::memcpy(data, score_bytes, sizeof(int16_t));
+    return sizeof(int16_t);
+}
+
+int Encoder::decode_score(std::vector<int8_t> &data) {
+    if (data.size() < sizeof(int16_t)) {
+        throw std::runtime_error(
+                "No hay suficientes bytes para decodificar el puntaje.");
+    }
+    int16_t score;
+    std::memcpy(&score, data.data(), sizeof(int16_t));
+    score = ntohs(score);
+    data.erase(data.begin(), data.begin() + sizeof(int16_t));
+    return score;
+}

@@ -111,6 +111,9 @@ void Game::update_state() {
     } else if (event->get_type() == MAP_LOAD) {
         map.load(*event);
     }
+    else if (event->get_type() == GAME_OVER) {
+        end(*event);
+    }
 }
 
 void Game::update(const Event &broadcast) {
@@ -174,7 +177,7 @@ void Game::showScores() {
     }
 }
 
-void Game::showVictoryScreen(const GameOver &gameOver) {
+void Game::showVictoryScreen(const Event &gameOver) {
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
     // Le podria agregar flash
@@ -186,7 +189,7 @@ void Game::showVictoryScreen(const GameOver &gameOver) {
     SDL_Delay(5000); // Victory screen duration
 }
 
-void Game::end(const GameOver &gameOver) {
+void Game::end(const Event &gameOver) {
     std::lock_guard<std::mutex> lock(mutex);
     stop = true;
     showVictoryScreen(gameOver);

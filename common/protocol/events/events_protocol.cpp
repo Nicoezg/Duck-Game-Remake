@@ -11,6 +11,7 @@
 #include "common/events/connection/start_game.h"
 #include "common/events/map.h"
 #include "common/events/tile.h"
+#include "common/events/game_over.h"
 #include <iostream>
 #include <list>
 
@@ -39,6 +40,9 @@ void EventsProtocol::send_element(std::shared_ptr<Event> &event) {
 
   case MAP_LOAD:
     return send_map(event);
+
+      case GAME_OVER:
+    return send_game_over(event);
 
   default:
     throw std::runtime_error("Tipo de evento no soportado.");
@@ -98,6 +102,9 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
 
   case MAP_LOAD:
     return read_map();
+
+case GAME_OVER:
+    return read_game_over();
   default:
     throw std::runtime_error("Tipo de evento no soportado.");
   }
@@ -428,4 +435,26 @@ void EventsProtocol::add_platforms(const std::shared_ptr<Event> &event,
     offset += encoder.encode_coordinate(platform.get_y(), &data[offset]);
     offset += encoder.encode_tile_id(platform.get_tile_id(), &data[offset]);
   }
+}
+
+
+void EventsProtocol::send_game_over(const std::shared_ptr<Event> &event) {
+  std::vector<int8_t> data(SEND_GAME_OVER_SIZE);
+  size_t offset = 0;
+  offset += encoder.encode_event_type(event->get_type(), &data[offset]);
+  offset += encoder.encode_player_id(event->get_player_id_1(), &data[offset]);
+  offset += encoder.encode_score(event->get_score(), &data[offset]);
+  send(data.data(), data.size());
+
+  std::cout << "Game Over send: " << data.size() << " bytes" << std::endl;
+}
+
+std::shared_ptr<Event> EventsProtocol::read_game_over() {
+  std::vector<int8_t> data(READ_GAME_OVER_SIZE);
+  read(data.data(), data.size());
+  int player_id = encoder.decode_player_id(data);
+  int score = encoder.decode_score(data);
+
+    std::cout << "Game Over read: " << data.size() << " bytes" << std::endl;
+  return std::make_shared<GameOver>(player_id, score);
 }

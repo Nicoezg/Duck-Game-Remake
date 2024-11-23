@@ -4,36 +4,47 @@
 #include "common/events/items/bullet_dto.h"
 #include "common/events/items/bullet_macros.h"
 #include "server/configs/configurations.h"
+#include "server/logic/collisions/position.h"
 
 class Bullet {
 private:
-  int owner_Id;
-  int pos_x;
-  int pos_y;
-  float angle;
-  int range;
-  bool isGrenade;
-  bool canBounce;
-  BulletId id;
-  bool isRight;
-  int traveledDistance;
-  bool upwards;
+    int owner_Id;
+    int pos_x;
+    int pos_y;
+    float angle;
+    int range;
+    bool isGrenade;
+    bool canBounce;
+    BulletId id;
+    bool isRight;
+    int traveledDistance;
+    bool upwards;
 
 public:
-  virtual ~Bullet() = default;
+    virtual ~Bullet() = default;
 
-  Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
-         int range, BulletId id, bool isRight, bool upwards);
+    Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
+           int range, BulletId id, bool isRight, bool upwards);
 
-  void update();
-  bool outOfRange();
-  void bounce(int newAngle);
-  int getPosX() const;
-  int getPosY() const;
-  float getAngle() const;
-  BulletId getId() const;
+    void update();
 
-  BulletDTO toDTO() const;
+    bool outOfRange();
+
+    void bounce(int newAngle);
+
+    int getPosX() const;
+
+    int getPosY() const;
+
+    float getAngle() const;
+
+    BulletId getId() const;
+
+    BulletDTO toDTO() const;
+
+    bool impact(Position &other_position);
+
+    bool impact(Position &other_position, int owner);
 };
 
 #endif // BULLET_H

@@ -7,15 +7,17 @@
 
 class GameOver : public Event {
 private:
-    std::string winner;
+    int winner;
     int score;
 
 public:
-  GameOver(std::string &&winner, int &&scores);
+  GameOver(int winner, int scores);
 
   std::string get_winner() const override;
 
   int get_score() const override;
+
+  int get_player_id_1() const override;
 };
 
 #endif // TALLER_TP_GAME_OVER_H

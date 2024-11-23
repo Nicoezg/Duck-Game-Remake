@@ -31,6 +31,14 @@ target_sources(SERVER
         logic/throwables/throwable.cpp
         logic/throwables/grenade.cpp
 
+        logic/collisions/collision_radius.cpp
+        logic/collisions/collision_radius.h
+        logic/collisions/coordinate.cpp
+        logic/collisions/coordinate.h
+        logic/collisions/position.cpp
+        logic/collisions/position.h
+
+
         configs/configurations.cpp
         configs/bullet_config.cpp
         configs/duck_config.cpp

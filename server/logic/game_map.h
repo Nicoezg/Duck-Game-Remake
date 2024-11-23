@@ -52,7 +52,10 @@ public:
   MapDTO getMapDTO();
   
   Map getMap();
-  
+
+    void checkBulletCollisionWithPlayers();
+
+    bool checkFinished();
 };
 
 #endif

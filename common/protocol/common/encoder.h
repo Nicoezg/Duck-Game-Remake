@@ -83,6 +83,10 @@ public:
     size_t encode_angle(float value, signed char *string);
 
     float decode_angle(std::vector<int8_t> &data);
+
+    size_t encode_score(int16_t score, void *data);
+
+    int decode_score(std::vector<int8_t> &data);
 };
 
 #endif // TALLER_TP_ENCODER_H

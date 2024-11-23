@@ -5,14 +5,16 @@ duck:
   gravity: 2
 
   width: 16
-  height: 8
+  height: 10
   center_x: 7
   center_y: 25
 
 # bullet
 bullet:
-  speed: 5
-  
+  speed: 3
+  height: 10
+  width: 15
+
 # weapons
 weapons:
   grenade:
