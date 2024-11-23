@@ -16,6 +16,8 @@ target_sources(SERVER
         logic/duck.cpp
 
         logic/weapons/weapon.cpp
+        logic/weapons/shotgun.cpp
+        logic/weapons/ak47.cpp
         logic/weapons/laser_rifle.cpp
         logic/weapons/pewpewlaser.cpp
         logic/weapons/cowboy.cpp
@@ -49,8 +51,9 @@ target_sources(SERVER
         logic/box.h
 
         logic/weapons/weapon.h
-        logic/weapons/laser_rifle.h
         logic/weapons/pewpewlaser.h
+        logic/weapons/shotgun.h
+        logic/weapons/ak47.h
         logic/weapons/cowboy.h
         logic/weapons/duelos.h
         logic/weapons/magnum.h

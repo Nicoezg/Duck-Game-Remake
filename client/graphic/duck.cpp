@@ -5,7 +5,7 @@
 const int DUCK_WIDTH = 32;
 const int DUCK_HEIGHT = 32;
 
-Duck::Duck(SDL2pp::Renderer &renderer, int id) : posX(0), posY(0), id(id), direction(), renderer(renderer),
+Duck::Duck(SDL2pp::Renderer &renderer, int id) : posX(0), posY(0), id(id), direction(), dead(false), renderer(renderer),
                                                  weaponsTexture(), wingsTexture(), sfx(), animationMovement(), sound(),
                                                  weapon(renderer, NO_WEAPON, id), helmet(renderer), chestplate(renderer),
                                                  walkClips(), jumpClip(), fallClip(), stillClipWings(), flappingClips(),
@@ -102,31 +102,41 @@ void Duck::render() {
     SDL2pp::Rect rect{posX, posY, DUCK_WIDTH, DUCK_HEIGHT};
     int flipType = direction ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     int angle = 0; // innecesario
+    std::shared_ptr<SDL2pp::Texture> texture = nullptr;
 
     SDL2pp::Rect currentClip;
-    switch (animationMovement.getCurrentType()) {
-        case WALKING:
-            currentClip = walkClips[animationMovement.getCurrentFrame()];
-            break;
-        case JUMPING:
-            currentClip = jumpClip;
-            break;
-        case FALLING:
-            currentClip = fallClip;
-            break;
-        case PLAYING_DEAD:
-            currentClip = playDeadClips[animationMovement.getCurrentFrame()];
-            break;
-        case FLAPPING:
-            currentClip = flappingClips[animationMovement.getCurrentFrame()];
-            break;
-        default:
-            currentClip = stillClipWings;
-            break;
+    if (weapon.getId() == NO_WEAPON){
+        switch (animationMovement.getCurrentType()) {
+            case DEAD:
+                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+                break;
+            case WALKING:
+                currentClip = walkClips[animationMovement.getCurrentFrame()];
+                break;
+            case JUMPING:
+                currentClip = jumpClip;
+                break;
+            case FALLING:
+                currentClip = fallClip;
+                break;
+            case PLAYING_DEAD:
+                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+                break;
+            case FLAPPING:
+                currentClip = flappingClips[animationMovement.getCurrentFrame()];
+                break;
+            default:
+                currentClip = stillClipWings;
+                break;
+        }
+        texture = wingsTexture;
     }
 
     if (weapon.getId() != NO_WEAPON) {
         switch (animationMovement.getCurrentType()) {
+            case DEAD:
+                currentClip = playDeadClips[animationMovement.getCurrentFrame()];
+                break;
             case WALKING:
                 currentClip = walkWeaponClips[animationMovement.getCurrentFrame()];
                 break;
@@ -149,16 +159,21 @@ void Duck::render() {
                 currentClip = stillClipWeapon;
                 break;
         }
+        texture = weaponsTexture;
+        
+    }
+    renderer.Copy(*texture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
+    if (dead) {
+        return;
     }
 
-    renderer.Copy(*wingsTexture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
 
     if (animationMovement.getCurrentType() != PLAYING_DEAD) {
         if (chestplate.isEquipped()) {
-            chestplate.render(posX, posY, direction); // A determinar posiciones
+            chestplate.render(posX, posY, direction);
         }
         if (helmet.isEquipped()){
-            helmet.render(posX, posY, direction); // A determinar posiciones
+            helmet.render(posX, posY, direction);
         }
         if (weapon.getId() != NO_WEAPON) {
             weapon.render(posX, posY, flipType);
@@ -169,10 +184,19 @@ void Duck::render() {
 }
 
 void Duck::update(const PlayerDTO &player){
+    if (dead){
+        return;
+    }
     posX = player.get_position_x();
     posY = player.get_position_y();
     auto state = player.get_state();
     direction = player.is_right();
+
+    if (state == DEAD){
+        dead = true;
+        return;
+    }
+
     bool aimingUpwards = state == AIMING_UPWARDS;
     weapon.update(player.get_weapon(), aimingUpwards);
     helmet.update(player.get_helmet());

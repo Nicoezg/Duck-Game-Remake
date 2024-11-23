@@ -97,12 +97,10 @@ void ActionsProtocol::send_element(const std::shared_ptr<Action> &action) {
         case PLAY_DEAD:
             return send_play_dead_action(action);
         case SHOOT:
-            std::cout << "entro a shoot" << std::endl;
             return send_shoot_action(action);
         case AIM_UPWARDS:
             return send_aiming_upwards_action(action);
         case PICK_DROP:
-            std::cout << "entro a pick drop" << std::endl;
             return send_pick_drop_action(action);
         default:
             throw std::runtime_error("ActionsProtocol try to send unknown action");

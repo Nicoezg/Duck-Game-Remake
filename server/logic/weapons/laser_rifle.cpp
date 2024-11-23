@@ -6,7 +6,6 @@ const int AMMO = CONFIG.getBulletConfig(NAME).getAmmo();
 const int REACH = CONFIG.getBulletConfig(NAME).getReach();
 const int COOLDOWN = CONFIG.getBulletConfig(NAME).getCooldown();
 
-
 LaserRifle::LaserRifle(GameMap &map)
     : Weapon(map, AMMO, REACH, WeaponId::LASER_RIFLE) {
   reloadTime = 0.1f;
@@ -16,11 +15,11 @@ LaserRifle::LaserRifle(GameMap &map)
 void LaserRifle::shoot(Duck *owner) {
   if (isReadyToShoot()) {
 
-    int baseAngle = 45;
-    int angle = baseAngle + (shotCount * 2);
+    int baseAngle = -45;
+    int angle = (baseAngle + (shotCount));
 
-    if (ammo > 0) {
-      createBullet(owner, angle, true, reach, BulletId::LASER_BEAM);
+    if (hasAmmo()) {
+      createBullet(owner, -angle, true, reach, BulletId::LASER_BEAM);
       ammo--;
       lastShotTime = 0;
       shotCount++;

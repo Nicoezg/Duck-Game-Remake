@@ -48,6 +48,8 @@ class Duck
 
 		bool direction;
 
+		bool dead;
+
 		SDL2pp::Renderer &renderer;
 
 		std::shared_ptr<SDL2pp::Texture> weaponsTexture = nullptr;
