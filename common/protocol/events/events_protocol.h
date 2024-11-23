@@ -41,6 +41,9 @@
 #define READ_CRATE_SIZE (COORDINATE_SIZE * 2 + sizeof(uint8_t) * 2)
 #define SEND_CRATE_SIZE READ_CRATE_SIZE
 
+#define READ_EXPLOSION_SIZE (COORDINATE_SIZE * 2 + sizeof(uint8_t))
+#define SEND_EXPLOSION_SIZE READ_EXPLOSION_SIZE
+
 #define READ_PLAYER_SIZE                                                       \
   (2 * PLAYER_COORDINATE + PLAYERS_ID_SIZE + PLAYER_STATE_SIZE +               \
    PLAYER_IS_RIGHT_SIZE + WEAPONS_SIZE + HEALTH_SIZE + CHESTPLATE_SIZE)
@@ -129,6 +132,9 @@ public:
 
   void add_crates(const std::shared_ptr<Event> &event,
                   std::vector<int8_t> &data, size_t &offset);
+  
+  void add_explosions(const std::shared_ptr<Event> &event,
+                      std::vector<int8_t> &data, size_t &offset);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

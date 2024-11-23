@@ -284,7 +284,7 @@ void Duck::loadTextures() {
             weaponsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
                     "../client/sprites/ducks/yellow-duck-w-weapon.png"));
             wingsTexture = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(
-                    "../client/sprites/ducks/yellow-duck-wings.png"));
+                    "../client/sprites/ducks/yellow-duck-w-wings.png"));
             break;
         default:
             break;

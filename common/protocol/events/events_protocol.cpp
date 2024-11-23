@@ -184,6 +184,17 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
       uint8_t hp = encoder.decode_is_right(crates_data);
       bool is_hit = encoder.decode_is_right(crates_data);
       crates.emplace_back(x, y, hp, is_hit);
+  }
+    
+  std::vector<int8_t> size_explosions_data(LEN_SIZE);
+  read(size_explosions_data.data(), size_explosions_data.size());
+
+  std::list<Explosion> explosions;
+  for (int i = 0; i < explosions_len; i++){
+      int x = encoder.decode_coordinate(explosions_data);
+      int y = encoder.decode_coordinate(explosions_data);
+      uint8_t current_duration = encoder.decode_id(explosions_data);
+      explosions.emplace_back(x, y, current_duration);
   } */
 
   return std::make_shared<Broadcast>(
@@ -205,7 +216,12 @@ void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
   add_bullets(event, data, offset);
 
   /* offset += encoder.encode_len(event->get_crates().size(), &data[offset]);
-  add_crates(event, data, offset); */
+  add_crates(event, data, offset); 
+  
+  offset += encoder.encode_len(event->get_explosions().size(), &data[offset]);
+  add_explosions(event, data, offset)
+  
+  */
 
   send(data.data(), data.size());
 }
@@ -228,6 +244,17 @@ void EventsProtocol::add_crates(const std::shared_ptr<Event> &event,
     offset += encoder.encode_coordinate(crate.get_position_y(), &data[offset]);
     offset += encoder.encode_is_right(crate.get_hp(), &data[offset]);
     offset += encoder.encode_is_right(crate.was_hit(), &data[offset]);
+  }
+}
+
+void EventsProtocol::add_explosions(const std::shared_ptr<Event> &event,
+                                    std::vector<int8_t> &data, size_t &offset) {
+  for (const auto &explosion : event->get_explosions()) {
+    offset += encoder.encode_coordinate(explosion.get_position_x(),
+                                        &data[offset]);
+    offset += encoder.encode_coordinate(explosion.get_position_y(),
+                                        &data[offset]);
+    offset += encoder.encode_id(explosion.get_current_duration(), &data[offset]);
   }
 }
 

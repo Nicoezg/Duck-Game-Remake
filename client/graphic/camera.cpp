@@ -6,79 +6,38 @@
         : renderer(renderer), viewport(viewport), minScale(minScale), maxScale(maxScale), zoomSpeed(zoomSpeed), scale(1.0f) {
         }
         
-    void CameraZoom::update(const std::vector<SDL2pp::Rect>& playerRects) {
-        if (playerRects.empty()) return;
-
-        // Calculate the bounding box that contains all players
-        int minX = std::numeric_limits<int>::max();
-        int minY = std::numeric_limits<int>::max();
-        int maxX = std::numeric_limits<int>::min();
-        int maxY = std::numeric_limits<int>::min();
-
-        // Debug output
-        std::cout << "Number of players: " << playerRects.size() << std::endl;
-
+    
+void CameraZoom::update(const std::vector<SDL2pp::Rect>& playerRects) {
+        float centerX = 0, centerY = 0;
         for (const auto& playerRect : playerRects) {
-            minX = std::min(minX, playerRect.x);
-            minY = std::min(minY, playerRect.y);
-            maxX = std::max(maxX, playerRect.x + playerRect.w);
-            maxY = std::max(maxY, playerRect.y + playerRect.h);
-            std::cout << "Player at: (" << playerRect.x << ", " << playerRect.y << ")" << std::endl;
+            centerX += playerRect.x + playerRect.w / 2;
+            centerY += playerRect.y + playerRect.h / 2;
         }
+        
+        centerX /= playerRects.size();
+        centerY /= playerRects.size();
 
-        // Calculate the center point of all players
-        float centerX = (minX + maxX) / 2.0f;
-        float centerY = (minY + maxY) / 2.0f;
-
-        // Calculate the width and height of the area containing all players
-        float width = maxX - minX;
-        float height = maxY - minY;
-
-        // Add padding (20% of the content size)
-        width *= 1.2f;
-        height *= 1.2f;
-
-        // Calculate required scale to fit all players
-        float scaleX = viewport.w / width;
-        float scaleY = viewport.h / height;
-
-        // Use the smaller scale to ensure everything fits
-        float targetScale = std::min(scaleX, scaleY);
-
-        // If there's only one player, use a fixed scale
-        if (playerRects.size() == 1) {
-            targetScale = 1.0f;
+        float maxDistance = 0;
+        for (const auto& playerRect : playerRects) {
+            float distance = std::sqrt(std::pow(playerRect.x + playerRect.w / 2 - centerX, 2) +
+                                      std::pow(playerRect.y + playerRect.h / 2 - centerY, 2));
+            maxDistance = std::max(maxDistance, distance);
         }
+        
+        scale = std::clamp(3.0f - maxDistance  * zoomSpeed, minScale, maxScale);
+        
+        float scaledViewportWidth = viewport.w / scale;
+        float scaledViewportHeight = viewport.h / scale;
 
-        // Clamp scale within bounds
-        targetScale = std::clamp(targetScale, minScale, maxScale);
+        viewport.x = static_cast<int>(centerX - scaledViewportWidth / 2);
+        viewport.y = static_cast<int>(centerY - scaledViewportHeight / 2);
 
-        // Smoothly interpolate to target scale
-        scale = scale + (targetScale - scale) * zoomSpeed;
+        viewport.x = -std::max(0, std::min(viewport.x, 640 - static_cast<int>(scaledViewportWidth)));
+        viewport.y = -std::max(0, std::min(viewport.y, 480 - static_cast<int>(scaledViewportHeight)));
 
-        // Calculate new viewport position
-        int newViewportX = static_cast<int>(centerX - (viewport.w / (2 * scale)));
-        int newViewportY = static_cast<int>(centerY - (viewport.h / (2 * scale)));
-
-        // Assuming your game world dimensions - adjust these values
-        const int WORLD_WIDTH = 640;  // Replace with your actual world width
-        const int WORLD_HEIGHT = 480; // Replace with your actual world height
-
-        // Ensure viewport stays within world bounds
-        newViewportX = std::max(0, std::min(newViewportX, WORLD_WIDTH - viewport.w));
-        newViewportY = std::max(0, std::min(newViewportY, WORLD_HEIGHT - viewport.h));
-
-        // Update viewport position
-        viewport.x = newViewportX;
-        viewport.y = newViewportY;
-
-        // Debug output
-        std::cout << "Scale: " << scale << std::endl;
-        std::cout << "Viewport: (" << viewport.x << ", " << viewport.y 
-                  << ") " << viewport.w << "x" << viewport.h << std::endl;
-        std::cout << "Center: (" << centerX << ", " << centerY << ")" << std::endl;
-
-        // Apply transformations
         renderer.SetScale(scale, scale);
         renderer.SetViewport(viewport);
+        
     }
+
+    
