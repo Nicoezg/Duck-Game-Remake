@@ -21,6 +21,6 @@ class DrawExplosion{
     public:
     DrawExplosion(SDL2pp::Renderer &renderer);
 
-    void render(const Explosion& explosion);
+    void render(const ExplosionDTO& explosion);
 };
 #endif

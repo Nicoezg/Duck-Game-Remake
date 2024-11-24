@@ -12,7 +12,7 @@ Grenade::Grenade(GameMap &map)
 
 void Grenade::shoot(Duck *owner) {
     if (hasAmmo()) {
-        createThrowable(owner,true);
+        createThrowable(map,owner,true);
         ammo--;
     }
 }

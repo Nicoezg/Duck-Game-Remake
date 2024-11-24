@@ -1,5 +1,7 @@
 #include "weapon.h"
 #include "server/logic/duck.h"
+#include "server/logic/throwables/grenade.h"
+
 
 void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
                           BulletId id) {
@@ -28,11 +30,10 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
 
 WeaponId Weapon::getWeaponId() const { return id; }
 
-void Weapon::createThrowable(Duck *owner, bool isGrenade) {
+void Weapon::createThrowable(GameMap &map,Duck *owner, bool isGrenade) {
   if (isGrenade) {
-    map.addThrowable(std::make_unique<Grenade>(map, owner->getDirection(),
-                                               owner->getPositionX(),
-                                               owner->getPositionY()));
+    map.addThrowable(std::make_unique<ThrownGrenade>(map, owner,owner->getDirection(),owner->getPositionX(),
+                                               owner->getPositionY(), 200));
   }
 }
 

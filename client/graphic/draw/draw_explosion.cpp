@@ -9,7 +9,7 @@ DrawExplosion::DrawExplosion(SDL2pp::Renderer &renderer) : renderer(renderer), t
     }
 }
 
-void DrawExplosion::render(const Explosion& explosion){
+void DrawExplosion::render(const ExplosionDTO& explosion){
     SDL2pp::Rect dest(explosion.get_position_x(), explosion.get_position_y(), 64, 64);
     if (explosion.get_current_duration() == 0){
         sound.play();

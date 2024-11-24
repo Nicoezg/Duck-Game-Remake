@@ -7,7 +7,7 @@
 #include <utility>
 
 Broadcast::Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bullets, std::list<CrateDTO> &&crates,
-                     std::list<WeaponDTO> &&weapons, std::list<Explosion> &&explosions)
+                     std::list<WeaponDTO> &&weapons, std::list<ExplosionDTO> &&explosions)
         : Event(BROADCAST), players(std::move(players)), bullets(std::move(bullets)), crates(std::move(crates)),
           weapons(std::move(weapons)), explosions(explosions) {}
 
@@ -19,7 +19,7 @@ std::list<CrateDTO> Broadcast::get_crates() const { return crates; }
 
 std::list<WeaponDTO> Broadcast::get_weapons() const { return weapons; }
 
-std::list<Explosion> Broadcast::get_explosions() const { return explosions; }
+std::list<ExplosionDTO> Broadcast::get_explosions() const { return explosions; }
 
 Broadcast::Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bullets) : Event(BROADCAST),
                                                                                        players(std::move(players)),

@@ -3,12 +3,14 @@
 
 #include "throwable.h"
 
-class Grenade : public Throwable {
+class ThrownGrenade : public Throwable {
 private:      
   int framesToExplode; 
+  Duck *owner;
+  bool ownerHasGrenade;
 
 public:
-  Grenade(GameMap &map,bool isRight,int pos_x,int pos_y):Throwable(map,isRight,pos_x,pos_y,5) ,  framesToExplode(160) {
+  ThrownGrenade(GameMap &map,Duck *owner,bool isRight,int pos_x,int pos_y,int framesToexplode):Throwable(map,isRight,pos_x,pos_y,5) , framesToExplode(framesToexplode),owner(owner) {
   }
   void update() override;
   

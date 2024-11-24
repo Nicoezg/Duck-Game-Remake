@@ -1,6 +1,7 @@
 
 #include "game_map.h"
 #include "common/events/player.h"
+#include "explosion.h"
 #include "duck.h"
 #include <iostream>
 #include <stdexcept>
@@ -24,6 +25,10 @@ void GameMap::addBullet(std::unique_ptr<Bullet> bullet) {
 
 void GameMap::addThrowable(std::unique_ptr<Throwable> throwable) {
     throwables.push_back(std::move(throwable));
+}
+
+void GameMap::addExplosion(std::unique_ptr<Explosion> explosion) {
+    explosions.push_back(std::move(explosion));
 }
 
 Duck *GameMap::findPlayer(int playerId) {
@@ -138,6 +143,14 @@ std::list<BulletDTO> GameMap::getBulletsState() {
     }
 
     return bulletsList;
+}
+
+std::list<ExplosionDTO> GameMap::getExplosionsState() {
+    std::list<ExplosionDTO> explosionsList;
+    for (const auto &explosion: explosions) {
+        explosionsList.emplace_back(explosion->toDTO());
+    }
+    return explosionsList;
 }
 
 std::list<PlayerDTO> GameMap::getState() {

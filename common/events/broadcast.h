@@ -25,12 +25,12 @@ private:
 
   std::list<WeaponDTO> weapons; // Estos weapons son los que spawnean en el mapa
 
-  std::list<Explosion> explosions;
+  std::list<ExplosionDTO> explosions;
 
 public:
   Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bullets,
             std::list<CrateDTO> &&crates, std::list<WeaponDTO> &&weapons,
-            std::list<Explosion> &&explosions);
+            std::list<ExplosionDTO> &&explosions);
 
   Broadcast(std::list<PlayerDTO> &&players,  std::list<BulletDTO> &&bullets);
 
@@ -42,7 +42,7 @@ public:
 
   std::list<WeaponDTO> get_weapons() const override;
 
-  std::list<Explosion> get_explosions() const override;
+  std::list<ExplosionDTO> get_explosions() const override;
 };
 
 #endif // TALLER_TP_BROADCAST_H

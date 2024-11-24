@@ -54,7 +54,7 @@ class Game{
 
         std::list<WeaponDTO> weaponSpawns;
 
-        std::list<Explosion> explosions;
+        std::list<ExplosionDTO> explosions;
 
         DrawWeaponSpawn weapon;
 

@@ -44,7 +44,7 @@ public:
 
   virtual std::list<WeaponDTO> get_weapons() const;
 
-  virtual std::list<Explosion> get_explosions() const;
+  virtual std::list<ExplosionDTO> get_explosions() const;
 
   virtual int get_max_players() const;
 

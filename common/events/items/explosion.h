@@ -5,7 +5,7 @@
 #include <string>
 #include "bullet_macros.h"
 
-class Explosion {
+class ExplosionDTO {
 private:
   int position_x;
   int position_y;
@@ -13,7 +13,7 @@ private:
 
 
 public:
-  Explosion(int position_x, int position_y, uint8_t currentDuration);
+  ExplosionDTO(int position_x, int position_y, uint8_t currentDuration);
 
   int get_position_x() const;
 

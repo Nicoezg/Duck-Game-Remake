@@ -12,12 +12,14 @@
 #include <vector>
 
 class Duck;
+class Explosion;
 
 class GameMap {
 private:
   std::vector<Duck *> players;
   std::vector<std::shared_ptr<Bullet>> bullets;
   std::vector<std::shared_ptr<Throwable>> throwables;
+  std::vector<std::shared_ptr<Explosion>> explosions;
   MapLoader mapLoader;
   Map map;
 
@@ -30,6 +32,8 @@ public:
   void addBullet(std::unique_ptr<Bullet> bullet);
 
   void addThrowable(std::unique_ptr<Throwable> throwable);
+
+  void addExplosion(std::unique_ptr<Explosion> explosion);
 
   Duck *findPlayer(int playerId);
 
@@ -48,6 +52,8 @@ public:
   std::list<PlayerDTO> getState();
 
   std::list<BulletDTO> getBulletsState();
+
+  std::list<ExplosionDTO> getExplosionsState();
 
   MapDTO getMapDTO();
   

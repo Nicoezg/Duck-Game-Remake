@@ -14,6 +14,7 @@ target_sources(SERVER
         logic/game_map.cpp
         logic/box.cpp
         logic/duck.cpp
+        logic/explosion.cpp
 
         logic/weapons/weapon.cpp
         logic/weapons/shotgun.cpp
@@ -57,6 +58,7 @@ target_sources(SERVER
         logic/game_map.h
         logic/duck.h
         logic/box.h
+        logic/explosion.h
 
         logic/weapons/weapon.h
         logic/weapons/pewpewlaser.h

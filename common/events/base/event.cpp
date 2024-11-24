@@ -40,7 +40,7 @@ std::list<WeaponDTO> Event::get_weapons() const {
     throw std::runtime_error("Has no weapons.");
 }
 
-std::list<Explosion> Event::get_explosions() const {
+std::list<ExplosionDTO> Event::get_explosions() const {
     throw std::runtime_error("Has no explosions.");
 }
 
