@@ -13,7 +13,7 @@ std::shared_ptr<Event> ClientProtocol::read_element() {
 }
 
 void ClientProtocol::send_element(std::shared_ptr<Action> &action) {
-    actions_protocol.send_element(action);
+    actions_protocol.send_element(*action);
 }
 
 bool ClientProtocol::is_open() {
