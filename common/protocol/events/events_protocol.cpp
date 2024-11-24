@@ -81,7 +81,6 @@ std::shared_ptr<Event> EventsProtocol::read_join() {
 
 std::shared_ptr<Event> EventsProtocol::read_element() {
   EventType event = read_event_type();
-  std::cout << "Evento recibido: " << event << std::endl;
   switch (event) {
   case CREATE_GAME: {
     return read_create();
@@ -209,7 +208,6 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
       item_spawns.emplace_back(item_spawn_id, x, y);
   }
   */
-
   std::vector<int8_t> size_explosions_data(LEN_SIZE);
   read(size_explosions_data.data(), size_explosions_data.size());
   int explosions_len = encoder.decode_len(size_explosions_data);
@@ -227,12 +225,12 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
 
   return std::make_shared<Broadcast>(
       std::move(players), std::move(bullets), std::list<CrateDTO>(),
-      std::list<ItemSpawnDTO>(), std::list<ExplosionDTO>());
+      std::list<ItemSpawnDTO>(), std::move(explosions));
 }
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
   std::vector<int8_t> data(
-      LEN_SIZE * 2 + event->get_players().size() * SEND_PLAYER_SIZE +
+      LEN_SIZE * 3 + event->get_players().size() * SEND_PLAYER_SIZE +
       event->get_bullets().size() * SEND_BULLET_SIZE + SEND_EXPLOSION_SIZE*event->get_explosions().size() +EVENT_TYPE_SIZE);
   size_t offset = 0;
   offset += encoder.encode_event_type(event->get_type(), &data[offset]);
@@ -436,7 +434,6 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
   int background_id = encoder.decode_background_id(tiles_data);
   int width = encoder.decode_coordinate(tiles_data);
   int length = encoder.decode_coordinate(tiles_data);
-  // std::cout << data.size() << std::endl;
 
   return std::make_shared<MapDTO>(std::move(tiles), background_id, width,
                                   length);
