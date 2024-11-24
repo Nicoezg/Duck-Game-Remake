@@ -45,7 +45,7 @@ void EventsProtocol::send_element(std::shared_ptr<Event> &event) {
     return send_game_over(event);
 
   default:
-    throw std::runtime_error("Tipo de evento no soportado.");
+    throw std::runtime_error("Tipo de evento no soportado para enviar.");
   }
 }
 
@@ -81,6 +81,7 @@ std::shared_ptr<Event> EventsProtocol::read_join() {
 
 std::shared_ptr<Event> EventsProtocol::read_element() {
   EventType event = read_event_type();
+  std::cout << "Evento recibido: " << event << std::endl;
   switch (event) {
   case CREATE_GAME: {
     return read_create();
@@ -106,7 +107,7 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
 case GAME_OVER:
     return read_game_over();
   default:
-    throw std::runtime_error("Tipo de evento no soportado.");
+    throw std::runtime_error("Tipo de evento no soportado para recibir.");
   }
 }
 
@@ -232,7 +233,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
   std::vector<int8_t> data(
       LEN_SIZE * 2 + event->get_players().size() * SEND_PLAYER_SIZE +
-      event->get_bullets().size() * SEND_BULLET_SIZE + EVENT_TYPE_SIZE);
+      event->get_bullets().size() * SEND_BULLET_SIZE + SEND_EXPLOSION_SIZE*event->get_explosions().size() +EVENT_TYPE_SIZE);
   size_t offset = 0;
   offset += encoder.encode_event_type(event->get_type(), &data[offset]);
 

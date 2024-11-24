@@ -23,7 +23,7 @@ Game::Game(int max_players)
 }
 
 void Game::add(Socket &&socket) {
-    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(), get_max_players(),));
+    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(), get_max_players()));
     notifier.subscribe(std::move(socket));
 }
 
