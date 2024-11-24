@@ -68,13 +68,13 @@ void ActionHandler::processDuckEvents() {
                 case SDLK_l:
                     action = std::make_shared<AimUpwards>(this->client.get_player_id_2(), true);
                     break;
-                case SDLK_SEMICOLON:
+                case SDLK_COMMA:
                     action = std::make_shared<Shoot>(this->client.get_player_id_2(), true);
                     break;
-                case SDLK_COLON:
-                    action = std::make_shared<Shoot>(this->client.get_player_id_2(), true);
+                case SDLK_PERIOD:
+                    action = std::make_shared<PickDrop>(this->client.get_player_id_2(), true);
                     break;
-                case SDLK_UNDERSCORE:
+                case SDLK_MINUS:
                     action = std::make_shared<PickDrop>(this->client.get_player_id_2(), false);
                     break;
                 

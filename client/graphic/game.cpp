@@ -129,14 +129,11 @@ void Game::update(const Event &broadcast) {
 
         }
     }
-    std::cout << "hola1" << std::endl;
     for (auto &player: broadcast.get_players()) {
         ducks[player.get_player_id()-1]->update(player);
         playerRects.push_back(SDL2pp::Rect(player.get_position_x(), player.get_position_y(), Duck::DUCK_WIDTH, Duck::DUCK_HEIGHT));
     }
-    std::cout << "hola2" << std::endl;
     camera.update(playerRects);
-    std::cout << "hola3" << std::endl;
 
     bullets = broadcast.get_bullets();
     weaponSpawns = broadcast.get_weapons();

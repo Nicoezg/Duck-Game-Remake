@@ -194,6 +194,8 @@ void Duck::update(const PlayerDTO &player){
 
     if (state == DEAD){
         dead = true;
+        animationMovement.changeState(PLAYING_DEAD, false);
+        sound.change(sfx[1], 0);
         return;
     }
 
@@ -205,10 +207,6 @@ void Duck::update(const PlayerDTO &player){
     
     if (state == animationMovement.getCurrentType()) {
         return;
-    }
-    if (state == DEAD){
-        animationMovement.changeState(PLAYING_DEAD, false);
-        sound.change(sfx[1], 0);
     }
     else if (state == PLAYING_DEAD) {
         animationMovement.changeState(PLAYING_DEAD, false);
