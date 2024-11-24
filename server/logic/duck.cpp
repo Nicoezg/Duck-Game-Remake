@@ -274,11 +274,11 @@ PlayerDTO Duck::toDTO() const {
 
 Duck::~Duck() {}
 
-bool Duck::impact(Bullet &bullet) {
+/*bool Duck::impact(Bullet &bullet) {
     Position position = Position(posX, posY, WIDTH, HEIGHT);
     bool is_impact = bullet.impact(position, id);
     if (is_impact) {
         takeDamage();
     }
     return is_impact;
-}
+} */

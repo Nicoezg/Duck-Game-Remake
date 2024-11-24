@@ -55,10 +55,12 @@ float Bullet::getAngle() const { return angle; }
 
 BulletId Bullet::getId() const { return id; }
 
+int Bullet::getOwnerId() const { return owner_Id; }
+
 
 BulletDTO Bullet::toDTO() const { return {pos_x, pos_y, id, angle, isRight}; }
 
-bool Bullet::impact(Position &other_position) {
+/*bool Bullet::impact(Position &other_position) {
     Position position = Position(pos_x, pos_y, WIDTH, HEIGHT);
     bool is_impact = position.is_colliding(other_position);
 
@@ -76,4 +78,4 @@ bool Bullet::impact(Position &other_position, int owner) {
         return false;
     }
     return impact(other_position);
-}
+} */

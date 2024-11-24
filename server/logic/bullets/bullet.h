@@ -40,6 +40,8 @@ public:
 
     BulletId getId() const;
 
+    int getOwnerId() const;
+
     BulletDTO toDTO() const;
 
     bool impact(Position &other_position);
