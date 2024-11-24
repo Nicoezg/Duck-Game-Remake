@@ -79,8 +79,8 @@ ActionType ActionsProtocol::read_action_type() {
     return encoder.decode_action_type(data);
 }
 
-void ActionsProtocol::send_element(const std::shared_ptr<Action> &action) {
-    ActionType type = action->get_type();
+void ActionsProtocol::send_element(const Action &action) {
+    ActionType type = action.get_type();
 
     switch (type) {
         case CREATE_REQUEST:
@@ -112,100 +112,100 @@ void ActionsProtocol::send_element(const std::shared_ptr<Action> &action) {
     }
 }
 
-void ActionsProtocol::send_refresh_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_refresh_action(const Action &action) {
     std::vector<int8_t> data(ACTION_TYPE_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     send(data.data(), data.size());
 }
 
 void ActionsProtocol::send_create_action(
-        const std::shared_ptr<Action> &action) {
-    int player_names_size = LEN_SIZE * 3 + action->get_game_name().size() +
-            action->get_player_name_1().size() + action->get_player_name_2().size();
+        const Action &action) {
+    int player_names_size = LEN_SIZE * 3 + action.get_game_name().size() +
+            action.get_player_name_1().size() + action.get_player_name_2().size();
     std::vector<int8_t> data(SEND_CREATE_SIZE + player_names_size);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
-    offset += encoder.encode_max_players(action->get_max_players(), &data[offset]);
-    add_name(action->get_game_name(), data, offset);
-    add_name(action->get_player_name_1(), data, offset);
-    add_name(action->get_player_name_2(), data, offset);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_game_mode(action.get_game_mode(), &data[offset]);
+    offset += encoder.encode_max_players(action.get_max_players(), &data[offset]);
+    add_name(action.get_game_name(), data, offset);
+    add_name(action.get_player_name_1(), data, offset);
+    add_name(action.get_player_name_2(), data, offset);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_join_action(const std::shared_ptr<Action> &action) {
-    int player_names_size = LEN_SIZE * 2 + action->get_player_name_1().size() + action->get_player_name_2().size();
+void ActionsProtocol::send_join_action(const Action &action) {
+    int player_names_size = LEN_SIZE * 2 + action.get_player_name_1().size() + action.get_player_name_2().size();
     std::vector<int8_t> data(SEND_JOIN_SIZE + player_names_size);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_game_code(action->get_game_code(), &data[offset]);
-    offset += encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
-    add_name(action->get_player_name_1(), data, offset);
-    add_name(action->get_player_name_2(), data, offset);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_game_code(action.get_game_code(), &data[offset]);
+    offset += encoder.encode_game_mode(action.get_game_mode(), &data[offset]);
+    add_name(action.get_player_name_1(), data, offset);
+    add_name(action.get_player_name_2(), data, offset);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_move_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_move_action(const Action &action) {
     std::vector<int8_t> data(SEND_MOVE_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    encoder.encode_is_right(action->is_right(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_is_right(action.is_right(), &data[offset]);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_jump_flap_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_jump_flap_action(const Action &action) {
     std::vector<int8_t> data(SEND_JUMP_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    encoder.encode_is_right(action->is_jumping_flapping(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_is_right(action.is_jumping_flapping(), &data[offset]);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_still_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_still_action(const Action &action) {
     std::vector<int8_t> data(SEND_STILL_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    encoder.encode_is_right(action->is_still(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_is_right(action.is_still(), &data[offset]);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_play_dead_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_play_dead_action(const Action &action) {
     std::vector<int8_t> data(SEND_PLAY_DEAD_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    encoder.encode_is_right(action->is_playing_dead(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_is_right(action.is_playing_dead(), &data[offset]);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_shoot_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_shoot_action(const Action &action) {
     std::vector<int8_t> data(SEND_SHOOT_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    encoder.encode_is_right(action->is_shooting(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_is_right(action.is_shooting(), &data[offset]);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_aiming_upwards_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_aiming_upwards_action(const Action &action) {
     std::vector<int8_t> data(SEND_AIMING_UPWARDS_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    encoder.encode_is_right(action->is_aiming_upwards(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_is_right(action.is_aiming_upwards(), &data[offset]);
     send(data.data(), data.size());
 }
 
-void ActionsProtocol::send_pick_drop_action(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_pick_drop_action(const Action &action) {
     std::vector<int8_t> data(SEND_PICK_DROP_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
-    offset += encoder.encode_player_id(action->get_player_id(), &data[offset]);
-    encoder.encode_is_right(action->is_picking_dropping(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_is_right(action.is_picking_dropping(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -217,10 +217,10 @@ std::shared_ptr<Action> ActionsProtocol::read_move_action() {
     return std::make_shared<Move>(player_id, is_right);
 }
 
-void ActionsProtocol::send_start(const std::shared_ptr<Action> &action) {
+void ActionsProtocol::send_start(const Action &action) {
     std::vector<int8_t> data(ACTION_TYPE_SIZE);
     size_t offset = 0;
-    offset += encoder.encode_action_type(action->get_type(), &data[offset]);
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     send(data.data(), data.size());
 }
 

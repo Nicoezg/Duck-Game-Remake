@@ -47,11 +47,11 @@ private:
 
   ActionType read_action_type();
 
-  void send_create_action(const std::shared_ptr<Action> &action);
+  void send_create_action(const Action &action);
 
-  void send_refresh_action(const std::shared_ptr<Action> &action);
+  void send_refresh_action(const Action &action);
 
-  void send_join_action(const std::shared_ptr<Action> &action);
+  void send_join_action(const Action &action);
 
   std::shared_ptr<Action> read_create_action();
 
@@ -70,21 +70,21 @@ public:
    * @brief Envia una accion a traves del socket codificandola.
    * @param action Accion a enviar.
    */
-  void send_element(const std::shared_ptr<Action> &action);
+  void send_element(const Action &action);
 
-  void send_move_action(const std::shared_ptr<Action> &action);
+  void send_move_action(const Action &action);
 
-  void send_jump_flap_action(const std::shared_ptr<Action> &action);
+  void send_jump_flap_action(const Action &action);
 
-  void send_still_action(const std::shared_ptr<Action> &action);
+  void send_still_action(const Action &action);
 
-  void send_play_dead_action(const std::shared_ptr<Action> &action);
+  void send_play_dead_action(const Action &action);
 
-  void send_shoot_action(const std::shared_ptr<Action> &action);
+  void send_shoot_action(const Action &action);
 
-  void send_aiming_upwards_action(const std::shared_ptr<Action> &action);
+  void send_aiming_upwards_action(const Action &action);
 
-  void send_pick_drop_action(const std::shared_ptr<Action> &action);
+  void send_pick_drop_action(const Action &action);
 
   std::shared_ptr<Action> read_move_action();
 
@@ -100,7 +100,7 @@ public:
 
   std::shared_ptr<Action> read_pick_drop_action();
 
-  void send_start(const std::shared_ptr<Action> &action);
+  void send_start(const Action &action);
 
     std::string read_player_name();
 

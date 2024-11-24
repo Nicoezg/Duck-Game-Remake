@@ -110,38 +110,27 @@ public:
 
     Chestplate read_chestplate(std::vector<int8_t> &data);
 
-    void add_chestplate(std::vector<int8_t> &data, Chestplate chestplate,
-                        size_t &offset);
+    void add_chestplate(std::vector<int8_t> &data, Chestplate chestplate, size_t &offset);
 
     void add_health(std::vector<int8_t> &data, HelmetDTO helmet, size_t &offset);
 
     void add_weapon(std::vector<int8_t> &data, WeaponDTO weapon, size_t &offset);
 
-    void add_players(const Event &event,
-                     std::vector<int8_t> &data, size_t &offset);
+    void add_players(const Event &event, std::vector<int8_t> &data, size_t &offset);
 
     void send_map(const Event &event);
 
     std::shared_ptr<Event> read_map();
 
-    void send_tile(const Event &event);
+    void add_platforms(const Event &event, std::vector<int8_t> &data, size_t &offset);
 
-    std::shared_ptr<Event> read_tile();
+    void add_bullets(const Event &event, std::vector<int8_t> &data, size_t &offset);
 
-    void add_platforms(const Event &event,
-                       std::vector<int8_t> &data, size_t &offset);
+    void add_crates(const Event&, std::vector<int8_t> &data, size_t &offset);
 
-    void add_bullets(const Event &event,
-                     std::vector<int8_t> &data, size_t &offset);
+    void add_item_spawns(const Event&, std::vector<int8_t> &data, size_t &offset);
 
-  void add_crates(const std::shared_ptr<Event> &event,
-                  std::vector<int8_t> &data, size_t &offset);
-
-  void add_item_spawns(const std::shared_ptr<Event> &event,
-                       std::vector<int8_t> &data, size_t &offset);
-
-  void add_explosions(const std::shared_ptr<Event> &event,
-                      std::vector<int8_t> &data, size_t &offset);
+    void add_explosions(const Event&, std::vector<int8_t> &data, size_t &offset);
 
     void send_game_over(const Event &event);
 
