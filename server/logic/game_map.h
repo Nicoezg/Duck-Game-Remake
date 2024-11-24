@@ -55,6 +55,10 @@ public:
 
   std::list<ExplosionDTO> getExplosionsState();
 
+  std::list<CrateDTO> getCratesState();
+
+  std::list<ItemSpawnDTO> getItemSpawnsState();
+
   MapDTO getMapDTO();
   
   Map getMap();

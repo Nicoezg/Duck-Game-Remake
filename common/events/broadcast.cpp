@@ -11,10 +11,6 @@ Broadcast::Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bull
         : Event(BROADCAST), players(std::move(players)), bullets(std::move(bullets)), crates(std::move(crates)),
           item_spawns(std::move(item_spawns)), explosions(explosions) {}
 
-Broadcast::Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bullets, std::list<ExplosionDTO> &&explosions)
-        : Event(BROADCAST), players(std::move(players)), bullets(std::move(bullets)), explosions(std::move(explosions)) {}
-
-
 std::list<PlayerDTO> Broadcast::get_players() const { return players; }
 
 std::list<BulletDTO> Broadcast::get_bullets() const { return bullets; }

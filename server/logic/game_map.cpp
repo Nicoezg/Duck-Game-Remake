@@ -177,6 +177,24 @@ std::list<PlayerDTO> GameMap::getState() {
     return playersList;
 }
 
+std::list<CrateDTO> GameMap::getCratesState() {
+    // A implementar
+    std::list<CrateDTO> cratesList;
+    /* for (const auto &crate: map.getCrates()) {
+        cratesList.emplace_back(crate.toDTO());
+    } */
+    return cratesList;
+}
+
+std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
+    // A implementar
+    std::list<ItemSpawnDTO> itemSpawnsList;
+    /* for (const auto &itemSpawn: map.getItemSpawns()) {
+        itemSpawnsList.emplace_back(itemSpawn.toDTO());
+    } */
+    return itemSpawnsList;
+}
+
 void GameMap::reapDead() {
     auto it = std::remove_if(players.begin(), players.end(), [](Duck *player) {
         if (player->getState() == State::DEAD) {

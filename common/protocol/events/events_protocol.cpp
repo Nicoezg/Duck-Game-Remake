@@ -177,7 +177,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
     bullets.emplace_back(x, y, BulletId(id), angle, direction);
   }
 
-  /* std::vector<int8_t> size_crates_data(LEN_SIZE);
+  std::vector<int8_t> size_crates_data(LEN_SIZE);
   read(size_crates_data.data(), size_crates_data.size());
   int crates_len = encoder.decode_len(size_crates_data);
 
@@ -202,12 +202,12 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
 
   std::list<ItemSpawnDTO> item_spawns;
   for (int i = 0; i < item_spawns_len; i++){
-      ItemSpawnId item_spawn_id = encoder.decode_id(item_spawns_data);
+      auto item_spawn_id = ItemSpawnId(encoder.decode_id(item_spawns_data));
       int x = encoder.decode_coordinate(item_spawns_data);
       int y = encoder.decode_coordinate(item_spawns_data);
       item_spawns.emplace_back(item_spawn_id, x, y);
   }
-  */
+ 
   std::vector<int8_t> size_explosions_data(LEN_SIZE);
   read(size_explosions_data.data(), size_explosions_data.size());
   int explosions_len = encoder.decode_len(size_explosions_data);
@@ -230,8 +230,9 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
   std::vector<int8_t> data(
-      LEN_SIZE * 3 + event->get_players().size() * SEND_PLAYER_SIZE +
-      event->get_bullets().size() * SEND_BULLET_SIZE + SEND_EXPLOSION_SIZE*event->get_explosions().size() +EVENT_TYPE_SIZE);
+      LEN_SIZE * 5 + event->get_players().size() * SEND_PLAYER_SIZE +
+      event->get_bullets().size() * SEND_BULLET_SIZE + SEND_EXPLOSION_SIZE*event->get_explosions().size() + EVENT_TYPE_SIZE
+      + event->get_crates().size() * SEND_CRATE_SIZE + event->get_item_spawns().size() * SEND_ITEM_SPAWN_SIZE);
   size_t offset = 0;
   offset += encoder.encode_event_type(event->get_type(), &data[offset]);
 
@@ -241,9 +242,12 @@ void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
   offset += encoder.encode_len(event->get_bullets().size(), &data[offset]);
   add_bullets(event, data, offset);
 
-  /* offset += encoder.encode_len(event->get_crates().size(), &data[offset]);
-  add_crates(event, data, offset); 
-  */
+  offset += encoder.encode_len(event->get_crates().size(), &data[offset]);
+  add_crates(event, data, offset);
+
+  offset += encoder.encode_len(event->get_item_spawns().size(), &data[offset]);
+  add_item_spawns(event, data, offset);
+  
   offset += encoder.encode_len(event->get_explosions().size(), &data[offset]);
   add_explosions(event, data, offset);
 
