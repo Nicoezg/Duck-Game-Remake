@@ -192,9 +192,28 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
       bool is_hit = encoder.decode_is_right(crates_data);
       crates.emplace_back(x, y, hp, is_hit);
   }
+
+  std::vector<int8_t> size_item_spawns_data(LEN_SIZE);
+  read(size_item_spawns_data.data(), size_item_spawns_data.size());
+  int item_spawns_len = encoder.decode_len(size_item_spawns_data);
+
+  std::vector<int8_t> item_spawns_data(item_spawns_len * READ_ITEM_SPAWN_SIZE);
+  read(item_spawns_data.data(), item_spawns_data.size());
+
+  std::list<ItemSpawnDTO> item_spawns;
+  for (int i = 0; i < item_spawns_len; i++){
+      ItemSpawnId item_spawn_id = encoder.decode_id(item_spawns_data);
+      int x = encoder.decode_coordinate(item_spawns_data);
+      int y = encoder.decode_coordinate(item_spawns_data);
+      item_spawns.emplace_back(item_spawn_id, x, y);
+  }
     
   std::vector<int8_t> size_explosions_data(LEN_SIZE);
   read(size_explosions_data.data(), size_explosions_data.size());
+  int explosions_len = encoder.decode_len(size_explosions_data);
+
+  std::vector<int8_t> explosions_data(explosions_len * READ_EXPLOSION_SIZE);
+  read(explosions_data.data(), explosions_data.size());
 
   std::list<Explosion> explosions;
   for (int i = 0; i < explosions_len; i++){
@@ -202,11 +221,12 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
       int y = encoder.decode_coordinate(explosions_data);
       uint8_t current_duration = encoder.decode_id(explosions_data);
       explosions.emplace_back(x, y, current_duration);
-  } */
+  } 
+  */
 
   return std::make_shared<Broadcast>(
       std::move(players), std::move(bullets), std::list<CrateDTO>(),
-      std::list<WeaponDTO>(), std::list<ExplosionDTO>());
+      std::list<ItemSpawnDTO>(), std::list<ExplosionDTO>());
 }
 
 void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
@@ -251,6 +271,17 @@ void EventsProtocol::add_crates(const std::shared_ptr<Event> &event,
     offset += encoder.encode_coordinate(crate.get_position_y(), &data[offset]);
     offset += encoder.encode_is_right(crate.get_hp(), &data[offset]);
     offset += encoder.encode_is_right(crate.was_hit(), &data[offset]);
+  }
+}
+
+void EventsProtocol::add_item_spawns(const std::shared_ptr<Event> &event,
+                                     std::vector<int8_t> &data, size_t &offset) {
+  for (const auto &item_spawn : event->get_item_spawns()) {
+    offset += encoder.encode_id(item_spawn.get_id(), &data[offset]);
+    offset += encoder.encode_coordinate(item_spawn.get_position_x(),
+                                        &data[offset]);
+    offset += encoder.encode_coordinate(item_spawn.get_position_y(),
+                                        &data[offset]);
   }
 }
 
