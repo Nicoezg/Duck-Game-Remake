@@ -18,6 +18,7 @@
 #define PLAYER_ID_SIZE sizeof(uint16_t)
 #define MAX_PLAYER_SIZE sizeof(uint8_t)
 #define IS_RIGHT_SIZE sizeof(uint8_t)
+#define LEN_SIZE sizeof(uint8_t)
 
 #define READ_JOIN_SIZE (GAME_CODE_SIZE + GAME_MODE_SIZE)
 #define READ_CREATE_SIZE (GAME_MODE_SIZE + MAX_PLAYER_SIZE)
@@ -100,6 +101,10 @@ public:
   std::shared_ptr<Action> read_pick_drop_action();
 
   void send_start(const std::shared_ptr<Action> &action);
+
+    std::string read_player_name();
+
+    void add_name(const std::string &name, std::vector<int8_t> &data, size_t &offset);
 };
 
 #endif // TALLER_TP_ACTIONS_PROTOCOL_H

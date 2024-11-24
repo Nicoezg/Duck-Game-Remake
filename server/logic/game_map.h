@@ -62,6 +62,8 @@ public:
     void checkBulletCollisionWithPlayers();
 
     bool checkFinished();
+
+
 };
 
 #endif

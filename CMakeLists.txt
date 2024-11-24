@@ -85,6 +85,8 @@ add_library(COMMON STATIC
         common/events/connection/start_game.h
         common/actions/connection/start.cpp
         common/actions/connection/start.h
+        common/events/connection/player_data.cpp
+        common/events/connection/player_data.h
 )
 
 # add the source files that make the lib

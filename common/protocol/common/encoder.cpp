@@ -314,3 +314,18 @@ int Encoder::decode_score(std::vector<int8_t> &data) {
     data.erase(data.begin(), data.begin() + sizeof(int16_t));
     return score;
 }
+
+std::string Encoder::decode_string(std::vector<int8_t> &data, size_t len) {
+    if (data.size() < len) {
+        throw std::runtime_error(
+                "No hay suficientes bytes para decodificar el string.");
+    }
+    std::string str(data.begin(), data.begin() + len);
+    data.erase(data.begin(), data.begin() + len);
+    return str;
+}
+
+size_t Encoder::encode_string(const std::string &str, void *data, size_t len) {
+    std::memcpy(data, str.c_str(), len);
+    return len;
+}

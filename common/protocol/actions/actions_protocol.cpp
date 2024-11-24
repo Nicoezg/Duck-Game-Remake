@@ -24,7 +24,10 @@ std::shared_ptr<Action> ActionsProtocol::read_create_action() {
     read(data.data(), data.size());
     GameMode game_mode = encoder.decode_game_mode(data);
     int max_players = encoder.decode_max_players(data);
-    return std::make_shared<Create>(game_mode, max_players);
+    std::string game_name = read_player_name();
+    std::string player_name_1 = read_player_name();
+    std::string player_name_2 = read_player_name();
+    return std::make_shared<Create>(game_mode, max_players, game_name, player_name_1, player_name_2);
 }
 
 std::shared_ptr<Action> ActionsProtocol::read_join_action() {
@@ -32,7 +35,9 @@ std::shared_ptr<Action> ActionsProtocol::read_join_action() {
     read(data.data(), data.size());
     int game_code = encoder.decode_game_code(data);
     GameMode game_mode = encoder.decode_game_mode(data);
-    return std::make_shared<Join>(game_code, game_mode);
+    std::string player_name_1 = read_player_name();
+    std::string player_name_2 = read_player_name();
+    return std::make_shared<Join>(game_code, game_mode, player_name_1, player_name_2);
 }
 
 std::shared_ptr<Action> ActionsProtocol::read_element() {
@@ -116,20 +121,28 @@ void ActionsProtocol::send_refresh_action(const std::shared_ptr<Action> &action)
 
 void ActionsProtocol::send_create_action(
         const std::shared_ptr<Action> &action) {
-    std::vector<int8_t> data(SEND_CREATE_SIZE);
+    int player_names_size = LEN_SIZE * 3 + action->get_game_name().size() +
+            action->get_player_name_1().size() + action->get_player_name_2().size();
+    std::vector<int8_t> data(SEND_CREATE_SIZE + player_names_size);
     size_t offset = 0;
     offset += encoder.encode_action_type(action->get_type(), &data[offset]);
     offset += encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
     offset += encoder.encode_max_players(action->get_max_players(), &data[offset]);
-    send(data.data(), SEND_CREATE_SIZE);
+    add_name(action->get_game_name(), data, offset);
+    add_name(action->get_player_name_1(), data, offset);
+    add_name(action->get_player_name_2(), data, offset);
+    send(data.data(), data.size());
 }
 
 void ActionsProtocol::send_join_action(const std::shared_ptr<Action> &action) {
-    std::vector<int8_t> data(SEND_JOIN_SIZE);
+    int player_names_size = LEN_SIZE * 2 + action->get_player_name_1().size() + action->get_player_name_2().size();
+    std::vector<int8_t> data(SEND_JOIN_SIZE + player_names_size);
     size_t offset = 0;
     offset += encoder.encode_action_type(action->get_type(), &data[offset]);
     offset += encoder.encode_game_code(action->get_game_code(), &data[offset]);
     offset += encoder.encode_game_mode(action->get_game_mode(), &data[offset]);
+    add_name(action->get_player_name_1(), data, offset);
+    add_name(action->get_player_name_2(), data, offset);
     send(data.data(), data.size());
 }
 
@@ -257,4 +270,24 @@ std::shared_ptr<Action> ActionsProtocol::read_pick_drop_action() {
     int player_id = encoder.decode_player_id(data);
     bool is_right = encoder.decode_is_right(data);
     return std::make_shared<PickDrop>(player_id, is_right);
+}
+
+std::string ActionsProtocol::read_player_name() {
+    std::vector<int8_t> data(LEN_SIZE);
+    read(data.data(), data.size());
+    int len = encoder.decode_len(data);
+    if (len == 0) {
+        return "";
+    }
+    data.resize(len);
+    read(data.data(), data.size());
+    return encoder.decode_string(data, len);
+}
+
+void ActionsProtocol::add_name(const std::string &name, std::vector<int8_t> &data, size_t &offset) {
+    offset += encoder.encode_len(name.size(), &data[offset]);
+    if (name.empty()) {
+        return;
+    }
+    offset += encoder.encode_string(name, &data[offset], name.size());
 }

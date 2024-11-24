@@ -24,10 +24,6 @@ private:
   GameMode game_mode;
   bool connected;
 
-  std::string player_1_name;
-    std::string player_2_name;
-
-
   void assign_player_ids(std::shared_ptr<Event> &event);
 
 public:
@@ -46,10 +42,6 @@ public:
     int get_player_id_1() const;
 
     int get_player_id_2() const;
-
-    void set_player_1_name(std::string name);
-
-    void set_player_2_name(std::string name);
 
     std::shared_ptr<Event> read_event();
 

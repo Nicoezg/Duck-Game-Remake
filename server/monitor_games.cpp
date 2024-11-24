@@ -3,12 +3,12 @@
 
 MonitorGames::MonitorGames() : mtx(), games(), last_game_id(0) {}
 
-int MonitorGames::create_game(int max_players) {
+int MonitorGames::create_game(std::string game_name, int max_players) {
   std::lock_guard<std::mutex> lock(mtx);
 
   last_game_id++;
 
-  games[last_game_id] = std::make_unique<Game>(max_players);
+  games[last_game_id] = std::make_unique<Game>(game_name, max_players);
   games[last_game_id]->start();
 
   return last_game_id;
@@ -23,26 +23,14 @@ bool MonitorGames::game_exists(int game_id) {
   return true;
 }
 
-int MonitorGames::get_player_id(int game_id, int new_players) {
+int MonitorGames::get_player_id(int game_id, int new_players, std::string player_name) {
   std::lock_guard<std::mutex> lock(mtx);
 
   auto it = games.find(game_id);
   if (it != games.end() && !it->second->is_full(new_players)) {
-    return it->second->get_next_player_id();
+    return it->second->get_next_player_id(player_name);
   }
   throw std::runtime_error("Game not found or full");
-}
-
-int MonitorGames::get_player_id_admin(int game_id, int new_players) {
-    std::lock_guard<std::mutex> lock(mtx);
-
-    auto it = games.find(game_id);
-    if (it != games.end() && !it->second->is_full(new_players)) {
-        auto id = it->second->get_next_player_id();
-        it->second->add_admin_id(id);
-        return id;
-    }
-    throw std::runtime_error("Game not found or full");
 }
 
 void MonitorGames::add_to_game(int game_id, Socket &&client) {

@@ -16,10 +16,10 @@
 
 #define TIME_LOOP 20
 
-Game::Game(int max_players)
-        : commands(), notifier(&commands), running(true), next_player_id(0),
-          players(), actual_players(0), max_players(max_players), started(false),
-          admin_ids(), gameMap() {
+Game::Game(std::string name, int max_players)
+        : name(name), commands(), notifier(&commands), running(true), next_player_id(0),
+          actual_players(0), max_players(max_players), started(false),
+          gameMap(), players() {
 }
 
 void Game::add(Socket &&socket) {
@@ -31,31 +31,22 @@ bool Game::is_full(int new_players) const {
     return actual_players + new_players > max_players;
 }
 
-int Game::get_next_player_id() {
+int Game::get_next_player_id(std::string player_name) {
     next_player_id++;
-
+    players[next_player_id] = player_name;
     gameMap.addPlayer(next_player_id);
     actual_players++;
-    return next_player_id;
-}
 
-void Game::add_admin_id(int id) {
-    if (id <= actual_players) {
-        admin_ids.push_back(id);
+    for (auto &player : players) {
+        std::cout << "Game: " << name << "Id: "<< player.first << " | name:  " << player.second << std::endl;
     }
+    return next_player_id;
 }
 
 void Game::notify_event(std::shared_ptr<Event> &event) {
     notifier.notify(event);
 }
 
-std::list<PlayerDTO> Game::get_players() {
-    std::list<PlayerDTO> players_list;
-    for (auto &player: players) {
-        players_list.push_back(player.second);
-    }
-    return players_list;
-}
 
 void Game::valid_start() {
     std::shared_ptr<Action> action;
@@ -119,11 +110,17 @@ void Game::close() {
     notifier.close();
 }
 
-bool Game::is_running() const { return running; }
+bool Game::is_running() const {
+    return running;
+}
 
-int Game::get_max_players() const { return max_players; }
+int Game::get_max_players() const {
+    return max_players;
+}
 
-int Game::get_actual_players() const { return actual_players; }
+int Game::get_actual_players() const {
+    return actual_players;
+}
 
 bool Game::is_started() const { return started; }
 

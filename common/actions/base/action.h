@@ -4,6 +4,7 @@
 #include "action_macros.h"
 #include "common/game_mode.h"
 #include <string>
+#include <vector>
 
 class Action {
 private:
@@ -15,6 +16,12 @@ public:
   ActionType get_type() const;
 
   virtual ~Action() = default;
+
+  virtual std::string get_player_name_1() const;
+
+  virtual std::string get_player_name_2() const;
+
+  virtual std::string get_game_name() const;
 
   virtual int get_player_id() const;
 

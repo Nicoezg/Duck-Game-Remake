@@ -115,12 +115,18 @@ void MainWindow::on_Create_clicked() {
 
 void MainWindow::on_connectCreat_clicked() {
     std::shared_ptr<Action> action;
+    std::string game_name = ui->LobbyName->text().toStdString();
     int max_players = ui->LimitPlayerQuantity->currentText().toInt();
-    if (ui->GameModeCreate->currentIndex() == 0) {
-        action = std::make_shared<Create>(UN_JUGADOR, max_players);
-    } else {
-        action = std::make_shared<Create>(DOS_JUGADORES, max_players);
+    std::string player_name_1 = ui->player1namecreate->text().toStdString();
+    std::string player_name_2;
+
+    GameMode mode = UN_JUGADOR;
+    if (ui->GameModeCreate->currentIndex() != 0) {
+        mode = DOS_JUGADORES;
+        player_name_2 = ui->player2namecreate->text().toStdString();
     }
+
+    action = std::make_shared<Create>(mode, max_players, game_name, player_name_1, player_name_2);
 
     client->send_action(action);
 
@@ -164,14 +170,17 @@ void MainWindow::on_refreshButton_clicked() {
 }
 
 void MainWindow::on_Connect_clicked() {
-  GameMode mode = UN_JUGADOR;
+    std::string player_name_1 = ui->Player1NameJoin->text().toStdString();
+    std::string player_name_2;
 
-  if (ui->GameModeJoin->currentIndex() == 1) {
-    mode = DOS_JUGADORES;
-  }
+    GameMode mode = UN_JUGADOR;
+    if (ui->GameModeCreate->currentIndex() != 0) {
+        mode = DOS_JUGADORES;
+        player_name_2 = ui->Player2NameJoin->text().toStdString();
+    }
 
   int game_code = client->get_game_code();
-  std::shared_ptr<Action> action = std::make_shared<Join>(game_code, mode);
+  std::shared_ptr<Action> action = std::make_shared<Join>(game_code, mode, player_name_1, player_name_2);
 
   client->send_action(action);
 

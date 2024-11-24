@@ -15,13 +15,18 @@ class Join : public Action {
 private:
   int game_code;
   GameMode game_mode;
-
+    std::string player_name_1;
+    std::string player_name_2;
 public:
-  explicit Join(int &game_code, GameMode game_mode);
+  explicit Join(int &game_code, GameMode game_mode, std::string &player_name_1, std::string &player_name_2);
 
   int get_game_code() const override;
 
   GameMode get_game_mode() const override;
+
+    std::string get_player_name_1() const override;
+
+    std::string get_player_name_2() const override;
 };
 
 #endif // TALLER_TP_JOIN_H

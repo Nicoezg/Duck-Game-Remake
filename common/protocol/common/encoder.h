@@ -87,6 +87,10 @@ public:
     size_t encode_score(int16_t score, void *data);
 
     int decode_score(std::vector<int8_t> &data);
+
+    std::string decode_string(std::vector<int8_t> &data, size_t len);
+
+    size_t encode_string(const std::string &str, void *data, size_t len);
 };
 
 #endif // TALLER_TP_ENCODER_H
