@@ -16,7 +16,7 @@ Game::Game(Client &client) try: client(client),
                                 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
                                        WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
                                 renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,640,480}), map(renderer), ducks(), crates(),
-                                bullets(), weaponSpawns(), explosions(), weapon(renderer), helmet(renderer), chestplate(renderer),
+                                bullets(), itemSpawns(), explosions(), item(renderer),
                                 bullet(renderer), crate(renderer), explosion(renderer), mutex(), stop(false), pause(false) {
 } catch (std::exception &e) {
     throw std::exception();
@@ -124,7 +124,6 @@ void Game::update(const Event &broadcast) {
         for (auto &player: broadcast.get_players()) {
             std::shared_ptr duck = std::make_shared<Duck>(renderer, player.get_player_id());
             duck->loadTextures();
-            std::cout << "cargo player " << player.get_player_id() << std::endl;
             ducks.push_back(duck);
 
         }
@@ -136,7 +135,7 @@ void Game::update(const Event &broadcast) {
     camera.update(playerRects);
 
     bullets = broadcast.get_bullets();
-    weaponSpawns = broadcast.get_weapons();
+    // itemSpawns = broadcast.get_item_spawns();
     crates = broadcast.get_crates();
     // explosions = broadcast.get_explosions();
 }
@@ -204,6 +203,9 @@ int Game::render() {
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
     map.render();
+    for (auto &itemSpawn: itemSpawns) { // Dibujo los items que spawnean
+        item.render(itemSpawn);
+    }
     for (auto &duck: ducks) {
         duck->render();
     }
@@ -212,10 +214,6 @@ int Game::render() {
     }
     for (auto &bulletDTO: bullets) { // Dibujo las balas
         bullet.render(bulletDTO);
-    }
-
-    for (auto &weaponDTO: weaponSpawns) { // Dibujo las armas que spawnearon
-        weapon.render(weaponDTO);
     }
     for (auto &explosionDTO: explosions){
         explosion.render(explosionDTO);
