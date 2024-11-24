@@ -59,6 +59,8 @@ public:
 
   std::list<ItemSpawnDTO> getItemSpawnsState();
 
+  void bulletCollisions();
+
   MapDTO getMapDTO();
   
   Map getMap();

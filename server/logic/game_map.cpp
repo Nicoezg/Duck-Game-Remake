@@ -13,7 +13,6 @@
 GameMap::GameMap() { map = mapLoader.getNextMap(); }
 
 void GameMap::addPlayer(int player_id) {
-
     Duck *duck =
             new Duck(player_id, 10 * player_id, (map.getGroundLevel() * 16), *this);
     players.push_back(duck);
@@ -57,7 +56,8 @@ void GameMap::update() {
                                  }),
                   bullets.end());
 
-    checkBulletCollisionWithPlayers();
+    //checkBulletCollisionWithPlayers();
+    bulletCollisions();
 
     for (const auto &throwable: throwables) {
         throwable->update();
@@ -80,7 +80,8 @@ void GameMap::update() {
                      explosions.end());
 
 }
-void GameMap::checkBulletCollisionWithPlayers() {
+
+/*void GameMap::checkBulletCollisionWithPlayers() {
     for (auto player: players) {
         if (player->getState() == State::DEAD) {
             continue;
@@ -93,7 +94,7 @@ void GameMap::checkBulletCollisionWithPlayers() {
             }
         }
     }
-}
+} */
 
 bool GameMap::checkCollisionsWithBorders(int playerId) {
     Duck *player = findPlayer(playerId);
@@ -193,6 +194,30 @@ std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
         itemSpawnsList.emplace_back(itemSpawn.toDTO());
     } */
     return itemSpawnsList;
+}
+
+void GameMap::bulletCollisions() {
+
+    for (const auto &player : players) {
+
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
+        
+        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+        for (auto it = bullets.begin(); it != bullets.end();) {
+
+            hitBox bulletBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 1};
+            if (hitBox::isColliding(duckBox, bulletBox) && player->getId() != (*it)->getOwnerId()) {
+               
+                player->takeDamage();
+                it = bullets.erase(it);
+                break; 
+            } else {
+                ++it; 
+            }
+        }
+    }
 }
 
 void GameMap::reapDead() {
