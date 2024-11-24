@@ -6,11 +6,10 @@
 class ThrownGrenade : public Throwable {
 private:      
   int framesToExplode; 
-  Duck *owner;
   bool ownerHasGrenade;
 
 public:
-  ThrownGrenade(GameMap &map,Duck *owner,bool isRight,int pos_x,int pos_y,int framesToexplode):Throwable(map,isRight,pos_x,pos_y,5) , framesToExplode(framesToexplode),owner(owner) {
+  ThrownGrenade(GameMap &map,bool isRight,int pos_x,int pos_y,int framesToexplode):Throwable(map,isRight,pos_x,pos_y,5) , framesToExplode(framesToexplode) {
   }
   void update() override;
 

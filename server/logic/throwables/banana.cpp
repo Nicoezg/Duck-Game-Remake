@@ -11,7 +11,7 @@ void ThrownBanana::update() {
     } else {
         pos_x -= 1;
     }
-    pos_y -= CONFIG.getDuckConfig().getGravity();
+    pos_y += CONFIG.getDuckConfig().getGravity();
 
 }    
 
