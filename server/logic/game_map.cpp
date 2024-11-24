@@ -62,8 +62,24 @@ void GameMap::update() {
     for (const auto &throwable: throwables) {
         throwable->update();
     }
-}
 
+    throwables.erase(std::remove_if(throwables.begin(), throwables.end(),
+                                    [](const std::shared_ptr<Throwable> &throwable) {
+                                        return throwable->isOver();
+                                    }),
+                     throwables.end());
+
+    for (const auto &explosion: explosions) {
+        explosion->update();
+    }
+
+    explosions.erase(std::remove_if(explosions.begin(), explosions.end(),
+                                    [](const std::shared_ptr<Explosion> &explosion) {
+                                        return explosion->isOver();
+                                    }),
+                     explosions.end());
+
+}
 void GameMap::checkBulletCollisionWithPlayers() {
     for (auto player: players) {
         if (player->getState() == State::DEAD) {

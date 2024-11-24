@@ -33,7 +33,7 @@ public:
             std::list<CrateDTO> &&crates, std::list<ItemSpawnDTO> &&item_spawns,
             std::list<ExplosionDTO> &&explosions);
 
-  Broadcast(std::list<PlayerDTO> &&players,  std::list<BulletDTO> &&bullets);
+  Broadcast(std::list<PlayerDTO> &&players,  std::list<BulletDTO> &&bullets,std::list<ExplosionDTO> &&explosions);
 
   std::list<PlayerDTO> get_players() const override;
 

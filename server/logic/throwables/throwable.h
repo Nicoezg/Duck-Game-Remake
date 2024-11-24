@@ -25,7 +25,9 @@ public:
     int getPosX() const { return pos_x; }
     int getPosY() const { return pos_y; }
 
-    BulletDTO toDTO() const;
+    virtual bool isOver() const=0;
+
+    virtual BulletDTO toDTO() const=0;
 };
 
 

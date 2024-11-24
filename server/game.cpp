@@ -23,7 +23,7 @@ Game::Game(int max_players)
 }
 
 void Game::add(Socket &&socket) {
-    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(), get_max_players()));
+    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(), get_max_players(),));
     notifier.subscribe(std::move(socket));
 }
 
@@ -110,7 +110,7 @@ void Game::process_action(std::shared_ptr<Action> &action) {
 }
 
 void Game::notify_state() {
-    std::shared_ptr<Event> event = std::make_shared<Broadcast>(gameMap.getState(), gameMap.getBulletsState());
+    std::shared_ptr<Event> event = std::make_shared<Broadcast>(gameMap.getState(), gameMap.getBulletsState(),gameMap.getExplosionsState());
     notify_event(event);
 }
 

@@ -31,6 +31,7 @@ target_sources(SERVER
         logic/bullets/bullet.cpp
         logic/throwables/throwable.cpp
         logic/throwables/grenade.cpp
+        logic/throwables/banana.cpp
 
         logic/collisions/collision_radius.cpp
         logic/collisions/collision_radius.h
@@ -72,6 +73,7 @@ target_sources(SERVER
         logic/bullets/bullet.h
         logic/throwables/throwable.h
         logic/throwables/grenade.h
+        logic/throwables/banana.h
 
 
         configs/configurations.h
