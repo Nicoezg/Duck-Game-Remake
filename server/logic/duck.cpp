@@ -4,6 +4,7 @@
 #include "server/logic/weapons/cowboy.h"
 #include "server/logic/weapons/duelos.h"
 #include "server/logic/weapons/grenade.h"
+#include "server/logic/weapons/banana.h"
 #include "server/logic/weapons/laser_rifle.h"
 #include "server/logic/weapons/magnum.h"
 #include "server/logic/weapons/no_weapon.h"
@@ -34,7 +35,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<Magnum>(map);
+  weapon = std::make_unique<Banana>(map);
   hasWeapon = true;
   hasHelmet = true;
   hasArmour = true;

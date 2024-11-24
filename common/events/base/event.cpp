@@ -40,7 +40,7 @@ std::list<CrateDTO> Event::get_crates() const {
     throw std::runtime_error("Has no crates.");
 }
 
-std::list<WeaponDTO> Event::get_weapons() const {
+std::list<ItemSpawnDTO> Event::get_item_spawns() const {
     throw std::runtime_error("Has no weapons.");
 }
 

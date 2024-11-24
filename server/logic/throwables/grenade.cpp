@@ -11,7 +11,9 @@ void ThrownGrenade::update() {
   } else {
     pos_x -= 1;
   }
-  pos_y-=CONFIG.getDuckConfig().getGravity();
+  if (pos_y < map.getMap().getGroundLevel() * 16) {
+    pos_y += 1;
+  }
 
   if (framesToExplode == 0) {
     map.addExplosion(std::make_unique<Explosion>(map,pos_x, pos_y));
@@ -19,4 +21,6 @@ void ThrownGrenade::update() {
 
   
 }
+
+
 

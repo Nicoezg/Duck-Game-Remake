@@ -8,7 +8,7 @@ target_sources(CLIENT
     draw_crate.cpp
     draw_map.cpp
     draw_explosion.cpp
-    draw_weapon_spawn.cpp
+    draw_item.cpp
     
     PUBLIC
     draw_helmet.h
@@ -18,6 +18,6 @@ target_sources(CLIENT
     draw_crate.h
     draw_map.h
     draw_explosion.h
-    draw_weapon_spawn.h
+    draw_item.h
     # .h files
     )

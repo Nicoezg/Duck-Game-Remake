@@ -17,7 +17,7 @@
 #include "draw/draw_crate.h"
 #include "draw/draw_map.h"
 #include "draw/draw_explosion.h"
-#include "draw/draw_weapon_spawn.h"
+#include "draw/draw_item.h"
 #include "../../common/events/base/event.h"
 #include "../../common/events/map.h"
 #include "../../common/events/score.h"
@@ -52,15 +52,11 @@ class Game{
 
         std::list<BulletDTO> bullets;
 
-        std::list<WeaponDTO> weaponSpawns;
+        std::list<ItemSpawnDTO> itemSpawns;
 
         std::list<ExplosionDTO> explosions;
 
-        DrawWeaponSpawn weapon;
-
-        DrawHelmet helmet;
-
-        DrawChestplate chestplate;
+        DrawItemSpawn item;
 
         DrawBullet bullet;
 

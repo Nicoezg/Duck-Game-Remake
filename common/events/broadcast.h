@@ -10,6 +10,7 @@
 #include "items/bullet_dto.h"
 #include "items/crate.h"
 #include "items/explosion.h"
+#include "items/item_spawn.h"
 #include "player.h"
 #include <list>
 #include <string>
@@ -23,16 +24,16 @@ private:
 
   std::list<CrateDTO> crates;
 
-  std::list<WeaponDTO> weapons; // Estos weapons son los que spawnean en el mapa
+  std::list<ItemSpawnDTO> item_spawns; // Estos son los items que pueden aparecer en el mapa o al romper cajas.
 
   std::list<ExplosionDTO> explosions;
 
 public:
   Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bullets,
-            std::list<CrateDTO> &&crates, std::list<WeaponDTO> &&weapons,
+            std::list<CrateDTO> &&crates, std::list<ItemSpawnDTO> &&item_spawns,
             std::list<ExplosionDTO> &&explosions);
 
-  Broadcast(std::list<PlayerDTO> &&players,  std::list<BulletDTO> &&bullets);
+  Broadcast(std::list<PlayerDTO> &&players,  std::list<BulletDTO> &&bullets,std::list<ExplosionDTO> &&explosions);
 
   std::list<PlayerDTO> get_players() const override;
 
@@ -40,7 +41,7 @@ public:
 
   std::list<CrateDTO> get_crates() const override;
 
-  std::list<WeaponDTO> get_weapons() const override;
+  std::list<ItemSpawnDTO> get_item_spawns() const override;
 
   std::list<ExplosionDTO> get_explosions() const override;
 };

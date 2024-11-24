@@ -11,6 +11,7 @@
 #include "../tile.h"
 #include "common/events/connection/game_room.h"
 #include "common/events/items/weapon_dto.h"
+#include "common/events/items/item_spawn.h"
 #include "common/events/player.h"
 #include "event_type.h"
 #include "common/events/connection/player_data.h"
@@ -45,7 +46,7 @@ public:
 
   virtual std::list<CrateDTO> get_crates() const;
 
-  virtual std::list<WeaponDTO> get_weapons() const;
+  virtual std::list<ItemSpawnDTO> get_item_spawns() const;
 
   virtual std::list<ExplosionDTO> get_explosions() const;
 

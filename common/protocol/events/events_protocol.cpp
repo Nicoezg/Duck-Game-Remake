@@ -190,37 +190,57 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
     std::vector<int8_t> crates_data(crates_len * READ_CRATE_SIZE);
     read(crates_data.data(), crates_data.size());
 
-    std::list<CrateDTO> crates;
-    for (int i = 0; i < crates_len; i++) {
-        int x = encoder.decode_coordinate(crates_data);
-        int y = encoder.decode_coordinate(crates_data);
-        uint8_t hp = encoder.decode_is_right(crates_data);
-        bool is_hit = encoder.decode_is_right(crates_data);
-        crates.emplace_back(x, y, hp, is_hit);
-    }
+  std::list<CrateDTO> crates;
+  for (int i = 0; i < crates_len; i++) {
+      int x = encoder.decode_coordinate(crates_data);
+      int y = encoder.decode_coordinate(crates_data);
+      uint8_t hp = encoder.decode_is_right(crates_data);
+      bool is_hit = encoder.decode_is_right(crates_data);
+      crates.emplace_back(x, y, hp, is_hit);
+  }
 
-    std::vector<int8_t> size_explosions_data(LEN_SIZE);
-    read(size_explosions_data.data(), size_explosions_data.size());
+  std::vector<int8_t> size_item_spawns_data(LEN_SIZE);
+  read(size_item_spawns_data.data(), size_item_spawns_data.size());
+  int item_spawns_len = encoder.decode_len(size_item_spawns_data);
 
-    std::list<Explosion> explosions;
-    for (int i = 0; i < explosions_len; i++){
-        int x = encoder.decode_coordinate(explosions_data);
-        int y = encoder.decode_coordinate(explosions_data);
-        uint8_t current_duration = encoder.decode_id(explosions_data);
-        explosions.emplace_back(x, y, current_duration);
-    } */
+  std::vector<int8_t> item_spawns_data(item_spawns_len * READ_ITEM_SPAWN_SIZE);
+  read(item_spawns_data.data(), item_spawns_data.size());
 
-    return std::make_shared<Broadcast>(
-            std::move(players), std::move(bullets), std::list<CrateDTO>(),
-            std::list<WeaponDTO>(), std::list<ExplosionDTO>());
+  std::list<ItemSpawnDTO> item_spawns;
+  for (int i = 0; i < item_spawns_len; i++){
+      auto item_spawn_id = ItemSpawnId(encoder.decode_id(item_spawns_data));
+      int x = encoder.decode_coordinate(item_spawns_data);
+      int y = encoder.decode_coordinate(item_spawns_data);
+      item_spawns.emplace_back(item_spawn_id, x, y);
+  }
+
+  std::vector<int8_t> size_explosions_data(LEN_SIZE);
+  read(size_explosions_data.data(), size_explosions_data.size());
+  int explosions_len = encoder.decode_len(size_explosions_data);
+
+  std::vector<int8_t> explosions_data(explosions_len * READ_EXPLOSION_SIZE);
+  read(explosions_data.data(), explosions_data.size());
+
+  std::list<ExplosionDTO> explosions;
+  for (int i = 0; i < explosions_len; i++){
+      int x = encoder.decode_coordinate(explosions_data);
+      int y = encoder.decode_coordinate(explosions_data);
+      uint8_t current_duration = encoder.decode_id(explosions_data);
+      explosions.emplace_back(x, y, current_duration);
+  }
+
+  return std::make_shared<Broadcast>(
+      std::move(players), std::move(bullets), std::list<CrateDTO>(),
+      std::list<ItemSpawnDTO>(), std::move(explosions));
 }
 
-void EventsProtocol::send_broadcast(const Event &event) {
-    std::vector<int8_t> data(
-            LEN_SIZE * 2 + event.get_players().size() * SEND_PLAYER_SIZE +
-            event.get_bullets().size() * SEND_BULLET_SIZE + EVENT_TYPE_SIZE);
-    size_t offset = 0;
-    offset += encoder.encode_event_type(event.get_type(), &data[offset]);
+void EventsProtocol::send_broadcast(const std::shared_ptr<Event> &event) {
+  std::vector<int8_t> data(
+      LEN_SIZE * 5 + event->get_players().size() * SEND_PLAYER_SIZE +
+      event->get_bullets().size() * SEND_BULLET_SIZE + SEND_EXPLOSION_SIZE*event->get_explosions().size() + EVENT_TYPE_SIZE
+      + event->get_crates().size() * SEND_CRATE_SIZE + event->get_item_spawns().size() * SEND_ITEM_SPAWN_SIZE);
+  size_t offset = 0;
+  offset += encoder.encode_event_type(event->get_type(), &data[offset]);
 
     offset += encoder.encode_len(event.get_players().size(), &data[offset]);
     add_players(event, data, offset); // increase offset inplace
@@ -228,13 +248,15 @@ void EventsProtocol::send_broadcast(const Event &event) {
     offset += encoder.encode_len(event.get_bullets().size(), &data[offset]);
     add_bullets(event, data, offset);
 
-    /* offset += encoder.encode_len(event.get_crates().size(), &data[offset]);
-    add_crates(event, data, offset);
+  offset += encoder.encode_len(event->get_crates().size(), &data[offset]);
+  add_crates(event, data, offset);
 
-    offset += encoder.encode_len(event.get_explosions().size(), &data[offset]);
-    add_explosions(event, data, offset)
+  offset += encoder.encode_len(event->get_item_spawns().size(), &data[offset]);
+  add_item_spawns(event, data, offset);
 
-    */
+  offset += encoder.encode_len(event->get_explosions().size(), &data[offset]);
+  add_explosions(event, data, offset);
+
 
     send(data.data(), data.size());
 }
@@ -260,7 +282,18 @@ void EventsProtocol::add_crates(const Event &event,
     }
 }
 
-void EventsProtocol::add_explosions(const Event &event,
+void EventsProtocol::add_item_spawns(const std::shared_ptr<Event> &event,
+                                     std::vector<int8_t> &data, size_t &offset) {
+  for (const auto &item_spawn : event->get_item_spawns()) {
+    offset += encoder.encode_id(item_spawn.get_id(), &data[offset]);
+    offset += encoder.encode_coordinate(item_spawn.get_position_x(),
+                                        &data[offset]);
+    offset += encoder.encode_coordinate(item_spawn.get_position_y(),
+                                        &data[offset]);
+  }
+}
+
+void EventsProtocol::add_explosions(const std::shared_ptr<Event> &event,
                                     std::vector<int8_t> &data, size_t &offset) {
     for (const auto &explosion: event.get_explosions()) {
         offset += encoder.encode_coordinate(explosion.get_position_x(),
@@ -399,18 +432,17 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
                                    READ_BACKGROUND_SIZE);
     read(tiles_data.data(), tiles_data.size());
 
-    std::list<Tile> tiles;
-    for (int i = 0; i < tiles_len; i++) {
-        int start_x = encoder.decode_coordinate(tiles_data);
-        int end_x = encoder.decode_coordinate(tiles_data);
-        int y = encoder.decode_coordinate(tiles_data);
-        int tile_id = encoder.decode_tile_id(tiles_data);
-        tiles.emplace_back(start_x, end_x, y, tile_id);
-    }
-    int background_id = encoder.decode_background_id(tiles_data);
-    int width = encoder.decode_coordinate(tiles_data);
-    int length = encoder.decode_coordinate(tiles_data);
-    // std::cout << data.size() << std::endl;
+  std::list<Tile> tiles;
+  for (int i = 0; i < tiles_len; i++) {
+    int start_x = encoder.decode_coordinate(tiles_data);
+    int end_x = encoder.decode_coordinate(tiles_data);
+    int y = encoder.decode_coordinate(tiles_data);
+    int tile_id = encoder.decode_tile_id(tiles_data);
+    tiles.emplace_back(start_x, end_x, y, tile_id);
+  }
+  int background_id = encoder.decode_background_id(tiles_data);
+  int width = encoder.decode_coordinate(tiles_data);
+  int length = encoder.decode_coordinate(tiles_data);
 
     return std::make_shared<MapDTO>(std::move(tiles), background_id, width,
                                     length);
