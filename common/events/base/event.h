@@ -13,6 +13,7 @@
 #include "common/events/items/weapon_dto.h"
 #include "common/events/player.h"
 #include "event_type.h"
+#include "common/events/connection/player_data.h"
 #include <list>
 #include <vector>
 
@@ -24,9 +25,11 @@ private:
 public:
   explicit Event(EventType type);
 
-  EventType get_type();
+  EventType get_type() const ;
 
   virtual bool is_connected() const;
+
+  virtual std::list<PlayerData> get_players_data() const;
 
   virtual int get_game_code() const;
 
@@ -50,7 +53,9 @@ public:
 
   virtual int get_actual_players() const;
 
-  virtual std::list<GameRoom> get_games();
+  virtual std::list<GameRoom> get_games() const;
+
+  virtual GameRoom get_game_room() const;
 
   virtual std::list<Tile> get_platforms() const;
 

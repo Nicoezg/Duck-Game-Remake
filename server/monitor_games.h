@@ -52,10 +52,11 @@ public:
      */
     void close_and_clean_games();
 
-    void get_max_and_actual_players(int game_code, int &actual, int &max);
+    GameRoom get_game_room(int& game_code);
 
-    std::list<GameRoom> get_not_active_games();
+    std::list<GameRoom> get_not_started_games();
 
+    std::list<PlayerData> get_players_data(int game_code);
 };
 
 #endif // TALLER_TP_MONITOR_GAMES_H

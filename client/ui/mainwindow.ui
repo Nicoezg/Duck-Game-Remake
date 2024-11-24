@@ -254,7 +254,7 @@ QListView::item:alternate {
           <item row="0" column="1">
            <widget class="QLineEdit" name="LobbyName">
             <property name="text">
-             <string/>
+             <string>Sala 1</string>
             </property>
            </widget>
           </item>

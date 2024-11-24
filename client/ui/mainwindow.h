@@ -19,12 +19,13 @@ Q_OBJECT
 public:
     MainWindow(Client *client, QWidget *parent = nullptr);
 
-    void RefreshServerList(const std::shared_ptr<Event> &event);
+    void RefreshServerList(Event &event);
 
     void exit();
 
-    void show_connected_players(const std::shared_ptr<Event> &event,
-                                const int game_code);
+    void show_connected_players(const Event &event);
+
+    void update_players_list(const Event &event);
 
     ~MainWindow();
 

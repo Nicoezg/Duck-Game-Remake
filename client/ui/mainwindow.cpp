@@ -10,13 +10,13 @@
 #include <QPixmap>
 
 MainWindow::MainWindow(Client *client, QWidget *parent)
-    : QMainWindow(parent), client(client), ui(new Ui::MainWindow) {
-  // Establecer un tamaño fijo para la ventana
+        : QMainWindow(parent), client(client), ui(new Ui::MainWindow) {
+    // Establecer un tamaño fijo para la ventana
 
-  // Configurar la interfaz de usuario
-  ui->setupUi(this);
-  this->setWindowTitle("Duck Game");
-  setupAudio();
+    // Configurar la interfaz de usuario
+    ui->setupUi(this);
+    this->setWindowTitle("Duck Game");
+    setupAudio();
 
     // Conectar la señal aboutToQuit a la ranura handleAboutToQuit
     connect(QApplication::instance(), &QApplication::aboutToQuit, this, &MainWindow::handleAboutToQuit);
@@ -25,47 +25,59 @@ MainWindow::MainWindow(Client *client, QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
-  player->stop();
-  delete player;
-  delete audio;
-  delete ui;
+    player->stop();
+    delete player;
+    delete audio;
+    delete ui;
 }
 
 void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
-  if (status == QMediaPlayer::EndOfMedia) {
-    player->setPosition(0);
-    player->play();
-  }
+    if (status == QMediaPlayer::EndOfMedia) {
+        player->setPosition(0);
+        player->play();
+    }
 }
 
 void MainWindow::setupAudio() {
-  player = new QMediaPlayer(this);
-  audio = new QAudioOutput(this);
-  player->setAudioOutput(audio);
+    player = new QMediaPlayer(this);
+    audio = new QAudioOutput(this);
+    player->setAudioOutput(audio);
 
-  audio->setVolume(0.1);
+    audio->setVolume(0.1);
 
-  player->setSource(QUrl("qrc:/sound/menumusic.wav"));
+    player->setSource(QUrl("qrc:/sound/menumusic.wav"));
 
-  connect(player, &QMediaPlayer::mediaStatusChanged, this,
-          &MainWindow::onMediaStatusChanged);
+    connect(player, &QMediaPlayer::mediaStatusChanged, this,
+            &MainWindow::onMediaStatusChanged);
 
-  // Reproducir
-  player->play();
+    // Reproducir
+    player->play();
 }
 
-void MainWindow::show_connected_players(const std::shared_ptr<Event> &event,
-                                        const int game_code) {
-    std::string ss = "Servidor " + std::to_string(game_code) +
-                     " | Jugadores conectados: " +
-                     std::to_string(event->get_actual_players()) + "/" +
-                     std::to_string(event->get_max_players());
-
-    ui->playerListLabel->setText(ss.c_str());
+void MainWindow::update_players_list(const Event& event){
+    ui->playerList->clear();
+    QStringList players;
+    for (auto &player_data : event.get_players_data()) {
+        std::string player_string = "Name: " + player_data.get_name() + " Id: " + std::to_string(player_data.get_id());
+        players.append(player_string.c_str());
+    }
+    ui->playerList->addItems(players);
 
     if (client->get_player_id_1() != 1) {
         ui->startGameButton->hide();
     }
+};
+void MainWindow::show_connected_players(const Event &event) {
+    GameRoom game_room = event.get_game_room();
+    std::string ss = "Servidor " + std::to_string(game_room.get_game_code()) +
+                     " |  " + game_room.get_game_name() +
+                     " | Jugadores conectados: " +
+                     std::to_string(game_room.get_actual_players()) + "/" +
+                     std::to_string(game_room.get_max_players());
+
+    ui->playerListLabel->setText(ss.c_str());
+    ui->lobbyTitle->setText(game_room.get_game_name().c_str());
+    update_players_list(event);
 }
 
 void MainWindow::on_Volver_clicked() { ui->stackedWidget->setCurrentIndex(0); }
@@ -88,7 +100,7 @@ void MainWindow::on_Exit_clicked() {
 }
 
 void MainWindow::handleAboutToQuit() {
-    if (client->is_closed()){
+    if (client->is_closed()) {
         return;
     }
     if (client->is_connected()) {
@@ -100,17 +112,17 @@ void MainWindow::handleAboutToQuit() {
 
 
 void MainWindow::on_Create_clicked() {
-  if (client->is_connected()) {
-    ui->stackedWidget->setCurrentIndex(4);
-    return;
-  }
-  if (ui->GameModeCreate->currentIndex() == 0) {
-    ui->player2namecreate->hide();
-  } else {
-    ui->player2namecreate->show();
-  }
+    if (client->is_connected()) {
+        ui->stackedWidget->setCurrentIndex(4);
+        return;
+    }
+    if (ui->GameModeCreate->currentIndex() == 0) {
+        ui->player2namecreate->hide();
+    } else {
+        ui->player2namecreate->show();
+    }
 
-  ui->stackedWidget->setCurrentIndex(1);
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
 void MainWindow::on_connectCreat_clicked() {
@@ -179,21 +191,23 @@ void MainWindow::on_Connect_clicked() {
         player_name_2 = ui->Player2NameJoin->text().toStdString();
     }
 
-  int game_code = client->get_game_code();
-  std::shared_ptr<Action> action = std::make_shared<Join>(game_code, mode, player_name_1, player_name_2);
+    int game_code = client->get_game_code();
+    std::shared_ptr<Action> action = std::make_shared<Join>(game_code, mode, player_name_1, player_name_2);
 
-  client->send_action(action);
+    client->send_action(action);
 
-  ui->stackedWidget->setCurrentIndex(4);
+    ui->stackedWidget->setCurrentIndex(4);
 }
 
-void MainWindow::RefreshServerList(const std::shared_ptr<Event> &event) {
+void MainWindow::RefreshServerList(Event &event) {
     ui->serverList->clear();
 
     QStringList servers;
 
-    for (auto &game : event->get_games()) {
+    std::list<GameRoom> game_rooms = event.get_games();
+    for (auto &game: game_rooms) {
         std::string ss = "Servidor " + std::to_string(game.get_game_code()) +
+                        " | " + game.get_game_name() +
                          " - Online (" + std::to_string(game.get_actual_players()) +
                          "/" + std::to_string(game.get_max_players()) +
                          " jugadores)";
@@ -203,6 +217,7 @@ void MainWindow::RefreshServerList(const std::shared_ptr<Event> &event) {
     // Agrega cada servidor al QListWidget
     ui->serverList->addItems(servers);
 
+    // TODO: cambiarlo por un mapa al cliente
     connect(ui->serverList, &QListWidget::itemClicked, this,
             [this](QListWidgetItem *item) {
                 ui->Player2NameJoin->hide();

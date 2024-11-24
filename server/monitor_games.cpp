@@ -8,7 +8,7 @@ int MonitorGames::create_game(std::string game_name, int max_players) {
 
   last_game_id++;
 
-  games[last_game_id] = std::make_unique<Game>(game_name, max_players);
+  games[last_game_id] = std::make_unique<Game>(last_game_id, game_name, max_players);
   games[last_game_id]->start();
 
   return last_game_id;
@@ -66,26 +66,34 @@ void MonitorGames::clean_closed_games() {
   }
 }
 
-void MonitorGames::get_max_and_actual_players(int game_code, int& actual, int& max) {
+GameRoom MonitorGames::get_game_room(int& game_code) {
     std::lock_guard<std::mutex> lock(mtx);
 
     auto it = games.find(game_code);
     if (it != games.end()) {
-        actual = it->second->get_actual_players();
-        max = it->second->get_max_players();
-        return;
+        return it->second->get_game_room();
     }
     throw std::runtime_error("Game not found");
 }
 
-std::list<GameRoom> MonitorGames::get_not_active_games(){
+std::list<GameRoom> MonitorGames::get_not_started_games(){
     std::lock_guard<std::mutex> lock(mtx);
 
-    std::list<GameRoom> not_active_games;
+    std::list<GameRoom> not_started_games;
     for (auto &game : games) {
         if (!game.second->is_started() && !game.second->is_full(UN_JUGADOR) ) {
-            not_active_games.emplace_back(game.first, game.second->get_actual_players(), game.second->get_max_players());
+            not_started_games.emplace_back(game.second->get_game_room());
         }
     }
-    return not_active_games;
+    return not_started_games;
+}
+
+std::list<PlayerData> MonitorGames::get_players_data(int game_code) {
+    std::lock_guard<std::mutex> lock(mtx);
+
+    auto it = games.find(game_code);
+    if (it != games.end()) {
+        return it->second->get_players_data();
+    }
+    throw std::runtime_error("Game not found");
 }

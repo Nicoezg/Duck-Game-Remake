@@ -16,14 +16,14 @@
 
 #define TIME_LOOP 20
 
-Game::Game(std::string name, int max_players)
-        : name(name), commands(), notifier(&commands), running(true), next_player_id(0),
+Game::Game(int id, std::string name, int max_players)
+        : id(id), name(name), commands(), notifier(&commands), running(true), next_player_id(0),
           actual_players(0), max_players(max_players), started(false),
           gameMap(), players() {
 }
 
 void Game::add(Socket &&socket) {
-    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(), get_max_players()));
+    notifier.notify(std::make_shared<NewPlayer>(get_actual_players(), get_max_players(), get_players_data()));
     notifier.subscribe(std::move(socket));
 }
 
@@ -120,6 +120,19 @@ int Game::get_max_players() const {
 
 int Game::get_actual_players() const {
     return actual_players;
+}
+
+GameRoom Game::get_game_room() const {
+    return {id, name, actual_players, max_players};
+}
+
+std::list<PlayerData> Game::get_players_data() {
+    std::list<PlayerData> players_data;
+
+    for (auto &player : players) {
+        players_data.emplace_back(player.first, player.second);
+    }
+    return players_data;
 }
 
 bool Game::is_started() const { return started; }

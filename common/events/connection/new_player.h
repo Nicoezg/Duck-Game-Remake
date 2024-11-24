@@ -12,13 +12,17 @@ class NewPlayer : public Event {
 private:
     int max_players;
     int actual_players;
+    std::list<PlayerData> players_data;
+
 
 public:
-    NewPlayer(int max_players, int actual_players);
+    NewPlayer(int actual_players, int max_players, std::list<PlayerData> players_data);
 
     int get_max_players() const override;
 
     int get_actual_players() const override;
+
+    std::list<PlayerData> get_players_data() const override;
 
 };
 

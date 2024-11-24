@@ -15,7 +15,7 @@ std::shared_ptr<Action> ServerProtocol::read_element() {
 
 void ServerProtocol::send_element(std::shared_ptr<Event> &event) {
     try {
-        event_protocol.send_element(event);
+        event_protocol.send_element(*event);
     } catch (...) {
         std::cout << "Error reading action" << std::endl;
     }

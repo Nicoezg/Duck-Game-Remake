@@ -17,7 +17,7 @@ void Lobby::run() {
         int game_code = SIN_CODIGO;
         while (!is_connected) {
             std::shared_ptr<Action> action = protocol.read_element();
-            std::shared_ptr<Event> response = process_action(action, game_code);
+            std::shared_ptr<Event> response = process_action(*action, game_code);
             protocol.send_element(response);
             is_connected = response->is_connected();
         }
@@ -32,19 +32,19 @@ void Lobby::run() {
 }
 
 std::shared_ptr<Event>
-Lobby::process_action(const std::shared_ptr<Action> &action, int &game_code) {
+Lobby::process_action(const Action &action, int &game_code) {
     std::shared_ptr<Event> response;
-    switch (action->get_type()) {
+    switch (action.get_type()) {
         case CREATE_REQUEST:
-            response = create_game(*action);
-            game_code = response->get_game_code();
+            response = create_game(action);
+            game_code = response->get_game_room().get_game_code();
             break;
         case JOIN_REQUEST:
-            response = join_game(*action);
-            game_code = action->get_game_code();
+            response = join_game(action);
+            game_code = response->get_game_room().get_game_code();
             break;
         case REFRESH_REQUEST:
-            response = std::make_shared<Refresh>(games->get_not_active_games());
+            response = std::make_shared<Refresh>(games->get_not_started_games());
             break;
         default:
             response = not_connected_to_game();
@@ -54,7 +54,7 @@ Lobby::process_action(const std::shared_ptr<Action> &action, int &game_code) {
 }
 
 std::shared_ptr<Event> Lobby::not_connected_to_game() {
-    return std::make_shared<GameJoin>(SIN_CODIGO, SIN_CODIGO, false, 0, 0);
+    return std::make_shared<GameJoin>(SIN_CODIGO, SIN_CODIGO, false, GameRoom(), std::list<PlayerData>());
 }
 
 
@@ -68,26 +68,29 @@ void Lobby::set_players(const Action &action, int &player_id_1, int &player_id_2
 
     }
 }
-std::shared_ptr<Event> Lobby::join_game(Action &action) {
-    if (!games->game_exists(action.get_game_code())) {
-        return std::make_shared<GameJoin>(SIN_CODIGO, SIN_CODIGO, false, 0, 0);
+std::shared_ptr<Event> Lobby::join_game(const Action &action) {
+    int game_code = action.get_game_code();
+    if (!games->game_exists(game_code)) {
+        return not_connected_to_game();
     }
-    int player_id_1, player_id_2, max, actual;
-    set_players(action, player_id_1, player_id_2, action.get_game_code());
-
-
-    games->get_max_and_actual_players(action.get_game_code(), actual, max);
-    return std::make_shared<GameJoin>(player_id_1, player_id_2, true, actual, max);
-}
-
-std::shared_ptr<Event> Lobby::create_game(Action &action) {
-    int game_code = games->create_game(action.get_game_name(), action.get_max_players());
-
-    int player_id_1, player_id_2, max, actual;
+    int player_id_1, player_id_2;
     set_players(action, player_id_1, player_id_2, game_code);
 
-    games->get_max_and_actual_players(game_code, actual, max);
-    return std::make_shared<GameCreation>(game_code, player_id_1, player_id_2, actual, max);
+
+    GameRoom game_room = games->get_game_room(game_code);
+    std::list<PlayerData> players_data = games->get_players_data(game_code);
+    return std::make_shared<GameJoin>(player_id_1, player_id_2, true, game_room, players_data);
+}
+
+std::shared_ptr<Event> Lobby::create_game(const Action &action) {
+    int game_code = games->create_game(action.get_game_name(), action.get_max_players());
+
+    int player_id_1, player_id_2;
+    set_players(action, player_id_1, player_id_2, game_code);
+
+    GameRoom game_room = games->get_game_room(game_code);
+    std::list<PlayerData> players_data = games->get_players_data(game_code);
+    return std::make_shared<GameCreation>(game_room, player_id_1, player_id_2, players_data);
 }
 
 bool Lobby::is_closed() const { return !is_running; }

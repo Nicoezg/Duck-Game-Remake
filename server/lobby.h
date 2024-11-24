@@ -29,14 +29,13 @@ public:
 
   void close();
 
-  std::shared_ptr<Event> create_game(Action& action);
+  std::shared_ptr<Event> create_game(const Action& action);
 
   std::shared_ptr<Event> not_connected_to_game();
 
-  std::shared_ptr<Event> join_game(Action &action);
+  std::shared_ptr<Event> join_game(const Action &action);
 
-  std::shared_ptr<Event> process_action(const std::shared_ptr<Action> &action,
-                                        int &game_code);
+  std::shared_ptr<Event> process_action(const Action &action, int &game_code);
 
     void set_players(const Action &action, int &player_id_1, int &player_id_2, const int &game_code);
 };

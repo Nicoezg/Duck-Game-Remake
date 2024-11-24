@@ -47,14 +47,6 @@ void Client::assign_player_ids(std::shared_ptr<Event> &event) {
     player_id_1 = event->get_player_id_1();
     player_id_2 = event->get_player_id_2();
     connected = true;
-
-    std::cout << "Conectado al juego " << game_code << std::endl;
-    std::cout << "ID Jugador 1: " << player_id_1 << std::endl;
-    std::cout << "ID Jugador 2: " << player_id_2 << std::endl;
-    std::cout << "Maximo de jugadores: " << event->get_max_players() << std::endl;
-    if (event->get_type() == JOIN_GAME) {
-        std::cout << "Jugadores conectados: " << event->get_actual_players() << std::endl;
-    }
 }
 
 int Client::get_game_code() const {
@@ -69,7 +61,7 @@ std::shared_ptr<Event> Client::read_event() {
     std::shared_ptr<Event> event = events.pop();
     switch (event->get_type()) {
         case CREATE_GAME:
-            game_code = event->get_game_code();
+            game_code = event->get_game_room().get_game_code();
             assign_player_ids(event);
             break;
         case JOIN_GAME:

@@ -6,7 +6,11 @@
 
 Event::Event(EventType type) : type(type) {}
 
-EventType Event::get_type() { return type; }
+EventType Event::get_type() const{ return type; }
+
+std::list<PlayerData> Event::get_players_data() const {
+    throw std::runtime_error("Has no players data.");
+}
 
 int Event::get_game_code() const {
     throw std::runtime_error("Has no game code.");
@@ -60,7 +64,7 @@ int Event::get_actual_players() const {
     throw std::runtime_error("Has no actual players.");
 }
 
-std::list<GameRoom> Event::get_games() {
+std::list<GameRoom> Event::get_games() const {
     throw std::runtime_error("Has no games.");
 }
 
@@ -94,4 +98,8 @@ std::string Event::get_winner() const {
 
 int Event::get_score() const {
     throw std::runtime_error("Has no score.");
+}
+
+GameRoom Event::get_game_room() const {
+    throw std::runtime_error("Has no game room.");
 }

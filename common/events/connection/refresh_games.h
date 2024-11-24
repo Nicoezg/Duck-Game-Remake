@@ -16,7 +16,7 @@ private:
 public:
     explicit Refresh(std::list<GameRoom> games);
 
-    std::list<GameRoom> get_games() override;
+    std::list<GameRoom> get_games() const override;
 
     bool is_connected() const override;
 

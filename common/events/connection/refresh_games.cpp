@@ -6,7 +6,7 @@
 
 Refresh::Refresh(std::list<GameRoom> games) : Event(REFRESH_GAMES), games(std::move(games)) {}
 
-std::list<GameRoom> Refresh::get_games() {
+std::list<GameRoom> Refresh::get_games() const {
     return games;
 }
 

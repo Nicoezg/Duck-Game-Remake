@@ -13,6 +13,8 @@
 class Game : public Thread {
 private:
 
+    int id;
+
     std::string name;
 
     Queue<std::shared_ptr<Action>> commands;
@@ -42,7 +44,7 @@ private:
     void process_action(std::shared_ptr<Action> &action);
 
 public:
-    Game(std::string name, int max_players);
+    Game(int id, std::string name, int max_players);
 
     /**
      * @brief Inicia el hilo del notifier y al finalizar se encarga de
@@ -88,11 +90,15 @@ public:
 
     void start_game();
 
-    void add_admin_id(int id);
-
     void valid_start();
 
     void notify_state();
+
+    std::string get_name() const;
+
+    std::list<PlayerData> get_players_data();
+
+    GameRoom get_game_room() const;
 };
 
 #endif // TALLER_TP_GAME_H
