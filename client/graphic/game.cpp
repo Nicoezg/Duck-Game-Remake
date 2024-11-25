@@ -15,9 +15,11 @@ Game::Game(Client &client) try: client(client),
                                 sdl(SDL_INIT_VIDEO), font("../client/sprites/font.ttf", 24),
                                 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
                                        WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
-                                renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,640,480}), map(renderer), ducks(), crates(),
+                                renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,640,480}), 
+                                mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096), 
+                                backgroundMusic("../client/graphic/audio/background-music.wav"),  map(renderer), ducks(), crates(),
                                 bullets(), itemSpawns(), explosions(), item(renderer),
-                                bullet(renderer), crate(renderer), explosion(renderer), mutex(), stop(false), pause(false) {
+                                bullet(renderer), crate(renderer), explosion(renderer), stop(false), pause(false) {
 } catch (std::exception &e) {
     throw std::exception();
 }
@@ -31,13 +33,9 @@ int Game::start() {
 
         // Inicializar musica
 
-        Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+        backgroundMusic.SetVolume(BACKGROUND_MUSIC_VOLUME);
 
-        Chunk sound("../client/graphic/audio/background-music.wav");
-
-        sound.SetVolume(BACKGROUND_MUSIC_VOLUME);
-
-        mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, sound, -1);
+        mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, backgroundMusic, -1);
 
         // Game Loop
         ActionHandler actionHandler(client);
@@ -48,14 +46,17 @@ int Game::start() {
         {
             auto t1 = SDL_GetTicks();
             update_state();
-            actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
-            int code = render(); // Renderizamos el juego
-            if (code == 1) {
-                return 0;
+            if (stop){
+                break;
             }
-            if (code == 2) {
+            if (pause) {
+                showScores();
+                pause = false;
                 continue;
             }
+            actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
+            
+            render(); // Renderizamos el juego
 
             /* IF BEHIND, KEEP WORKING */
             // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -117,7 +118,6 @@ void Game::update_state() {
 }
 
 void Game::update(const Event &broadcast) {
-    std::lock_guard<std::mutex> lock(mutex);
     std::vector<SDL2pp::Rect> playerRects;
     if (ducks.size() != broadcast.get_players().size()) {
         ducks.clear();
@@ -141,12 +141,13 @@ void Game::update(const Event &broadcast) {
 }
 
 void Game::showScores() {
-    std::lock_guard<std::mutex> lock(mutex);
     pause = true;
+    mixer.HaltChannel(BACKGROUND_MUSIC_CHANNEL);
+    camera.reset();
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
-    // std::vector<std::string> names = score.get_names();
-    // std::vector<int> scores = score.get_scores();
+    //std::vector<std::string> names = score.get_names();
+    //std::vector<int> scores = score.get_scores();
     Uint32 startTime = SDL_GetTicks();
     bool flash = true;
     while (SDL_GetTicks() - startTime < 5000) { // Flash for 5 seconds
@@ -171,35 +172,37 @@ void Game::showScores() {
         SDL_Delay(500); // Flash interval
         flash = !flash;
     }
+    mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, backgroundMusic, -1);
 }
 
 void Game::showVictoryScreen(const Event &gameOver) {
-    renderer.SetDrawColor(0, 0, 0, 255);
-    renderer.Clear();
-    // Le podria agregar flash
-    std::string victoryText = gameOver.get_winner() + " wins!";
-    SDL2pp::Texture victoryTexture(renderer, font.RenderText_Blended(victoryText, SDL_Color{255, 255, 255, 255}));
-    renderer.Copy(victoryTexture, SDL2pp::NullOpt,
-                  SDL2pp::Rect(50, 50, victoryTexture.GetWidth(), victoryTexture.GetHeight()));
-    renderer.Present();
-    SDL_Delay(5000); // Victory screen duration
+    mixer.HaltChannel(BACKGROUND_MUSIC_CHANNEL);
+    Uint32 startTime = SDL_GetTicks();
+    bool flash = true;
+    while (SDL_GetTicks() - startTime < 5000) { // Flash for 5 seconds
+        renderer.SetDrawColor(0, 0, 0, 255);
+        renderer.Clear();
+        if (flash) {
+            std::string victoryText = gameOver.get_winner() + " wins!";
+            SDL2pp::Texture victoryTexture(renderer, font.RenderText_Blended(victoryText, SDL_Color{255, 255, 255, 255}));
+            renderer.Copy(victoryTexture, SDL2pp::NullOpt,
+                          SDL2pp::Rect(237, 227.5, victoryTexture.GetWidth(), victoryTexture.GetHeight()));
+            std::cout << "width: " << victoryTexture.GetWidth() << std::endl;
+            std::cout << "height: " << victoryTexture.GetHeight() << std::endl;
+        }
+        renderer.Present();
+        SDL_Delay(500); // Flash interval
+        flash = !flash;
+    }
 }
 
 void Game::end(const Event &gameOver) {
-    std::lock_guard<std::mutex> lock(mutex);
     stop = true;
+    camera.reset();
     showVictoryScreen(gameOver);
 }
 
-int Game::render() {
-    std::lock_guard<std::mutex> lock(mutex);
-    if (stop) {
-        return 1;
-    }
-    if (pause) {
-        pause = false;
-        return 2;
-    }
+void Game::render() {
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
     map.render();
@@ -219,5 +222,4 @@ int Game::render() {
         explosion.render(explosionDTO);
     }
     renderer.Present();
-    return 0;
 }

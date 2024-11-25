@@ -44,6 +44,10 @@ class Game{
 
         CameraZoom camera;
 
+        Mixer mixer;
+
+        Chunk backgroundMusic;
+
         DrawMap map;
 
         std::vector<std::shared_ptr<Duck>> ducks;
@@ -64,15 +68,13 @@ class Game{
 
         DrawExplosion explosion;
 
-        std::mutex mutex;
-
         bool stop;
 
         bool pause;
 
         void loadTextures(Renderer &renderer);
 
-        int render();
+        void render();
 
         int processEvent();
 
