@@ -70,7 +70,7 @@ public:
 
   virtual std::vector<int> get_scores() const;
 
-  virtual std::string get_winner() const;
+  virtual PlayerData get_winner() const;
 
   virtual int get_score() const;
 

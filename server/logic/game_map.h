@@ -22,6 +22,8 @@ private:
   std::vector<std::shared_ptr<Explosion>> explosions;
   MapLoader mapLoader;
   Map map;
+  int winner_id;
+  int rounds;
 
 
 public:
@@ -67,9 +69,14 @@ public:
 
     void checkBulletCollisionWithPlayers();
 
-    bool checkFinished();
+    bool check_players_alive();
 
 
+    int get_winner_id();
+
+    void reset_round();
+
+    bool check_finished() const;
 };
 
 #endif

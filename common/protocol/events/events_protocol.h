@@ -66,8 +66,8 @@
 #define SEND_NEW_PLAYER_SIZE (READ_NEW_PLAYER_SIZE + EVENT_TYPE_SIZE)
 
 #define SCORE_SIZE sizeof(uint16_t)
-#define READ_GAME_OVER_SIZE (READ_PLAYER_SIZE + SCORE_SIZE)
-#define SEND_GAME_OVER_SIZE (READ_GAME_OVER_SIZE + EVENT_TYPE_SIZE)
+#define READ_GAME_OVER_SIZE (SCORE_SIZE)
+#define SEND_GAME_OVER_SIZE (READ_GAME_OVER_SIZE + PLAYER_DATA_SIZE + EVENT_TYPE_SIZE)
 
 class EventsProtocol : public Protocol {
 private:
@@ -142,13 +142,17 @@ public:
 
     GameRoom read_game_room();
 
-    void add_players_data(const std::list<PlayerData> &players_data, std::vector<int8_t> &data, size_t &offset);
+    void add_players_data(std::vector<int8_t> &data, size_t &offset, const std::list<PlayerData> &players_data);
 
     std::list<PlayerData> read_players_data();
 
     size_t get_size_to_send(const Event &event, size_t start);
 
     std::string read_name(size_t len);
+
+    void add_player_data(std::vector<int8_t> &data, size_t &offset, const PlayerData &player_data);
+
+    PlayerData read_player_data();
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

@@ -10,7 +10,10 @@
 #define HEIGHT 500
 #define WIDTH 500
 
-GameMap::GameMap() { map = mapLoader.getNextMap(); }
+GameMap::GameMap() {
+    map = mapLoader.getNextMap();
+    rounds = 5;
+}
 
 void GameMap::addPlayer(int player_id) {
     Duck *duck =
@@ -40,7 +43,6 @@ Duck *GameMap::findPlayer(int playerId) {
 }
 
 void GameMap::update() {
-    checkFinished();
     // reapDead();
     for (auto player: players) {
         player->update();
@@ -79,6 +81,9 @@ void GameMap::update() {
                                     }),
                      explosions.end());
 
+    if (check_players_alive()){
+        reset_round();
+    }
 }
 
 /*void GameMap::checkBulletCollisionWithPlayers() {
@@ -198,23 +203,23 @@ std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
 
 void GameMap::bulletCollisions() {
 
-    for (const auto &player : players) {
+    for (const auto &player: players) {
 
         if (player->getState() == State::DEAD) {
             continue;
         }
-        
+
         hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
         for (auto it = bullets.begin(); it != bullets.end();) {
 
             hitBox bulletBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 1};
             if (hitBox::isColliding(duckBox, bulletBox) && player->getId() != (*it)->getOwnerId()) {
-               
+
                 player->takeDamage();
                 it = bullets.erase(it);
-                break; 
+                break;
             } else {
-                ++it; 
+                ++it;
             }
         }
     }
@@ -246,12 +251,29 @@ MapDTO GameMap::getMapDTO() { return mapLoader.getNextMapDTO(); }
 
 Map GameMap::getMap() { return map; }
 
-bool GameMap::checkFinished() {
+bool GameMap::check_players_alive() {
     int playersAlive = players.size();
     for (auto player: players) {
         if (player->getState() == State::DEAD) {
             playersAlive--;
+        } else {
+            winner_id = player->getId();
         }
     }
     return playersAlive <= 1;
 }
+
+bool GameMap::check_finished() const{
+    return rounds == 0;
+}
+
+void GameMap::reset_round() {
+    rounds--;
+    for (auto player: players) {
+        player->reset(map.getGroundLevel() * 16);
+    }
+
+    bullets.clear();
+}
+
+int GameMap::get_winner_id() { return winner_id; }

@@ -77,6 +77,8 @@ public:
     bool dropWeapon();
 
     bool impact(Bullet &bullet);
+
+    void reset(int pos_y);
 };
 
 #endif // DUCK_H

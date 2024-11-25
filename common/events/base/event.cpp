@@ -92,8 +92,8 @@ std::vector<int> Event::get_scores() const {
     throw std::runtime_error("Has no scores.");
 }
 
-std::string Event::get_winner() const {
-    throw std::runtime_error("Has no winner.");
+PlayerData Event::get_winner() const {
+    throw std::runtime_error("Has no winner_id.");
 }
 
 int Event::get_score() const {

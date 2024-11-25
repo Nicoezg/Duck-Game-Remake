@@ -35,13 +35,34 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<Banana>(map);
+  weapon = std::make_unique<Sniper>(map);
   hasWeapon = true;
   hasHelmet = true;
   hasArmour = true;
   isOnPlatform = false;
 
   shootingCooldown = 0;
+}
+
+void Duck::reset(int pos_y){
+    velX = 0;
+    velY = 0;
+    jumping = false;
+    flapping = false;
+    shooting = false;
+    isRight = true;
+    aimingUpwards = false;
+    weapon = std::make_unique<Sniper>(map);
+    hasWeapon = true;
+    hasHelmet = true;
+    hasArmour = true;
+    isOnPlatform = false;
+
+    shootingCooldown = 0;
+
+    state = State::BLANK;
+    posX = 10 * id;
+    posY = pos_y;
 }
 
 void Duck::moveLeft() {

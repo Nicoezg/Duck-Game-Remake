@@ -116,7 +116,7 @@ void EventsProtocol::send_join(const Event &event) {
     offset += encoder.encode_player_id(event.get_player_id_2(), &data[offset]);
     offset += encoder.encode_connected(event.is_connected(), &data[offset]);
     add_game_room(event.get_game_room(), data, offset);
-    add_players_data(event.get_players_data(), data, offset);
+    add_players_data(data, offset, event.get_players_data());
     send(data.data(), data.size());
 }
 
@@ -137,7 +137,7 @@ void EventsProtocol::send_create(const Event &event) {
     offset += encoder.encode_player_id(event.get_player_id_1(), &data[offset]);
     offset += encoder.encode_player_id(event.get_player_id_2(), &data[offset]);
     add_game_room(event.get_game_room(), data, offset);
-    add_players_data(event.get_players_data(), data, offset);
+    add_players_data(data, offset, event.get_players_data());
     send(data.data(), data.size());
 }
 
@@ -401,7 +401,7 @@ void EventsProtocol::send_new_player(const Event &event) {
     offset += encoder.encode_event_type(event.get_type(), &data[offset]);
     offset += encoder.encode_actual_players(event.get_actual_players(), &data[offset]);
     offset += encoder.encode_max_players(event.get_max_players(), &data[offset]);
-    add_players_data(event.get_players_data(), data, offset);
+    add_players_data(data, offset, event.get_players_data());
 
     send(data.data(), data.size());
 }
@@ -474,24 +474,21 @@ void EventsProtocol::add_platforms(const Event &event,
 
 
 void EventsProtocol::send_game_over(const Event &event) {
-    std::vector<int8_t> data(SEND_GAME_OVER_SIZE);
+    size_t players_data_size = event.get_winner().get_name().size();
+    std::vector<int8_t> data(SEND_GAME_OVER_SIZE + players_data_size);
     size_t offset = 0;
     offset += encoder.encode_event_type(event.get_type(), &data[offset]);
-    offset += encoder.encode_player_id(event.get_player_id_1(), &data[offset]);
     offset += encoder.encode_score(event.get_score(), &data[offset]);
+    add_player_data(data, offset, event.get_winner());
     send(data.data(), data.size());
-
-    std::cout << "Game Over send: " << data.size() << " bytes" << std::endl;
 }
 
 std::shared_ptr<Event> EventsProtocol::read_game_over() {
     std::vector<int8_t> data(READ_GAME_OVER_SIZE);
     read(data.data(), data.size());
-    int player_id = encoder.decode_player_id(data);
     int score = encoder.decode_score(data);
-
-    std::cout << "Game Over read: " << data.size() << " bytes" << std::endl;
-    return std::make_shared<GameOver>(player_id, score);
+    PlayerData winner = read_player_data();
+    return std::make_shared<GameOver>(winner, score);
 }
 
 void EventsProtocol::add_game_room(const GameRoom &game_room, std::vector<int8_t> &data, size_t &offset) {
@@ -530,12 +527,16 @@ GameRoom EventsProtocol::read_game_room() {
 }
 
 void
-EventsProtocol::add_players_data(const std::list<PlayerData> &players_data, std::vector<int8_t> &data, size_t &offset) {
+EventsProtocol::add_players_data(std::vector<int8_t> &data, size_t &offset, const std::list<PlayerData> &players_data) {
     offset += encoder.encode_len(players_data.size(), &data[offset]);
     for (const auto &player_data: players_data) {
-        offset += encoder.encode_player_id(player_data.get_id(), &data[offset]);
-        add_name(player_data.get_name(), data, offset);
+        add_player_data(data, offset, player_data);
     }
+}
+
+void EventsProtocol::add_player_data(std::vector<int8_t> &data, size_t &offset, const PlayerData &player_data) {
+    offset += encoder.encode_player_id(player_data.get_id(), &data[offset]);
+    add_name(player_data.get_name(), data, offset);
 }
 
 std::list<PlayerData> EventsProtocol::read_players_data() {
@@ -545,14 +546,18 @@ std::list<PlayerData> EventsProtocol::read_players_data() {
 
     std::list<PlayerData> players;
     for (int i = 0; i < len; i++) {
-        std::vector<int8_t> players_data(PLAYER_DATA_SIZE);
-        read(players_data.data(), players_data.size());
-
-        int id = encoder.decode_player_id(players_data);
-        int name_len = encoder.decode_len(players_data);
-        std::string name = read_name(name_len);
-
-        players.emplace_back(id, name);
+        players.emplace_back(read_player_data());
     }
     return players;
+}
+
+PlayerData EventsProtocol::read_player_data() {
+    std::vector<int8_t> players_data(PLAYER_DATA_SIZE);
+    read(players_data.data(), players_data.size());
+
+    int id = encoder.decode_player_id(players_data);
+    int name_len = encoder.decode_len(players_data);
+    std::string name = read_name(name_len);
+    PlayerData player = {id, name};
+    return player;
 }

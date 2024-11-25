@@ -183,7 +183,7 @@ void Game::showVictoryScreen(const Event &gameOver) {
         renderer.SetDrawColor(0, 0, 0, 255);
         renderer.Clear();
         if (flash) {
-            std::string victoryText = gameOver.get_winner() + " wins!";
+            std::string victoryText = gameOver.get_winner().get_name() + " wins!";
             SDL2pp::Texture victoryTexture(renderer, font.RenderText_Blended(victoryText, SDL_Color{255, 255, 255, 255}));
             renderer.Copy(victoryTexture, SDL2pp::NullOpt,
                           SDL2pp::Rect(237, 227.5, victoryTexture.GetWidth(), victoryTexture.GetHeight()));

@@ -99,6 +99,8 @@ public:
     std::list<PlayerData> get_players_data();
 
     GameRoom get_game_room() const;
+
+    void checkFinishGame();
 };
 
 #endif // TALLER_TP_GAME_H

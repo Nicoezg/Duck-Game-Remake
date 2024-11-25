@@ -68,14 +68,18 @@ void Game::run() {
             }
             gameMap.update();
             notify_state();
-
-            if (gameMap.checkFinished()) {
-                std::shared_ptr<Event> event = std::make_shared<GameOver>(1, 10);
-                notify_event(event);
-                running = false;
-            }
+            checkFinishGame();
         }
     } catch (const ClosedQueue &e) {
+    }
+}
+
+void Game::checkFinishGame() {
+    if (gameMap.check_finished()) {
+        int winner_id = gameMap.get_winner_id();
+        std::shared_ptr<Event> event = std::make_shared<GameOver>(PlayerData(winner_id, players[winner_id]), 10);
+        notify_event(event);
+        running = false;
     }
 }
 
