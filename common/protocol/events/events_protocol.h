@@ -10,29 +10,36 @@
 #define CONNECTED_SIZE sizeof(uint8_t)
 #define MAX_PLAYER_SIZE sizeof(uint8_t)
 #define ACTUAL_PLAYER_SIZE sizeof(uint8_t)
-
-#define PLAYER_DATA_SIZE (PLAYERS_DATA_ID_SIZE + LEN_SIZE)
-#define GAME_ROOM_SIZE (MAX_PLAYER_SIZE + ACTUAL_PLAYER_SIZE + GAME_CODE_SIZE + LEN_SIZE)
-
-
 #define COORDINATE_SIZE sizeof(int16_t)
 #define LEN_SIZE sizeof(uint8_t)
 #define PLAYER_COORDINATE sizeof(int16_t)
 #define PLAYER_IS_RIGHT_SIZE sizeof(uint8_t)
 #define PLAYER_STATE_SIZE sizeof(uint8_t)
-
-#define WEAPONS_SIZE (sizeof(uint8_t) + COORDINATE_SIZE * 2 + sizeof(uint8_t))
 #define HEALTH_SIZE sizeof(uint8_t)
 #define CHESTPLATE_SIZE sizeof(uint8_t)
+#define ANGLE_SIZE sizeof(uint16_t)
+
+#define IS_SHOOTING_SIZE sizeof(uint8_t)
+#define WEAPON_ID_SIZE sizeof(uint8_t)
+
+#define BULLET_ID_SIZE sizeof(uint8_t)
+#define BULLET_IS_RIGHT_SIZE sizeof(uint8_t)
+
+#define BACKGROUND_ID_SIZE sizeof(uint8_t)
+#define TILE_ID_SIZE sizeof(uint8_t)
+#define SCORE_SIZE sizeof(uint16_t)
+
+
+#define WEAPONS_SIZE (WEAPON_ID_SIZE + COORDINATE_SIZE * 2 + IS_SHOOTING_SIZE)
+
+#define PLAYER_DATA_SIZE (PLAYERS_DATA_ID_SIZE + LEN_SIZE)
+#define GAME_ROOM_SIZE (MAX_PLAYER_SIZE + ACTUAL_PLAYER_SIZE + GAME_CODE_SIZE + LEN_SIZE)
 
 #define READ_NEW_PLAYER_SIZE (ACTUAL_PLAYER_SIZE + MAX_PLAYER_SIZE)
 
 #define READ_CREATE_GAME_SIZE (2 * PLAYERS_DATA_ID_SIZE)
 #define READ_JOIN_GAME_SIZE (2 * PLAYERS_DATA_ID_SIZE + CONNECTED_SIZE)
 
-#define ANGLE_SIZE sizeof(uint16_t)
-#define BULLET_ID_SIZE sizeof(uint8_t)
-#define BULLET_IS_RIGHT_SIZE sizeof(uint8_t)
 #define READ_BULLET_SIZE (COORDINATE_SIZE * 2 + BULLET_ID_SIZE + ANGLE_SIZE + BULLET_IS_RIGHT_SIZE)
 #define SEND_BULLET_SIZE READ_BULLET_SIZE
 
@@ -49,10 +56,8 @@
   (2 * PLAYER_COORDINATE + PLAYERS_DATA_ID_SIZE + PLAYER_STATE_SIZE +               \
    PLAYER_IS_RIGHT_SIZE + WEAPONS_SIZE + HEALTH_SIZE + CHESTPLATE_SIZE)
 
-#define TILE_ID_SIZE sizeof(uint8_t)
 #define READ_TILE_SIZE (COORDINATE_SIZE * 3 + TILE_ID_SIZE)
 
-#define BACKGROUND_ID_SIZE sizeof(uint8_t)
 #define READ_BACKGROUND_SIZE (COORDINATE_SIZE * 2 + BACKGROUND_ID_SIZE)
 #define SEND_BACKGROUND_SIZE READ_BACKGROUND_SIZE
 
@@ -65,7 +70,6 @@
 
 #define SEND_NEW_PLAYER_SIZE (READ_NEW_PLAYER_SIZE + EVENT_TYPE_SIZE)
 
-#define SCORE_SIZE sizeof(uint16_t)
 #define READ_GAME_OVER_SIZE (SCORE_SIZE)
 #define SEND_GAME_OVER_SIZE (READ_GAME_OVER_SIZE + PLAYER_DATA_SIZE + EVENT_TYPE_SIZE)
 
@@ -153,6 +157,8 @@ public:
     void add_player_data(std::vector<int8_t> &data, size_t &offset, const PlayerData &player_data);
 
     PlayerData read_player_data();
+
+    Tile read_tile(std::vector<int8_t> &data);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

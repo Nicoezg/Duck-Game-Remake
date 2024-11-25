@@ -73,12 +73,6 @@ std::shared_ptr<Action> ActionsProtocol::read_element() {
     }
 }
 
-ActionType ActionsProtocol::read_action_type() {
-    std::vector<int8_t> data(ACTION_TYPE_SIZE);
-    read(data.data(), data.size());
-    return encoder.decode_action_type(data);
-}
-
 void ActionsProtocol::send_element(const Action &action) {
     ActionType type = action.get_type();
 
@@ -110,6 +104,13 @@ void ActionsProtocol::send_element(const Action &action) {
         default:
             throw std::runtime_error("ActionsProtocol try to send unknown action");
     }
+}
+
+
+ActionType ActionsProtocol::read_action_type() {
+    std::vector<int8_t> data(ACTION_TYPE_SIZE);
+    read(data.data(), data.size());
+    return encoder.decode_action_type(data);
 }
 
 void ActionsProtocol::send_refresh_action(const Action &action) {
@@ -151,7 +152,7 @@ void ActionsProtocol::send_move_action(const Action &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
-    encoder.encode_is_right(action.is_right(), &data[offset]);
+    encoder.encode_bool(action.is_right(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -160,7 +161,7 @@ void ActionsProtocol::send_jump_flap_action(const Action &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
-    encoder.encode_is_right(action.is_jumping_flapping(), &data[offset]);
+    encoder.encode_bool(action.is_jumping_flapping(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -169,7 +170,7 @@ void ActionsProtocol::send_still_action(const Action &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
-    encoder.encode_is_right(action.is_still(), &data[offset]);
+    encoder.encode_bool(action.is_still(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -178,7 +179,7 @@ void ActionsProtocol::send_play_dead_action(const Action &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
-    encoder.encode_is_right(action.is_playing_dead(), &data[offset]);
+    encoder.encode_bool(action.is_playing_dead(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -187,7 +188,7 @@ void ActionsProtocol::send_shoot_action(const Action &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
-    encoder.encode_is_right(action.is_shooting(), &data[offset]);
+    encoder.encode_bool(action.is_shooting(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -196,7 +197,7 @@ void ActionsProtocol::send_aiming_upwards_action(const Action &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
-    encoder.encode_is_right(action.is_aiming_upwards(), &data[offset]);
+    encoder.encode_bool(action.is_aiming_upwards(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -205,7 +206,7 @@ void ActionsProtocol::send_pick_drop_action(const Action &action) {
     size_t offset = 0;
     offset += encoder.encode_action_type(action.get_type(), &data[offset]);
     offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
-    encoder.encode_is_right(action.is_picking_dropping(), &data[offset]);
+    encoder.encode_bool(action.is_picking_dropping(), &data[offset]);
     send(data.data(), data.size());
 }
 
@@ -213,7 +214,7 @@ std::shared_ptr<Action> ActionsProtocol::read_move_action() {
     std::vector<int8_t> data(READ_MOVE_SIZE);
     read(data.data(), data.size());
     int player_id = encoder.decode_player_id(data);
-    bool is_right = encoder.decode_is_right(data);
+    bool is_right = encoder.decode_bool(data);
     return std::make_shared<Move>(player_id, is_right);
 }
 
@@ -228,7 +229,7 @@ std::shared_ptr<Action> ActionsProtocol::read_jump_flap_action() {
     std::vector<int8_t> data(READ_JUMP_SIZE);
     read(data.data(), data.size());
     int player_id = encoder.decode_player_id(data);
-    bool is_right = encoder.decode_is_right(data);
+    bool is_right = encoder.decode_bool(data);
     return std::make_shared<JumpFlap>(player_id, is_right);
 }
 
@@ -236,7 +237,7 @@ std::shared_ptr<Action> ActionsProtocol::read_still_action() {
     std::vector<int8_t> data(READ_STILL_SIZE);
     read(data.data(), data.size());
     int player_id = encoder.decode_player_id(data);
-    bool is_right = encoder.decode_is_right(data);
+    bool is_right = encoder.decode_bool(data);
     return std::make_shared<Still>(player_id, is_right);
 }
 
@@ -244,7 +245,7 @@ std::shared_ptr<Action> ActionsProtocol::read_play_dead_action() {
     std::vector<int8_t> data(READ_PLAY_DEAD_SIZE);
     read(data.data(), data.size());
     int player_id = encoder.decode_player_id(data);
-    bool is_right = encoder.decode_is_right(data);
+    bool is_right = encoder.decode_bool(data);
     return std::make_shared<PlayDead>(player_id, is_right);
 }
 
@@ -252,7 +253,7 @@ std::shared_ptr<Action> ActionsProtocol::read_shoot_action() {
     std::vector<int8_t> data(READ_SHOOT_SIZE);
     read(data.data(), data.size());
     int player_id = encoder.decode_player_id(data);
-    bool is_right = encoder.decode_is_right(data);
+    bool is_right = encoder.decode_bool(data);
     return std::make_shared<Shoot>(player_id, is_right);
 }
 
@@ -260,7 +261,7 @@ std::shared_ptr<Action> ActionsProtocol::read_aiming_upwards_action() {
     std::vector<int8_t> data(READ_AIMING_UPWARDS_SIZE);
     read(data.data(), data.size());
     int player_id = encoder.decode_player_id(data);
-    bool is_right = encoder.decode_is_right(data);
+    bool is_right = encoder.decode_bool(data);
     return std::make_shared<AimUpwards>(player_id, is_right);
 }
 
@@ -268,7 +269,7 @@ std::shared_ptr<Action> ActionsProtocol::read_pick_drop_action() {
     std::vector<int8_t> data(READ_PICK_DROP_SIZE);
     read(data.data(), data.size());
     int player_id = encoder.decode_player_id(data);
-    bool is_right = encoder.decode_is_right(data);
+    bool is_right = encoder.decode_bool(data);
     return std::make_shared<PickDrop>(player_id, is_right);
 }
 
