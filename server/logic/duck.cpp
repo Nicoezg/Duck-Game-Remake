@@ -113,7 +113,7 @@ void Duck::update() {
     shootingCooldown--;
   }
 
-  if (state == State::PLAYING_DEAD) {
+  if (state == State::PLAYING_DEAD || state == State::DEAD) {
     velX = 0;
     velY = 0;
     return;

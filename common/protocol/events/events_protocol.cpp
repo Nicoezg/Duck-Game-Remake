@@ -49,32 +49,6 @@ void EventsProtocol::send_element(Event &event) {
     }
 }
 
-EventType EventsProtocol::read_event_type() {
-    std::vector<int8_t> data(EVENT_TYPE_SIZE);
-    read(data.data(), data.size());
-    return encoder.decode_event_type(data);
-}
-
-std::shared_ptr<Event> EventsProtocol::read_create() {
-    std::vector<int8_t> data(READ_CREATE_GAME_SIZE);
-    read(data.data(), data.size());
-    int player_id_1 = encoder.decode_player_id(data);
-    int player_id_2 = encoder.decode_player_id(data);
-    GameRoom game_room = read_game_room();
-    std::list<PlayerData> players_data = read_players_data();
-    return std::make_shared<GameCreation>(game_room, player_id_1, player_id_2, players_data);
-}
-
-std::shared_ptr<Event> EventsProtocol::read_join() {
-    std::vector<int8_t> data(READ_JOIN_GAME_SIZE);
-    read(data.data(), data.size());
-    int player_id_1 = encoder.decode_player_id(data);
-    int player_id_2 = encoder.decode_player_id(data);
-    bool is_connected = encoder.decode_connected(data);
-    GameRoom game_room = read_game_room();
-    std::list<PlayerData> players_data = read_players_data();
-    return std::make_shared<GameJoin>(player_id_1, player_id_2, is_connected, game_room, players_data);
-}
 
 std::shared_ptr<Event> EventsProtocol::read_element() {
     EventType event = read_event_type();
@@ -107,6 +81,34 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
     }
 }
 
+
+EventType EventsProtocol::read_event_type() {
+    std::vector<int8_t> data(EVENT_TYPE_SIZE);
+    read(data.data(), data.size());
+    return encoder.decode_event_type(data);
+}
+
+std::shared_ptr<Event> EventsProtocol::read_create() {
+    std::vector<int8_t> data(READ_CREATE_GAME_SIZE);
+    read(data.data(), data.size());
+    int player_id_1 = encoder.decode_player_id(data);
+    int player_id_2 = encoder.decode_player_id(data);
+    GameRoom game_room = read_game_room();
+    std::list<PlayerData> players_data = read_players_data();
+    return std::make_shared<GameCreation>(game_room, player_id_1, player_id_2, players_data);
+}
+
+std::shared_ptr<Event> EventsProtocol::read_join() {
+    std::vector<int8_t> data(READ_JOIN_GAME_SIZE);
+    read(data.data(), data.size());
+    int player_id_1 = encoder.decode_player_id(data);
+    int player_id_2 = encoder.decode_player_id(data);
+    bool is_connected = encoder.decode_bool(data);
+    GameRoom game_room = read_game_room();
+    std::list<PlayerData> players_data = read_players_data();
+    return std::make_shared<GameJoin>(player_id_1, player_id_2, is_connected, game_room, players_data);
+}
+
 void EventsProtocol::send_join(const Event &event) {
     size_t size_to_send = get_size_to_send(event, SEND_JOIN_GAME_SIZE);
     std::vector<int8_t> data(size_to_send);
@@ -114,7 +116,7 @@ void EventsProtocol::send_join(const Event &event) {
     offset += encoder.encode_event_type(event.get_type(), &data[offset]);
     offset += encoder.encode_player_id(event.get_player_id_1(), &data[offset]);
     offset += encoder.encode_player_id(event.get_player_id_2(), &data[offset]);
-    offset += encoder.encode_connected(event.is_connected(), &data[offset]);
+    offset += encoder.encode_bool(event.is_connected(), &data[offset]);
     add_game_room(event.get_game_room(), data, offset);
     add_players_data(data, offset, event.get_players_data());
     send(data.data(), data.size());
@@ -154,7 +156,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         int player_id = encoder.decode_player_id(players_data);
         int x = encoder.decode_coordinate(players_data);
         int y = encoder.decode_coordinate(players_data);
-        bool is_right = encoder.decode_is_right(players_data);
+        bool is_right = encoder.decode_bool(players_data);
         State state = encoder.decode_player_state(players_data);
 
         WeaponDTO weapon = read_weapon(players_data);
@@ -178,7 +180,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         int x = encoder.decode_coordinate(bullets_data);
         int y = encoder.decode_coordinate(bullets_data);
         float angle = encoder.decode_angle(bullets_data);
-        bool direction = encoder.decode_is_right(bullets_data);
+        bool direction = encoder.decode_bool(bullets_data);
         bullets.emplace_back(x, y, BulletId(id), angle, direction);
     }
 
@@ -193,8 +195,8 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
     for (int i = 0; i < crates_len; i++) {
         int x = encoder.decode_coordinate(crates_data);
         int y = encoder.decode_coordinate(crates_data);
-        uint8_t hp = encoder.decode_is_right(crates_data);
-        bool is_hit = encoder.decode_is_right(crates_data);
+        uint8_t hp = encoder.decode_bool(crates_data);
+        bool is_hit = encoder.decode_bool(crates_data);
         crates.emplace_back(x, y, hp, is_hit);
     }
 
@@ -268,7 +270,7 @@ void EventsProtocol::add_bullets(const Event &event,
         offset += encoder.encode_coordinate(bullet.get_position_x(), &data[offset]);
         offset += encoder.encode_coordinate(bullet.get_position_y(), &data[offset]);
         offset += encoder.encode_angle(bullet.get_angle(), &data[offset]);
-        offset += encoder.encode_is_right(bullet.get_direction(), &data[offset]);
+        offset += encoder.encode_bool(bullet.get_direction(), &data[offset]);
     }
 }
 
@@ -277,8 +279,8 @@ void EventsProtocol::add_crates(const Event &event,
     for (const auto &crate: event.get_crates()) {
         offset += encoder.encode_coordinate(crate.get_position_x(), &data[offset]);
         offset += encoder.encode_coordinate(crate.get_position_y(), &data[offset]);
-        offset += encoder.encode_is_right(crate.get_hp(), &data[offset]);
-        offset += encoder.encode_is_right(crate.was_hit(), &data[offset]);
+        offset += encoder.encode_bool(crate.get_hp(), &data[offset]);
+        offset += encoder.encode_bool(crate.was_hit(), &data[offset]);
     }
 }
 
@@ -353,7 +355,7 @@ void EventsProtocol::add_players(const Event &event,
         offset += encoder.encode_player_id(player.get_player_id(), &data[offset]);
         offset += encoder.encode_coordinate(player.get_position_x(), &data[offset]);
         offset += encoder.encode_coordinate(player.get_position_y(), &data[offset]);
-        offset += encoder.encode_is_right(player.is_right(), &data[offset]);
+        offset += encoder.encode_bool(player.is_right(), &data[offset]);
         offset += encoder.encode_player_state(player.get_state(), &data[offset]);
 
         // increase offset inplace
@@ -427,24 +429,26 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
     read(data.data(), data.size());
     int tiles_len = encoder.decode_len(data);
 
-    std::vector<int8_t> tiles_data(tiles_len * READ_TILE_SIZE +
-                                   READ_BACKGROUND_SIZE);
+    std::vector<int8_t> tiles_data(tiles_len * READ_TILE_SIZE + READ_BACKGROUND_SIZE);
     read(tiles_data.data(), tiles_data.size());
 
     std::list<Tile> tiles;
     for (int i = 0; i < tiles_len; i++) {
-        int start_x = encoder.decode_coordinate(tiles_data);
-        int end_x = encoder.decode_coordinate(tiles_data);
-        int y = encoder.decode_coordinate(tiles_data);
-        int tile_id = encoder.decode_tile_id(tiles_data);
-        tiles.emplace_back(start_x, end_x, y, tile_id);
+        tiles.emplace_back(read_tile(tiles_data));
     }
     int background_id = encoder.decode_background_id(tiles_data);
     int width = encoder.decode_coordinate(tiles_data);
     int length = encoder.decode_coordinate(tiles_data);
 
-    return std::make_shared<MapDTO>(std::move(tiles), background_id, width,
-                                    length);
+    return std::make_shared<MapDTO>(std::move(tiles), background_id, width, length);
+}
+
+Tile EventsProtocol::read_tile(std::vector<int8_t> &data) {
+    int start_x = encoder.decode_coordinate(data);
+    int end_x = encoder.decode_coordinate(data);
+    int y = encoder.decode_coordinate(data);
+    int tile_id = encoder.decode_tile_id(data);
+    return {start_x, end_x, y, tile_id};
 }
 
 void EventsProtocol::send_map(const Event &event) {

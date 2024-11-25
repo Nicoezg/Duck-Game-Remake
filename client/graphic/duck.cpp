@@ -184,27 +184,29 @@ void Duck::render() {
 }
 
 void Duck::update(const PlayerDTO &player){
-    if (dead){
-        return;
-    }
-    posX = player.get_position_x();
-    posY = player.get_position_y();
     auto state = player.get_state();
-    direction = player.is_right();
 
-    if (state == DEAD){
+    if (!dead && state == DEAD){
         dead = true;
         animationMovement.changeState(PLAYING_DEAD, false);
         sound.change(sfx[1], 0);
         return;
     }
+    dead = state == DEAD;
+    if (dead){
+        return;
+    }
+
+    posX = player.get_position_x();
+    posY = player.get_position_y();
+    direction = player.is_right();
 
     bool aimingUpwards = state == AIMING_UPWARDS;
     weapon.update(player.get_weapon(), aimingUpwards);
     helmet.update(player.get_helmet());
     chestplate.update(player.get_chestplate());
 
-    
+
     if (state == animationMovement.getCurrentType()) {
         return;
     }

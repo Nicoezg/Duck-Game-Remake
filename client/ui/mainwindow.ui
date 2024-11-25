@@ -356,7 +356,7 @@ QListView::item:alternate {
         <item>
          <widget class="QLineEdit" name="Player1NameJoin">
           <property name="text">
-           <string>Player 1 </string>
+           <string>Player 1</string>
           </property>
          </widget>
         </item>

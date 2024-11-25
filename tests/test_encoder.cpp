@@ -121,7 +121,7 @@ TEST(Encode, IsRight)
     std::vector<int8_t> buffer(IS_RIGHT_SIZE);
     bool is_right = true;
 
-    encoder.encode_is_right(is_right, buffer.data());
+    encoder.encode_bool(is_right, buffer.data());
 
     std::vector<int8_t > expected = {1};
     EXPECT_EQ(buffer, expected);
@@ -132,7 +132,7 @@ TEST(Decode, IsRight)
     Encoder encoder;
     std::vector<int8_t> buffer = {1};
 
-    bool is_right = encoder.decode_is_right(buffer);
+    bool is_right = encoder.decode_bool(buffer);
 
     EXPECT_EQ(is_right, true);
 }
