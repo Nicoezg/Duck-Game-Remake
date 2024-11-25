@@ -8,16 +8,19 @@ compile-debug:
 build:
 	mkdir -p build/
 	cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release $(EXTRA_GENERATE)
-	cmake --build  build/ $(EXTRA_COMPILE)
+	cmake --build  build/ $(EXTRAM_COMPILE)
 
 test: compile-debug
 	./build/TESTS
 
-server: build
-	./build/SERVER
+server:
+	./build/SERVER 4040
 
-client: build
-	./build/CLIENT
+editor:
+	./build/EDITOR
+
+client:
+	./build/CLIENT localhost 4040
 
 all: clean test
 
