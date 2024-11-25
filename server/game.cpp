@@ -67,6 +67,7 @@ void Game::run() {
                 continue;
             }
             gameMap.update();
+            checkNewRound();
             notify_state();
             checkFinishGame();
         }
@@ -80,6 +81,12 @@ void Game::checkFinishGame() {
         std::shared_ptr<Event> event = std::make_shared<GameOver>(PlayerData(winner_id, players[winner_id]), 10);
         notify_event(event);
         running = false;
+    }
+}
+
+void Game::checkNewRound() {
+    if (gameMap.pauseForScores()){
+        // Enviar el score
     }
 }
 

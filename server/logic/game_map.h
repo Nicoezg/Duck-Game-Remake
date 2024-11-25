@@ -27,6 +27,7 @@ private:
   Map map;
   int winner_id;
   int rounds;
+  bool reset;
 
 
 public:
@@ -77,12 +78,15 @@ public:
 
     bool check_players_alive();
 
-
     int get_winner_id();
 
     void reset_round();
 
-    bool check_finished() const;
+    bool check_finished();
+
+    int getRounds();
+
+    bool pauseForScores();
 };
 
 #endif

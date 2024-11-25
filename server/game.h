@@ -101,6 +101,8 @@ public:
     GameRoom get_game_room() const;
 
     void checkFinishGame();
+
+    void checkNewRound();
 };
 
 #endif // TALLER_TP_GAME_H

@@ -231,8 +231,8 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
     }
 
     return std::make_shared<Broadcast>(
-            std::move(players), std::move(bullets), std::list<CrateDTO>(),
-            std::list<ItemSpawnDTO>(), std::move(explosions));
+            std::move(players), std::move(bullets), std::move(crates),
+            std::move(item_spawns), std::move(explosions));
 }
 
 void EventsProtocol::send_broadcast(const Event &event) {
