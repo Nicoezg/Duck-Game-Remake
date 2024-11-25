@@ -1,5 +1,6 @@
 #include "grenade.h"
 #include "server/logic/duck.h"
+#include <iostream>
 
 #define NAME GRENADE_NAME
 const int AMMO = CONFIG.getBulletConfig(NAME).getAmmo();

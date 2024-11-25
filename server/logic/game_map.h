@@ -70,11 +70,14 @@ public:
 
   void bulletCollisions();
 
+  void explosionCollisions();
+
   MapDTO getMapDTO();
   
   Map getMap();
 
     void checkBulletCollisionWithPlayers();
+    
 
     bool check_players_alive();
 

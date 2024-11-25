@@ -17,10 +17,10 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
   } else {
     if (owner->getDirection()) {
       posX = owner->getPositionX() + 15;
-      posY = owner->getPositionY() + 15;
+      posY = owner->getPositionY() + 20;
     } else if (!owner->getDirection()) {
       posX = owner->getPositionX() - 15;
-      posY = owner->getPositionY() + 15;
+      posY = owner->getPositionY() + 20;
     }
   }
 

@@ -18,6 +18,12 @@ class Explosion {
 
     bool isOver() const { return framesRemaining == 0; }    
 
+    int getPosX() const { return posX; }
+
+    int getPosY() const { return posY; }
+
+    int getRadius() const { return radius; }
+
     ExplosionDTO toDTO() const {
         return ExplosionDTO(posX, posY, framesRemaining);
     }

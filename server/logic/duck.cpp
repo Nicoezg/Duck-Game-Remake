@@ -35,7 +35,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<Sniper>(map);
+  weapon = std::make_unique<Grenade>(map);
   hasWeapon = true;
   hasHelmet = true;
   hasArmour = true;

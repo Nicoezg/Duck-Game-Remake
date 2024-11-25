@@ -39,7 +39,6 @@ void GameMap::addCrate() {
     }
 }
 
-
 Duck *GameMap::findPlayer(int playerId) {
     for (auto player: players) {
         if (player->getId() == playerId) {
@@ -82,6 +81,8 @@ void GameMap::update() {
     for (const auto &explosion: explosions) {
         explosion->update();
     }
+
+    explosionCollisions();
 
     explosions.erase(std::remove_if(explosions.begin(), explosions.end(),
                                     [](const std::shared_ptr<Explosion> &explosion) {
@@ -226,6 +227,24 @@ void GameMap::bulletCollisions() {
                 player->takeDamage();
                 it = bullets.erase(it);
                 break;
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
+void GameMap::explosionCollisions() {
+    for (const auto &player: players) {
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
+        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+        for (auto it = explosions.begin(); it != explosions.end();) {
+            hitBox explosionBox = {(*it)->getPosX(), (*it)->getPosY(), (*it)->getRadius(), (*it)->getRadius()};
+            if (hitBox::isColliding(duckBox, explosionBox)) {
+                player->takeDamage();
+                it = explosions.erase(it);
             } else {
                 ++it;
             }
