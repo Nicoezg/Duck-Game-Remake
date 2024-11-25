@@ -357,4 +357,46 @@ TEST(Decode, EventType)
     EXPECT_EQ(type, CREATE_GAME);
 }
 
+TEST(Encode, Score)
+{
+    Encoder encoder;
+    std::vector<int8_t> buffer(SCORE_SIZE);
+    int score = 1234;
 
+    encoder.encode_score(score, buffer.data());
+
+    std::vector<int8_t > expected = {4, -46};
+    EXPECT_EQ(buffer, expected);
+}
+
+TEST(Decode, Score)
+{
+    Encoder encoder;
+    std::vector<int8_t> buffer = {4, -46};
+
+    int score = encoder.decode_score(buffer);
+
+    EXPECT_EQ(score, 1234);
+}
+
+TEST(Encode, Strin)
+{
+    Encoder encoder;
+    std::vector<int8_t> buffer(10);
+    std::string str = "hola";
+
+    encoder.encode_string(str, buffer.data(), 4);
+
+    std::vector<int8_t > expected = {104, 111, 108, 97, 0, 0, 0, 0, 0, 0};
+    EXPECT_EQ(buffer, expected);
+}
+
+TEST(Decode, String)
+{
+    Encoder encoder;
+    std::vector<int8_t> buffer = {104, 111, 108, 97, 0, 0, 0, 0, 0, 0};
+
+    std::string str = encoder.decode_string(buffer, 4);
+
+    EXPECT_EQ(str, "hola");
+}
