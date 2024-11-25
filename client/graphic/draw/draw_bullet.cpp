@@ -12,7 +12,7 @@ DrawBullet::DrawBullet(SDL2pp::Renderer &renderer) : renderer(renderer) {
   this->textures[3] = std::make_shared<SDL2pp::Texture>(
       renderer, SDL2pp::Surface(DATA_PATH "weapons/grenade.png"));
   this->textures[4] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface(DATA_PATH "weapons/banana.png"));
+      renderer, SDL2pp::Surface(DATA_PATH "weapons/banana-placed.png"));
 }
 
 void DrawBullet::render(const BulletDTO &bullet) {

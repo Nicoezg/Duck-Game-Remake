@@ -40,4 +40,11 @@ void CameraZoom::update(const std::vector<SDL2pp::Rect>& playerRects) {
         
     }
 
+void CameraZoom::reset() {
+        renderer.SetScale(1.0f, 1.0f);
+        renderer.SetViewport(SDL2pp::Rect{0, 0, 640, 480});
+    }
+
+
+
     
