@@ -68,7 +68,7 @@ void MainWindow::update_players_list(const Event &event) {
     for (const auto &player_data: event.get_players_data()) {
         // Crear el texto como QString
         QString player_string = QString("Name: %1 Id: %2")
-                .arg(QString::fromStdString(player_data.get_name()))
+                .arg(player_data.get_name().c_str())
                 .arg(player_data.get_id());
 
         // Crear un QListWidgetItem
@@ -105,13 +105,13 @@ void MainWindow::update_players_list(const Event &event) {
 
 void MainWindow::show_connected_players(const Event &event) {
     GameRoom game_room = event.get_game_room();
-    std::string ss = "Servidor " + std::to_string(game_room.get_game_code()) +
-                     " |  " + game_room.get_game_name() +
-                     " | Jugadores conectados: " +
-                     std::to_string(game_room.get_actual_players()) + "/" +
-                     std::to_string(game_room.get_max_players());
+    QString ss = QString("Servidor %1 | %2 | Jugadores conectados: %3/%4")
+            .arg(game_room.get_game_code())
+            .arg(game_room.get_game_name().c_str())
+            .arg(game_room.get_actual_players())
+            .arg(game_room.get_max_players());
 
-    ui->playerListLabel->setText(ss.c_str());
+    ui->playerListLabel->setText(ss);
     ui->lobbyTitle->setText(game_room.get_game_name().c_str());
     update_players_list(event);
 }
@@ -236,16 +236,16 @@ void MainWindow::on_Connect_clicked() {
 }
 
 void MainWindow::RefreshServerList(Event &event) {
+    ui->serverList->clear();
+
     ui->LobbyName->setText(QString("Sala %1").arg(event.get_games().size() + 1));
 
     std::list<GameRoom> game_rooms = event.get_games();
-
-    ui->serverList->clear();
     for (auto &game: game_rooms) {
         // Crear el texto del servidor
         QString server_text = QString("Servidor %1 | %2 - Online (%3/%4 jugadores)")
                 .arg(game.get_game_code())
-                .arg(QString::fromStdString(game.get_game_name()))
+                .arg(game.get_game_name().c_str())
                 .arg(game.get_actual_players())
                 .arg(game.get_max_players());
 
