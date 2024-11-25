@@ -1,4 +1,5 @@
 #include <cstdint>
+#include "common/events/items/crate.h"
 #ifndef BOX_H
 #define BOX_H
 
@@ -23,10 +24,12 @@ public:
   Box(uint8_t hp, int pos_x, int pos_y);
 
   void shoot();
+  CrateDTO toDto();
   BoxItem get_content() const;
   int get_posx() const;
   int get_posy() const;
   bool was_hit() const;
+  int get_hp() const;
 };
 
 #endif // BOX_H

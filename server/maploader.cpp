@@ -42,7 +42,7 @@ Map MapLoader::getNextMap() {
                 mapa.armors.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
                 break;
             default:
-                mapa.boxes.emplace_back(1, interactuable["x"].as<int>(), interactuable["y"].as<int>());
+                mapa.boxes.emplace_back(4, interactuable["x"].as<int>(), interactuable["y"].as<int>());
                 break;
         }
     }

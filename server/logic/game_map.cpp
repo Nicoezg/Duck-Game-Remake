@@ -13,6 +13,7 @@
 GameMap::GameMap() {
     map = mapLoader.getNextMap();
     rounds = 5;
+    addCrate();
 }
 
 void GameMap::addPlayer(int player_id) {
@@ -33,6 +34,13 @@ void GameMap::addExplosion(std::unique_ptr<Explosion> explosion) {
     explosions.push_back(std::move(explosion));
 }
 
+void GameMap::addCrate() {
+    for (auto &crate: map.boxes) {
+        crates.push_back(crate); 
+    }
+}
+
+
 Duck *GameMap::findPlayer(int playerId) {
     for (auto player: players) {
         if (player->getId() == playerId) {
@@ -43,6 +51,7 @@ Duck *GameMap::findPlayer(int playerId) {
 }
 
 void GameMap::update() {
+
     // reapDead();
     for (auto player: players) {
         player->update();
@@ -184,13 +193,13 @@ std::list<PlayerDTO> GameMap::getState() {
 }
 
 std::list<CrateDTO> GameMap::getCratesState() {
-    // A implementar
     std::list<CrateDTO> cratesList;
-    /* for (const auto &crate: map.getCrates()) {
-        cratesList.emplace_back(crate.toDTO());
-    } */
+    for (auto crate: crates) {
+        cratesList.emplace_back(crate.toDto());
+    }
     return cratesList;
 }
+
 
 std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
     // A implementar
