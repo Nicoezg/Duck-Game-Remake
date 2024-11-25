@@ -137,7 +137,7 @@ void Game::update(const Event &broadcast) {
     bullets = broadcast.get_bullets();
     // itemSpawns = broadcast.get_item_spawns();
     crates = broadcast.get_crates();
-    // explosions = broadcast.get_explosions();
+    explosions = broadcast.get_explosions();
 }
 
 void Game::showScores() {
@@ -187,8 +187,6 @@ void Game::showVictoryScreen(const Event &gameOver) {
             SDL2pp::Texture victoryTexture(renderer, font.RenderText_Blended(victoryText, SDL_Color{255, 255, 255, 255}));
             renderer.Copy(victoryTexture, SDL2pp::NullOpt,
                           SDL2pp::Rect(237, 227.5, victoryTexture.GetWidth(), victoryTexture.GetHeight()));
-            std::cout << "width: " << victoryTexture.GetWidth() << std::endl;
-            std::cout << "height: " << victoryTexture.GetHeight() << std::endl;
         }
         renderer.Present();
         SDL_Delay(500); // Flash interval

@@ -21,6 +21,7 @@ public:
 
     void change(std::shared_ptr<SDL2pp::Chunk> nuevoSound, int loops = 0);
     void play();
+    void reset();
 };
 
 #endif // Sound_h

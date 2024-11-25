@@ -1,4 +1,5 @@
 #include "draw_explosion.h"
+#include <iostream>
 
 DrawExplosion::DrawExplosion(SDL2pp::Renderer &renderer) : renderer(renderer), texture(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../client/sprites/weapons/explosion.png"))), sound(std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/explode.wav")), explosionClip() {
     for (int i = 0; i < 6; i++){
@@ -10,10 +11,12 @@ DrawExplosion::DrawExplosion(SDL2pp::Renderer &renderer) : renderer(renderer), t
 }
 
 void DrawExplosion::render(const ExplosionDTO& explosion){
-    SDL2pp::Rect dest(explosion.get_position_x(), explosion.get_position_y(), 64, 64);
-    if (explosion.get_current_duration() == 0){
+    SDL2pp::Rect dest(explosion.get_position_x() - 32, explosion.get_position_y() - 32, 64, 64);
+    if (explosion.get_current_duration() == 47){
         sound.play();
+    }else if (explosion.get_current_duration() <= 1){
+        sound.reset();
     }
 
-    renderer.Copy(*texture, explosionClip[explosion.get_current_duration()], dest); // Puede cambiar
+    renderer.Copy(*texture, explosionClip[(48 - int(explosion.get_current_duration()))% 6], dest); // Puede cambiar
 }
