@@ -3,12 +3,10 @@
 #include "./ui_mainwindow.h"
 #include "common/actions/connection/join.h"
 #include "common/actions/connection/refresh_games.h"
-#include <QFile>
 #include <QListWidgetItem>
 #include <QMessageBox>
-#include <QPalette>
 #include <QPixmap>
-#include <QStyledItemDelegate>
+
 
 MainWindow::MainWindow(Client *client, QWidget *parent)
         : QMainWindow(parent), client(client), ui(new Ui::MainWindow) {
@@ -65,31 +63,41 @@ static std::vector<QColor> colors = {
 };
 
 void MainWindow::update_players_list(const Event &event) {
-    ui->playerList->clear();
-    QStringList players;
-    std::vector<int> ids;
-    for (auto &player_data: event.get_players_data()) {
-        std::string player_string = "Name: " + player_data.get_name() + " Id: " + std::to_string(player_data.get_id());
-        players.append(player_string.c_str());
-        ids.emplace_back(player_data.get_id());
-    }
-    ui->playerList->addItems(players);
+    ui->playerList->clear(); // Limpia la lista
 
-    for (int i = 0; i < ui->playerList->count(); i++) {
-        QListWidgetItem *item = ui->playerList->item(i);
-        item->setForeground(colors[ids[i] - 1]);
-    }
-    connect(ui->playerList, &QListWidget::itemClicked, this,
-            [this](QListWidgetItem *item) {
-                item->setSelected(false);
-            }
-    );
-    connect(ui->playerList, &QListWidget::itemPressed, this,
-            [this](QListWidgetItem *item) {
-                item->setSelected(false);
-            }
-    );
+    for (const auto &player_data: event.get_players_data()) {
+        // Crear el texto como QString
+        QString player_string = QString("Name: %1 Id: %2")
+                .arg(QString::fromStdString(player_data.get_name()))
+                .arg(player_data.get_id());
 
+        // Crear un QListWidgetItem
+        QListWidgetItem* item = new QListWidgetItem(player_string);
+
+        // Cambiar color según ID
+        int id = player_data.get_id();
+        if ((id - 1) < int(colors.size())) { // Verificar que el índice sea válido
+            item->setForeground(colors[id - 1]);
+        }
+
+        // Agregar el ítem a la lista
+        ui->playerList->addItem(item);
+
+        // Conectar el evento al ítem directamente
+        connect(ui->playerList, &QListWidget::itemClicked, this,
+                [item]() {
+                    // Deshabilitar selección
+                    item->setSelected(false);
+                });
+
+        connect(ui->playerList, &QListWidget::itemPressed, this,
+                [item]() {
+                    // Deshabilitar selección
+                    item->setSelected(false);
+                });
+    }
+
+    // Lógica adicional para mostrar/ocultar el botón
     if (client->get_player_id_1() != 1) {
         ui->startGameButton->hide();
     }
@@ -228,30 +236,38 @@ void MainWindow::on_Connect_clicked() {
 }
 
 void MainWindow::RefreshServerList(Event &event) {
-    ui->serverList->clear();
-
-    QStringList servers;
+    ui->LobbyName->setText(QString("Sala %1").arg(event.get_games().size() + 1));
 
     std::list<GameRoom> game_rooms = event.get_games();
+
+    ui->serverList->clear();
     for (auto &game: game_rooms) {
-        std::string ss = "Servidor " + std::to_string(game.get_game_code()) +
-                         " | " + game.get_game_name() +
-                         " - Online (" + std::to_string(game.get_actual_players()) +
-                         "/" + std::to_string(game.get_max_players()) +
-                         " jugadores)";
-        servers.append(ss.c_str());
+        // Crear el texto del servidor
+        QString server_text = QString("Servidor %1 | %2 - Online (%3/%4 jugadores)")
+                .arg(game.get_game_code())
+                .arg(QString::fromStdString(game.get_game_name()))
+                .arg(game.get_actual_players())
+                .arg(game.get_max_players());
+
+        // Crear el QListWidgetItem
+        QListWidgetItem* item = new QListWidgetItem(server_text);
+
+        // Agregar el ítem a la lista
+        ui->serverList->addItem(item);
+
+        // Conectar el evento al ítem
+        connect(ui->serverList, &QListWidget::itemClicked, this,
+                [this, item, &game]() {
+                    // Cambiar al widget deseado
+                    ui->Player2NameJoin->hide();
+                    ui->stackedWidget->setCurrentIndex(3);
+                    ui->Player1NameJoin->setText(QString("Player %1").arg(game.get_actual_players() + 1));
+                    ui->Player2NameJoin->setText(QString("Player %1").arg(game.get_actual_players() + 2));
+
+                    // Establecer el código del juego seleccionado en el cliente
+                    client->set_game_code(game.get_game_code());
+                });
     }
-
-    // Agrega cada servidor al QListWidget
-    ui->serverList->addItems(servers);
-
-    // TODO: cambiarlo por un mapa al cliente
-    connect(ui->serverList, &QListWidget::itemClicked, this,
-            [this](QListWidgetItem *item) {
-                ui->Player2NameJoin->hide();
-                ui->stackedWidget->setCurrentIndex(3);
-                client->set_game_code(item->text().split(" ")[1].toInt());
-            });
 }
 
 void MainWindow::setupServerList() {
