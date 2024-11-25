@@ -39,7 +39,6 @@ void GameMap::addCrate() {
     }
 }
 
-
 Duck *GameMap::findPlayer(int playerId) {
     for (auto player: players) {
         if (player->getId() == playerId) {
