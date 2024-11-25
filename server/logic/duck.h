@@ -27,6 +27,7 @@ private:
   bool hasHelmet;
   bool hasArmour;
   bool isOnPlatform;
+  uint8_t wins;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
@@ -64,6 +65,8 @@ public:
   bool isAimingUpwards() const;
   const Weapon *getWeapon() const;
   bool isFalling() const;
+  uint8_t getWins() const;
+  void increaseWins();
 
   int shootingCooldown;
 

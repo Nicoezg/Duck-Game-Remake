@@ -10,9 +10,8 @@
 #define HEIGHT 500
 #define WIDTH 500
 
-GameMap::GameMap() {
+GameMap::GameMap() : winner_id(0), rounds(0), reset(false) {
     map = mapLoader.getNextMap();
-    rounds = 5;
     addCrate();
 }
 
@@ -89,7 +88,7 @@ void GameMap::update() {
                                         return explosion->isOver();
                                     }),
                      explosions.end());
-
+    reset = false;
     if (check_players_alive()){
         reset_round();
     }
@@ -265,24 +264,53 @@ bool GameMap::check_players_alive() {
     for (auto player: players) {
         if (player->getState() == State::DEAD) {
             playersAlive--;
-        } else {
-            winner_id = player->getId();
+        }
+    }
+    if (playersAlive == 1) {
+        for (auto player: players) {
+            if (player->getState() != State::DEAD) {
+                player->increaseWins();
+            }
         }
     }
     return playersAlive <= 1;
 }
 
-bool GameMap::check_finished() const{
-    return rounds == 0;
+bool GameMap::check_finished(){
+    if (rounds < 10){
+        return false;
+    }
+    uint8_t maxWins = 0;
+    bool draw = false;
+    for (auto player: players) {
+        int wins = player->getWins();
+        if (wins > maxWins && wins >= 10) {
+            winner_id = player->getId();
+            maxWins = wins;
+            draw = false;
+        }
+        else if (player->getWins() == maxWins){
+            draw = true;
+        }
+    }
+    if (winner_id && !draw){
+        return true;
+    }
+    return false;
 }
 
 void GameMap::reset_round() {
-    rounds--;
+    rounds++;
+    reset = true;
     for (auto player: players) {
         player->reset(map.getGroundLevel() * 16);
-    }
 
+    }
     bullets.clear();
 }
 
 int GameMap::get_winner_id() { return winner_id; }
+
+int GameMap::getRounds() { return rounds;}
+
+bool GameMap::pauseForScores() {return reset && (rounds % 5) == 0;}

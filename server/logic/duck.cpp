@@ -26,7 +26,7 @@ const int CENTER_Y = CONFIG.getDuckConfig().getCenterY();
 #define GROUNDLEVEL 384
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
-    : id(id), posX(posX), posY(posY), map(map), state(State::BLANK) {
+    : id(id), posX(posX), posY(posY), map(map), state(State::BLANK), wins(0) {
 
   velX = 0;
   velY = 0;
@@ -281,6 +281,8 @@ bool Duck::isAimingUpwards() const { return aimingUpwards; }
 
 const Weapon *Duck::getWeapon() const { return weapon.get(); }
 
+void Duck::increaseWins() { wins++; }
+
 PlayerDTO Duck::toDTO() const {
 
   return {id,
@@ -294,6 +296,8 @@ PlayerDTO Duck::toDTO() const {
 }
 
 Duck::~Duck() {}
+
+uint8_t Duck::getWins() const { return wins; }
 
 /*bool Duck::impact(Bullet &bullet) {
     Position position = Position(posX, posY, WIDTH, HEIGHT);
