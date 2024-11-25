@@ -6,6 +6,7 @@
 #include "common/actions/base/action.h"
 #include "common/events/items/bullet_dto.h"
 #include "common/events/player.h"
+#include "box.h"
 #include "server/maploader.h"
 #include <list>
 #include <memory>
@@ -20,6 +21,8 @@ private:
   std::vector<std::shared_ptr<Bullet>> bullets;
   std::vector<std::shared_ptr<Throwable>> throwables;
   std::vector<std::shared_ptr<Explosion>> explosions;
+  std::vector<Box> crates;
+  //std::vector<std::shared_ptr<ItemSpawn>> itemSpawns;
   MapLoader mapLoader;
   Map map;
   int winner_id;
@@ -36,6 +39,9 @@ public:
   void addThrowable(std::unique_ptr<Throwable> throwable);
 
   void addExplosion(std::unique_ptr<Explosion> explosion);
+
+  void addCrate();
+
 
   Duck *findPlayer(int playerId);
 
