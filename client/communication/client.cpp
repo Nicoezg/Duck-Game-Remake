@@ -14,7 +14,7 @@ Client::Client(const char *hostname, const char *service_name)
           connection(Socket(hostname, service_name), Encoder(), &this->events,
                      &this->commands),
           game_code(NO_CONECTADO), player_id_1(SIN_ASIGNAR), player_id_2(SIN_ASIGNAR),
-          game_mode(SIN_ESPECIFICAR),connected(false){}
+          game_mode(SIN_ESPECIFICAR), connected(false) {}
 
 
 void Client::run() {
@@ -23,9 +23,9 @@ void Client::run() {
 
 void Client::close() {
     if (!connection.is_closed()) {
-            connection.close();
-        }
-        connection.join();
+        connection.close();
+    }
+    connection.join();
 
 }
 

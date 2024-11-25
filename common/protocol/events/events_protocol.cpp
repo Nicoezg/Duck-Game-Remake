@@ -73,8 +73,7 @@ std::shared_ptr<Event> EventsProtocol::read_join() {
     bool is_connected = encoder.decode_connected(data);
     GameRoom game_room = read_game_room();
     std::list<PlayerData> players_data = read_players_data();
-    return std::make_shared<GameJoin>(player_id_1, player_id_2, is_connected,
-                                      game_room, players_data);
+    return std::make_shared<GameJoin>(player_id_1, player_id_2, is_connected, game_room, players_data);
 }
 
 std::shared_ptr<Event> EventsProtocol::read_element() {

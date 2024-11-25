@@ -37,9 +37,6 @@ int Game::get_next_player_id(std::string player_name) {
     gameMap.addPlayer(next_player_id);
     actual_players++;
 
-    for (auto &player : players) {
-        std::cout << "Game: " << name << "Id: "<< player.first << " | name:  " << player.second << std::endl;
-    }
     return next_player_id;
 }
 

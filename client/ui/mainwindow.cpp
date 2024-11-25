@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QPalette>
 #include <QPixmap>
+#include <QStyledItemDelegate>
 
 MainWindow::MainWindow(Client *client, QWidget *parent)
         : QMainWindow(parent), client(client), ui(new Ui::MainWindow) {
@@ -54,19 +55,46 @@ void MainWindow::setupAudio() {
     player->play();
 }
 
-void MainWindow::update_players_list(const Event& event){
+static std::vector<QColor> colors = {
+        QColor(255, 255, 255),
+        QColor(255, 0, 0),
+        QColor(238, 158, 213),
+        QColor(231, 111, 15),
+        QColor(154, 154, 154),
+        QColor(255, 255, 0)
+};
+
+void MainWindow::update_players_list(const Event &event) {
     ui->playerList->clear();
     QStringList players;
-    for (auto &player_data : event.get_players_data()) {
+    std::vector<int> ids;
+    for (auto &player_data: event.get_players_data()) {
         std::string player_string = "Name: " + player_data.get_name() + " Id: " + std::to_string(player_data.get_id());
         players.append(player_string.c_str());
+        ids.emplace_back(player_data.get_id());
     }
     ui->playerList->addItems(players);
+
+    for (int i = 0; i < ui->playerList->count(); i++) {
+        QListWidgetItem *item = ui->playerList->item(i);
+        item->setForeground(colors[ids[i] - 1]);
+    }
+    connect(ui->playerList, &QListWidget::itemClicked, this,
+            [this](QListWidgetItem *item) {
+                item->setSelected(false);
+            }
+    );
+    connect(ui->playerList, &QListWidget::itemPressed, this,
+            [this](QListWidgetItem *item) {
+                item->setSelected(false);
+            }
+    );
 
     if (client->get_player_id_1() != 1) {
         ui->startGameButton->hide();
     }
-};
+}
+
 void MainWindow::show_connected_players(const Event &event) {
     GameRoom game_room = event.get_game_room();
     std::string ss = "Servidor " + std::to_string(game_room.get_game_code()) +
@@ -186,7 +214,7 @@ void MainWindow::on_Connect_clicked() {
     std::string player_name_2;
 
     GameMode mode = UN_JUGADOR;
-    if (ui->GameModeCreate->currentIndex() != 0) {
+    if (ui->GameModeJoin->currentIndex() != 0) {
         mode = DOS_JUGADORES;
         player_name_2 = ui->Player2NameJoin->text().toStdString();
     }
@@ -207,7 +235,7 @@ void MainWindow::RefreshServerList(Event &event) {
     std::list<GameRoom> game_rooms = event.get_games();
     for (auto &game: game_rooms) {
         std::string ss = "Servidor " + std::to_string(game.get_game_code()) +
-                        " | " + game.get_game_name() +
+                         " | " + game.get_game_name() +
                          " - Online (" + std::to_string(game.get_actual_players()) +
                          "/" + std::to_string(game.get_max_players()) +
                          " jugadores)";

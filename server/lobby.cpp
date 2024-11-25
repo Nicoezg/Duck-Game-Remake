@@ -65,7 +65,6 @@ void Lobby::set_players(const Action &action, int &player_id_1, int &player_id_2
     if (action.get_game_mode() == DOS_JUGADORES) {
         player_id_2 = games->get_player_id(game_code, action.get_game_mode() - 1,
                                            action.get_player_name_2());
-
     }
 }
 std::shared_ptr<Event> Lobby::join_game(const Action &action) {
