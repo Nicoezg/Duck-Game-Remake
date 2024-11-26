@@ -4,5 +4,5 @@
 #include <iostream>
 
 Throwable::Throwable(GameMap &map, bool isRight, int pos_x, int pos_y,
-                     int reach,BulletId id,bool collidable)
+                     int reach,ThrowableId id,bool collidable)
     : map(map), isRight(isRight), pos_x(pos_x), pos_y(pos_y), reach(reach),id(id),collidable(collidable) {}

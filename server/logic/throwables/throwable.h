@@ -2,7 +2,8 @@
 #define THROWABLE_H
 
 #include "common/events/items/weapon_macros.h"
-#include "common/events/items/bullet_dto.h"
+#include "common/events/items/throwable_macros.h"
+#include "common/events/items/throwable_dto.h"
 
 #define CONFIG Configurations::configurations()
 
@@ -18,23 +19,23 @@ protected:
   int pos_x;
   int pos_y;
   int reach;
-  enum BulletId id;
+  enum ThrowableId id;
   bool collidable ;
 
   
 public:
-    Throwable(GameMap &map,bool isRight,int pos_x,int pos_y,int reach,BulletId id,bool collidable);
+    Throwable(GameMap &map,bool isRight,int pos_x,int pos_y,int reach,ThrowableId id,bool collidable);
     virtual ~Throwable() = default;
     virtual void update()=0;
     int getPosX() const { return pos_x; }
     int getPosY() const { return pos_y; }
-    BulletId getId() const { return id; }
+    ThrowableId getId() const { return id; }
     bool isCollidable() const { return collidable; }
 
     virtual bool isOver() const=0;
     virtual void consume()=0;
 
-    virtual BulletDTO toDTO() const=0;
+    virtual ThrowableDTO toDTO() const=0;
 };
 
 
