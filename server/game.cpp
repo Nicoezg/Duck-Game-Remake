@@ -123,7 +123,7 @@ void Game::process_action(std::shared_ptr<Action> &action) {
 void Game::notify_state() {
     // getCratesState y getItemSpawnsState no estan implementados
     std::shared_ptr<Event> event = std::make_shared<Broadcast>(gameMap.getState(), gameMap.getBulletsState(),
-    gameMap.getCratesState(), gameMap.getItemSpawnsState(), gameMap.getExplosionsState());
+    gameMap.getCratesState(), gameMap.getItemSpawnsState(), gameMap.getExplosionsState(), gameMap.getThrowablesState());
     notify_event(event);
 }
 

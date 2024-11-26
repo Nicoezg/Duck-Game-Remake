@@ -25,6 +25,8 @@
 #define BULLET_ID_SIZE sizeof(uint8_t)
 #define BULLET_IS_RIGHT_SIZE sizeof(uint8_t)
 
+#define THROWABLE_ID_SIZE sizeof(uint8_t)
+
 #define BACKGROUND_ID_SIZE sizeof(uint8_t)
 #define TILE_ID_SIZE sizeof(uint8_t)
 #define SCORE_SIZE sizeof(uint16_t)
@@ -51,6 +53,9 @@
 
 #define READ_EXPLOSION_SIZE (COORDINATE_SIZE * 2 + sizeof(uint8_t))
 #define SEND_EXPLOSION_SIZE READ_EXPLOSION_SIZE
+
+#define READ_THROWABLE_SIZE (COORDINATE_SIZE * 2 + THROWABLE_ID_SIZE + sizeof(uint8_t) + ANGLE_SIZE + sizeof(uint8_t))
+#define SEND_THROWABLE_SIZE READ_THROWABLE_SIZE
 
 #define READ_PLAYER_SIZE                                                       \
   (2 * PLAYER_COORDINATE + PLAYERS_DATA_ID_SIZE + PLAYER_STATE_SIZE +               \
@@ -135,6 +140,8 @@ public:
     void add_item_spawns(const Event&, std::vector<int8_t> &data, size_t &offset);
 
     void add_explosions(const Event&, std::vector<int8_t> &data, size_t &offset);
+
+    void add_throwables(const Event&, std::vector<int8_t> &data, size_t &offset);
 
     void send_game_over(const Event &event);
 

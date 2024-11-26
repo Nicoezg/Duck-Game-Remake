@@ -18,6 +18,7 @@
 #include "draw/draw_map.h"
 #include "draw/draw_explosion.h"
 #include "draw/draw_item.h"
+#include "draw/draw_throwable.h"
 #include "../../common/events/base/event.h"
 #include "../../common/events/map.h"
 #include "../../common/events/score.h"
@@ -60,6 +61,8 @@ class Game{
 
         std::list<ExplosionDTO> explosions;
 
+        std::list<ThrowableDTO> throwables;
+
         DrawItemSpawn item;
 
         DrawBullet bullet;
@@ -67,6 +70,8 @@ class Game{
         DrawCrate crate;
 
         DrawExplosion explosion;
+
+        DrawThrowable throwable;
 
         bool stop;
 

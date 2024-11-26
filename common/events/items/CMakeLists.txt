@@ -9,6 +9,7 @@ target_sources(COMMON
     weapon_dto.cpp
     explosion.cpp
     item_spawn.cpp
+    throwable_dto.cpp
 
     PUBLIC
     bullet_dto.h
@@ -16,10 +17,12 @@ target_sources(COMMON
     crate.h
     helmet.h
     weapon_dto.h
+    explosion.h
+    item_spawn.h
+    throwable_dto.h
     bullet_macros.h
     weapon_macros.h
     helmet_macros.h
-    explosion.h
-    item_spawn.h
+    throwable_macros.h
     # .h files
     )
