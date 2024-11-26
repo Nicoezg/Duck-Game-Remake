@@ -31,6 +31,11 @@ struct Armor{
     int y;
 };
 
+struct WeaponSpawn{
+    int x;
+    int y;
+};
+
 
 
 #endif // STRUCTURE_H

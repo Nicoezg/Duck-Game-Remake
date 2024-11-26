@@ -8,6 +8,10 @@
 #include <QFileDialog>
 #include <iostream>
 #include <yaml-cpp/yaml.h>
+#define TOTAL_TILES 100
+#define SPAWN_TILE 96
+#define INTERACTUABLES_START 97
+
 
 Editor::Editor(QWidget *parent)
     : QWidget(parent), ui(new Ui::Editor), sprite_actual(nullptr), tileID(-1){
@@ -219,7 +223,7 @@ void Editor::on_SaveButton_clicked() {
           qobject_cast<QLabel *>(ui->mapLayout->itemAtPosition(i, j)->widget());
       if (label && !label->pixmap().isNull()) {
         if (label->property("tile_id").toInt() == -1 ||
-            label->property("tile_id").toInt() >= 96) {
+            label->property("tile_id").toInt() >= SPAWN_TILE) {
           continue;
         }
         if (anterior == nullptr || label->property("tile_id").toInt() !=
@@ -255,7 +259,7 @@ void Editor::on_SaveButton_clicked() {
       QLabel *label =
           qobject_cast<QLabel *>(ui->mapLayout->itemAtPosition(i, j)->widget());
       if (label && !label->pixmap().isNull()) {
-        if (label->property("tile_id").toInt() == 96) {
+        if (label->property("tile_id").toInt() == SPAWN_TILE) {
           out << YAML::BeginMap;
           out << YAML::Key << "x" << YAML::Value << j;
           out << YAML::Key << "y" << YAML::Value << i;
@@ -274,12 +278,12 @@ void Editor::on_SaveButton_clicked() {
       QLabel *label =
           qobject_cast<QLabel *>(ui->mapLayout->itemAtPosition(i, j)->widget());
       if (label && !label->pixmap().isNull()) {
-        if (label->property("tile_id").toInt() >= 97 &&
-            label->property("tile_id").toInt() <= 99) {
+        if (label->property("tile_id").toInt() >= INTERACTUABLES_START &&
+            label->property("tile_id").toInt() <= TOTAL_TILES) {
           out << YAML::BeginMap;
           out << YAML::Key << "x" << YAML::Value << j;
           out << YAML::Key << "y" << YAML::Value << i;
-          out << "ID" << 99 - label->property("tile_id").toInt();
+          out << "ID" << TOTAL_TILES - label->property("tile_id").toInt();
           out << YAML::EndMap;
         }
       }
@@ -348,8 +352,8 @@ void Editor::on_LoadButton_clicked() {
     int y = spawn["y"].as<int>();
     QLabel *label =
         qobject_cast<QLabel *>(ui->mapLayout->itemAtPosition(y, x)->widget());
-    label->setPixmap(tiles[96]);
-    label->setProperty("tile_id", 96);
+    label->setPixmap(tiles[SPAWN_TILE]);
+    label->setProperty("tile_id", SPAWN_TILE);
   }
 
   for (const auto &interactuable : doc["Interactuables"]) {
@@ -358,8 +362,8 @@ void Editor::on_LoadButton_clicked() {
     int id = interactuable["ID"].as<int>();
     QLabel *label =
         qobject_cast<QLabel *>(ui->mapLayout->itemAtPosition(y, x)->widget());
-    label->setPixmap(tiles[99 - id]);
-    label->setProperty("tile_id", 99 - id);
+    label->setPixmap(tiles[TOTAL_TILES - id]);
+    label->setProperty("tile_id", TOTAL_TILES - id);
   }
 }
 

@@ -11,15 +11,17 @@
 #define HELMENT_ID 2
 
 #define ARMOR_ID 1
+#define WEAPON_ID 0
 
 // En Map.h
 struct Map {
     std::vector<Structure> structures;  // Plataformas
-    std::vector<Ramp> leftRamps;        // Rampas izquierdas
-    std::vector<Ramp> rightRamps;       // Rampas derechas
-    std::vector<Spawn> spawns;          // Spawns
+    std::vector<Ramp> leftRamps;       
+    std::vector<Ramp> rightRamps;       
+    std::vector<Spawn> spawns;          
     std::vector<Helmet> helmets;
     std::vector<Armor> armors;
+    std::vector<WeaponSpawn> weaponSpawns;
     std::vector<Box> boxes;
     std::string background;
     int height;

@@ -41,6 +41,9 @@ Map MapLoader::getNextMap() {
             case ARMOR_ID:
                 mapa.armors.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
                 break;
+            case WEAPON_ID:
+                mapa.weaponSpawns.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
+                break;
             default:
                 mapa.boxes.emplace_back(4, interactuable["x"].as<int>(), interactuable["y"].as<int>());
                 break;
@@ -102,7 +105,7 @@ Map MapLoader::getactualMap() {
     return maps[lastMapIndex - 1];
 }
 
-MapDTO MapLoader::getNextMapDTO() {
+MapDTO MapLoader::getNextMapDTO() {//en realidad devuelve al actual, pero hay que llamar antes a get next map asi actualiza map
     Map mapa = getactualMap();
     std::cout << mapa.background << std::endl;
     std::cout << mapa.structures.size() << std::endl;
@@ -117,6 +120,5 @@ MapDTO MapLoader::getNextMapDTO() {
         tiles.push_back({ramp.start_x, ramp.end_x, ramp.y, ramp.id});
     }
     int background = (mapa.background == "Forest") ? 0 : 1;
-    std::cout << "cargo el DTO con tamaño: " << tiles.size() << std::endl;
     return MapDTO(std::move(tiles), background, mapa.width, mapa.height);
 }
