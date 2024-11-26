@@ -72,6 +72,8 @@ public:
 
   void explosionCollisions();
 
+  void bananaCollisions();
+
   MapDTO getMapDTO();
   
   Map getMap();
