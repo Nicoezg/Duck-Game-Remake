@@ -35,13 +35,14 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<Grenade>(map);
+  weapon = std::make_unique<Banana>(map);
   hasWeapon = true;
   hasHelmet = true;
   hasArmour = true;
   isOnPlatform = false;
 
   shootingCooldown = 0;
+  bananaEffectRemaining = 0;
 }
 
 void Duck::reset(int pos_y){
@@ -118,9 +119,14 @@ void Duck::update() {
     velY = 0;
     return;
   }
-
-  posX += velX;
   posY += velY;
+  if (bananaEffectRemaining > 0) {
+    bananaEffectRemaining--;
+    posX += isRight ? 2 : -2;
+  }else{
+    posX += velX;
+  }
+
 
   if ((velX < 0 && isRight) || (velX > 0 && !isRight)) {
     velX = 0;
@@ -298,6 +304,8 @@ PlayerDTO Duck::toDTO() const {
 Duck::~Duck() {}
 
 uint8_t Duck::getWins() const { return wins; }
+
+void Duck::collideWithBanana() { bananaEffectRemaining = 100; }
 
 /*bool Duck::impact(Bullet &bullet) {
     Position position = Position(posX, posY, WIDTH, HEIGHT);

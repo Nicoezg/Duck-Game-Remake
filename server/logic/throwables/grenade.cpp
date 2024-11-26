@@ -1,7 +1,7 @@
 #include "grenade.h"
-#include "server/logic/duck.h"
 #include "server/logic/explosion.h"
 #include <iostream>
+#include "server/logic/duck.h"
 
 
 void ThrownGrenade::update() {
@@ -21,9 +21,12 @@ void ThrownGrenade::update() {
     }
   } 
     if (framesToExplode == 0) {
-    map.addExplosion(std::make_unique<Explosion>(map,pos_x, pos_y));
-    std::cout << "Explosion at " << pos_x << " " << pos_y << std::endl;
+    consume();
   }
+}
+
+void ThrownGrenade::consume() {
+  map.addExplosion(std::make_unique<Explosion>(map,pos_x, pos_y));
 }
 
 BulletDTO ThrownGrenade::toDTO() const {

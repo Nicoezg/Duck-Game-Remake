@@ -28,6 +28,7 @@ private:
   bool hasArmour;
   bool isOnPlatform;
   uint8_t wins;
+  int bananaEffectRemaining;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
@@ -40,6 +41,7 @@ public:
   void stopMoving();
   void update();
   void resetJumpState();
+  void collideWithBanana();
   hitBox getBoundingBox() const;
   bool checkCollisionWithPlatform(const Structure &platform);
   void stopAiming();

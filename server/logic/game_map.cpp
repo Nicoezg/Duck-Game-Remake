@@ -78,6 +78,8 @@ void GameMap::update() {
                                     }),
                      throwables.end());
 
+    bananaCollisions();
+
     for (const auto &explosion: explosions) {
         explosion->update();
     }
@@ -245,6 +247,34 @@ void GameMap::explosionCollisions() {
             if (hitBox::isColliding(duckBox, explosionBox)) {
                 player->takeDamage();
                 it = explosions.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
+void GameMap::bananaCollisions() {
+    for (const auto &player: players) {
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
+        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+        for (auto it = throwables.begin(); it != throwables.end();) {
+            if ((*it)->getId() != THROWN_BANANA) {
+                ++it;
+                continue;
+            }
+            if (!(*it)->isCollidable()) {
+                ++it;
+                continue;
+            }
+
+            hitBox bananaBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 4};
+            if (hitBox::isColliding(duckBox, bananaBox)) {
+                player->collideWithBanana();
+                (*it)->consume();   
+                it = throwables.erase(it);
             } else {
                 ++it;
             }
