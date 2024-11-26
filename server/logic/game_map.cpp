@@ -243,16 +243,32 @@ void GameMap::bulletCollisions() {
     }
 }
 
-void GameMap::explosionCollisions() {
+void GameMap::explosionCollisions() {   ;
+
     for (const auto &player: players) {
         if (player->getState() == State::DEAD) {
             continue;
         }
+    
         hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
         for (auto it = explosions.begin(); it != explosions.end();) {
+            std::vector<Duck*> &damagedPlayers=(*it)->getPlayersDamaged();
+            bool damaged = false;
+            for (auto damagedPlayer: damagedPlayers) {
+                if (player->getId() == damagedPlayer->getId()) {
+                    damaged = true;
+                    break;
+                }
+            }
+            if (damaged) {
+                ++it;
+                continue;
+            }
+
             hitBox explosionBox = {(*it)->getPosX(), (*it)->getPosY(), (*it)->getRadius(), (*it)->getRadius()};
             if (hitBox::isColliding(duckBox, explosionBox)) {
                 player->takeDamage();
+                (*it)->addPlayerDamaged(player);
             } 
             ++it;
         }
