@@ -12,6 +12,7 @@
 #include "common/events/map.h"
 #include "common/events/tile.h"
 #include "common/events/game_over.h"
+#include <cstddef>
 #include <iostream>
 #include <list>
 
@@ -230,17 +231,36 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
         explosions.emplace_back(x, y, current_duration);
     }
 
+    std::vector<int8_t> size_throwables_data(LEN_SIZE);
+    read(size_throwables_data.data(), size_throwables_data.size());
+    int throwables_len = encoder.decode_len(size_throwables_data);
+
+    std::vector<int8_t> throwables_data(throwables_len * READ_THROWABLE_SIZE);
+    read(throwables_data.data(), throwables_data.size());
+
+    std::list<ThrowableDTO> throwables;
+    for (int i = 0; i < throwables_len; i++) {
+        int id = encoder.decode_id(throwables_data);
+        int x = encoder.decode_coordinate(throwables_data);
+        int y = encoder.decode_coordinate(throwables_data);
+        float angle = encoder.decode_angle(throwables_data);
+        bool direction = encoder.decode_bool(throwables_data);
+        bool action = encoder.decode_bool(throwables_data);
+        throwables.emplace_back(x, y, ThrowableId(id), angle, direction, action);
+    }
+
     return std::make_shared<Broadcast>(
             std::move(players), std::move(bullets), std::move(crates),
-            std::move(item_spawns), std::move(explosions));
+            std::move(item_spawns), std::move(explosions), std::move(throwables));
 }
 
 void EventsProtocol::send_broadcast(const Event &event) {
     std::vector<int8_t> data(
-            LEN_SIZE * 5 + event.get_players().size() * SEND_PLAYER_SIZE +
+            LEN_SIZE * 6 + event.get_players().size() * SEND_PLAYER_SIZE +
             event.get_bullets().size() * SEND_BULLET_SIZE + SEND_EXPLOSION_SIZE * event.get_explosions().size() +
             EVENT_TYPE_SIZE
-            + event.get_crates().size() * SEND_CRATE_SIZE + event.get_item_spawns().size() * SEND_ITEM_SPAWN_SIZE);
+            + event.get_crates().size() * SEND_CRATE_SIZE + event.get_item_spawns().size() * SEND_ITEM_SPAWN_SIZE
+            + event.get_throwables().size() * SEND_THROWABLE_SIZE);
     size_t offset = 0;
     offset += encoder.encode_event_type(event.get_type(), &data[offset]);
 
@@ -258,6 +278,9 @@ void EventsProtocol::send_broadcast(const Event &event) {
 
     offset += encoder.encode_len(event.get_explosions().size(), &data[offset]);
     add_explosions(event, data, offset);
+
+    offset += encoder.encode_len(event.get_throwables().size(), &data[offset]);
+    add_throwables(event, data, offset);
 
 
     send(data.data(), data.size());
@@ -302,6 +325,18 @@ void EventsProtocol::add_explosions(const Event& event, std::vector<int8_t> &dat
         offset += encoder.encode_coordinate(explosion.get_position_y(),
                                             &data[offset]);
         offset += encoder.encode_id(explosion.get_current_duration(), &data[offset]);
+    }
+}
+
+void EventsProtocol::add_throwables(const Event &event,
+                                    std::vector<int8_t> &data, size_t &offset) {
+    for (const auto &throwable: event.get_throwables()) {
+        offset += encoder.encode_id(throwable.get_id(), &data[offset]);
+        offset += encoder.encode_coordinate(throwable.get_position_x(), &data[offset]);
+        offset += encoder.encode_coordinate(throwable.get_position_y(), &data[offset]);
+        offset += encoder.encode_angle(throwable.get_angle(), &data[offset]);
+        offset += encoder.encode_bool(throwable.get_direction(), &data[offset]);
+        offset += encoder.encode_bool(throwable.get_action(), &data[offset]);
     }
 }
 

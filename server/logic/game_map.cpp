@@ -237,6 +237,15 @@ std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
     return itemSpawnsList;
 }
 
+std::list<ThrowableDTO> GameMap::getThrowablesState() {
+    // A implementar
+    std::list<ThrowableDTO> throwablesList;
+    /* for (const auto &throwable: throwables) {
+        throwablesList.emplace_back(throwable->toDTO());
+    } */
+    return throwablesList;
+}
+
 void GameMap::bulletCollisions() {
 
     for (const auto &player: players) {

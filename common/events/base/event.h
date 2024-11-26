@@ -13,6 +13,7 @@
 #include "common/events/items/weapon_dto.h"
 #include "common/events/items/item_spawn.h"
 #include "common/events/player.h"
+#include "common/events/items/throwable_dto.h"
 #include "event_type.h"
 #include "common/events/connection/player_data.h"
 #include <list>
@@ -49,6 +50,8 @@ public:
   virtual std::list<ItemSpawnDTO> get_item_spawns() const;
 
   virtual std::list<ExplosionDTO> get_explosions() const;
+
+  virtual std::list<ThrowableDTO> get_throwables() const;
 
   virtual int get_max_players() const;
 
