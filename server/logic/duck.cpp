@@ -23,8 +23,6 @@ const int HEIGHT = CONFIG.getDuckConfig().getHeight();
 const int CENTER_X = CONFIG.getDuckConfig().getCenterX();
 const int CENTER_Y = CONFIG.getDuckConfig().getCenterY();
 
-#define GROUNDLEVEL 384
-
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
     : id(id), posX(posX), posY(posY), map(map), state(State::BLANK), wins(0) {
 
@@ -91,7 +89,6 @@ void Duck::move(bool is_right) {
 }
 
 void Duck::jump() {
- 
   if (!jumping) {
     velY = -SPEED_Y;
     jumping = true;
@@ -101,13 +98,11 @@ void Duck::jump() {
 }
 
 void Duck::stopMoving() {
-  
   velX = 0;
   state = State::BLANK;
 }
 
 void Duck::flap() {
- 
   if (jumping && velY > 0 && !hasWeapon) {
     velY = FLAPPING_SPEED;
     flapping = true;
@@ -116,7 +111,9 @@ void Duck::flap() {
 }
 
 void Duck::update() {
-
+  if (state == State::DEAD) {
+    return;
+  }
 
   shooting = shootingCooldown > 0;
   if (shooting) {
@@ -136,6 +133,7 @@ void Duck::update() {
 
   posX += velX;
   posY += velY;
+  
   if (bananaEffectRemaining > 0) {
     bananaEffectRemaining--;
     posX += isRight ? 2 : -2;
@@ -185,31 +183,13 @@ void Duck::update() {
       state = State::FALLING;
     }
   }
-
-  if (posY + 16 >= GROUNDLEVEL) {
-    posY = GROUNDLEVEL - 32;
-    jumping = false;
-    flapping = false;
-    velY = 0;
-
-    if (state != State::PLAYING_DEAD && state != State::AIMING_UPWARDS) {
-      aimingUpwards = false;
-
-      if (velX == 0) {
-        state = State::BLANK;
-      } else {
-        state = State::WALKING;
-      }
-    }
-  }
-
+  
   if (weapon) {
     weapon->decreaseCooldown();
   }
 }
 
 void Duck::shoot() {
- 
   if (weapon && weapon->isReadyToShoot()) {
     weapon->shoot(this);
     shootingCooldown = 1;
