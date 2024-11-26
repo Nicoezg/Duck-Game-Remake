@@ -19,12 +19,15 @@ void ThrownGrenade::update() {
     if (hitBox::isColliding(grenadeBox, structureBox)) {
       pos_y = structure.y * 16 - 8;
     }
-
-  if (framesToExplode == 0) {
-    map.addExplosion(std::make_unique<Explosion>(map,pos_x, pos_y));
-  }
-
   } 
+    if (framesToExplode == 0) {
+    map.addExplosion(std::make_unique<Explosion>(map,pos_x, pos_y));
+    std::cout << "Explosion at " << pos_x << " " << pos_y << std::endl;
+  }
+}
+
+BulletDTO ThrownGrenade::toDTO() const {
+  return {pos_x, pos_y, THROWN_GRENADE, angle, isRight};
 }
 
 
