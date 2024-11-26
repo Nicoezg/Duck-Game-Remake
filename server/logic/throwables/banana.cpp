@@ -38,5 +38,5 @@ void ThrownBanana::update() {
 
 
 ThrowableDTO ThrownBanana::toDTO() const {
-  return {pos_x, pos_y, THROWN_BANANA_V2, 0, isRight,false};
+  return {pos_x, pos_y, THROWN_BANANA_V2, 0, isRight,consumed};
 }

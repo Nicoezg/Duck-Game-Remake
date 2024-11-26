@@ -71,15 +71,15 @@ void GameMap::update() {
     //checkBulletCollisionWithPlayers();
     bulletCollisions();
 
-    for (const auto &throwable: throwables) {
-        throwable->update();
-    }
-
     throwables.erase(std::remove_if(throwables.begin(), throwables.end(),
-                                    [](const std::shared_ptr<Throwable> &throwable) {
+                                [](const std::shared_ptr<Throwable> &throwable) {
                                         return throwable->isOver();
                                     }),
                      throwables.end());
+
+    for (const auto &throwable: throwables) {
+        throwable->update();
+    }
 
     bananaCollisions();
 
@@ -216,10 +216,8 @@ std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
 }
 
 std::list<ThrowableDTO> GameMap::getThrowablesState() {
-    // A implementar
     std::list<ThrowableDTO> throwablesList;
      for (const auto &throwable: throwables) {
-        std::cout << "Throwables to DTO" << std::endl;
         throwablesList.emplace_back(throwable->toDTO());
     } 
     return throwablesList;
@@ -301,10 +299,9 @@ void GameMap::bananaCollisions() {
             if (hitBox::isColliding(duckBox, bananaBox)) {
                 player->collideWithBanana();
                 (*it)->consume();   
-                it = throwables.erase(it);
-            } else {
-                ++it;
+
             }
+            ++it;
         }
     }
 }
