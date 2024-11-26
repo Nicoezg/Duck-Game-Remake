@@ -87,13 +87,14 @@ void GameMap::update() {
         explosion->update();
     }
 
-    explosionCollisions();
-
     explosions.erase(std::remove_if(explosions.begin(), explosions.end(),
                                     [](const std::shared_ptr<Explosion> &explosion) {
                                         return explosion->isOver();
                                     }),
                      explosions.end());
+
+    explosionCollisions();
+    
     reset = false;
     if (check_players_alive()){
         reset_round();
@@ -252,9 +253,8 @@ void GameMap::explosionCollisions() {
             hitBox explosionBox = {(*it)->getPosX(), (*it)->getPosY(), (*it)->getRadius(), (*it)->getRadius()};
             if (hitBox::isColliding(duckBox, explosionBox)) {
                 player->takeDamage();
-            } else {
-                ++it;
-            }
+            } 
+            ++it;
         }
     }
 }

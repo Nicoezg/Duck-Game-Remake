@@ -5,7 +5,4 @@ Explosion::Explosion(GameMap &map,int x, int y)
 
 void Explosion::update() {
     framesRemaining--;
-    if (framesRemaining == 0) {
-        //destruirse
-    }
 }
