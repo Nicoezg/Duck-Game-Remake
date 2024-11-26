@@ -377,6 +377,9 @@ void GameMap::reset_round() {
 
     }
     bullets.clear();
+    explosions.clear();
+    crates.clear();
+    throwables.clear();
 }
 
 int GameMap::get_winner_id() { return winner_id; }
