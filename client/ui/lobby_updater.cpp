@@ -28,7 +28,7 @@ void LobbyUpdater::run() {
 void LobbyUpdater::update(const std::shared_ptr<Event> &event) {
     switch (event->get_type()) {
         case NEW_PLAYER:
-            mainWindow->show_connected_players(*event);
+            mainWindow->update_players_list(*event);
             break;
         case JOIN_GAME:
             mainWindow->show_connected_players(*event);
