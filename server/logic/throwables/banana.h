@@ -15,5 +15,5 @@ public:
 
   void consume() override { consumed = true; }
 
-  BulletDTO toDTO() const override;
+  ThrowableDTO toDTO() const override;
 };

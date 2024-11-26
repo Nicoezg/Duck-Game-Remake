@@ -29,9 +29,8 @@ void ThrownGrenade::consume() {
   map.addExplosion(std::make_unique<Explosion>(map,pos_x, pos_y));
 }
 
-BulletDTO ThrownGrenade::toDTO() const {
-  return {pos_x, pos_y, THROWN_GRENADE, angle, isRight};
+ThrowableDTO ThrownGrenade::toDTO() const {
+  return {pos_x, pos_y, THROWN_GRENADE_V2, 0, isRight,false};
 }
-
 
 

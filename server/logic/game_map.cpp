@@ -178,10 +178,6 @@ std::list<BulletDTO> GameMap::getBulletsState() {
         bulletsList.emplace_back(bullet->toDTO());
     }
 
-    for (const auto &throwable: throwables) {
-        bulletsList.emplace_back(throwable->toDTO());
-    }
-
     return bulletsList;
 }
 
@@ -222,9 +218,10 @@ std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
 std::list<ThrowableDTO> GameMap::getThrowablesState() {
     // A implementar
     std::list<ThrowableDTO> throwablesList;
-    /* for (const auto &throwable: throwables) {
+     for (const auto &throwable: throwables) {
+        std::cout << "Throwables to DTO" << std::endl;
         throwablesList.emplace_back(throwable->toDTO());
-    } */
+    } 
     return throwablesList;
 }
 
@@ -291,7 +288,7 @@ void GameMap::bananaCollisions() {
         }
         hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
         for (auto it = throwables.begin(); it != throwables.end();) {
-            if ((*it)->getId() != THROWN_BANANA) {
+            if ((*it)->getId() != THROWN_BANANA_V2) {
                 ++it;
                 continue;
             }
