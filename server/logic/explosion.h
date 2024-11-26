@@ -1,7 +1,8 @@
 #ifndef EXPLOSION_H
 #define EXPLOSION_H
 #include "server/logic/game_map.h"
-
+#include "server/logic/duck.h"
+#include <vector>
 class Explosion {
     private:
     GameMap &map;
@@ -9,10 +10,15 @@ class Explosion {
     int posY;
     int radius;
     int framesRemaining;
+    std::vector<Duck *> playersDamaged;
 
     public:
 
     Explosion(GameMap &map,int posX, int posY);
+
+    std::vector<Duck *> &getPlayersDamaged() { return playersDamaged; }
+
+    void addPlayerDamaged(Duck *player) { playersDamaged.push_back(player); }
 
     void update();
 
