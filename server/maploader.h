@@ -36,16 +36,7 @@ struct Map {
                 groundLevel = structure.y;
             }
         }
-        for (const auto& ramp : leftRamps) {
-            if (ramp.y < groundLevel) {
-                groundLevel = ramp.y;
-            }
-        }
-        for (const auto& ramp : rightRamps) {
-            if (ramp.y < groundLevel) {
-                groundLevel = ramp.y;
-            }
-        }
+        
         return groundLevel;
     }
 };

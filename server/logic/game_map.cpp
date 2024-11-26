@@ -11,11 +11,12 @@
 GameMap::GameMap() : winner_id(0), rounds(0), reset(false) {
     map = mapLoader.getNextMap();
     addCrate();
+    addSpawnItem();
 }
 
 void GameMap::addPlayer(int player_id) {
     Duck *duck =
-            new Duck(player_id, 10 * player_id, (map.getGroundLevel() * 16), *this);
+            new Duck(player_id, 10 * player_id, 384, *this);
     players.push_back(duck);
 }
 
@@ -37,12 +38,15 @@ void GameMap::addCrate() {
     }
 }
 
-/*void GameMap::addSpawnItem() {
+void GameMap::addSpawnItem() {
     for (auto &itemSpawn: map.armors) {
-        itemSpawns.push_back(itemSpawn);
+        itemSpawns.push_back(std::make_shared<ItemSpawn>(itemSpawn.x, itemSpawn.y, ItemSpawnId::CHESTPLATE_SPAWN)); 
     }
-}*/
-
+    for (auto &itemSpawn: map.helmets) {
+        itemSpawns.push_back(std::make_shared<ItemSpawn>(itemSpawn.x, itemSpawn.y, ItemSpawnId::HELMET_SPAWN)); 
+    }
+} 
+ 
 Duck *GameMap::findPlayer(int playerId) {
     for (auto player: players) {
         if (player->getId() == playerId) {
@@ -135,10 +139,10 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
     if (!player)
         return true;
 
-    if (player->getPositionX() >= map.width * 16 || player->getPositionX() <= -20) {
+    if (player->getPositionX() >= map.width * 16 || player->getPositionX() <= -30) {
         return true;
     }
-    if (player->getPositionY() >= map.height * 16 || player->getPositionY() <= -20) {
+    if (player->getPositionY() >= map.height * 16 || player->getPositionY() <= -30) {
         return true;
     }
     return false;
