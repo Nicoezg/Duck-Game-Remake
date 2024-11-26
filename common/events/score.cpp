@@ -1,9 +1,9 @@
 #include "score.h"
 
-Score::Score(std::vector<std::string> &&names, std::vector<int> &&scores)
+Score::Score(std::list<std::string> &&names, std::list<uint8_t> &&scores)
     : Event(SCORE), names(std::move(names)), scores(std::move(scores)) {}
 
-std::vector<std::string> Score::get_names() const { return names; }
+std::list<std::string> Score::get_names() const { return names; }
 
-std::vector<int> Score::get_scores() const { return scores; }
+std::list<uint8_t> Score::get_scores() const { return scores; }
 

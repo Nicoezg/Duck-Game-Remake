@@ -66,9 +66,9 @@ public:
 
   virtual int get_length() const;
 
-  virtual std::vector<std::string> get_names() const;
+  virtual std::list<std::string> get_names() const;
 
-  virtual std::vector<int> get_scores() const;
+  virtual std::list<uint8_t> get_scores() const;
 
   virtual PlayerData get_winner() const;
 

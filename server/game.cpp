@@ -13,6 +13,7 @@
 #include "common/thread.h"
 #include "game.h"
 #include "common/events/game_over.h"
+#include "common/events/score.h"
 
 #define TIME_LOOP 20
 
@@ -90,13 +91,13 @@ void Game::checkNewRound() {
         for (auto player: players) {
             scoresMap[gameMap.getPlayerWins(player.first)] = player.second;
         }
-        std::vector<std::string> names; // cambiar a list
-        std::vector<uint8_t> scores; // cambiar a list
+        std::list<std::string> names;
+        std::list<uint8_t> scores;
         for (auto score: scoresMap) {
             names.push_back(score.second);
             scores.push_back(score.first);
         }
-        std::shared_ptr<Event> event = std::make_shared<Score>(names, score);
+        std::shared_ptr<Event> event = std::make_shared<Score>(std::move(names), std::move(scores));
         notify_event(event); */
     }
 }
