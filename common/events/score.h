@@ -2,22 +2,22 @@
 #define TALLER_TP_SCORE_H
 
 #include <string>
-#include <vector>
+#include <list>
 #include "base/event.h"
 
 class Score : public Event {
 private:
-    std::vector<std::string> names;
+    std::list<std::string> names;
 
-    std::vector<int> scores;
+    std::list<uint8_t> scores;
 
 
 public:
-  Score(std::vector<std::string> &&names, std::vector<int> &&scores);
+  Score(std::list<std::string> &&names, std::list<uint8_t> &&scores);
 
-  std::vector<std::string> get_names() const override;
+  std::list<std::string> get_names() const override;
 
-  std::vector<int> get_scores() const override;
+  std::list<uint8_t> get_scores() const override;
 };
 
 #endif // TALLER_TP_SCORE_H

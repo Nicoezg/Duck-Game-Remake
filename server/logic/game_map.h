@@ -92,6 +92,10 @@ public:
     int getRounds();
 
     bool pauseForScores();
+
+    uint8_t getPlayerWins(int playerId);
+
+
 };
 
 #endif

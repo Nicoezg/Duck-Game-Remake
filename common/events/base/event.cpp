@@ -84,11 +84,11 @@ int Event::get_length() const {
     throw std::runtime_error("Has no length.");
 }
 
-std::vector<std::string> Event::get_names() const {
+std::list<std::string> Event::get_names() const {
     throw std::runtime_error("Has no names.");
 }
 
-std::vector<int> Event::get_scores() const {
+std::list<uint8_t> Event::get_scores() const {
     throw std::runtime_error("Has no scores.");
 }
 

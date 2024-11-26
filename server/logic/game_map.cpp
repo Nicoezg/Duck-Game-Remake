@@ -384,3 +384,12 @@ int GameMap::get_winner_id() { return winner_id; }
 int GameMap::getRounds() { return rounds;}
 
 bool GameMap::pauseForScores() {return reset && (rounds % 5) == 0;}
+
+uint8_t GameMap::getPlayerWins(int playerId) {
+    for (auto player: players) {
+        if (player->getId() == playerId) {
+            return player->getWins();
+        }
+    }
+    return 0;
+}
