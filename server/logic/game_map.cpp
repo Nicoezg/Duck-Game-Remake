@@ -252,7 +252,6 @@ void GameMap::explosionCollisions() {
             hitBox explosionBox = {(*it)->getPosX(), (*it)->getPosY(), (*it)->getRadius(), (*it)->getRadius()};
             if (hitBox::isColliding(duckBox, explosionBox)) {
                 player->takeDamage();
-                it = explosions.erase(it);
             } else {
                 ++it;
             }
