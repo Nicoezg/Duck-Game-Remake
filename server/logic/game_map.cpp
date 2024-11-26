@@ -7,8 +7,6 @@
 #include <stdexcept>
 #include <yaml-cpp/yaml.h>
 
-#define HEIGHT 500
-#define WIDTH 500
 
 GameMap::GameMap() : winner_id(0), rounds(0), reset(false) {
     map = mapLoader.getNextMap();
@@ -38,6 +36,12 @@ void GameMap::addCrate() {
         crates.push_back(crate); 
     }
 }
+
+/*void GameMap::addSpawnItem() {
+    for (auto &itemSpawn: map.armors) {
+        itemSpawns.push_back(itemSpawn);
+    }
+}*/
 
 Duck *GameMap::findPlayer(int playerId) {
     for (auto player: players) {
@@ -95,7 +99,17 @@ void GameMap::update() {
 
     explosionCollisions();
     
+
     reset = false;
+
+    bulletCollisionsWithCrates();
+
+    /*for (auto crate: crates) {
+        if (crate.was_hit()) {
+            addSpawnItem(crate.get_content(), crate.get_posx(), crate.get_posy());  
+        }
+    }*/
+
     if (check_players_alive()){
         reset_round();
     }
@@ -121,10 +135,10 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
     if (!player)
         return true;
 
-    if (player->getPositionX() >= WIDTH || player->getPositionX() <= 0) {
+    if (player->getPositionX() >= map.width * 16 || player->getPositionX() <= -20) {
         return true;
     }
-    if (player->getPositionY() >= HEIGHT || player->getPositionY() <= 0) {
+    if (player->getPositionY() >= map.height * 16 || player->getPositionY() <= -20) {
         return true;
     }
     return false;
@@ -243,8 +257,22 @@ void GameMap::bulletCollisions() {
     }
 }
 
-void GameMap::explosionCollisions() {   ;
+void GameMap::bulletCollisionsWithCrates() {
+    for (auto &crate: crates) {
+        hitBox crateBox = {crate.get_posx(), crate.get_posy(), 16, 16};
+        for (auto it = bullets.begin(); it != bullets.end();) {
+            hitBox bulletBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 1};
+            if (hitBox::isColliding(crateBox, bulletBox)) {
+                crate.shoot();
+                it = bullets.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
 
+void GameMap::explosionCollisions() {
     for (const auto &player: players) {
         if (player->getState() == State::DEAD) {
             continue;
@@ -302,6 +330,7 @@ void GameMap::bananaCollisions() {
         }
     }
 }
+
 
 void GameMap::reapDead() {
     auto it = std::remove_if(players.begin(), players.end(), [](Duck *player) {

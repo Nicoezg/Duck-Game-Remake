@@ -67,18 +67,22 @@ void Duck::reset(int pos_y){
 }
 
 void Duck::moveLeft() {
+
   velX = -SPEED_X;
   isRight = false;
   state = State::WALKING;
 }
 
 void Duck::moveRight() {
+
   velX = SPEED_X;
   isRight = true;
   state = State::WALKING;
 }
 
 void Duck::move(bool is_right) {
+
+ 
   if (is_right) {
     moveRight();
   } else {
@@ -87,6 +91,7 @@ void Duck::move(bool is_right) {
 }
 
 void Duck::jump() {
+ 
   if (!jumping) {
     velY = -SPEED_Y;
     jumping = true;
@@ -96,11 +101,13 @@ void Duck::jump() {
 }
 
 void Duck::stopMoving() {
+  
   velX = 0;
   state = State::BLANK;
 }
 
 void Duck::flap() {
+ 
   if (jumping && velY > 0 && !hasWeapon) {
     velY = FLAPPING_SPEED;
     flapping = true;
@@ -109,16 +116,25 @@ void Duck::flap() {
 }
 
 void Duck::update() {
+
+
   shooting = shootingCooldown > 0;
   if (shooting) {
     shootingCooldown--;
   }
 
-  if (state == State::PLAYING_DEAD || state == State::DEAD) {
+  if (state == State::PLAYING_DEAD) {
     velX = 0;
     velY = 0;
     return;
   }
+
+  if (map.checkCollisionsWithBorders(id)){
+    state = State::DEAD;
+    return;
+  }
+
+  posX += velX;
   posY += velY;
   if (bananaEffectRemaining > 0) {
     bananaEffectRemaining--;
@@ -193,6 +209,7 @@ void Duck::update() {
 }
 
 void Duck::shoot() {
+ 
   if (weapon && weapon->isReadyToShoot()) {
     weapon->shoot(this);
     shootingCooldown = 1;
@@ -215,6 +232,7 @@ void Duck::equipWeapon(std::unique_ptr<Weapon> &&newWeapon) {
 }
 
 void Duck::takeDamage() {
+
   if (hasHelmet) {
     hasHelmet = false;
   } else if (hasArmour) {
@@ -226,6 +244,7 @@ void Duck::takeDamage() {
 }
 
 void Duck::pickUp() {
+
   if (!hasWeapon) {
     equipWeapon(std::make_unique<PewPewLaser>(map));
   } else if (!hasHelmet) {
@@ -240,6 +259,7 @@ void Duck::leave() {
 }
 
 void Duck::playDead() {
+ 
   if (state != PLAYING_DEAD && !isFalling()) {
     state = PLAYING_DEAD;
     velX = 0;
@@ -250,11 +270,13 @@ void Duck::playDead() {
 bool Duck::isFalling() const { return jumping || flapping; }
 
 void Duck::aimUpwards() {
+ 
   aimingUpwards = true;
   state = State::AIMING_UPWARDS;
 }
 
 void Duck::standBack(int count) {
+
   if (!aimingUpwards) {
     if (isRight) {
       velX -= count;

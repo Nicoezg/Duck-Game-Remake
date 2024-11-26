@@ -55,6 +55,7 @@ public:
   void playDead();
   void aimUpwards();
   void standBack(int count);
+  bool isAlive() const;
   int getPositionX() const;
   int getPositionY() const;
   int getId() const;

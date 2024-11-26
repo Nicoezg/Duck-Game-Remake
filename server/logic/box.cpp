@@ -1,4 +1,5 @@
 #include "box.h"
+
 #include <cstdlib>
 #include <iostream>
 
@@ -7,18 +8,9 @@ Box::Box(uint8_t hp, int pos_x, int pos_y)
   content = generateRandomContent(); 
 }
 
-BoxItem Box::generateRandomContent() {
-  int randomValue = std::rand() % 4;
-  switch (randomValue) {
-  case 1:
-    return WEAPON;
-  case 2:
-    return CHESTPLATE;
-  case 3:
-    return HELMET;
-  default:
-    return NOTHING;
-  }
+ItemSpawnId Box::generateRandomContent() {
+  int randomValue = std::rand() % 13;
+  return static_cast<ItemSpawnId>(randomValue);
 }
 
 void Box::shoot() {
@@ -34,7 +26,9 @@ CrateDTO Box::toDto() {
   return CrateDTO{pos_x, pos_y, hp, is_hit}; ;
 }
 
-BoxItem Box::get_content() const { return content; }
+ItemSpawnId Box::get_content() const { 
+  return content; 
+}
 
 int Box::get_posx() const { return pos_x; }
 int Box::get_posy() const { return pos_y; }
