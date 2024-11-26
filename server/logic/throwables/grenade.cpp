@@ -5,6 +5,9 @@
 
 
 void ThrownGrenade::update() {
+  if (framesToExplode<150){
+    startThrow = false;
+  }
   framesToExplode--;
   if (isRight) {
     pos_x += 1;
@@ -30,7 +33,7 @@ void ThrownGrenade::consume() {
 }
 
 ThrowableDTO ThrownGrenade::toDTO() const {
-  return {pos_x, pos_y, THROWN_GRENADE_V2, 0, isRight,false};
+  return {pos_x, pos_y, THROWN_GRENADE_V2, 0, isRight,startThrow};
 }
 
 
