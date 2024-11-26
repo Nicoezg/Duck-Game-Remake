@@ -17,6 +17,5 @@ void DrawExplosion::render(const ExplosionDTO& explosion){
     }else if (explosion.get_current_duration() <= 1){
         sound.reset();
     }
-
-    renderer.Copy(*texture, explosionClip[(48 - int(explosion.get_current_duration()))% 6], dest); // Puede cambiar
+    renderer.Copy(*texture, explosionClip[(47 - int(explosion.get_current_duration())) / 8], dest); // Puede cambiar
 }

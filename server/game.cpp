@@ -86,7 +86,18 @@ void Game::checkFinishGame() {
 
 void Game::checkNewRound() {
     if (gameMap.pauseForScores()){
-        // Enviar el score
+        /* std::map<uint8_t, std::string, std::greater<>> scoresMap;
+        for (auto player: players) {
+            scoresMap[gameMap.getPlayerWins(player.first)] = player.second;
+        }
+        std::vector<std::string> names; // cambiar a list
+        std::vector<uint8_t> scores; // cambiar a list
+        for (auto score: scoresMap) {
+            names.push_back(score.second);
+            scores.push_back(score.first);
+        }
+        std::shared_ptr<Event> event = std::make_shared<Score>(names, score);
+        notify_event(event); */
     }
 }
 

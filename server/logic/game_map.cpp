@@ -52,6 +52,9 @@ void GameMap::update() {
 
     // reapDead();
     for (auto player: players) {
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
         player->update();
     }
 
@@ -129,6 +132,9 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
 void GameMap::process_action(std::shared_ptr<Action> &action) {
     int player_id = action->get_player_id();
     Duck *duck = findPlayer(player_id);
+    if (duck->getState() == State::DEAD) {
+        return;
+    }
     if (!duck)
         return;
 
