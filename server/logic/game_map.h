@@ -43,6 +43,7 @@ public:
 
   void addCrate();
 
+  void addSpawnItem();
 
   Duck *findPlayer(int playerId);
 
@@ -74,26 +75,27 @@ public:
 
   void bananaCollisions();
 
+  void bulletCollisionsWithCrates();
+
   MapDTO getMapDTO();
   
   Map getMap();
 
-    void checkBulletCollisionWithPlayers();
-    
+  void checkBulletCollisionWithPlayers();
+  
+  bool check_players_alive();
 
-    bool check_players_alive();
+  int get_winner_id();
 
-    int get_winner_id();
+  void reset_round();
 
-    void reset_round();
+  bool check_finished();
 
-    bool check_finished();
+  int getRounds();
 
-    int getRounds();
+  bool pauseForScores();
 
-    bool pauseForScores();
-
-    uint8_t getPlayerWins(int playerId);
+  uint8_t getPlayerWins(int playerId);
 
 
 };
