@@ -72,6 +72,8 @@ void Game::run() {
             notify_state();
             checkFinishGame();
         }
+        // Este sleep es para que el game no cierre la conexión y le llegue el GameOver a los clientes
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     } catch (const ClosedQueue &e) {
     }
 }
