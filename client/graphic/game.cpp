@@ -18,8 +18,8 @@ Game::Game(Client &client) try: client(client),
                                 renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,640,480}), 
                                 mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096), 
                                 backgroundMusic("../client/graphic/audio/background-music.wav"),  map(renderer), ducks(), crates(),
-                                bullets(), itemSpawns(), explosions(), item(renderer),
-                                bullet(renderer), crate(renderer), explosion(renderer), stop(false), pause(false) {
+                                bullets(), itemSpawns(), explosions(),throwables(), item(renderer),
+                                bullet(renderer), crate(renderer), explosion(renderer), throwable(renderer), stop(false), pause(false) {
 } catch (std::exception &e) {
     throw std::exception();
 }
@@ -138,6 +138,7 @@ void Game::update(const Event &broadcast) {
     // itemSpawns = broadcast.get_item_spawns();
     crates = broadcast.get_crates();
     explosions = broadcast.get_explosions();
+    throwables = broadcast.get_throwables();
 }
 
 void Game::showScores() {
@@ -218,6 +219,9 @@ void Game::render() {
     }
     for (auto &explosionDTO: explosions){
         explosion.render(explosionDTO);
+    }
+    for (auto &throwableDTO: throwables) {
+        throwable.render(throwableDTO);
     }
     renderer.Present();
 }

@@ -11,6 +11,7 @@
 #include "items/crate.h"
 #include "items/explosion.h"
 #include "items/item_spawn.h"
+#include "items/throwable_dto.h"
 #include "player.h"
 #include <list>
 #include <string>
@@ -20,7 +21,7 @@ private:
   std::list<PlayerDTO> players;
 
   std::list<BulletDTO>
-      bullets; // Incluye balas, bananas, granadas y explosiones
+      bullets;
 
   std::list<CrateDTO> crates;
 
@@ -28,12 +29,13 @@ private:
 
   std::list<ExplosionDTO> explosions;
 
+  std::list<ThrowableDTO> throwables;
+
 public:
   Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bullets,
             std::list<CrateDTO> &&crates, std::list<ItemSpawnDTO> &&item_spawns,
-            std::list<ExplosionDTO> &&explosions);
+            std::list<ExplosionDTO> &&explosions, std::list<ThrowableDTO> &&throwables);
 
-  Broadcast(std::list<PlayerDTO> &&players,  std::list<BulletDTO> &&bullets,std::list<ExplosionDTO> &&explosions);
 
   std::list<PlayerDTO> get_players() const override;
 
@@ -44,6 +46,8 @@ public:
   std::list<ItemSpawnDTO> get_item_spawns() const override;
 
   std::list<ExplosionDTO> get_explosions() const override;
+
+  std::list<ThrowableDTO> get_throwables() const override;
 };
 
 #endif // TALLER_TP_BROADCAST_H

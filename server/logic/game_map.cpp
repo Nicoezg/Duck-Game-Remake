@@ -79,15 +79,15 @@ void GameMap::update() {
     //checkBulletCollisionWithPlayers();
     bulletCollisions();
 
-    for (const auto &throwable: throwables) {
-        throwable->update();
-    }
-
     throwables.erase(std::remove_if(throwables.begin(), throwables.end(),
-                                    [](const std::shared_ptr<Throwable> &throwable) {
+                                [](const std::shared_ptr<Throwable> &throwable) {
                                         return throwable->isOver();
                                     }),
                      throwables.end());
+
+    for (const auto &throwable: throwables) {
+        throwable->update();
+    }
 
     bananaCollisions();
 
@@ -196,10 +196,6 @@ std::list<BulletDTO> GameMap::getBulletsState() {
         bulletsList.emplace_back(bullet->toDTO());
     }
 
-    for (const auto &throwable: throwables) {
-        bulletsList.emplace_back(throwable->toDTO());
-    }
-
     return bulletsList;
 }
 
@@ -235,6 +231,14 @@ std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
         itemSpawnsList.emplace_back(itemSpawn.toDTO());
     } */
     return itemSpawnsList;
+}
+
+std::list<ThrowableDTO> GameMap::getThrowablesState() {
+    std::list<ThrowableDTO> throwablesList;
+     for (const auto &throwable: throwables) {
+        throwablesList.emplace_back(throwable->toDTO());
+    } 
+    return throwablesList;
 }
 
 void GameMap::bulletCollisions() {
@@ -314,7 +318,7 @@ void GameMap::bananaCollisions() {
         }
         hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
         for (auto it = throwables.begin(); it != throwables.end();) {
-            if ((*it)->getId() != THROWN_BANANA) {
+            if ((*it)->getId() != THROWN_BANANA_V2) {
                 ++it;
                 continue;
             }
@@ -327,10 +331,9 @@ void GameMap::bananaCollisions() {
             if (hitBox::isColliding(duckBox, bananaBox)) {
                 player->collideWithBanana();
                 (*it)->consume();   
-                it = throwables.erase(it);
-            } else {
-                ++it;
+
             }
+            ++it;
         }
     }
 }

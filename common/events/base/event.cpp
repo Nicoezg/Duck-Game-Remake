@@ -103,3 +103,7 @@ int Event::get_score() const {
 GameRoom Event::get_game_room() const {
     throw std::runtime_error("Has no game room.");
 }
+
+std::list<ThrowableDTO> Event::get_throwables() const {
+    throw std::runtime_error("Has no throwables.");
+}

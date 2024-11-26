@@ -70,6 +70,8 @@ public:
 
   std::list<ItemSpawnDTO> getItemSpawnsState();
 
+  std::list<ThrowableDTO> getThrowablesState();
+
   void bulletCollisions();
 
   void explosionCollisions();

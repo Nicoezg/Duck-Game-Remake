@@ -9,6 +9,7 @@ target_sources(CLIENT
     draw_map.cpp
     draw_explosion.cpp
     draw_item.cpp
+    draw_throwable.cpp
     
     PUBLIC
     draw_helmet.h
@@ -19,5 +20,6 @@ target_sources(CLIENT
     draw_map.h
     draw_explosion.h
     draw_item.h
+    draw_throwable.h
     # .h files
     )

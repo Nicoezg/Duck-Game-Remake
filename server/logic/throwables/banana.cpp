@@ -5,7 +5,7 @@
 
 ThrownBanana::ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y,
                            int reach)
-    : Throwable(map, isRight, pos_x, pos_y, reach,THROWN_BANANA,false) {}
+    : Throwable(map, isRight, pos_x, pos_y, reach,THROWN_BANANA_V2,false) {}
 
 void ThrownBanana::update() {
     if (distance_travelled < reach && !onGround) {
@@ -37,6 +37,6 @@ void ThrownBanana::update() {
 
 
 
-BulletDTO ThrownBanana::toDTO() const {
-  return {pos_x, pos_y, THROWN_BANANA, 0, isRight};
+ThrowableDTO ThrownBanana::toDTO() const {
+  return {pos_x, pos_y, THROWN_BANANA_V2, 0, isRight,consumed};
 }
