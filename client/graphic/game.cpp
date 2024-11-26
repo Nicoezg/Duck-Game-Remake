@@ -138,6 +138,7 @@ void Game::update(const Event &broadcast) {
     // itemSpawns = broadcast.get_item_spawns();
     crates = broadcast.get_crates();
     explosions = broadcast.get_explosions();
+    throwables = broadcast.get_throwables();
 }
 
 void Game::showScores() {
