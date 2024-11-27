@@ -7,6 +7,8 @@
 #include <QWidget>
 #include <vector>
 
+#include "yamlhandler.h"
+
 namespace Ui {
 class Editor;
 }
@@ -34,6 +36,7 @@ private:
   QPixmap *sprite_actual;
   int tileID;
   std::vector<QPixmap> tiles;
+  YamlHandler yamlHandler;
   QStringList obtenerArchivosImagen(const QString &directorio);
   void cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
                            int &fila, int &columna);
@@ -41,6 +44,7 @@ private:
   void crearMapaVacio(int filas, int columnas);
   void cleanLayout(QGridLayout *layout);
   void cambiarFondo(int index);
+
 };
 
 #endif // EDITOR_H
