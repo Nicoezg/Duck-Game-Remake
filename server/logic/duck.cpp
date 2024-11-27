@@ -231,7 +231,7 @@ bool Duck::canPickUp(ItemSpawnId item) {
 
 void Duck::pickUp() {
 
-  ItemSpawnId item = map.itemCollisions();
+  ItemSpawnId item = map.itemCollisions(id);
   if (item != ItemSpawnId::NOTHING_SPAWN) {
     if (ItemSpawnId::HELMET_SPAWN == item) {
       equipHelmet();
@@ -240,7 +240,7 @@ void Duck::pickUp() {
     } else if (ItemSpawnId::HELMET_SPAWN != item && ItemSpawnId::CHESTPLATE_SPAWN != item) {
       getWeapon(item);
   }
-}
+  }
 }
 
 void Duck::getWeapon(ItemSpawnId item) {

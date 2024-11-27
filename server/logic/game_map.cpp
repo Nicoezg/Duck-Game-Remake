@@ -15,8 +15,14 @@ GameMap::GameMap() : winner_id(0), rounds(0), reset(false) {
 }
 
 void GameMap::addPlayer(int player_id) {
-    Duck *duck =
-            new Duck(player_id, 10 * player_id, 384, *this);
+    if (map.spawns.empty()) {
+        throw std::runtime_error("No hay spawns disponibles en el mapa.");
+    }
+    
+    int spawn_index = player_id % map.spawns.size();
+    auto& spawn = map.spawns[spawn_index];
+
+    Duck *duck = new Duck(player_id, spawn.x * 16, spawn.y * 16, *this);
     players.push_back(duck);
 }
 
@@ -105,6 +111,12 @@ void GameMap::update() {
         explosion->update();
     }
 
+    for (auto &itemSpawn: itemSpawns) {
+        if (!itemSpawn.isAvailable()) {
+            itemSpawn.update();
+        }
+    }
+
     explosions.erase(std::remove_if(explosions.begin(), explosions.end(),
                                     [](const std::shared_ptr<Explosion> &explosion) {
                                         return explosion->isOver();
@@ -113,7 +125,6 @@ void GameMap::update() {
 
     explosionCollisions();
     
-
     reset = false;
 
     bulletCollisionsWithCrates();
@@ -273,34 +284,28 @@ void GameMap::bulletCollisions() {
     }
 }
 
-ItemSpawnId GameMap::itemCollisions() {
+ItemSpawnId GameMap::itemCollisions(int player_id) {
 
+    Duck *player = findPlayer(player_id);
     ItemSpawnId item = ItemSpawnId::NOTHING_SPAWN;
 
-    for (const auto &player : players) {
-        if (player->getState() == State::DEAD) {
+    hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+
+    for (auto &spawn: itemSpawns) {
+        if (!spawn.isAvailable()) {
             continue;
         }
 
-        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+        hitBox itemBox = {spawn.getPosX(), spawn.getPosY(), 16, 16};
 
-        for (auto &spawn: itemSpawns){
-            if (!spawn.isAvailable()) {
-                continue;
-            }
-            hitBox itemBox = {spawn.getPosX(), spawn.getPosY(), 16, 16};
-            if (hitBox::isColliding(duckBox, itemBox)) {
-                if (player->canPickUp(spawn.getContent())) {
-                    spawn.notAvailable();  
-                    item = spawn.getContent();
-                }
-            }
+        if (hitBox::isColliding(duckBox, itemBox) && player->canPickUp(spawn.getContent())) {
+            spawn.notAvailable();
+            return spawn.getContent();
+        }
     }
-    }
-
+    
     return item;
 }
-
 
 void GameMap::bulletCollisionsWithCrates() {
     std::vector<std::shared_ptr<Bullet>> bulletsToRemove;
@@ -335,7 +340,6 @@ void GameMap::bulletCollisionsWithCrates() {
     }
 
 }
-
 
 void GameMap::explosionCollisions() {
     for (const auto &player: players) {
@@ -394,7 +398,6 @@ void GameMap::bananaCollisions() {
         }
     }
 }
-
 
 void GameMap::reapDead() {
     auto it = std::remove_if(players.begin(), players.end(), [](Duck *player) {

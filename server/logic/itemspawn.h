@@ -18,6 +18,7 @@ class ItemSpawn {
         int getPosX() const;
         int getPosY() const;
         bool isAvailable() const;
+        void update();
         ItemSpawnId getContent() const;
         ItemSpawnDTO toDTO() const;
        
