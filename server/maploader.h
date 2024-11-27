@@ -8,9 +8,9 @@
 #include "common/events/map.h"
 
 
-#define HELMENT_ID 2
-
-#define ARMOR_ID 1
+#define HELMENT_ID 3
+#define ARMOR_ID 2
+#define BOX_ID 1
 #define WEAPON_ID 0
 
 // En Map.h

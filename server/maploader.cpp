@@ -37,16 +37,12 @@ Map MapLoader::getNextMap() {
         switch (interactuable["ID"].as<int>()) {
             case HELMENT_ID:
                 mapa.helmets.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
-                break;
             case ARMOR_ID:
                 mapa.armors.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
-                break;
             case WEAPON_ID:
                 mapa.weaponSpawns.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
-                break;
-            default:
-                mapa.boxes.emplace_back(4, interactuable["x"].as<int>(), interactuable["y"].as<int>());
-                break;
+            case BOX_ID:
+                mapa.boxes.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
         }
     }
 
