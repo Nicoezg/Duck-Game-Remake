@@ -135,7 +135,7 @@ void Game::update(const Event &broadcast) {
     camera.update(playerRects);
 
     bullets = broadcast.get_bullets();
-    // itemSpawns = broadcast.get_item_spawns();
+    itemSpawns = broadcast.get_item_spawns();
     crates = broadcast.get_crates();
     explosions = broadcast.get_explosions();
     throwables = broadcast.get_throwables();

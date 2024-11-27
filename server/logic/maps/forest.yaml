@@ -137,6 +137,9 @@ Spawns:
     y: 368
 
 Interactuables:
+  - x: 100
+    y: 368
+    ID: 0
   - x: 200
     y: 368
     ID: 1

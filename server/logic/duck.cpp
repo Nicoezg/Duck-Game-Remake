@@ -35,8 +35,8 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   aimingUpwards = false;
   weapon = std::make_unique<Banana>(map);
   hasWeapon = true;
-  hasHelmet = true;
-  hasArmour = true;
+  hasHelmet = false;
+  hasArmour = false;
   isOnPlatform = false;
 
   shootingCooldown = 0;
@@ -65,22 +65,18 @@ void Duck::reset(int pos_y){
 }
 
 void Duck::moveLeft() {
-
   velX = -SPEED_X;
   isRight = false;
   state = State::WALKING;
 }
 
 void Duck::moveRight() {
-
   velX = SPEED_X;
   isRight = true;
   state = State::WALKING;
 }
 
 void Duck::move(bool is_right) {
-
- 
   if (is_right) {
     moveRight();
   } else {
@@ -140,7 +136,6 @@ void Duck::update() {
   }else{
     posX += velX;
   }
-
 
   if ((velX < 0 && isRight) || (velX > 0 && !isRight)) {
     velX = 0;
@@ -223,15 +218,69 @@ void Duck::takeDamage() {
   }
 }
 
+bool Duck::canPickUp(ItemSpawnId item) {
+  if (hasHelmet && ItemSpawnId::HELMET_SPAWN == item) {
+    return false;
+  }
+  if (hasArmour && ItemSpawnId::CHESTPLATE_SPAWN == item) {
+    return false;
+  }
+  if(hasWeapon && ItemSpawnId::HELMET_SPAWN != item && ItemSpawnId::CHESTPLATE_SPAWN != item){
+    return false;
+  }
+  return true;
+}
+
 void Duck::pickUp() {
 
-  if (!hasWeapon) {
-    equipWeapon(std::make_unique<PewPewLaser>(map));
-  } else if (!hasHelmet) {
-    equipHelmet();
-  } else if (!hasArmour) {
-    equipArmour();
+  ItemSpawnId item = map.itemCollisions();
+  if (item != ItemSpawnId::NOTHING_SPAWN) {
+    if (ItemSpawnId::HELMET_SPAWN == item) {
+      equipHelmet();
+    } else if (ItemSpawnId::CHESTPLATE_SPAWN == item) {
+      equipArmour();
+    } else if (ItemSpawnId::HELMET_SPAWN != item && ItemSpawnId::CHESTPLATE_SPAWN != item) {
+      getWeapon(item);
   }
+}
+}
+
+void Duck::getWeapon(ItemSpawnId item) {
+
+  switch (item) {
+      case ItemSpawnId::AK47_SPAWN:
+        equipWeapon(std::make_unique<Ak47>(map));
+        break;
+      case ItemSpawnId::COWBOY_PISTOL_SPAWN:
+        equipWeapon(std::make_unique<Cowboy>(map));
+        break;
+      case ItemSpawnId::DUEL_PISTOL_SPAWN:
+        equipWeapon(std::make_unique<Duelos>(map));
+        break;
+      case ItemSpawnId::GRENADE_SPAWN:
+        equipWeapon(std::make_unique<Grenade>(map));
+        break;
+      case ItemSpawnId::LASER_RIFLE_SPAWN:
+        equipWeapon(std::make_unique<LaserRifle>(map));
+        break;
+      case ItemSpawnId::MAGNUM_SPAWN:
+        equipWeapon(std::make_unique<Magnum>(map));
+        break;
+      case ItemSpawnId::PEW_PEW_LASER_SPAWN:
+        equipWeapon(std::make_unique<PewPewLaser>(map));
+        break;
+      case ItemSpawnId::SHOTGUN_SPAWN:
+        equipWeapon(std::make_unique<Shotgun>(map));
+        break;
+      case ItemSpawnId::SNIPER_SPAWN:
+        equipWeapon(std::make_unique<Sniper>(map));
+        break;
+      case ItemSpawnId::BANANA_SPAWN:
+        equipWeapon(std::make_unique<Banana>(map));
+        break;
+      default:
+        break;
+    }
 }
 
 void Duck::leave() {

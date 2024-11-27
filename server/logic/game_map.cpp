@@ -40,10 +40,14 @@ void GameMap::addCrate() {
 
 void GameMap::addSpawnItem() {
     for (auto &itemSpawn: map.armors) {
-        itemSpawns.push_back(std::make_shared<ItemSpawn>(itemSpawn.x, itemSpawn.y, ItemSpawnId::CHESTPLATE_SPAWN)); 
+        itemSpawns.push_back({itemSpawn.x, itemSpawn.y, ItemSpawnId::CHESTPLATE_SPAWN}); 
     }
     for (auto &itemSpawn: map.helmets) {
-        itemSpawns.push_back(std::make_shared<ItemSpawn>(itemSpawn.x, itemSpawn.y, ItemSpawnId::HELMET_SPAWN)); 
+        itemSpawns.push_back({itemSpawn.x, itemSpawn.y, ItemSpawnId::HELMET_SPAWN}); 
+    }
+
+    for (auto &itemSpawn: map.weaponSpawns) {
+        itemSpawns.push_back({itemSpawn.x, itemSpawn.y, ItemSpawnId::SHOTGUN_SPAWN}); 
     }
 } 
  
@@ -156,7 +160,7 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
     }
     if (!duck)
         return;
-
+        
     switch (action->get_type()) {
         case MOVE:
             duck->move(action->is_right());
@@ -223,13 +227,13 @@ std::list<CrateDTO> GameMap::getCratesState() {
     return cratesList;
 }
 
-
 std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
-    // A implementar
     std::list<ItemSpawnDTO> itemSpawnsList;
-    /* for (const auto &itemSpawn: map.getItemSpawns()) {
-        itemSpawnsList.emplace_back(itemSpawn.toDTO());
-    } */
+    for (const auto &itemSpawn: itemSpawns) {
+        if (itemSpawn.isAvailable()){
+            itemSpawnsList.emplace_back(itemSpawn.toDTO());
+        }
+    } 
     return itemSpawnsList;
 }
 
@@ -264,6 +268,35 @@ void GameMap::bulletCollisions() {
         }
     }
 }
+
+ItemSpawnId GameMap::itemCollisions() {
+
+    ItemSpawnId item = ItemSpawnId::NOTHING_SPAWN;
+
+    for (const auto &player : players) {
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
+
+        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+
+        for (auto &spawn: itemSpawns){
+            if (!spawn.isAvailable()) {
+                continue;
+            }
+            hitBox itemBox = {spawn.getPosX(), spawn.getPosY(), 16, 16};
+            if (hitBox::isColliding(duckBox, itemBox)) {
+                if (player->canPickUp(spawn.getContent())) {
+                    spawn.notAvailable();  
+                    item = spawn.getContent();
+                }
+            }
+    }
+    }
+
+    return item;
+}
+
 
 void GameMap::bulletCollisionsWithCrates() {
     for (auto &crate: crates) {

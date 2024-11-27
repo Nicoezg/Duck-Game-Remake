@@ -8,12 +8,20 @@ class ItemSpawn {
         int pos_x;
         int pos_y;
         ItemSpawnId content;
+        bool available;     
+        //int respawnTime;
 
     public:
+     
         ItemSpawn(int pos_x , int pos_y, ItemSpawnId content);
         int getPosX() const;
         int getPosY() const;
+        bool isAvailable() const;
         ItemSpawnId getContent() const;
+        ItemSpawnDTO toDTO() const;
+       
+
+        void notAvailable();
 
         ~ItemSpawn();
 

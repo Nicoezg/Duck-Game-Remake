@@ -2,6 +2,7 @@
 #define DUCK_H
 
 #include "server/configs/configurations.h"
+#include "common/events/items/item_spawn.h" 
 #include "game_map.h"
 #include "weapons/weapon.h"
 #include <atomic>
@@ -50,7 +51,9 @@ public:
   void equipArmour();
   void equipWeapon(std::unique_ptr<Weapon>&& newWeapon);
   void takeDamage();
+  bool canPickUp(ItemSpawnId item);
   void pickUp();
+  void getWeapon(ItemSpawnId item);
   void leave();
   void playDead();
   void aimUpwards();
