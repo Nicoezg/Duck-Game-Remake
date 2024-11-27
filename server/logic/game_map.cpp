@@ -6,6 +6,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <yaml-cpp/yaml.h>
+#include <ctime>
+#include <random>
 
 
 GameMap::GameMap() : winner_id(0), rounds(0), reset(false) {
@@ -46,15 +48,15 @@ void GameMap::addCrate() {
 
 void GameMap::addSpawnItem() {
     for (auto &itemSpawn: map.armors) {
-        itemSpawns.push_back({itemSpawn.x * 16, itemSpawn.y *16, ItemSpawnId::CHESTPLATE_SPAWN}); 
+        itemSpawns.push_back({itemSpawn.x * 16, itemSpawn.y *16, ItemSpawnId::CHESTPLATE_SPAWN, false}); 
     }
     for (auto &itemSpawn: map.helmets) {
-        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, ItemSpawnId::HELMET_SPAWN}); 
+        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, ItemSpawnId::HELMET_SPAWN, false}); 
     }
 
     for (auto &itemSpawn: map.weaponSpawns) {
         ItemSpawnId weapon = getRandomWeapon();
-        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, weapon}); 
+        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, weapon, false}); 
     }
 } 
 
@@ -74,11 +76,11 @@ Duck *GameMap::findPlayer(int playerId) {
 
 void GameMap::update() {
 
-    // reapDead();
     for (auto player: players) {
         if (player->getState() == State::DEAD) {
             continue;
         }
+
         player->update();
     }
 
@@ -318,7 +320,7 @@ void GameMap::bulletCollisionsWithCrates() {
                 crateIt->shoot();
                 
                 if (crateIt->get_hp() == 0) {
-                    itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content()});
+                    itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
                     crateIt = crates.erase(crateIt);  
                     break;
                 }

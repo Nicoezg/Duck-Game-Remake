@@ -16,7 +16,8 @@ target_sources(SERVER
         logic/duck.cpp
         logic/explosion.cpp
         logic/itemspawn.cpp
-
+        logic/weapon_factory.cpp
+    
         logic/weapons/weapon.cpp
         logic/weapons/shotgun.cpp
         logic/weapons/ak47.cpp
@@ -63,6 +64,7 @@ target_sources(SERVER
         logic/box.h
         logic/explosion.h
         logic/itemspawn.h
+        logic/weapon_factory.h
 
         logic/weapons/weapon.h
         logic/weapons/pewpewlaser.h

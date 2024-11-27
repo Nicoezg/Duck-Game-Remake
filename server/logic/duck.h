@@ -28,6 +28,7 @@ private:
   bool hasHelmet;
   bool hasArmour;
   bool isOnPlatform;
+  std::unique_ptr<Weapon> droppedWeapon;
   uint8_t wins;
   int bananaEffectRemaining;
 

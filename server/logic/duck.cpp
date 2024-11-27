@@ -11,6 +11,7 @@
 #include "server/logic/weapons/pewpewlaser.h"
 #include "server/logic/weapons/shotgun.h"
 #include "server/logic/weapons/sniper.h"
+#include "server/logic/weapon_factory.h"
 #include <iostream>
 
 const int SPEED_X = CONFIG.getDuckConfig().getSpeedX();
@@ -238,47 +239,10 @@ void Duck::pickUp() {
     } else if (ItemSpawnId::CHESTPLATE_SPAWN == item) {
       equipArmour();
     } else if (ItemSpawnId::HELMET_SPAWN != item && ItemSpawnId::CHESTPLATE_SPAWN != item) {
-      getWeapon(item);
+      auto weapon = WeaponFactory::createWeapon(item, map);
+      equipWeapon(std::move(weapon));
   }
   }
-}
-
-void Duck::getWeapon(ItemSpawnId item) {
-
-  switch (item) {
-      case ItemSpawnId::AK47_SPAWN:
-        equipWeapon(std::make_unique<Ak47>(map));
-        break;
-      case ItemSpawnId::COWBOY_PISTOL_SPAWN:
-        equipWeapon(std::make_unique<Cowboy>(map));
-        break;
-      case ItemSpawnId::DUEL_PISTOL_SPAWN:
-        equipWeapon(std::make_unique<Duelos>(map));
-        break;
-      case ItemSpawnId::GRENADE_SPAWN:
-        equipWeapon(std::make_unique<Grenade>(map));
-        break;
-      case ItemSpawnId::LASER_RIFLE_SPAWN:
-        equipWeapon(std::make_unique<LaserRifle>(map));
-        break;
-      case ItemSpawnId::MAGNUM_SPAWN:
-        equipWeapon(std::make_unique<Magnum>(map));
-        break;
-      case ItemSpawnId::PEW_PEW_LASER_SPAWN:
-        equipWeapon(std::make_unique<PewPewLaser>(map));
-        break;
-      case ItemSpawnId::SHOTGUN_SPAWN:
-        equipWeapon(std::make_unique<Shotgun>(map));
-        break;
-      case ItemSpawnId::SNIPER_SPAWN:
-        equipWeapon(std::make_unique<Sniper>(map));
-        break;
-      case ItemSpawnId::BANANA_SPAWN:
-        equipWeapon(std::make_unique<Banana>(map));
-        break;
-      default:
-        break;
-    }
 }
 
 void Duck::drop() {
