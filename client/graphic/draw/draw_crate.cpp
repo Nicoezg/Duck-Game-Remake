@@ -21,8 +21,10 @@ void DrawCrate::render(const CrateDTO& crate){
         sound.change(breakingSound);
         return;
     }
-    // if (crate.was_hit()){ // Implementar en DTO
-    //     sound.change(hitSound);
-    // }
+    std::cout << crate.was_hit() << std::endl;
+    if (crate.was_hit()){ // Implementar en DTO
+        sound.change(hitSound, 0);
+    }
+    sound.play();
     renderer.Copy(*texture, crateClip[4 - crate.get_hp()], dest);
 }

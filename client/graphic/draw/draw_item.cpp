@@ -17,7 +17,6 @@ DrawItemSpawn::DrawItemSpawn(SDL2pp::Renderer &renderer) : textures(), renderer(
     this->textures[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "items/knight-helmet-spawn.png"));
     this->textures[11] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "items/chestplate-spawn.png"));
     this->textures[12] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "items/helmet-spawn.png"));
-    // Cambiar todos estos para que tengan el mismo tamaño.
 }
 
 void DrawItemSpawn::render(const ItemSpawnDTO &itemSpawn){
