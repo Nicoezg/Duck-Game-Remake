@@ -323,11 +323,14 @@ void GameMap::bulletCollisionsWithCrates() {
         for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt) {
             hitBox bulletBox = {(*bulletIt)->getPosX(), (*bulletIt)->getPosY(), 8, 1};
             if (hitBox::isColliding(crateBox, bulletBox)) {
+                if (crateIt->get_hp() == 0) {
+                    crateIt = crates.erase(crateIt);
+                    break;
+                }
                 crateIt->shoot();
                 
                 if (crateIt->get_hp() == 0) {
                     itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
-                    crateIt = crates.erase(crateIt);  
                     break;
                 }
                 

@@ -19,6 +19,7 @@ void DrawCrate::render(const CrateDTO& crate){
     SDL2pp::Rect dest(crate.get_position_x(), crate.get_position_y(), 16, 16);
     if (crate.get_hp() == 0){
         sound.change(breakingSound);
+        sound.play();
         return;
     }
     std::cout << crate.was_hit() << std::endl;
