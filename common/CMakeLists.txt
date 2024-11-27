@@ -1,7 +1,6 @@
 target_sources(COMMON
     PRIVATE
     # .cpp files
-    foo.cpp
 
         protocol/actions/actions_protocol.cpp
         protocol/events/events_protocol.cpp
@@ -26,7 +25,6 @@ target_sources(COMMON
 
     PUBLIC
     # .h files
-    foo.h
         connection/connection.h
         connection/reader.h
         connection/sender.h

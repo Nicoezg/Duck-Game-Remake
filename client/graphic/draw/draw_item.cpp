@@ -21,6 +21,9 @@ DrawItemSpawn::DrawItemSpawn(SDL2pp::Renderer &renderer) : textures(), renderer(
 }
 
 void DrawItemSpawn::render(const ItemSpawnDTO &itemSpawn){
+    if (itemSpawn.get_id() == 0x0D){ 
+        return;
+    }
     std::shared_ptr<SDL2pp::Texture> texture = this->textures[itemSpawn.get_id() - 1];
     SDL2pp::Rect dest(itemSpawn.get_position_x(), itemSpawn.get_position_y(), texture->GetWidth(), texture->GetHeight());
     renderer.Copy(*texture, SDL2pp::NullOpt, dest);

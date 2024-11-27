@@ -21,7 +21,10 @@ Map MapLoader::getNextMap() {
     Map mapa;
     if (lastMapIndex > maps_paths.size() - 1) {
         lastMapIndex = 0;
-        return maps[lastMapIndex];
+        std::cout << lastMapIndex << std::endl;
+        mapa = maps[lastMapIndex];
+        lastMapIndex++;
+        return mapa;
     }
     YAML::Node map = YAML::LoadFile(maps_paths[lastMapIndex]);
 
