@@ -2,6 +2,10 @@ fondo: Forest
 alto: 30
 ancho: 40
 Structures:
+  - start_x: 7
+    end_x: 8
+    y: 17
+    tile: 66
   - start_x: 5
     end_x: 5
     y: 18
@@ -131,21 +135,30 @@ Structures:
     y: 29
     tile: 18
 Spawns:
-  - x: 150
-    y: 368
-  - x: 500
-    y: 368
-
+  - x: 2
+    y: 20
+  - x: 14
+    y: 20
+  - x: 23
+    y: 20
+  - x: 38
+    y: 20
 Interactuables:
-  - x: 100
-    y: 368
-    ID: 0
-  - x: 200
-    y: 368
-    ID: 1
-  - x: 300
-    y: 368
+  - x: 7
+    y: 23
     ID: 2
-  - x: 250
-    y: 368
+  - x: 10
+    y: 23
+    ID: 0
+  - x: 16
+    y: 23
+    ID: 1
+  - x: 19
+    y: 23
+    ID: 1
+  - x: 22
+    y: 23
+    ID: 0
+  - x: 29
+    y: 23
     ID: 3
