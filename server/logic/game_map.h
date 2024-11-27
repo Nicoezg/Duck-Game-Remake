@@ -23,7 +23,7 @@ private:
   std::vector<std::shared_ptr<Throwable>> throwables;
   std::vector<std::shared_ptr<Explosion>> explosions;
   std::vector<Box> crates;
-  std::vector<std::shared_ptr<ItemSpawn>> itemSpawns;
+  std::vector<ItemSpawn> itemSpawns;
   MapLoader mapLoader;
   Map map;
   int winner_id;
@@ -73,6 +73,8 @@ public:
   std::list<ThrowableDTO> getThrowablesState();
 
   void bulletCollisions();
+
+  ItemSpawnId itemCollisions();
 
   void explosionCollisions();
 

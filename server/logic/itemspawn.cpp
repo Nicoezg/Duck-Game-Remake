@@ -2,6 +2,8 @@
 
 ItemSpawn::ItemSpawn(int pos_x, int pos_y, ItemSpawnId content) : pos_x(pos_x), pos_y(pos_y), content(content)
 {
+    available = true;
+    //respawnTime = 300;
 }
 
 int ItemSpawn::getPosX() const
@@ -14,9 +16,24 @@ int ItemSpawn::getPosY() const
     return pos_y;
 }
 
+bool ItemSpawn::isAvailable() const
+{
+    return available;
+}
+
 ItemSpawnId ItemSpawn::getContent() const
 {
     return content;
+}
+
+ItemSpawnDTO ItemSpawn::toDTO() const
+{
+    return ItemSpawnDTO{content, pos_x, pos_y};
+}
+
+void ItemSpawn::notAvailable()
+{
+    available = false;
 }
 
 ItemSpawn::~ItemSpawn()
