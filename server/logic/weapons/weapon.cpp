@@ -2,6 +2,7 @@
 #include "server/logic/duck.h"
 #include "server/logic/throwables/grenade.h"
 #include "server/logic/throwables/banana.h"
+#include <iostream>
 
 
 void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
@@ -10,9 +11,13 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
   int posX;
   int posY;
 
-  if (owner->isAimingUpwards()) {
+  if (owner->isAimingUpwards() && owner->getDirection()) {
     angle += 90;
     posX = owner->getPositionX() + 10;
+    posY = owner->getPositionY() - 20;
+  } else if (owner->isAimingUpwards() && !owner->getDirection()) {
+    angle += 90;
+    posX = owner->getPositionX() + 23;
     posY = owner->getPositionY() - 20;
   } else {
     if (owner->getDirection()) {
