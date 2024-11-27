@@ -39,10 +39,10 @@ WeaponId Weapon::getWeaponId() const { return id; }
 void Weapon::createThrowable(GameMap &map,Duck *owner, bool isGrenade) {
   if (isGrenade) {
     map.addThrowable(std::make_unique<ThrownGrenade>(map, owner->getDirection(),owner->getPositionX(),
-                                               owner->getPositionY(), 150));
+                                               owner->getPositionY(), 150,owner->isAimingUpwards()));
   }else{
     map.addThrowable(std::make_unique<ThrownBanana>(map, owner->getDirection(),owner->getPositionX(),
-                                               owner->getPositionY(), 150));
+                                               owner->getPositionY(), 150,owner->isAimingUpwards()));
   }
 }
 bool Weapon::isReadyToShoot() const {

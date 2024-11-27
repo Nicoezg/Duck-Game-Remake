@@ -9,12 +9,16 @@ void ThrownGrenade::update() {
     startThrow = false;
   }
   framesToExplode--;
-  if (isRight) {
-    pos_x += 1;
-  } else {
-    pos_x -= 1;
+  if (!aimingUp) {
+    if (isRight) {
+      pos_x += 1;
+      angle+=0.5;
+    } else {
+      pos_x -= 1;
+      angle-=0.5;
   }
-  pos_y += 1;
+  }
+  pos_y += CONFIG.getDuckConfig().getGravity();
   hitBox grenadeBox = {pos_x, pos_y, 8, 8};
   for (auto structure: map.getMap().structures) {
     hitBox structureBox = {structure.start_x * 16, structure.y * 16,
@@ -33,7 +37,7 @@ void ThrownGrenade::consume() {
 }
 
 ThrowableDTO ThrownGrenade::toDTO() const {
-  return {pos_x, pos_y, THROWN_GRENADE_V2, 0, isRight,startThrow};
+  return {pos_x, pos_y, THROWN_GRENADE_V2, angle, isRight,startThrow};
 }
 
 

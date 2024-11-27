@@ -4,17 +4,18 @@
 
 
 ThrownBanana::ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y,
-                           int reach)
-    : Throwable(map, isRight, pos_x, pos_y, reach,THROWN_BANANA_V2,false) {}
+                           int reach,bool aimingUp)
+    : Throwable(map, isRight, pos_x, pos_y, reach,THROWN_BANANA_V2,false,aimingUp) {}
 
 void ThrownBanana::update() {
-    if (distance_travelled < reach && !onGround) {
+    if (!aimingUp &&distance_travelled < reach && !onGround) {
         if (isRight) {
             pos_x += 3;
         } else {
             pos_x -= 2;
     }
     }
+    
     distance_travelled+=2;
     if (!onGround) {
         pos_y += CONFIG.getDuckConfig().getGravity();

@@ -21,10 +21,11 @@ protected:
   int reach;
   enum ThrowableId id;
   bool collidable ;
+  bool aimingUp;
 
   
 public:
-    Throwable(GameMap &map,bool isRight,int pos_x,int pos_y,int reach,ThrowableId id,bool collidable);
+    Throwable(GameMap &map,bool isRight,int pos_x,int pos_y,int reach,ThrowableId id,bool collidable,bool aimingUp);
     virtual ~Throwable() = default;
     virtual void update()=0;
     int getPosX() const { return pos_x; }

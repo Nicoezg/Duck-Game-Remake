@@ -10,7 +10,7 @@ private:
     int distance_travelled = 0;
     bool onGround = false;
 public:
-  ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y, int reach);
+  ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y, int reach,bool aimingUp);
 
   void update() override;
 
