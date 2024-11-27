@@ -61,7 +61,7 @@ void GameMap::addSpawnItem() {
 } 
 
 ItemSpawnId GameMap::getRandomWeapon() {
-    int randomValue = std::rand() % 10;
+    int randomValue = std::rand() % 9;
     return static_cast<ItemSpawnId>(randomValue);
 }
  
