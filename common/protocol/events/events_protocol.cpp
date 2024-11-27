@@ -196,7 +196,7 @@ std::shared_ptr<Event> EventsProtocol::read_broadcast() {
     for (int i = 0; i < crates_len; i++) {
         int x = encoder.decode_coordinate(crates_data);
         int y = encoder.decode_coordinate(crates_data);
-        uint8_t hp = encoder.decode_bool(crates_data);
+        uint8_t hp = encoder.decode_id(crates_data);
         bool is_hit = encoder.decode_bool(crates_data);
         crates.emplace_back(x, y, hp, is_hit);
     }
@@ -302,7 +302,7 @@ void EventsProtocol::add_crates(const Event &event,
     for (const auto &crate: event.get_crates()) {
         offset += encoder.encode_coordinate(crate.get_position_x(), &data[offset]);
         offset += encoder.encode_coordinate(crate.get_position_y(), &data[offset]);
-        offset += encoder.encode_bool(crate.get_hp(), &data[offset]);
+        offset += encoder.encode_id(crate.get_hp(), &data[offset]);
         offset += encoder.encode_bool(crate.was_hit(), &data[offset]);
     }
 }
