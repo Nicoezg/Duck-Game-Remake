@@ -97,6 +97,10 @@ public:
     size_t encode_score(int score, void *data);
 
     int decode_score(std::vector<int8_t> &data);
+
+    size_t encode_cheat_id(CheatId cheat_id, void *data);
+
+    CheatId decode_cheat_id(std::vector<int8_t> &data);
 };
 
 #endif // TALLER_TP_ENCODER_H

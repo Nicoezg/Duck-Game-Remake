@@ -47,6 +47,59 @@ void ActionHandler::processDuckEvents() {
                 case SDLK_COMMA:
                     action = std::make_shared<Shoot>(this->client.get_player_id_1(), true);
                     break;
+                case SDLK_F1:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_GRENADE);
+                    break;
+                case SDLK_F2:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_BANANA);
+                    break;
+                case SDLK_F3:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_PEW_PEW_LASER);
+                    break;
+                case SDLK_F4:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_LASER_RIFLE);
+                    break;
+                case SDLK_F5:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_AK47);
+                    break;
+                case SDLK_F6:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_DUEL_PISTOL);
+                    break;
+                case SDLK_F7:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_COWBOY_PISTOL);
+                    break;
+                case SDLK_F8:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_MAGNUM);
+                    break;
+                case SDLK_F9:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_SHOTGUN);
+                    break;
+                case SDLK_F10:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_SNIPER);
+                    break;
+                case SDLK_F11:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_HELMET);
+                    break;
+                case SDLK_F12:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::GET_CHESTPLATE);
+                    break;
+                case SDLK_1:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::WIN_INSTANTLY);
+                    break;
+                case SDLK_2:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::KILL_ALL);
+                    break;
+                case SDLK_3:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::THROW_EVERYTHING);
+                    break;
+                case SDLK_4:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::NEXT_ROUND);
+                    break;
+                case SDLK_5:
+                    action = std::make_shared<Cheat>(this->client.get_player_id_1(), CheatId::INFINITE_AMMO);
+                    break;
+                
+
             }
             if (!action && (client.get_player_id_2() == SIN_ASIGNAR)) {
                 continue;

@@ -126,6 +126,14 @@ State Encoder::decode_player_state(std::vector<int8_t> &data) {
   return State(decode_int8(data));
 }
 
+size_t Encoder::encode_cheat_id(CheatId cheat_id, void *data) {
+  return encode_int8(cheat_id, data);
+}
+
+CheatId Encoder::decode_cheat_id(std::vector<int8_t> &data) {
+  return CheatId(decode_int8(data));
+}
+
 size_t Encoder::encode_player_state(State state, void *data) {
   return encode_int8(state, data);
 }

@@ -62,3 +62,9 @@ bool Action::is_still() const {
 std::string Action::get_game_name() const {
     throw std::runtime_error("Action is not a game name action.");
 }
+
+CheatId Action::get_cheat_id() const {
+    throw std::runtime_error("Action is not a cheat action.");
+}
+
+

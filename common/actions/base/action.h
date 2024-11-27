@@ -5,6 +5,7 @@
 #include "common/game_mode.h"
 #include <string>
 #include <vector>
+#include "../player/cheat_macros.h"
 
 class Action {
 private:
@@ -44,6 +45,8 @@ public:
     virtual int get_max_players() const;
   
   virtual bool is_still() const;
+
+  virtual CheatId get_cheat_id() const;
 };
 
 #endif // TALLER_TP_ACTION_H

@@ -17,6 +17,7 @@
 #include "../../common/actions/player/shoot.h"
 #include "../../common/actions/player/jump_flap.h"
 #include "../../common/actions/player/still.h"
+#include "../../common/actions/player/cheat.h"
 
 
 class ActionHandler{
