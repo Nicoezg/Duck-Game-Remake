@@ -104,6 +104,8 @@ public:
 
   bool pauseForScores();
 
+  bool isResetting();
+
   uint8_t getPlayerWins(int playerId);
 
 

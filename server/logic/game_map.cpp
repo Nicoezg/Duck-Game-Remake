@@ -501,3 +501,7 @@ uint8_t GameMap::getPlayerWins(int playerId) {
     }
     return 0;
 }
+
+bool GameMap::isResetting(){
+    return reset;
+}

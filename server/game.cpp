@@ -16,7 +16,7 @@
 #include "common/events/score.h"
 
 #define TIME_LOOP 20
-s
+
 Game::Game(int id, std::string name, int max_players)
         : id(id), name(name), commands(), notifier(&commands), running(true), next_player_id(0),
           actual_players(0), max_players(max_players), started(false),
@@ -70,6 +70,10 @@ void Game::run() {
             gameMap.update();
             checkNewRound();
             notify_state();
+            if (gameMap.isResetting()){
+                std::shared_ptr<Event> event = std::make_shared<MapDTO>(gameMap.getMapDTO());
+                notify_event(event);
+            }
             checkFinishGame();
         }
         // Este sleep es para que el game no cierre la conexión y le llegue el GameOver a los clientes
