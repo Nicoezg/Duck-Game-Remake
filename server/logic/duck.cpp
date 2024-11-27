@@ -59,6 +59,7 @@ void Duck::reset(int pos_y){
     isOnPlatform = false;
 
     shootingCooldown = 0;
+    bananaEffectRemaining = 0;
 
     state = State::BLANK;
     posX = 10 * id;
