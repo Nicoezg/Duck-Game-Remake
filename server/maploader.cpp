@@ -107,8 +107,6 @@ Map MapLoader::getactualMap() {
 
 MapDTO MapLoader::getNextMapDTO() {//en realidad devuelve al actual, pero hay que llamar antes a get next map asi actualiza map
     Map mapa = getactualMap();
-    std::cout << mapa.background << std::endl;
-    std::cout << mapa.structures.size() << std::endl;
     std::list<Tile> tiles;
     for (auto structure: mapa.structures) {
         tiles.push_back({structure.start_x, structure.end_x, structure.y, structure.id});

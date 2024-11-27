@@ -6,6 +6,10 @@ Structures:
     end_x: 8
     y: 17
     tile: 66
+  - start_x: 31
+    end_x: 31
+    y: 17
+    tile: 75
   - start_x: 5
     end_x: 5
     y: 18
@@ -18,6 +22,18 @@ Structures:
     end_x: 10
     y: 18
     tile: 2
+  - start_x: 31
+    end_x: 31
+    y: 18
+    tile: 75
+  - start_x: 31
+    end_x: 31
+    y: 19
+    tile: 75
+  - start_x: 31
+    end_x: 31
+    y: 20
+    tile: 75
   - start_x: 0
     end_x: 0
     y: 21
@@ -50,6 +66,10 @@ Structures:
     end_x: 26
     y: 21
     tile: 2
+  - start_x: 31
+    end_x: 31
+    y: 21
+    tile: 75
   - start_x: 37
     end_x: 37
     y: 21
@@ -62,6 +82,14 @@ Structures:
     end_x: 39
     y: 21
     tile: 2
+  - start_x: 31
+    end_x: 31
+    y: 22
+    tile: 75
+  - start_x: 31
+    end_x: 31
+    y: 23
+    tile: 75
   - start_x: 0
     end_x: 0
     y: 24
