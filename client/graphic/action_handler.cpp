@@ -32,19 +32,19 @@ void ActionHandler::processDuckEvents() {
                     action = std::make_shared<JumpFlap>(this->client.get_player_id_1(), true);
                     break;
 
-                case SDLK_y:
+                case SDLK_l:
                     action = std::make_shared<AimUpwards>(this->client.get_player_id_1(), true);
                     break;
 
-                case SDLK_j:
+                case SDLK_MINUS:
                     action = std::make_shared<PickDrop>(this->client.get_player_id_1(), false);
                     break;
 
-                case SDLK_h:
+                case SDLK_PERIOD:
                     action = std::make_shared<PickDrop>(this->client.get_player_id_1(), true);
                     break;
 
-                case SDLK_g:
+                case SDLK_COMMA:
                     action = std::make_shared<Shoot>(this->client.get_player_id_1(), true);
                     break;
             }
@@ -65,16 +65,16 @@ void ActionHandler::processDuckEvents() {
                 case SDLK_s:
                     action = std::make_shared<PlayDead>(this->client.get_player_id_2(), true);
                     break;
-                case SDLK_l:
+                case SDLK_y:
                     action = std::make_shared<AimUpwards>(this->client.get_player_id_2(), true);
                     break;
-                case SDLK_COMMA:
+                case SDLK_g:
                     action = std::make_shared<Shoot>(this->client.get_player_id_2(), true);
                     break;
-                case SDLK_PERIOD:
+                case SDLK_h:
                     action = std::make_shared<PickDrop>(this->client.get_player_id_2(), true);
                     break;
-                case SDLK_MINUS:
+                case SDLK_j:
                     action = std::make_shared<PickDrop>(this->client.get_player_id_2(), false);
                     break;
                 
@@ -96,7 +96,7 @@ void ActionHandler::processDuckEvents() {
                 case SDLK_DOWN:
                     action = std::make_shared<PlayDead>(this->client.get_player_id_1(), false);
                     break;
-                case SDLK_y:
+                case SDLK_l:
                     action = std::make_shared<AimUpwards>(this->client.get_player_id_1(), false);
                     break;
             }
@@ -113,7 +113,7 @@ void ActionHandler::processDuckEvents() {
                 case SDLK_s:
                     action = std::make_shared<PlayDead>(this->client.get_player_id_2(), false);
                     break;
-                case SDLK_l:
+                case SDLK_y:
                     action = std::make_shared<AimUpwards>(this->client.get_player_id_2(), false);
                     break;
             }

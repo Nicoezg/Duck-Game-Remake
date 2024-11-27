@@ -130,7 +130,9 @@ void Game::update(const Event &broadcast) {
     }
     for (auto &player: broadcast.get_players()) {
         ducks[player.get_player_id()-1]->update(player);
-        playerRects.push_back(SDL2pp::Rect(player.get_position_x(), player.get_position_y(), Duck::DUCK_WIDTH, Duck::DUCK_HEIGHT));
+        if (player.get_state() != DEAD){
+            playerRects.push_back(SDL2pp::Rect(player.get_position_x(), player.get_position_y(), Duck::DUCK_WIDTH, Duck::DUCK_HEIGHT));
+        }
     }
     camera.update(playerRects);
 
