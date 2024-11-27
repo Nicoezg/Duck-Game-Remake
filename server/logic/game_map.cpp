@@ -242,8 +242,10 @@ std::list<PlayerDTO> GameMap::getState() {
 
 std::list<CrateDTO> GameMap::getCratesState() {
     std::list<CrateDTO> cratesList;
-    for (auto crate: crates) {
-        cratesList.emplace_back(crate.toDto());
+    for (auto crateIt = crates.begin(); crateIt != crates.end();) {
+        cratesList.emplace_back(crateIt->toDto());
+        crateIt->resetHitState();
+        ++crateIt;
     }
     return cratesList;
 }
@@ -502,6 +504,4 @@ uint8_t GameMap::getPlayerWins(int playerId) {
     return 0;
 }
 
-bool GameMap::isResetting(){
-    return reset;
-}
+bool GameMap::isResetting(){return reset;}
