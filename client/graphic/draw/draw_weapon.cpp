@@ -32,15 +32,20 @@ void DrawWeapon::render(int x, int y, int flipType){
     if (aimingUpwards && !flipType){
         angle = 270.0;
         y -= 3;
-        x -= 4;
+        x -= 10;
     } else if (aimingUpwards){
         angle = 90.0;
         y -= 3;
         x += 4;
+    } else if (flipType){
+        x -= 4;
+    } else {
+        x -= 1;
     }
     std::shared_ptr<SDL2pp::Texture> texture = this->textures[weaponId - 1];
+
     
-    SDL2pp::Rect dest(x - 4, y + 6 , 38, 32);
+    SDL2pp::Rect dest(x, y + 6 , 38, 32);
     
     renderer.Copy(*texture, SDL2pp::NullOpt, dest, angle, SDL2pp::NullOpt, flipType);
     if (shoot){
