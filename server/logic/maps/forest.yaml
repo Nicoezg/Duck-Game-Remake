@@ -2,94 +2,138 @@ fondo: Forest
 alto: 30
 ancho: 40
 Structures:
+  - start_x: 12
+    end_x: 12
+    y: 3
+    tile: 24
+  - start_x: 13
+    end_x: 24
+    y: 3
+    tile: 25
+  - start_x: 25
+    end_x: 25
+    y: 3
+    tile: 26
   - start_x: 7
-    end_x: 8
-    y: 17
-    tile: 66
-  - start_x: 31
-    end_x: 31
-    y: 17
-    tile: 75
-  - start_x: 5
-    end_x: 5
-    y: 18
-    tile: 0
-  - start_x: 6
-    end_x: 9
-    y: 18
-    tile: 1
-  - start_x: 10
-    end_x: 10
-    y: 18
-    tile: 2
-  - start_x: 31
-    end_x: 31
-    y: 18
-    tile: 75
-  - start_x: 31
-    end_x: 31
-    y: 19
-    tile: 75
-  - start_x: 31
-    end_x: 31
-    y: 20
-    tile: 75
+    end_x: 7
+    y: 8
+    tile: 24
+  - start_x: 8
+    end_x: 29
+    y: 8
+    tile: 25
+  - start_x: 30
+    end_x: 30
+    y: 8
+    tile: 26
   - start_x: 0
     end_x: 0
-    y: 21
+    y: 12
     tile: 24
   - start_x: 1
-    end_x: 1
-    y: 21
+    end_x: 5
+    y: 12
     tile: 25
-  - start_x: 2
-    end_x: 2
-    y: 21
+  - start_x: 6
+    end_x: 6
+    y: 12
     tile: 26
-  - start_x: 13
-    end_x: 13
-    y: 21
-    tile: 0
-  - start_x: 14
-    end_x: 17
-    y: 21
-    tile: 1
-  - start_x: 22
-    end_x: 22
-    y: 21
-    tile: 0
-  - start_x: 23
-    end_x: 25
-    y: 21
-    tile: 1
-  - start_x: 26
-    end_x: 26
-    y: 21
-    tile: 2
-  - start_x: 31
-    end_x: 31
-    y: 21
-    tile: 75
-  - start_x: 37
-    end_x: 37
-    y: 21
-    tile: 0
-  - start_x: 38
+  - start_x: 32
+    end_x: 32
+    y: 12
+    tile: 24
+  - start_x: 33
     end_x: 38
-    y: 21
-    tile: 1
+    y: 12
+    tile: 25
   - start_x: 39
     end_x: 39
-    y: 21
-    tile: 2
+    y: 12
+    tile: 26
+  - start_x: 8
+    end_x: 8
+    y: 16
+    tile: 24
+  - start_x: 9
+    end_x: 11
+    y: 16
+    tile: 25
+  - start_x: 12
+    end_x: 12
+    y: 16
+    tile: 26
+  - start_x: 17
+    end_x: 17
+    y: 16
+    tile: 24
+  - start_x: 18
+    end_x: 20
+    y: 16
+    tile: 25
+  - start_x: 21
+    end_x: 21
+    y: 16
+    tile: 26
+  - start_x: 26
+    end_x: 26
+    y: 16
+    tile: 24
+  - start_x: 27
+    end_x: 29
+    y: 16
+    tile: 25
+  - start_x: 30
+    end_x: 30
+    y: 16
+    tile: 26
+  - start_x: 2
+    end_x: 2
+    y: 20
+    tile: 24
+  - start_x: 3
+    end_x: 7
+    y: 20
+    tile: 25
+  - start_x: 8
+    end_x: 8
+    y: 20
+    tile: 26
+  - start_x: 12
+    end_x: 12
+    y: 20
+    tile: 24
+  - start_x: 13
+    end_x: 16
+    y: 20
+    tile: 25
+  - start_x: 17
+    end_x: 17
+    y: 20
+    tile: 26
+  - start_x: 21
+    end_x: 21
+    y: 20
+    tile: 24
+  - start_x: 22
+    end_x: 25
+    y: 20
+    tile: 25
+  - start_x: 26
+    end_x: 26
+    y: 20
+    tile: 26
+  - start_x: 30
+    end_x: 30
+    y: 20
+    tile: 24
   - start_x: 31
-    end_x: 31
-    y: 22
-    tile: 75
-  - start_x: 31
-    end_x: 31
-    y: 23
-    tile: 75
+    end_x: 35
+    y: 20
+    tile: 25
+  - start_x: 36
+    end_x: 36
+    y: 20
+    tile: 26
   - start_x: 0
     end_x: 0
     y: 24
@@ -163,30 +207,55 @@ Structures:
     y: 29
     tile: 18
 Spawns:
-  - x: 2
-    y: 20
-  - x: 14
-    y: 20
-  - x: 23
-    y: 20
+  - x: 18
+    y: 2
+  - x: 1
+    y: 11
   - x: 38
-    y: 20
-Interactuables:
-  - x: 7
+    y: 11
+  - x: 19
+    y: 15
+  - x: 4
     y: 23
+  - x: 35
+    y: 23
+Interactuables:
+  - x: 8
+    y: 7
+    ID: 0
+  - x: 15
+    y: 7
+    ID: 1
+  - x: 19
+    y: 7
+    ID: 3
+  - x: 29
+    y: 7
+    ID: 0
+  - x: 10
+    y: 15
+    ID: 0
+  - x: 28
+    y: 15
+    ID: 0
+  - x: 4
+    y: 19
+    ID: 3
+  - x: 14
+    y: 19
+    ID: 1
+  - x: 24
+    y: 19
+    ID: 1
+  - x: 34
+    y: 19
     ID: 2
   - x: 10
     y: 23
     ID: 0
-  - x: 16
+  - x: 18
     y: 23
     ID: 1
-  - x: 19
-    y: 23
-    ID: 1
-  - x: 22
+  - x: 28
     y: 23
     ID: 0
-  - x: 29
-    y: 23
-    ID: 3
