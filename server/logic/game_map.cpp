@@ -11,6 +11,10 @@
 
 
 GameMap::GameMap() : winner_id(0), rounds(0), reset(false) {
+  loadMap();
+}
+
+void GameMap::loadMap() {
     map = mapLoader.getNextMap();
     addCrate();
     addSpawnItem();
@@ -478,6 +482,9 @@ void GameMap::reset_round() {
     explosions.clear();
     crates.clear();
     throwables.clear();
+    itemSpawns.clear();
+
+    loadMap();
 }
 
 int GameMap::get_winner_id() { return winner_id; }

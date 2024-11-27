@@ -34,6 +34,8 @@ private:
 public:
   GameMap();
 
+  void loadMap();
+
   void addPlayer(int player_id);
 
   void addBullet(std::unique_ptr<Bullet> bullet);
