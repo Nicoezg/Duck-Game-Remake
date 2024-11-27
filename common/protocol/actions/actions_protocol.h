@@ -8,6 +8,7 @@
 #include "common/protocol/common/encoder.h"
 #include "common/protocol/common/protocol.h"
 #include "common/socket/socket.h"
+#include "common/actions/player/cheat.h"
 #include <atomic>
 #include <memory>
 
@@ -19,6 +20,7 @@
 #define MAX_PLAYER_SIZE sizeof(uint8_t)
 #define IS_RIGHT_SIZE sizeof(uint8_t)
 #define LEN_SIZE sizeof(uint8_t)
+#define CHEAT_ID sizeof(uint8_t)
 
 #define READ_JOIN_SIZE (GAME_CODE_SIZE + GAME_MODE_SIZE)
 #define READ_CREATE_SIZE (GAME_MODE_SIZE + MAX_PLAYER_SIZE)
@@ -29,6 +31,7 @@
 #define READ_SHOOT_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
 #define READ_AIMING_UPWARDS_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
 #define READ_PICK_DROP_SIZE (PLAYER_ID_SIZE + IS_RIGHT_SIZE)
+#define READ_CHEAT_SIZE (PLAYER_ID_SIZE + CHEAT_ID)
 
 #define SEND_JOIN_SIZE (ACTION_TYPE_SIZE + READ_JOIN_SIZE)
 #define SEND_CREATE_SIZE (ACTION_TYPE_SIZE + READ_CREATE_SIZE)
@@ -39,6 +42,7 @@
 #define SEND_SHOOT_SIZE (ACTION_TYPE_SIZE + READ_SHOOT_SIZE)
 #define SEND_AIMING_UPWARDS_SIZE (ACTION_TYPE_SIZE + READ_AIMING_UPWARDS_SIZE)
 #define SEND_PICK_DROP_SIZE (ACTION_TYPE_SIZE + READ_PICK_DROP_SIZE)
+#define SEND_CHEAT_SIZE (ACTION_TYPE_SIZE + READ_CHEAT_SIZE)
 
 
 class ActionsProtocol : public Protocol {
@@ -86,6 +90,8 @@ public:
 
   void send_pick_drop_action(const Action &action);
 
+  void send_cheat_action(const Action &action);
+
   std::shared_ptr<Action> read_move_action();
 
   std::shared_ptr<Action> read_jump_flap_action();
@@ -99,6 +105,8 @@ public:
   std::shared_ptr<Action> read_aiming_upwards_action();
 
   std::shared_ptr<Action> read_pick_drop_action();
+
+  std::shared_ptr<Action> read_cheat_action();
 
   void send_start(const Action &action);
 

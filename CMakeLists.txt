@@ -50,6 +50,8 @@ add_library(COMMON STATIC
         common/actions/player/shoot.h
         common/actions/player/still.cpp
         common/actions/player/still.h
+        common/actions/player/cheat.cpp
+        common/actions/player/cheat.h
         common/events/base/event.cpp
         common/events/base/event.h
         common/events/base/event_type.h

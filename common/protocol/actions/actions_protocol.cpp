@@ -292,3 +292,20 @@ void ActionsProtocol::add_name(const std::string &name, std::vector<int8_t> &dat
     }
     offset += encoder.encode_string(name, &data[offset], name.size());
 }
+
+void ActionsProtocol::send_cheat_action(const Action &action) {
+    std::vector<int8_t> data(SEND_CHEAT_SIZE);
+    size_t offset = 0;
+    offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+    offset += encoder.encode_player_id(action.get_player_id(), &data[offset]);
+    encoder.encode_cheat_id(action.get_cheat_id(), &data[offset]);
+    send(data.data(), data.size());
+}
+
+std::shared_ptr<Action> ActionsProtocol::read_cheat_action() {
+    std::vector<int8_t> data(READ_CHEAT_SIZE);
+    read(data.data(), data.size());
+    int player_id = encoder.decode_player_id(data);
+    CheatId cheat_id = encoder.decode_cheat_id(data);
+    return std::make_shared<Cheat>(player_id, cheat_id);
+}
