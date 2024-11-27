@@ -54,7 +54,7 @@ public:
   bool canPickUp(ItemSpawnId item);
   void pickUp();
   void getWeapon(ItemSpawnId item);
-  void leave();
+  void drop();
   void playDead();
   void aimUpwards();
   void standBack(int count);

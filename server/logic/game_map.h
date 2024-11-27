@@ -46,6 +46,8 @@ public:
 
   void addSpawnItem();
 
+  ItemSpawnId getRandomWeapon();
+
   Duck *findPlayer(int playerId);
 
   void update();
