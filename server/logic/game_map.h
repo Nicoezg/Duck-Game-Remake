@@ -76,7 +76,7 @@ public:
 
   void bulletCollisions();
 
-  ItemSpawnId itemCollisions();
+  ItemSpawnId itemCollisions(int player_id);
 
   void explosionCollisions();
 

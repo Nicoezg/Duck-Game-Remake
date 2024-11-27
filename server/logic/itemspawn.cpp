@@ -27,6 +27,19 @@ bool ItemSpawn::isAvailable() const
     return available;
 }
 
+void ItemSpawn::update()
+{
+    if (!available)
+    {
+        respawnTime--;
+        if (respawnTime == 0)
+        {
+            available = true;
+            respawnTime = getRespawnTime();
+        }
+    }
+}
+
 ItemSpawnId ItemSpawn::getContent() const
 {
     return content;
