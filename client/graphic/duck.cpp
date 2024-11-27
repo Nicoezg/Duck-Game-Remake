@@ -164,6 +164,7 @@ void Duck::render() {
     }
     renderer.Copy(*texture, currentClip, rect, angle, SDL2pp::NullOpt, flipType);
     if (dead) {
+        sound.play();
         return;
     }
 
@@ -290,6 +291,8 @@ void Duck::loadTextures() {
             break;
     }
 }
+
+bool Duck::isDead() { return dead; }
 
 Duck::~Duck() {
 }

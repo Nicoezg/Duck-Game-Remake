@@ -35,6 +35,8 @@ class Duck
 
 		bool isFacingRight();
 
+		bool isDead();
+
 		void loadTextures();
 
 		DrawWeapon& getWeapon() { return weapon; }

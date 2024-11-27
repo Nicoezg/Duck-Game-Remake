@@ -174,8 +174,11 @@ void Duck::update() {
   if (jumping || !isOnPlatform) {
     velY += flapping ? FLAPPING_SPEED : GRAVITY;
 
-    if (state != State::AIMING_UPWARDS && jumping) {
+    if (state != State::AIMING_UPWARDS && jumping && velY > 0) {
       state = State::FALLING;
+    }
+    if (flapping){
+      state = State::FLAPPING;
     }
   }
   
@@ -189,11 +192,6 @@ void Duck::shoot() {
     weapon->shoot(this);
     shootingCooldown = 1;
     shooting = true;
-    if (!weapon->hasAmmo()) {
-      weapon = std::make_unique<NoWeapon>(map);
-      state = State::BLANK;
-      hasWeapon = false;
-    }
   }
 }
 
