@@ -1,3 +1,6 @@
+#ifndef BANANA_H
+#define BANANA_H
+
 #include "weapon.h"
 
 #include "server/logic/duck.h"
@@ -8,3 +11,5 @@ public:
 
     void shoot(Duck *owner) override;
 };
+
+#endif // BANANA_H

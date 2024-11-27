@@ -1,3 +1,6 @@
+#ifndef THROWN_BANANA_H
+#define THROWN_BANANA_H
+
 #include "throwable.h"
 
 class ThrownBanana : public Throwable {
@@ -17,3 +20,5 @@ public:
 
   ThrowableDTO toDTO() const override;
 };
+
+#endif // THROWN_BANANA_H

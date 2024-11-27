@@ -1,9 +1,12 @@
 #include "itemspawn.h"
+#include <iostream>
 
-ItemSpawn::ItemSpawn(int pos_x, int pos_y, ItemSpawnId content) : pos_x(pos_x), pos_y(pos_y), content(content)
+ItemSpawn::ItemSpawn(int pos_x, int pos_y, ItemSpawnId content, bool wasInBox) : pos_x(pos_x), pos_y(pos_y), content(content), wasInBox(wasInBox)
 {
     available = true;
-    respawnTime = getRespawnTime();
+    if (!wasInBox) {
+        respawnTime = getRespawnTime();
+    }
 }
 
 int ItemSpawn::getRespawnTime() const
@@ -29,11 +32,9 @@ bool ItemSpawn::isAvailable() const
 
 void ItemSpawn::update()
 {
-    if (!available)
-    {
+    if (!available && !wasInBox) {
         respawnTime--;
-        if (respawnTime == 0)
-        {
+        if (respawnTime == 0) {
             available = true;
             respawnTime = getRespawnTime();
         }
