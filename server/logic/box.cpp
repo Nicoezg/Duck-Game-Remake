@@ -10,7 +10,7 @@ Box::Box(uint8_t hp, int pos_x, int pos_y)
 }
 
 ItemSpawnId Box::generateRandomContent() {
-  int randomValue = std::rand() % 13;
+  int randomValue = (std::rand() % 13) + 1;
   return static_cast<ItemSpawnId>(randomValue);
 }
 
