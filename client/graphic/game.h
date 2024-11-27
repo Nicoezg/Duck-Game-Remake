@@ -90,7 +90,7 @@ class Game{
 
         void update(const Event &broadcast);
 
-        void showScores();
+        void showScores(const Event& score);
 
         void end(const Event& gameOver);
         

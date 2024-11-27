@@ -49,8 +49,7 @@ int Game::start() {
             if (stop){
                 break;
             }
-            if (pause) {
-                showScores();
+            if (pause){
                 pause = false;
                 continue;
             }
@@ -114,6 +113,8 @@ void Game::update_state() {
     }
     else if (event->get_type() == GAME_OVER) {
         end(*event);
+    } else if (event->get_type() == SCORE){
+        showScores(*event);
     }
 }
 
@@ -143,14 +144,14 @@ void Game::update(const Event &broadcast) {
     throwables = broadcast.get_throwables();
 }
 
-void Game::showScores() {
+void Game::showScores(const Event &score) {
     pause = true;
     mixer.HaltChannel(BACKGROUND_MUSIC_CHANNEL);
     camera.reset();
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
-    //std::vector<std::string> names = score.get_names();
-    //std::vector<int> scores = score.get_scores();
+    std::list<std::string> names = score.get_names();
+    std::list<uint8_t> scores = score.get_scores();
     Uint32 startTime = SDL_GetTicks();
     bool flash = true;
     while (SDL_GetTicks() - startTime < 5000) { // Flash for 5 seconds
