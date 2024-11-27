@@ -34,22 +34,28 @@ void GameMap::addExplosion(std::unique_ptr<Explosion> explosion) {
 
 void GameMap::addCrate() {
     for (auto &crate: map.boxes) {
-        crates.push_back(crate); 
+        crates.push_back({crate.get_hp(), crate.get_posx() *16, crate.get_posy() *16}); 
     }
 }
 
 void GameMap::addSpawnItem() {
     for (auto &itemSpawn: map.armors) {
-        itemSpawns.push_back({itemSpawn.x, itemSpawn.y, ItemSpawnId::CHESTPLATE_SPAWN}); 
+        itemSpawns.push_back({itemSpawn.x * 16, itemSpawn.y *16, ItemSpawnId::CHESTPLATE_SPAWN}); 
     }
     for (auto &itemSpawn: map.helmets) {
-        itemSpawns.push_back({itemSpawn.x, itemSpawn.y, ItemSpawnId::HELMET_SPAWN}); 
+        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, ItemSpawnId::HELMET_SPAWN}); 
     }
 
     for (auto &itemSpawn: map.weaponSpawns) {
-        itemSpawns.push_back({itemSpawn.x, itemSpawn.y, ItemSpawnId::SHOTGUN_SPAWN}); 
+        ItemSpawnId weapon = getRandomWeapon();
+        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, weapon}); 
     }
 } 
+
+ItemSpawnId GameMap::getRandomWeapon() {
+    int randomValue = std::rand() % 10;
+    return static_cast<ItemSpawnId>(randomValue);
+}
  
 Duck *GameMap::findPlayer(int playerId) {
     for (auto player: players) {
@@ -111,12 +117,6 @@ void GameMap::update() {
     reset = false;
 
     bulletCollisionsWithCrates();
-
-    /*for (auto crate: crates) {
-        if (crate.was_hit()) {
-            addSpawnItem(crate.get_content(), crate.get_posx(), crate.get_posy());  
-        }
-    }*/
 
     if (check_players_alive()){
         reset_round();
@@ -185,7 +185,11 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
             duck->aimUpwards();
             break;
         case PICK_DROP:
-            duck->pickUp();
+            if (action->is_picking_dropping()) {
+                duck->pickUp();
+            } else {
+                duck->drop();
+            }
             break;
         default:
             std::cout << "Acción inválida" << std::endl;
@@ -299,19 +303,39 @@ ItemSpawnId GameMap::itemCollisions() {
 
 
 void GameMap::bulletCollisionsWithCrates() {
-    for (auto &crate: crates) {
-        hitBox crateBox = {crate.get_posx(), crate.get_posy(), 16, 16};
-        for (auto it = bullets.begin(); it != bullets.end();) {
-            hitBox bulletBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 1};
+    std::vector<std::shared_ptr<Bullet>> bulletsToRemove;
+
+    for (auto crateIt = crates.begin(); crateIt != crates.end();) {
+        hitBox crateBox = {crateIt->get_posx(), crateIt->get_posy(), 16, 16};
+        for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt) {
+            hitBox bulletBox = {(*bulletIt)->getPosX(), (*bulletIt)->getPosY(), 8, 1};
             if (hitBox::isColliding(crateBox, bulletBox)) {
-                crate.shoot();
-                it = bullets.erase(it);
-            } else {
-                ++it;
+                crateIt->shoot();
+                
+                if (crateIt->get_hp() == 0) {
+                    itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content()});
+                    crateIt = crates.erase(crateIt);  
+                    break;
+                }
+                
+                bulletsToRemove.push_back(*bulletIt);
             }
         }
+
+        for (auto& bullet : bulletsToRemove) {
+            bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
+        }
+        
+        bulletsToRemove.clear();
+
+        if (crateIt != crates.end()) {
+            ++crateIt;
+        }
+
     }
+
 }
+
 
 void GameMap::explosionCollisions() {
     for (const auto &player: players) {

@@ -21,10 +21,11 @@ public:
   void shoot();
   CrateDTO toDto();
   ItemSpawnId get_content() const;
+  void resetHitState();
   int get_posx() const;
   int get_posy() const;
   bool was_hit() const;
-  int get_hp() const;
+  uint8_t get_hp() const;
 };
 
 #endif // BOX_H

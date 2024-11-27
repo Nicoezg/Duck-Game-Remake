@@ -3,7 +3,13 @@
 ItemSpawn::ItemSpawn(int pos_x, int pos_y, ItemSpawnId content) : pos_x(pos_x), pos_y(pos_y), content(content)
 {
     available = true;
-    //respawnTime = 300;
+    respawnTime = getRespawnTime();
+}
+
+int ItemSpawn::getRespawnTime() const
+{
+    int respawnTime = 200 + std::rand() % 301; 
+    return respawnTime;
 }
 
 int ItemSpawn::getPosX() const

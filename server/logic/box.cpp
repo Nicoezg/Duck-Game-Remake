@@ -16,10 +16,8 @@ ItemSpawnId Box::generateRandomContent() {
 void Box::shoot() {
   if (hp > 0) {
     hp--;
-    if (hp == 0) {
-      is_hit = true;
-    }
-  }
+    is_hit = true;
+  } 
 }
 
 CrateDTO Box::toDto() { 
@@ -30,7 +28,11 @@ ItemSpawnId Box::get_content() const {
   return content; 
 }
 
+void Box::resetHitState() {
+    is_hit = false;
+}
+
 int Box::get_posx() const { return pos_x; }
 int Box::get_posy() const { return pos_y; }
 bool Box::was_hit() const { return is_hit; }
-int Box::get_hp() const { return hp; }
+uint8_t Box::get_hp() const { return hp; }

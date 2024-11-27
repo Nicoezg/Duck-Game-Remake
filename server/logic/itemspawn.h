@@ -9,11 +9,12 @@ class ItemSpawn {
         int pos_y;
         ItemSpawnId content;
         bool available;     
-        //int respawnTime;
+        int respawnTime;
 
     public:
      
         ItemSpawn(int pos_x , int pos_y, ItemSpawnId content);
+        int getRespawnTime() const;
         int getPosX() const;
         int getPosY() const;
         bool isAvailable() const;

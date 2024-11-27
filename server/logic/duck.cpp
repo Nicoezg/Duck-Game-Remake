@@ -33,8 +33,8 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   shooting = false;
   isRight = true;
   aimingUpwards = false;
-  weapon = std::make_unique<Banana>(map);
-  hasWeapon = true;
+  weapon = std::make_unique<NoWeapon>(map);
+  hasWeapon = false;
   hasHelmet = false;
   hasArmour = false;
   isOnPlatform = false;
@@ -51,10 +51,10 @@ void Duck::reset(int pos_y){
     shooting = false;
     isRight = true;
     aimingUpwards = false;
-    weapon = std::make_unique<Sniper>(map);
-    hasWeapon = true;
-    hasHelmet = true;
-    hasArmour = true;
+    weapon = std::make_unique<NoWeapon>(map);
+    hasWeapon = false;
+    hasHelmet = false;
+    hasArmour = false;
     isOnPlatform = false;
 
     shootingCooldown = 0;
@@ -283,12 +283,14 @@ void Duck::getWeapon(ItemSpawnId item) {
     }
 }
 
-void Duck::leave() {
-  // para soltar
+void Duck::drop() {
+  if (hasWeapon) {
+    weapon = std::make_unique<NoWeapon>(map);
+    hasWeapon = false;
+  }
 }
 
 void Duck::playDead() {
- 
   if (state != PLAYING_DEAD && !isFalling()) {
     state = PLAYING_DEAD;
     velX = 0;
@@ -299,7 +301,6 @@ void Duck::playDead() {
 bool Duck::isFalling() const { return jumping || flapping; }
 
 void Duck::aimUpwards() {
- 
   aimingUpwards = true;
   state = State::AIMING_UPWARDS;
 }
