@@ -1,0 +1,231 @@
+fondo: Lava
+alto: 30
+ancho: 40
+Structures:
+  - start_x: 2
+    end_x: 2
+    y: 3
+    tile: 32
+  - start_x: 3
+    end_x: 6
+    y: 3
+    tile: 33
+  - start_x: 7
+    end_x: 7
+    y: 3
+    tile: 34
+  - start_x: 31
+    end_x: 31
+    y: 3
+    tile: 32
+  - start_x: 32
+    end_x: 35
+    y: 3
+    tile: 33
+  - start_x: 36
+    end_x: 36
+    y: 3
+    tile: 34
+  - start_x: 2
+    end_x: 2
+    y: 9
+    tile: 32
+  - start_x: 3
+    end_x: 6
+    y: 9
+    tile: 33
+  - start_x: 7
+    end_x: 7
+    y: 9
+    tile: 34
+  - start_x: 31
+    end_x: 31
+    y: 9
+    tile: 32
+  - start_x: 32
+    end_x: 35
+    y: 9
+    tile: 33
+  - start_x: 36
+    end_x: 36
+    y: 9
+    tile: 34
+  - start_x: 2
+    end_x: 2
+    y: 15
+    tile: 32
+  - start_x: 3
+    end_x: 6
+    y: 15
+    tile: 33
+  - start_x: 7
+    end_x: 7
+    y: 15
+    tile: 34
+  - start_x: 31
+    end_x: 31
+    y: 15
+    tile: 32
+  - start_x: 32
+    end_x: 35
+    y: 15
+    tile: 33
+  - start_x: 36
+    end_x: 36
+    y: 15
+    tile: 34
+  - start_x: 9
+    end_x: 9
+    y: 19
+    tile: 32
+  - start_x: 10
+    end_x: 29
+    y: 19
+    tile: 33
+  - start_x: 30
+    end_x: 30
+    y: 19
+    tile: 34
+  - start_x: 9
+    end_x: 9
+    y: 20
+    tile: 40
+  - start_x: 10
+    end_x: 29
+    y: 20
+    tile: 41
+  - start_x: 30
+    end_x: 30
+    y: 20
+    tile: 42
+  - start_x: 9
+    end_x: 9
+    y: 21
+    tile: 40
+  - start_x: 10
+    end_x: 29
+    y: 21
+    tile: 41
+  - start_x: 30
+    end_x: 30
+    y: 21
+    tile: 42
+  - start_x: 9
+    end_x: 9
+    y: 22
+    tile: 40
+  - start_x: 10
+    end_x: 29
+    y: 22
+    tile: 41
+  - start_x: 30
+    end_x: 30
+    y: 22
+    tile: 42
+  - start_x: 9
+    end_x: 9
+    y: 23
+    tile: 40
+  - start_x: 10
+    end_x: 29
+    y: 23
+    tile: 41
+  - start_x: 30
+    end_x: 30
+    y: 23
+    tile: 42
+  - start_x: 9
+    end_x: 9
+    y: 24
+    tile: 40
+  - start_x: 10
+    end_x: 29
+    y: 24
+    tile: 41
+  - start_x: 30
+    end_x: 30
+    y: 24
+    tile: 42
+  - start_x: 9
+    end_x: 9
+    y: 25
+    tile: 48
+  - start_x: 10
+    end_x: 29
+    y: 25
+    tile: 49
+  - start_x: 30
+    end_x: 30
+    y: 25
+    tile: 50
+Spawns:
+  - x: 2
+    y: 2
+  - x: 36
+    y: 2
+  - x: 2
+    y: 8
+  - x: 36
+    y: 8
+  - x: 2
+    y: 14
+  - x: 36
+    y: 14
+Interactuables:
+  - x: 4
+    y: 2
+    ID: 3
+  - x: 5
+    y: 2
+    ID: 2
+  - x: 6
+    y: 2
+    ID: 0
+  - x: 32
+    y: 2
+    ID: 0
+  - x: 33
+    y: 2
+    ID: 2
+  - x: 34
+    y: 2
+    ID: 3
+  - x: 4
+    y: 8
+    ID: 3
+  - x: 5
+    y: 8
+    ID: 2
+  - x: 6
+    y: 8
+    ID: 0
+  - x: 32
+    y: 8
+    ID: 0
+  - x: 33
+    y: 8
+    ID: 2
+  - x: 34
+    y: 8
+    ID: 3
+  - x: 4
+    y: 14
+    ID: 3
+  - x: 5
+    y: 14
+    ID: 2
+  - x: 6
+    y: 14
+    ID: 0
+  - x: 32
+    y: 14
+    ID: 0
+  - x: 33
+    y: 14
+    ID: 2
+  - x: 34
+    y: 14
+    ID: 3
+  - x: 19
+    y: 18
+    ID: 0
