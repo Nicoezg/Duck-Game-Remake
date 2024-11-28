@@ -18,3 +18,7 @@ void Shotgun::shoot(Duck *owner) {
     lastShotTime = 0;
   }
 }
+
+void Shotgun::replenishAmmo(){
+  ammo = AMMO;
+}

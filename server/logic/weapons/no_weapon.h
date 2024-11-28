@@ -16,6 +16,8 @@ public:
     void shoot(Duck *) override;
 
     bool isReadyToShoot() const override;
+
+    void replenishAmmo() override;
 };
 
 

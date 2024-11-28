@@ -12,3 +12,7 @@ bool NoWeapon::isReadyToShoot() const {
 }
 
 void NoWeapon::shoot(Duck *) {}
+
+void NoWeapon::replenishAmmo(){
+
+}

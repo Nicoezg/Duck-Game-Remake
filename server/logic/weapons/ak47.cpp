@@ -15,3 +15,7 @@ void Ak47::shoot(Duck *owner) {
     ammo--;
   }
 }
+
+void Ak47::replenishAmmo(){
+  ammo = AMMO;
+}

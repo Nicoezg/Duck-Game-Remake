@@ -22,4 +22,6 @@ void PewPewLaser::shoot(Duck *owner) {
   }
 }
 
-// falta el bounce y la bala  va a ser LASER_REBOUND
+void PewPewLaser::replenishAmmo(){
+  ammo = AMMO;
+}

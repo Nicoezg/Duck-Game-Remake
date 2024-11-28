@@ -74,6 +74,10 @@ public:
   bool isFalling() const;
   uint8_t getWins() const;
   void increaseWins();
+  void setWins();
+  void replenishAmmo();
+  void throwEverything();
+  void die();
 
   int shootingCooldown;
 

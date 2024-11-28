@@ -46,6 +46,8 @@ public:
 
     void increaseCooldown(int cooldownToAdd);
     void decreaseCooldown();
+
+  virtual void replenishAmmo() = 0;
 };
 
 #endif // WEAPON_H

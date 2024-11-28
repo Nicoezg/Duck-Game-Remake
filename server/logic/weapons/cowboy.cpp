@@ -12,5 +12,8 @@ void Cowboy::shoot(Duck *owner) {
     createBullet(owner, 0, false, reach, BulletId::SHOT);
     ammo--;
   } 
-  
+}
+
+void Cowboy::replenishAmmo(){
+  ammo = AMMO;
 }

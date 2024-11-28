@@ -15,3 +15,7 @@ void Duelos::shoot(Duck *shooter) {
     ammo--;
   }
 }
+
+void Duelos::replenishAmmo(){
+  ammo = AMMO;
+}

@@ -17,3 +17,7 @@ void Magnum::shoot(Duck *owner) {
   }
   
 }
+
+void Magnum::replenishAmmo(){
+  ammo = AMMO;
+}

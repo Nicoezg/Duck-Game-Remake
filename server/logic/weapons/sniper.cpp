@@ -15,3 +15,7 @@ void Sniper::shoot(Duck *owner) {
   }
 }
 
+void Sniper::replenishAmmo(){
+  ammo = AMMO;
+}
+
