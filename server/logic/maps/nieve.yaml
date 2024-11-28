@@ -14,22 +14,42 @@ Structures:
     end_x: 18
     y: 4
     tile: 66
+  - start_x: 19
+    end_x: 19
+    y: 4
+    tile: 70
   - start_x: 14
     end_x: 14
     y: 5
     tile: 71
+  - start_x: 20
+    end_x: 20
+    y: 5
+    tile: 70
   - start_x: 13
     end_x: 13
     y: 6
     tile: 71
+  - start_x: 21
+    end_x: 21
+    y: 6
+    tile: 70
   - start_x: 12
     end_x: 12
     y: 7
     tile: 71
+  - start_x: 22
+    end_x: 22
+    y: 7
+    tile: 70
   - start_x: 11
     end_x: 11
     y: 8
     tile: 71
+  - start_x: 23
+    end_x: 23
+    y: 8
+    tile: 70
   - start_x: 2
     end_x: 2
     y: 9
