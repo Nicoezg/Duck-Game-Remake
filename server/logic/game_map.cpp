@@ -100,6 +100,7 @@ void GameMap::update() {
 
     //checkBulletCollisionWithPlayers();
     bulletCollisions();
+    bulletCollisionWithPlatforms();
 
     throwables.erase(std::remove_if(throwables.begin(), throwables.end(),
                                 [](const std::shared_ptr<Throwable> &throwable) {
@@ -167,6 +168,32 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
         return true;
     }
     return false;
+}
+
+void GameMap::bulletCollisionWithPlatforms() {
+    for (const auto &bullet : bullets) {
+        hitBox bulletBox = {bullet->getPosX(), bullet->getPosY(), 8, 1};
+
+        for (auto &structure : map.structures) {
+            hitBox structureBox = {structure.start_x * 16, structure.y * 16,
+                                   (structure.end_x + 1 - structure.start_x) * 16, 16};
+
+            if (hitBox::isColliding(bulletBox, structureBox)) {
+                bool isTopCollision = false; 
+                bool isHorizontalCollision = false; 
+                if (bulletBox.y + bulletBox.height <= structureBox.y * 16) {
+                    isTopCollision = true; 
+                } 
+                else if ((bulletBox.x + bulletBox.width <= structureBox.x * 16) || 
+                         (bulletBox.x >= structureBox.x * 16 + structureBox.width * 16)) {
+                    isHorizontalCollision = true; 
+                } else {
+                    isTopCollision = false;
+                }
+                bullet->bounce(isHorizontalCollision, isTopCollision);
+            }
+        }
+    }
 }
 
 void GameMap::process_action(std::shared_ptr<Action> &action) {
