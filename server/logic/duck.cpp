@@ -42,6 +42,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
 
   shootingCooldown = 0;
   bananaEffectRemaining = 0;
+
 }
 
 void Duck::reset(int pos_x, int pos_y){
@@ -64,6 +65,7 @@ void Duck::reset(int pos_x, int pos_y){
     state = State::BLANK;
     posX = pos_x;
     posY = pos_y;
+  
 }
 
 void Duck::moveLeft() {
@@ -152,7 +154,7 @@ void Duck::update() {
     isOnPlatform = false;
 
     // Comprobar colisión con cajas
-    for (auto &crate : map.getMap().boxes) {
+    /*for (auto &crate : map.getMap().boxes) {
         hitBox crateBox = {crate.get_posx()*16, crate.get_posy()*16, 16, 16};
 
         if (hitBox::isColliding(duckBox, crateBox)) {
@@ -161,7 +163,7 @@ void Duck::update() {
                 velY = 0;
                 jumping = false;
                 flapping = false;
-                isOnPlatform = true;
+                //isOnPlatform = true;
 
                 if (state != State::AIMING_UPWARDS) {
                     aimingUpwards = false;
@@ -170,32 +172,63 @@ void Duck::update() {
                 break;
             }
         }
-    }
+    }  */
 
-    for (const auto &structure : map.getMap().structures) {
-        hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
-                               (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y+1 - structure.start_y) * 16};
-      
-        if (hitBox::isColliding(duckBox, structureBox)) {
-            if (velY > 0 ) { 
-                posY = structure.start_y* 16 - 32;
-                velY = 0;
-                jumping = false;
-                flapping = false;
-                isOnPlatform = true;
+    for (const auto& structure : map.getMap().structures) {
+    hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
+                           (structure.end_x + 1 - structure.start_x) * 16 , (structure.end_y + 1 - structure.start_y) * 16 };
 
-                if (state != State::AIMING_UPWARDS) {
-                    aimingUpwards = false;
-                    state = (velX == 0) ? State::BLANK : State::WALKING;
-                }
-                break;
+    if (hitBox::isColliding(duckBox, structureBox)) {
+
+        if ( velY > 0) { 
+            posY = structure.start_y * 16 - 32;
+            velY = 0;
+            jumping = false;
+            flapping = false;
+            isOnPlatform = true;
+
+            currentPlatformBox.x  = structureBox.x;
+            currentPlatformBox.y  = structureBox.y;
+            currentPlatformBox.width  = structureBox.width;
+            currentPlatformBox.height = structureBox.height;
+
+            if (state != State::AIMING_UPWARDS) {
+                aimingUpwards = false;
+                state = (velX == 0) ? State::BLANK : State::WALKING;
             }
+            break;
         }
     }
+}
 
+for (const auto& structure : map.getMap().structures) {
+    hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
+                           (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y + 1 - structure.start_y) * 16};
+
+  
+    if (hitBox::isEqual(currentPlatformBox, structureBox)) {
+        continue;
+    }
+
+    if (hitBox::isColliding(duckBox, structureBox)) {
+
+        if (velX > 0 && !jumping && !flapping) {
+            posX = structureBox.x - 32;
+        } else if (velX < 0 && !jumping && !flapping) {
+            posX = structureBox.x + 32;
+         
+        }
+        break;
+    }
+}
 
   if (jumping || !isOnPlatform) {
     velY += flapping ? FLAPPING_SPEED : GRAVITY;
+
+    currentPlatformBox.x = 0;
+    currentPlatformBox.y = 0;
+    currentPlatformBox.width = 0;
+    currentPlatformBox.height = 0;
 
     if (state != State::AIMING_UPWARDS && jumping && velY > 0) {
       state = State::FALLING;

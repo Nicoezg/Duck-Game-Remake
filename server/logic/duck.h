@@ -31,6 +31,7 @@ private:
   std::unique_ptr<Weapon> droppedWeapon;
   uint8_t wins;
   int bananaEffectRemaining;
+  hitBox currentPlatformBox;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
