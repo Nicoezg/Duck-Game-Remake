@@ -82,19 +82,6 @@ void MainWindow::update_players_list(const Event &event) {
 
         // Agregar el ítem a la lista
         ui->playerList->addItem(item);
-
-        // Conectar el evento al ítem directamente
-        connect(ui->playerList, &QListWidget::itemClicked, this,
-                [item]() {
-                    // Deshabilitar selección
-                    item->setSelected(false);
-                });
-
-        connect(ui->playerList, &QListWidget::itemPressed, this,
-                [item]() {
-                    // Deshabilitar selección
-                    item->setSelected(false);
-                });
     }
 
     // Lógica adicional para mostrar/ocultar el botón
