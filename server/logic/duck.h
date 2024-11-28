@@ -92,7 +92,7 @@ public:
 
     bool impact(Bullet &bullet);
 
-    void reset(int pos_y);
+    void reset(int pos_x, int pos_y);
 };
 
 #endif // DUCK_H

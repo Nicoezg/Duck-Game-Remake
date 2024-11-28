@@ -565,10 +565,7 @@ bool GameMap::check_finished(){
 void GameMap::reset_round() {
     rounds++;
     reset = true;
-    for (auto player: players) {
-        player->reset(map.getGroundLevel() * 16);
 
-    }
     bullets.clear();
     explosions.clear();
     crates.clear();
@@ -576,6 +573,14 @@ void GameMap::reset_round() {
     itemSpawns.clear();
 
     loadMap();
+
+    for (auto player: players) {
+        int id = player->getId();
+        int spawn_index = id % map.spawns.size();
+            auto& spawn = map.spawns[spawn_index];
+        player->reset(spawn.x * 16, spawn.y * 16);
+
+    }
 }
 
 void GameMap::killAll(int duckId) {

@@ -44,7 +44,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
   bananaEffectRemaining = 0;
 }
 
-void Duck::reset(int pos_y){
+void Duck::reset(int pos_x, int pos_y){
     velX = 0;
     velY = 0;
     jumping = false;
@@ -62,7 +62,7 @@ void Duck::reset(int pos_y){
     bananaEffectRemaining = 0;
 
     state = State::BLANK;
-    posX = 10 * id;
+    posX = pos_x;
     posY = pos_y;
 }
 
@@ -243,7 +243,7 @@ void Duck::update() {
 }
 
 void Duck::shoot() {
-  if (weapon && weapon->isReadyToShoot()) {
+  if (weapon && weapon->isReadyToShoot() && state != State::PLAYING_DEAD) {
     weapon->shoot(this);
     shootingCooldown = 1;
     shooting = true;
@@ -272,6 +272,9 @@ void Duck::takeDamage() {
 }
 
 bool Duck::canPickUp(ItemSpawnId item) {
+  if (state == State::PLAYING_DEAD) {
+    return false;
+  }
   if (hasHelmet && ItemSpawnId::HELMET_SPAWN == item) {
     return false;
   }
@@ -285,7 +288,6 @@ bool Duck::canPickUp(ItemSpawnId item) {
 }
 
 void Duck::pickUp() {
-
   ItemSpawnId item = map.itemCollisions(id);
   if (item != ItemSpawnId::NOTHING_SPAWN) {
     if (ItemSpawnId::HELMET_SPAWN == item) {
