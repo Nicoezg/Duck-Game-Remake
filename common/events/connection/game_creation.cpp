@@ -21,3 +21,11 @@ int GameCreation::get_player_id_2() const { return player_id_2; }
 std::list<PlayerData> GameCreation::get_players_data() const { return players_data; }
 
 bool GameCreation::is_connected() const { return true; }
+
+int GameCreation::get_max_players() const {
+    return game_room.get_max_players();
+}
+
+int GameCreation::get_actual_players() const {
+    return game_room.get_actual_players();
+}

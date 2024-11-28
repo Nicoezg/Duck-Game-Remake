@@ -23,3 +23,11 @@ std::list<PlayerData> GameJoin::get_players_data() const {
 bool GameJoin::is_connected() const { return connected; }
 
 GameRoom GameJoin::get_game_room() const { return game_room; }
+
+int GameJoin::get_max_players() const {
+    return game_room.get_max_players();
+}
+
+int GameJoin::get_actual_players() const {
+    return game_room.get_actual_players();
+}

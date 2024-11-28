@@ -30,6 +30,10 @@ public:
     GameRoom get_game_room() const override;
 
     std::list<PlayerData> get_players_data() const override;
+
+    int get_max_players() const override;
+
+    int get_actual_players() const override;
 };
 
 #endif // TALLER_TP_GAME_JOIN_H

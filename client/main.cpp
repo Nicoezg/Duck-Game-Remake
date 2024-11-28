@@ -20,9 +20,6 @@ int main(int argc, char *argv[]) {
     app.exec();
 
     lobbyUpdater.close();
-    if (!client.is_closed()) {
-        client.close();
-    }
     lobbyUpdater.join();
 
     if (client.is_closed()) {

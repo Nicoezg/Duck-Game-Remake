@@ -65,6 +65,11 @@ static std::vector<QColor> colors = {
 void MainWindow::update_players_list(const Event &event) {
     ui->playerList->clear(); // Limpia la lista
 
+    QString ss = QString("Jugadores conectados: %1/%2")
+            .arg(event.get_actual_players())
+            .arg(event.get_max_players());
+    ui->playerListLabel->setText(ss);
+
     for (const auto &player_data: event.get_players_data()) {
         // Crear el texto como QString
         QString player_string = QString("Name: %1 Id: %2")
@@ -92,13 +97,6 @@ void MainWindow::update_players_list(const Event &event) {
 
 void MainWindow::show_connected_players(const Event &event) {
     GameRoom game_room = event.get_game_room();
-    QString ss = QString("Servidor %1 | %2 | Jugadores conectados: %3/%4")
-            .arg(game_room.get_game_code())
-            .arg(game_room.get_game_name().c_str())
-            .arg(game_room.get_actual_players())
-            .arg(game_room.get_max_players());
-
-    ui->playerListLabel->setText(ss);
     ui->lobbyTitle->setText(game_room.get_game_name().c_str());
     update_players_list(event);
 }

@@ -23,6 +23,10 @@ public:
   int get_player_id_2() const override;
 
   bool is_connected() const override;
+
+  int get_max_players() const override;
+
+    int get_actual_players() const override;
 };
 
 #endif // TALLER_TP_GAME_CREATION_H

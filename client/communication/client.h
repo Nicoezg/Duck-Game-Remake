@@ -22,7 +22,6 @@ private:
   int player_id_1;
   int player_id_2;
   GameMode game_mode;
-  bool connected;
 
   void assign_player_ids(std::shared_ptr<Event> &event);
 
@@ -51,6 +50,7 @@ public:
 
 
     bool is_closed() const;
+
 };
 
 #endif // TALLER_TP_CLIENT_H

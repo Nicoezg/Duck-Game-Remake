@@ -14,7 +14,7 @@ Client::Client(const char *hostname, const char *service_name)
           connection(Socket(hostname, service_name), Encoder(), &this->events,
                      &this->commands),
           game_code(NO_CONECTADO), player_id_1(SIN_ASIGNAR), player_id_2(SIN_ASIGNAR),
-          game_mode(SIN_ESPECIFICAR), connected(false) {}
+          game_mode(SIN_ESPECIFICAR){}
 
 
 void Client::run() {
@@ -46,7 +46,6 @@ void Client::send_action(std::shared_ptr<Action> &action) {
 void Client::assign_player_ids(std::shared_ptr<Event> &event) {
     player_id_1 = event->get_player_id_1();
     player_id_2 = event->get_player_id_2();
-    connected = true;
 }
 
 int Client::get_game_code() const {
@@ -82,8 +81,9 @@ int Client::get_player_id_2() const {
 }
 
 bool Client::is_connected() const {
-    return connected;
+    return player_id_1 != SIN_ASIGNAR;
 }
+
 
 std::shared_ptr<Event> Client::try_read() {
     std::shared_ptr<Event> event;
