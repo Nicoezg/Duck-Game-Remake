@@ -21,8 +21,7 @@ Map MapLoader::getNextMap() {
     Map mapa;
     if (lastMapIndex > maps_paths.size() - 1) {
         lastMapIndex = 0;
-        std::cout << lastMapIndex << std::endl;
-        mapa = maps[lastMapIndex];
+        mapa = logicMaps[lastMapIndex];
         lastMapIndex++;
         return mapa;
     }
@@ -52,23 +51,93 @@ Map MapLoader::getNextMap() {
                 break;
         }
     }
-
-
     for (auto structure: map["Structures"]) {
-        int id = structure["tile"].as<int>();
-        mapa.structures.emplace_back(structure["start_x"].as<int>(), structure["end_x"].as<int>(), structure["start_y"].as<int>(),structure["end_y"].as<int>(), id);
+        mapa.structures.emplace_back(
+            structure["start_x"].as<int>(), 
+            structure["end_x"].as<int>(), 
+            structure["start_y"].as<int>(),
+            structure["end_y"].as<int>(), 
+            structure["tile"].as<int>()
+        );
     }
     
     lastMapIndex++;
     maps.push_back(mapa);
 
+    
     Map logicMap;
     logicMap.height = mapa.height;
     logicMap.width = mapa.width;
     logicMap.background = mapa.background;
-    for (auto structure: mapa.structures) {
-        logicMap.structures.emplace_back(structure.start_x, structure.end_x, structure.start_y, structure.end_y, structure.id);
+// Primero, agrupar estructuras horizontales
+for (size_t i = 0; i < map["Structures"].size(); ++i) {
+    bool merged = false;
+    YAML::Node current = map["Structures"][i];
+    
+    for (size_t j = i + 1; j < map["Structures"].size(); ++j) {
+        YAML::Node other = map["Structures"][j];
+        
+        // Misma fila y consecutivas o superpuestas horizontalmente
+        if (current["start_y"].as<int>() == other["start_y"].as<int>() &&
+            (current["end_x"].as<int>() + 1 >= other["start_x"].as<int>() &&
+             current["start_x"].as<int>() <= other["end_x"].as<int>() + 1)) {
+            
+            // Fusionar estructuras
+            current["start_x"] = std::min(current["start_x"].as<int>(), other["start_x"].as<int>());
+            current["end_x"] = std::max(current["end_x"].as<int>(), other["end_x"].as<int>());
+            
+            // Eliminar la estructura fusionada
+            map["Structures"].remove(j);
+            j--;
+            merged = true;
+        }
     }
+    
+    if (merged) {
+        i--;  // Revisar el índice actual nuevamente
+    }
+}
+
+// Luego, agrupar estructuras verticales
+for (size_t i = 0; i < map["Structures"].size(); ++i) {
+    bool merged = false;
+    YAML::Node current = map["Structures"][i];
+    
+    for (size_t j = i + 1; j < map["Structures"].size(); ++j) {
+        YAML::Node other = map["Structures"][j];
+        
+        // Misma columna y consecutivas o superpuestas verticalmente
+        if (current["start_x"].as<int>() == other["start_x"].as<int>() &&
+            (current["end_y"].as<int>() + 1 >= other["start_y"].as<int>() &&
+             current["start_y"].as<int>() <= other["end_y"].as<int>() + 1)) {
+            
+            // Fusionar estructuras
+            current["start_y"] = std::min(current["start_y"].as<int>(), other["start_y"].as<int>());
+            current["end_y"] = std::max(current["end_y"].as<int>(), other["end_y"].as<int>());
+            
+            // Eliminar la estructura fusionada
+            map["Structures"].remove(j);
+            j--;
+            merged = true;
+        }
+    }
+    
+    if (merged) {
+        i--;  // Revisar el índice actual nuevamente
+    }
+}
+
+// Crear el vector de estructuras
+for (const auto& structure : map["Structures"]) {
+    int id = structure["tile"].as<int>();
+    logicMap.structures.emplace_back(
+        structure["start_x"].as<int>(), 
+        structure["end_x"].as<int>(), 
+        structure["start_y"].as<int>(),
+        structure["end_y"].as<int>(), 
+        id
+    );
+}
     for (auto spawn: mapa.spawns) {
         logicMap.spawns.emplace_back(spawn.x, spawn.y);
     }
@@ -92,6 +161,10 @@ Map MapLoader::getNextMap() {
 Map MapLoader::getactualMap() {
 
     return maps[lastMapIndex - 1];
+}
+
+Map MapLoader::getactualLogicMap() {
+    return logicMaps[lastMapIndex - 1];
 }
 
 MapDTO MapLoader::getNextMapDTO() {//en realidad devuelve al actual, pero hay que llamar antes a get next map asi actualiza map

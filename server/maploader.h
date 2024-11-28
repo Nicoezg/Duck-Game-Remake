@@ -40,6 +40,7 @@ class MapLoader{
 
         Map getNextMap();
         Map getactualMap();
+        Map getactualLogicMap();
         MapDTO getNextMapDTO();
 };
 
