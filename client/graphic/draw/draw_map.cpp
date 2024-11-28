@@ -10,7 +10,6 @@ DrawMap::DrawMap(SDL2pp::Renderer& renderer) : textures(), renderer(renderer), b
     this->textures[48] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/forest.png"));
     this->textures[49] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/lava.png"));
     this->textures[50] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/nieve.png"));
-
 }
 
 void DrawMap::load(const Event& map){
@@ -22,7 +21,7 @@ void DrawMap::load(const Event& map){
 
 
 void DrawMap::render(){
-    SDL2pp::Texture& background = *textures[backgroundId + 96];
+    SDL2pp::Texture& background = *textures[backgroundId + 48];
     SDL2pp::Rect backgroundRect(0, 0, 640, 480);
     renderer.Copy(background, backgroundRect);
     SDL2pp::Rect src(0, 0, 16, 16);
