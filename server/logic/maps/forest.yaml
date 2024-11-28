@@ -2,209 +2,1160 @@ fondo: Forest
 alto: 30
 ancho: 40
 Structures:
-  - start_x: 12
-    end_x: 12
-    y: 3
-    tile: 0
   - start_x: 13
     end_x: 24
-    y: 3
+    start_y: 3
+    end_y: 3
     tile: 1
-  - start_x: 25
-    end_x: 25
-    y: 3
-    tile: 2
-  - start_x: 7
-    end_x: 7
-    y: 8
-    tile: 0
   - start_x: 8
     end_x: 29
-    y: 8
+    start_y: 8
+    end_y: 8
     tile: 1
-  - start_x: 30
-    end_x: 30
-    y: 8
-    tile: 2
-  - start_x: 0
-    end_x: 0
-    y: 12
-    tile: 0
   - start_x: 1
     end_x: 5
-    y: 12
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 33
+    end_x: 38
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 9
+    end_x: 11
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 18
+    end_x: 20
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 27
+    end_x: 29
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 3
+    end_x: 7
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 13
+    end_x: 16
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 22
+    end_x: 25
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 31
+    end_x: 35
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 1
+    end_x: 38
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 1
+    end_x: 38
+    start_y: 25
+    end_y: 25
+    tile: 5
+  - start_x: 1
+    end_x: 38
+    start_y: 26
+    end_y: 26
+    tile: 5
+  - start_x: 1
+    end_x: 38
+    start_y: 27
+    end_y: 27
+    tile: 5
+  - start_x: 1
+    end_x: 38
+    start_y: 28
+    end_y: 28
+    tile: 5
+  - start_x: 1
+    end_x: 38
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 0
+    end_x: 0
+    start_y: 12
+    end_y: 12
+    tile: 0
+  - start_x: 0
+    end_x: 0
+    start_y: 24
+    end_y: 24
+    tile: 0
+  - start_x: 0
+    end_x: 0
+    start_y: 25
+    end_y: 28
+    tile: 4
+  - start_x: 0
+    end_x: 0
+    start_y: 29
+    end_y: 29
+    tile: 8
+  - start_x: 1
+    end_x: 1
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 1
+    end_x: 1
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 1
+    end_x: 1
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 1
+    end_x: 1
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 2
+    end_x: 2
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 2
+    end_x: 2
+    start_y: 20
+    end_y: 20
+    tile: 0
+  - start_x: 2
+    end_x: 2
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 2
+    end_x: 2
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 2
+    end_x: 2
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 3
+    end_x: 3
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 3
+    end_x: 3
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 3
+    end_x: 3
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 3
+    end_x: 3
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 3
+    end_x: 3
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 4
+    end_x: 4
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 4
+    end_x: 4
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 4
+    end_x: 4
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 4
+    end_x: 4
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 4
+    end_x: 4
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 5
+    end_x: 5
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 5
+    end_x: 5
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 5
+    end_x: 5
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 5
+    end_x: 5
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 5
+    end_x: 5
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 6
+    end_x: 6
+    start_y: 12
+    end_y: 12
+    tile: 2
+  - start_x: 6
+    end_x: 6
+    start_y: 20
+    end_y: 20
     tile: 1
   - start_x: 6
     end_x: 6
-    y: 12
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 6
+    end_x: 6
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 6
+    end_x: 6
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 7
+    end_x: 7
+    start_y: 8
+    end_y: 8
+    tile: 0
+  - start_x: 7
+    end_x: 7
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 7
+    end_x: 7
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 7
+    end_x: 7
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 7
+    end_x: 7
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 8
+    end_x: 8
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 8
+    end_x: 8
+    start_y: 16
+    end_y: 16
+    tile: 0
+  - start_x: 8
+    end_x: 8
+    start_y: 20
+    end_y: 20
     tile: 2
+  - start_x: 8
+    end_x: 8
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 8
+    end_x: 8
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 8
+    end_x: 8
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 9
+    end_x: 9
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 9
+    end_x: 9
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 9
+    end_x: 9
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 9
+    end_x: 9
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 9
+    end_x: 9
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 10
+    end_x: 10
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 10
+    end_x: 10
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 10
+    end_x: 10
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 10
+    end_x: 10
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 10
+    end_x: 10
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 11
+    end_x: 11
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 11
+    end_x: 11
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 11
+    end_x: 11
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 11
+    end_x: 11
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 11
+    end_x: 11
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 12
+    end_x: 12
+    start_y: 3
+    end_y: 3
+    tile: 0
+  - start_x: 12
+    end_x: 12
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 12
+    end_x: 12
+    start_y: 16
+    end_y: 16
+    tile: 2
+  - start_x: 12
+    end_x: 12
+    start_y: 20
+    end_y: 20
+    tile: 0
+  - start_x: 12
+    end_x: 12
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 12
+    end_x: 12
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 12
+    end_x: 12
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 13
+    end_x: 13
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 13
+    end_x: 13
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 13
+    end_x: 13
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 13
+    end_x: 13
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 13
+    end_x: 13
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 13
+    end_x: 13
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 14
+    end_x: 14
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 14
+    end_x: 14
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 14
+    end_x: 14
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 14
+    end_x: 14
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 14
+    end_x: 14
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 14
+    end_x: 14
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 15
+    end_x: 15
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 15
+    end_x: 15
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 15
+    end_x: 15
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 15
+    end_x: 15
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 15
+    end_x: 15
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 15
+    end_x: 15
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 16
+    end_x: 16
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 16
+    end_x: 16
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 16
+    end_x: 16
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 16
+    end_x: 16
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 16
+    end_x: 16
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 16
+    end_x: 16
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 17
+    end_x: 17
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 17
+    end_x: 17
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 17
+    end_x: 17
+    start_y: 16
+    end_y: 16
+    tile: 0
+  - start_x: 17
+    end_x: 17
+    start_y: 20
+    end_y: 20
+    tile: 2
+  - start_x: 17
+    end_x: 17
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 17
+    end_x: 17
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 17
+    end_x: 17
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 18
+    end_x: 18
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 18
+    end_x: 18
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 18
+    end_x: 18
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 18
+    end_x: 18
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 18
+    end_x: 18
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 18
+    end_x: 18
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 19
+    end_x: 19
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 19
+    end_x: 19
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 19
+    end_x: 19
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 19
+    end_x: 19
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 19
+    end_x: 19
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 19
+    end_x: 19
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 20
+    end_x: 20
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 20
+    end_x: 20
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 20
+    end_x: 20
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 20
+    end_x: 20
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 20
+    end_x: 20
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 20
+    end_x: 20
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 21
+    end_x: 21
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 21
+    end_x: 21
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 21
+    end_x: 21
+    start_y: 16
+    end_y: 16
+    tile: 2
+  - start_x: 21
+    end_x: 21
+    start_y: 20
+    end_y: 20
+    tile: 0
+  - start_x: 21
+    end_x: 21
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 21
+    end_x: 21
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 21
+    end_x: 21
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 22
+    end_x: 22
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 22
+    end_x: 22
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 22
+    end_x: 22
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 22
+    end_x: 22
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 22
+    end_x: 22
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 22
+    end_x: 22
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 23
+    end_x: 23
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 23
+    end_x: 23
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 23
+    end_x: 23
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 23
+    end_x: 23
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 23
+    end_x: 23
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 23
+    end_x: 23
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 24
+    end_x: 24
+    start_y: 3
+    end_y: 3
+    tile: 1
+  - start_x: 24
+    end_x: 24
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 24
+    end_x: 24
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 24
+    end_x: 24
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 24
+    end_x: 24
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 24
+    end_x: 24
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 25
+    end_x: 25
+    start_y: 3
+    end_y: 3
+    tile: 2
+  - start_x: 25
+    end_x: 25
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 25
+    end_x: 25
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 25
+    end_x: 25
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 25
+    end_x: 25
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 25
+    end_x: 25
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 26
+    end_x: 26
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 26
+    end_x: 26
+    start_y: 16
+    end_y: 16
+    tile: 0
+  - start_x: 26
+    end_x: 26
+    start_y: 20
+    end_y: 20
+    tile: 2
+  - start_x: 26
+    end_x: 26
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 26
+    end_x: 26
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 26
+    end_x: 26
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 27
+    end_x: 27
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 27
+    end_x: 27
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 27
+    end_x: 27
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 27
+    end_x: 27
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 27
+    end_x: 27
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 28
+    end_x: 28
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 28
+    end_x: 28
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 28
+    end_x: 28
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 28
+    end_x: 28
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 28
+    end_x: 28
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 29
+    end_x: 29
+    start_y: 8
+    end_y: 8
+    tile: 1
+  - start_x: 29
+    end_x: 29
+    start_y: 16
+    end_y: 16
+    tile: 1
+  - start_x: 29
+    end_x: 29
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 29
+    end_x: 29
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 29
+    end_x: 29
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 30
+    end_x: 30
+    start_y: 8
+    end_y: 8
+    tile: 2
+  - start_x: 30
+    end_x: 30
+    start_y: 16
+    end_y: 16
+    tile: 2
+  - start_x: 30
+    end_x: 30
+    start_y: 20
+    end_y: 20
+    tile: 0
+  - start_x: 30
+    end_x: 30
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 30
+    end_x: 30
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 30
+    end_x: 30
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 31
+    end_x: 31
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 31
+    end_x: 31
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 31
+    end_x: 31
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 31
+    end_x: 31
+    start_y: 29
+    end_y: 29
+    tile: 9
   - start_x: 32
     end_x: 32
-    y: 12
+    start_y: 12
+    end_y: 12
     tile: 0
+  - start_x: 32
+    end_x: 32
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 32
+    end_x: 32
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 32
+    end_x: 32
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 32
+    end_x: 32
+    start_y: 29
+    end_y: 29
+    tile: 9
   - start_x: 33
-    end_x: 38
-    y: 12
+    end_x: 33
+    start_y: 12
+    end_y: 12
     tile: 1
-  - start_x: 39
-    end_x: 39
-    y: 12
-    tile: 2
-  - start_x: 8
-    end_x: 8
-    y: 16
-    tile: 0
-  - start_x: 9
-    end_x: 11
-    y: 16
+  - start_x: 33
+    end_x: 33
+    start_y: 20
+    end_y: 20
     tile: 1
-  - start_x: 12
-    end_x: 12
-    y: 16
-    tile: 2
-  - start_x: 17
-    end_x: 17
-    y: 16
-    tile: 0
-  - start_x: 18
-    end_x: 20
-    y: 16
+  - start_x: 33
+    end_x: 33
+    start_y: 24
+    end_y: 24
     tile: 1
-  - start_x: 21
-    end_x: 21
-    y: 16
-    tile: 2
-  - start_x: 26
-    end_x: 26
-    y: 16
-    tile: 0
-  - start_x: 27
-    end_x: 29
-    y: 16
+  - start_x: 33
+    end_x: 33
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 33
+    end_x: 33
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 34
+    end_x: 34
+    start_y: 12
+    end_y: 12
     tile: 1
-  - start_x: 30
-    end_x: 30
-    y: 16
-    tile: 2
-  - start_x: 2
-    end_x: 2
-    y: 20
-    tile: 0
-  - start_x: 3
-    end_x: 7
-    y: 20
+  - start_x: 34
+    end_x: 34
+    start_y: 20
+    end_y: 20
     tile: 1
-  - start_x: 8
-    end_x: 8
-    y: 20
-    tile: 2
-  - start_x: 12
-    end_x: 12
-    y: 20
-    tile: 0
-  - start_x: 13
-    end_x: 16
-    y: 20
+  - start_x: 34
+    end_x: 34
+    start_y: 24
+    end_y: 24
     tile: 1
-  - start_x: 17
-    end_x: 17
-    y: 20
-    tile: 2
-  - start_x: 21
-    end_x: 21
-    y: 20
-    tile: 0
-  - start_x: 22
-    end_x: 25
-    y: 20
-    tile: 1
-  - start_x: 26
-    end_x: 26
-    y: 20
-    tile: 2
-  - start_x: 30
-    end_x: 30
-    y: 20
-    tile: 0
-  - start_x: 31
+  - start_x: 34
+    end_x: 34
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 34
+    end_x: 34
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 35
     end_x: 35
-    y: 20
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 35
+    end_x: 35
+    start_y: 20
+    end_y: 20
+    tile: 1
+  - start_x: 35
+    end_x: 35
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 35
+    end_x: 35
+    start_y: 25
+    end_y: 28
+    tile: 5
+  - start_x: 35
+    end_x: 35
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 36
+    end_x: 36
+    start_y: 12
+    end_y: 12
     tile: 1
   - start_x: 36
     end_x: 36
-    y: 20
+    start_y: 20
+    end_y: 20
     tile: 2
-  - start_x: 0
-    end_x: 0
-    y: 24
-    tile: 0
-  - start_x: 1
-    end_x: 38
-    y: 24
+  - start_x: 36
+    end_x: 36
+    start_y: 24
+    end_y: 24
     tile: 1
-  - start_x: 39
-    end_x: 39
-    y: 24
-    tile: 2
-  - start_x: 0
-    end_x: 0
-    y: 25
-    tile: 4
-  - start_x: 1
-    end_x: 38
-    y: 25
+  - start_x: 36
+    end_x: 36
+    start_y: 25
+    end_y: 28
     tile: 5
-  - start_x: 39
-    end_x: 39
-    y: 25
-    tile: 6
-  - start_x: 0
-    end_x: 0
-    y: 26
-    tile: 4
-  - start_x: 1
-    end_x: 38
-    y: 26
+  - start_x: 36
+    end_x: 36
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 37
+    end_x: 37
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 37
+    end_x: 37
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 37
+    end_x: 37
+    start_y: 25
+    end_y: 28
     tile: 5
-  - start_x: 39
-    end_x: 39
-    y: 26
-    tile: 6
-  - start_x: 0
-    end_x: 0
-    y: 27
-    tile: 4
-  - start_x: 1
+  - start_x: 37
+    end_x: 37
+    start_y: 29
+    end_y: 29
+    tile: 9
+  - start_x: 38
     end_x: 38
-    y: 27
+    start_y: 12
+    end_y: 12
+    tile: 1
+  - start_x: 38
+    end_x: 38
+    start_y: 24
+    end_y: 24
+    tile: 1
+  - start_x: 38
+    end_x: 38
+    start_y: 25
+    end_y: 28
     tile: 5
-  - start_x: 39
-    end_x: 39
-    y: 27
-    tile: 6
-  - start_x: 0
-    end_x: 0
-    y: 28
-    tile: 4
-  - start_x: 1
+  - start_x: 38
     end_x: 38
-    y: 28
-    tile: 5
-  - start_x: 39
-    end_x: 39
-    y: 28
-    tile: 6
-  - start_x: 0
-    end_x: 0
-    y: 29
-    tile: 8
-  - start_x: 1
-    end_x: 38
-    y: 29
+    start_y: 29
+    end_y: 29
     tile: 9
   - start_x: 39
     end_x: 39
-    y: 29
+    start_y: 12
+    end_y: 12
+    tile: 2
+  - start_x: 39
+    end_x: 39
+    start_y: 24
+    end_y: 24
+    tile: 2
+  - start_x: 39
+    end_x: 39
+    start_y: 25
+    end_y: 28
+    tile: 6
+  - start_x: 39
+    end_x: 39
+    start_y: 29
+    end_y: 29
     tile: 10
 Spawns:
   - x: 18

@@ -56,7 +56,7 @@ Map MapLoader::getNextMap() {
 
     for (auto structure: map["Structures"]) {
         int id = structure["tile"].as<int>();
-        mapa.structures.emplace_back(structure["start_x"].as<int>(), structure["end_x"].as<int>(), structure["y"].as<int>(), id);
+        mapa.structures.emplace_back(structure["start_x"].as<int>(), structure["end_x"].as<int>(), structure["start_y"].as<int>(),structure["end_x"].as<int>(), id);
     }
     maps.push_back(mapa);
     lastMapIndex++;
@@ -72,7 +72,7 @@ MapDTO MapLoader::getNextMapDTO() {//en realidad devuelve al actual, pero hay qu
     Map mapa = getactualMap();
     std::list<Tile> tiles;
     for (auto structure: mapa.structures) {
-        tiles.push_back({structure.start_x, structure.end_x, structure.y, structure.id});
+        tiles.push_back({structure.start_x, structure.end_x, structure.start_y,structure.end_y, structure.id});
     }
     int background ;
     if (mapa.background == "Forest") {

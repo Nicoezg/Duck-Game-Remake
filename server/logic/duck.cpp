@@ -173,12 +173,12 @@ void Duck::update() {
     }
 
     for (const auto &structure : map.getMap().structures) {
-        hitBox structureBox = {structure.start_x * 16, structure.y * 16,
-                               (structure.end_x + 1 - structure.start_x) * 16, 16};
+        hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
+                               (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y+1 - structure.start_y) * 16};
       
         if (hitBox::isColliding(duckBox, structureBox)) {
             if (velY > 0 ) { 
-                posY = structure.y * 16 - 32;
+                posY = structure.start_y* 16 - 32;
                 velY = 0;
                 jumping = false;
                 flapping = false;

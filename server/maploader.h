@@ -26,17 +26,6 @@ struct Map {
     int width;
 
    
-    int getGroundLevel() const {
-        int groundLevel = height; 
-       
-        for (const auto& structure : structures) {
-            if (structure.y < groundLevel) {
-                groundLevel = structure.y;
-            }
-        }
-        
-        return groundLevel;
-    }
 };
 
 class MapLoader{

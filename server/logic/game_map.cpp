@@ -175,8 +175,8 @@ void GameMap::bulletCollisionWithPlatforms() {
         hitBox bulletBox = {bullet->getPosX(), bullet->getPosY(), 8, 1};
 
         for (auto &structure : map.structures) {
-            hitBox structureBox = {structure.start_x * 16, structure.y * 16,
-                                   (structure.end_x + 1 - structure.start_x) * 16, 16};
+            hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
+                                   (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y+1 - structure.start_y) * 16};
 
             if (hitBox::isColliding(bulletBox, structureBox)) {
                 bool isTopCollision = false; 
