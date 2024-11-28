@@ -164,7 +164,7 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
     if (player->getPositionX() >= map.width * 16 || player->getPositionX() <= -30) {
         return true;
     }
-    if (player->getPositionY() >= map.height * 16 || player->getPositionY() <= -30) {
+    if (player->getPositionY() >= map.height * 16 ) {
         return true;
     }
     return false;
