@@ -22,7 +22,6 @@ void DrawCrate::render(const CrateDTO& crate){
         sound.play();
         return;
     }
-    std::cout << crate.was_hit() << std::endl;
     if (crate.was_hit()){ // Implementar en DTO
         sound.change(hitSound, 0);
     }
