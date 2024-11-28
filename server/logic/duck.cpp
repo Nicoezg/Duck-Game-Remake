@@ -143,87 +143,55 @@ void Duck::update() {
     velX = 0;
   }
 
-  hitBox duckBox = {posX + CENTER_X, posY + CENTER_Y, WIDTH, HEIGHT};
-
-  isOnPlatform = false;
-
-  for (const auto &structure : map.getMap().structures) {
-    hitBox structureBox = {structure.start_x * 16, structure.y * 16,
-                           (structure.end_x + 1 - structure.start_x) * 16, 16};
-
-    if (hitBox::isColliding(duckBox, structureBox)) {
-      if (velY > 0) {
-        posY = structure.y * 16 - 32;
-        velY = 0;
-        jumping = false;
-        flapping = false;
-        isOnPlatform = true;
-
-        if (state != State::AIMING_UPWARDS) {
-          aimingUpwards = false;
-
-          if (velX == 0) {
-            state = State::BLANK;
-          } else {
-            state = State::WALKING;
-          }
-        }
-        break;
-      }
-    }
-  }
-//Colisiones con rampas izquierdas
-  for (const auto &ramp : map.getMap().leftRamps) {
-    hitBox rampBox = {ramp.start_x * 16, ramp.y * 16, (ramp.end_x + 1 - ramp.start_x) * 16, 16};
-
-    if (hitBox::isColliding(duckBox, rampBox)) {
-      if (velY > 0) {
-        posY = ramp.y * 16 - 24;
-        velY = 0;
-        jumping = false;
-        flapping = false;
-        isOnPlatform = true;
-
-        if (state != State::AIMING_UPWARDS) {
-          aimingUpwards = false;
-
-          if (velX == 0) {
-            state = State::BLANK;
-          } else {
-            state = State::WALKING;
-          }
-        }
-        break;
-      }
-    }
+  if (map.playerCollisionWithBox(id)) {
+    
   }
 
-  //Colisiones con rampas derechas
-  for (const auto &ramp : map.getMap().rightRamps) {
-    hitBox rampBox = {ramp.start_x * 16, ramp.y * 16, (ramp.end_x + 1 - ramp.start_x) * 16, 16};
+   hitBox duckBox = {posX + CENTER_X, posY + CENTER_Y, WIDTH, HEIGHT};
 
-    if (hitBox::isColliding(duckBox, rampBox)) {
-      if (velY > 0) {
-        posY = ramp.y * 16 - 24;
-        velY = 0;
-        jumping = false;
-        flapping = false;
-        isOnPlatform = true;
+    isOnPlatform = false;
 
-        if (state != State::AIMING_UPWARDS) {
-          aimingUpwards = false;
+    // Comprobar colisión con cajas
+    for (auto &crate : map.getMap().boxes) {
+        hitBox crateBox = {crate.get_posx()*16, crate.get_posy()*16, 16, 16};
 
-          if (velX == 0) {
-            state = State::BLANK;
-          } else {
-            state = State::WALKING;
-          }
+        if (hitBox::isColliding(duckBox, crateBox)) {
+            if (velY > 0 ) { 
+                posY = crateBox.y - 32;
+                velY = 0;
+                jumping = false;
+                flapping = false;
+                isOnPlatform = true;
+
+                if (state != State::AIMING_UPWARDS) {
+                    aimingUpwards = false;
+                    state = (velX == 0) ? State::BLANK : State::WALKING;
+                }
+                break;
+            }
         }
-        break;
-      }
     }
-  }
 
+    for (const auto &structure : map.getMap().structures) {
+        hitBox structureBox = {structure.start_x * 16, structure.y * 16,
+                               (structure.end_x + 1 - structure.start_x) * 16, 16};
+      
+        if (hitBox::isColliding(duckBox, structureBox)) {
+            if (velY > 0 ) { 
+                posY = structure.y * 16 - 32;
+                velY = 0;
+                jumping = false;
+                flapping = false;
+                isOnPlatform = true;
+
+                if (state != State::AIMING_UPWARDS) {
+                    aimingUpwards = false;
+                    state = (velX == 0) ? State::BLANK : State::WALKING;
+                }
+                break;
+            }
+        }
+    }
 
 
   if (jumping || !isOnPlatform) {

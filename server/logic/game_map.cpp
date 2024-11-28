@@ -196,6 +196,20 @@ void GameMap::bulletCollisionWithPlatforms() {
     }
 }
 
+bool GameMap::playerCollisionWithBox(int id) {
+   auto player = findPlayer(id);
+
+    hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+    for (auto &crate: crates) {
+        hitBox crateBox = {crate.get_posx(), crate.get_posy(), 16, 16};
+        if (hitBox::isColliding(duckBox, crateBox)) {
+            return true;
+        }
+    }
+    return false;
+    
+}
+
 void GameMap::process_action(std::shared_ptr<Action> &action) {
     int player_id = action->get_player_id();
     Duck *duck = findPlayer(player_id);

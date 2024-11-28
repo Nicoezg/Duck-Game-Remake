@@ -69,6 +69,8 @@ public:
 
   void bulletCollisionWithPlatforms();
 
+  bool playerCollisionWithBox(int id);
+
   PlayerDTO getPlayerState(int playerId);
 
   void reapDead();
