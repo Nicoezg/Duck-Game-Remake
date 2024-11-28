@@ -152,8 +152,8 @@ void Duck::update() {
     isOnPlatform = false;
 
     // Comprobar colisión con cajas
-    for (auto &crate : map.getMap().boxes) {
-        hitBox crateBox = {crate.get_posx()*16, crate.get_posy()*16, 16, 16};
+    for (auto &crate : map.getCratesState()) {
+        hitBox crateBox = {crate.get_position_x(), crate.get_position_y(), 16, 16};
 
         if (hitBox::isColliding(duckBox, crateBox)) {
             if (velY > 0 ) { 
