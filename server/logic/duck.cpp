@@ -247,6 +247,10 @@ void Duck::shoot() {
     weapon->shoot(this);
     shootingCooldown = 1;
     shooting = true;
+    if (weapon->getWeaponId() == WeaponId::GRENADE || weapon->getWeaponId() == WeaponId::BANANA) {
+      weapon = std::make_unique<NoWeapon>(map);
+      hasWeapon = false;
+    }
   }
 }
 
