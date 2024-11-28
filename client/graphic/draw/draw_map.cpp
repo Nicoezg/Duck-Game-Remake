@@ -9,6 +9,7 @@ DrawMap::DrawMap(SDL2pp::Renderer& renderer) : textures(), renderer(renderer), b
     }
     this->textures[96] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/forest.png"));
     this->textures[97] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/lava.png"));
+    this->textures[98] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface("../editor/images/nieve.png"))
 
 }
 
