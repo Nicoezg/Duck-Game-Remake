@@ -175,7 +175,6 @@ bool Editor::eventFilter(QObject *obj, QEvent *event) {
           label->clear();
           label->setProperty("tile_id", EMPTY_TILE);
         }
-        std::cout <<label->property("tile_id").toInt() << std::endl;
       }
       return true;
     }
