@@ -32,6 +32,7 @@ class MapLoader{
     private:
         std::vector<std::string> maps_paths;
         std::vector<Map> maps;
+        std::vector<Map> logicMaps;
         size_t lastMapIndex;
     public:
         MapLoader();
