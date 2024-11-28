@@ -71,7 +71,7 @@ public:
 
   virtual std::list<std::string> get_names() const;
 
-  virtual std::list<uint8_t> get_scores() const;
+  virtual std::list<int> get_scores() const;
 
   virtual PlayerData get_winner() const;
 

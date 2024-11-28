@@ -78,6 +78,9 @@
 #define READ_GAME_OVER_SIZE (SCORE_SIZE)
 #define SEND_GAME_OVER_SIZE (READ_GAME_OVER_SIZE + PLAYER_DATA_SIZE + EVENT_TYPE_SIZE)
 
+#define SEND_SCORE_SIZE (EVENT_TYPE_SIZE)
+
+
 class EventsProtocol : public Protocol {
 private:
     Encoder encoder;
@@ -166,6 +169,18 @@ public:
     PlayerData read_player_data();
 
     Tile read_tile(std::vector<int8_t> &data);
+
+    std::list<std::string> read_names();
+
+    std::list<int> read_scores();
+
+    std::shared_ptr<Event> read_score();
+
+    void add_scores(std::vector<int8_t> &data, size_t &offset, const std::list<int> &scores);
+
+    void add_names(std::vector<int8_t> &data, size_t &offset, const std::list<std::string> &names);
+
+    void send_score(const Event &event);
 };
 
 #endif // TALLER_TP_EVENTS_PROTOCOL_H

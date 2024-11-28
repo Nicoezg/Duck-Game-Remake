@@ -12,6 +12,7 @@
 #include "common/events/map.h"
 #include "common/events/tile.h"
 #include "common/events/game_over.h"
+#include "common/events/score.h"
 #include <cstddef>
 #include <iostream>
 #include <list>
@@ -45,11 +46,13 @@ void EventsProtocol::send_element(Event &event) {
         case GAME_OVER:
             return send_game_over(event);
 
+        case SCORE:
+            return send_score(event);
+
         default:
             throw std::runtime_error("Tipo de evento no soportado.");
     }
 }
-
 
 std::shared_ptr<Event> EventsProtocol::read_element() {
     EventType event = read_event_type();
@@ -77,11 +80,13 @@ std::shared_ptr<Event> EventsProtocol::read_element() {
 
         case GAME_OVER:
             return read_game_over();
+
+        case SCORE:
+            return read_score();
         default:
             throw std::runtime_error("Tipo de evento no soportado.");
     }
 }
-
 
 EventType EventsProtocol::read_event_type() {
     std::vector<int8_t> data(EVENT_TYPE_SIZE);
@@ -599,4 +604,63 @@ PlayerData EventsProtocol::read_player_data() {
     std::string name = read_name(name_len);
     PlayerData player = {id, name};
     return player;
+}
+
+
+std::shared_ptr<Event> EventsProtocol::read_score() {
+    return std::make_shared<Score>(read_names(), read_scores());
+}
+
+std::list<std::string> EventsProtocol::read_names() {
+    std::vector<int8_t> data(LEN_SIZE);
+    read(data.data(), data.size());
+    int len = encoder.decode_len(data);
+
+    std::list<std::string> scores;
+    for (int i = 0; i < len; i++) {
+        int name_len = encoder.decode_len(data);
+        std::string name = read_name(name_len);
+        scores.push_back(name);
+    }
+    return scores;
+}
+
+std::list<int> EventsProtocol::read_scores() {
+    std::vector<int8_t> data(LEN_SIZE);
+    read(data.data(), data.size());
+    int len = encoder.decode_len(data);
+
+    std::list<int> scores;
+    for (int i = 0; i < len; i++) {
+        int score = encoder.decode_score(data);
+        scores.push_back(score);
+    }
+    return scores;
+}
+
+void EventsProtocol::send_score(const Event &event) {
+    size_t size_to_send = LEN_SIZE * 2;
+    for (const auto &name: event.get_names()) {
+        size_to_send += LEN_SIZE + name.size() + SCORE_SIZE;
+    }
+    std::vector<int8_t> data(size_to_send);
+    size_t offset = 0;
+    offset += encoder.encode_event_type(event.get_type(), &data[offset]);
+    add_names(data, offset, event.get_names());
+    add_scores(data, offset, event.get_scores());
+    send(data.data(), data.size());
+}
+
+void EventsProtocol::add_names(std::vector<int8_t> &data, size_t &offset, const std::list<std::string> &names) {
+    offset += encoder.encode_len(names.size(), &data[offset]);
+    for (const auto &name: names) {
+        add_name(name, data, offset);
+    }
+}
+
+void EventsProtocol::add_scores(std::vector<int8_t> &data, size_t &offset, const std::list<int> &scores) {
+    offset += encoder.encode_len(scores.size(), &data[offset]);
+    for (const auto &score: scores) {
+        offset += encoder.encode_score(score, &data[offset]);
+    }
 }

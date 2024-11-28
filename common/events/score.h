@@ -8,16 +8,14 @@
 class Score : public Event {
 private:
     std::list<std::string> names;
-
-    std::list<uint8_t> scores;
-
+    std::list<int> scores;
 
 public:
-  Score(std::list<std::string> &&names, std::list<uint8_t> &&scores);
+  Score(std::list<std::string> &&names, std::list<int> &&scores);
 
   std::list<std::string> get_names() const override;
 
-  std::list<uint8_t> get_scores() const override;
+  std::list<int> get_scores() const override;
 };
 
 #endif // TALLER_TP_SCORE_H
