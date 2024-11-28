@@ -11,6 +11,7 @@ Banana::Banana(GameMap &map)
 void Banana::shoot(Duck *owner) {
     if (hasAmmo()) {
         createThrowable(map,owner,false);
+        ammo--;
     }
 }
 

@@ -33,7 +33,6 @@ void DrawMap::render(){
         int y = platform.get_y();
         for (int i = platform.get_start_x(); i < platform.get_end_x() + 1; i ++){
             SDL2pp::Rect dest(i * width, y * height, width, height);
-            //std::cout << dest.x << " " << dest.y << " " << dest.w << " " << dest.h << std::endl;
             renderer.Copy(texture, src, dest);
         }
     }

@@ -73,7 +73,7 @@ void Game::run() {
                 notify_event(event);
             }
             gameMap.update();
-            checkNewRound();
+            // checkNewRound();
             notify_state();
             if (gameMap.isResetting()){
                 std::shared_ptr<Event> event = std::make_shared<MapDTO>(gameMap.getMapDTO());
@@ -98,18 +98,20 @@ void Game::checkFinishGame() {
 
 void Game::checkNewRound() {
     if (gameMap.pauseForScores()){
-        /* std::map<uint8_t, std::string, std::greater<>> scoresMap;
+        std::map<int, std::string, std::greater<>> scoresMap;
         for (auto player: players) {
             scoresMap[gameMap.getPlayerWins(player.first)] = player.second;
         }
         std::list<std::string> names;
-        std::list<uint8_t> scores;
+        std::list<int> scores;
         for (auto score: scoresMap) {
             names.push_back(score.second);
             scores.push_back(score.first);
         }
         std::shared_ptr<Event> event = std::make_shared<Score>(std::move(names), std::move(scores));
-        notify_event(event); */
+        std::cout << event->get_names().front() << std::endl;
+        std::cout << event->get_scores().front() << std::endl;
+        notify_event(event);
     }
 }
 
