@@ -173,13 +173,12 @@ void Duck::update() {
     }
   }
 //Colisiones con rampas izquierdas
-
   for (const auto &ramp : map.getMap().leftRamps) {
     hitBox rampBox = {ramp.start_x * 16, ramp.y * 16, (ramp.end_x + 1 - ramp.start_x) * 16, 16};
 
     if (hitBox::isColliding(duckBox, rampBox)) {
       if (velY > 0) {
-        posY = ramp.y * 16 - 32;
+        posY = ramp.y * 16 - 24;
         velY = 0;
         jumping = false;
         flapping = false;
@@ -200,13 +199,12 @@ void Duck::update() {
   }
 
   //Colisiones con rampas derechas
-
   for (const auto &ramp : map.getMap().rightRamps) {
-    hitBox rampBox = {ramp.start_x * 16, ramp.y * 16, (ramp.end_x + 1 - ramp.start_x) * 16, 12};
+    hitBox rampBox = {ramp.start_x * 16, ramp.y * 16, (ramp.end_x + 1 - ramp.start_x) * 16, 16};
 
     if (hitBox::isColliding(duckBox, rampBox)) {
       if (velY > 0) {
-        posY = ramp.y * 16 - 16;
+        posY = ramp.y * 16 - 24;
         velY = 0;
         jumping = false;
         flapping = false;
