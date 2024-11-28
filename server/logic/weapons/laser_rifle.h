@@ -11,6 +11,8 @@ public:
   explicit LaserRifle(GameMap &map);
 
   void shoot(Duck *owner) override;
+
+  void replenishAmmo() override;
 };
 
 #endif // LASER_RIFLE_H

@@ -12,6 +12,17 @@
 #include <memory>
 #include <vector>
 #include "itemspawn.h"
+#include "weapons/grenade.h"
+#include "weapons/banana.h"
+#include "weapons/laser_rifle.h"
+#include "weapons/magnum.h"
+#include "weapons/duelos.h"
+#include "weapons/pewpewlaser.h"
+#include "weapons/shotgun.h"
+#include "weapons/sniper.h"
+#include "weapons/weapon.h"
+#include "weapons/ak47.h"
+#include "weapons/cowboy.h"
 
 class Duck;
 class Explosion;
@@ -108,7 +119,7 @@ public:
 
   uint8_t getPlayerWins(int playerId);
 
-
+  void killAll(int duckId);
 };
 
 #endif

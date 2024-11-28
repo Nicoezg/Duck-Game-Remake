@@ -320,7 +320,26 @@ Duck::~Duck() {}
 
 uint8_t Duck::getWins() const { return wins; }
 
+void Duck::setWins() { wins = 200; }
+
 void Duck::collideWithBanana() { bananaEffectRemaining = 100; }
+
+// void Duck::replenishAmmo() { weapon->replenishAmmo(); }
+
+void Duck::throwEverything() {
+  weapon = std::make_unique<NoWeapon>(map);
+  hasHelmet = false;
+  hasWeapon = false;
+  hasArmour = false;
+}
+
+void Duck::die() { state = State::DEAD;}
+
+void Duck::replenishAmmo() {
+  if (hasWeapon){
+    weapon->replenishAmmo();
+  }
+}
 
 /*bool Duck::impact(Bullet &bullet) {
     Position position = Position(posX, posY, WIDTH, HEIGHT);

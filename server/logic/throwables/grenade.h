@@ -1,5 +1,5 @@
-#ifndef GRENADE_H
-#define GRENADE_H
+#ifndef GRENADE_THROWABLE_H
+#define GRENADE_THROWABLE_H
 
 #include "throwable.h"
 
@@ -25,4 +25,4 @@ public:
   
 };
 
-#endif // GRENADE_H
+#endif // GRENADE_THROWABLE_H

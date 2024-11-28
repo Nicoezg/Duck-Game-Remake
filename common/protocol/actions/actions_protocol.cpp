@@ -66,6 +66,8 @@ std::shared_ptr<Action> ActionsProtocol::read_element() {
             return read_aiming_upwards_action();
         case PICK_DROP:
             return read_pick_drop_action();
+        case CHEAT:
+            return read_cheat_action();
 
         default:
             throw std::runtime_error(
@@ -101,6 +103,8 @@ void ActionsProtocol::send_element(const Action &action) {
             return send_aiming_upwards_action(action);
         case PICK_DROP:
             return send_pick_drop_action(action);
+        case CHEAT:
+            return send_cheat_action(action);
         default:
             throw std::runtime_error("ActionsProtocol try to send unknown action");
     }

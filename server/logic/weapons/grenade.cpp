@@ -18,4 +18,8 @@ void Grenade::shoot(Duck *owner) {
     }
 }
 
+void Grenade::replenishAmmo(){
+  ammo = AMMO;
+}
+
 

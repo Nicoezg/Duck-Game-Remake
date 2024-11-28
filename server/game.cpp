@@ -67,6 +67,11 @@ void Game::run() {
             if (!started) {
                 continue;
             }
+            // Horrible pero funciona
+            if (gameMap.isResetting()){
+                std::shared_ptr<Event> event = std::make_shared<MapDTO>(gameMap.getMapDTO());
+                notify_event(event);
+            }
             gameMap.update();
             checkNewRound();
             notify_state();

@@ -208,6 +208,65 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
                 duck->drop();
             }
             break;
+        case CHEAT:
+            switch (action->get_cheat_id()) {
+                case 1:
+                    duck->equipWeapon(std::make_unique<Grenade>(*this));
+                    break;
+                case 2:
+                    duck->equipWeapon(std::make_unique<Banana>(*this));
+                    break;
+                case 3:
+                    duck->equipWeapon(std::make_unique<PewPewLaser>(*this));
+                    break;
+                case 4:
+                    duck->equipWeapon(std::make_unique<LaserRifle>(*this));
+                    break;
+                case 5:
+                    duck->equipWeapon(std::make_unique<Ak47>(*this));
+                    break;
+                case 6:
+                    duck->equipWeapon(std::make_unique<Duelos>(*this));
+                    break;
+                case 7:
+                    duck->equipWeapon(std::make_unique<Cowboy>(*this));
+                    break;
+                case 8:
+                    duck->equipWeapon(std::make_unique<Magnum>(*this));
+                    break;
+                case 9:
+                    duck->equipWeapon(std::make_unique<Shotgun>(*this));
+                    break;
+                case 10:
+                    duck->equipWeapon(std::make_unique<Sniper>(*this));
+                    break;
+                case 11:
+                    duck->equipHelmet();
+                    break;
+                case 12:
+                    duck->equipArmour();
+                    break;
+                case 13:
+                    rounds = 20;
+                    duck->setWins();
+                    break;
+                case 14:
+                    killAll(duck->getId());
+                    break;
+                case 15:
+                    duck->throwEverything();
+                    break;
+                case 16:
+                    reset_round();
+                    break;
+                case 17:
+                    duck->replenishAmmo();
+                    break;
+                default:
+                    std::cout << "Cheat inválido" << std::endl;
+                    break;
+            }
+            break;
         default:
             std::cout << "Acción inválida" << std::endl;
             break;
@@ -490,6 +549,14 @@ void GameMap::reset_round() {
     itemSpawns.clear();
 
     loadMap();
+}
+
+void GameMap::killAll(int duckId) {
+    for (auto player: players) {
+        if (player->getId() != duckId){
+            player->die();
+        }
+    }
 }
 
 int GameMap::get_winner_id() { return winner_id; }
