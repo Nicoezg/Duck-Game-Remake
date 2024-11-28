@@ -486,9 +486,10 @@ std::shared_ptr<Event> EventsProtocol::read_map() {
 Tile EventsProtocol::read_tile(std::vector<int8_t> &data) {
     int start_x = encoder.decode_coordinate(data);
     int end_x = encoder.decode_coordinate(data);
-    int y = encoder.decode_coordinate(data);
+    int start_y = encoder.decode_coordinate(data);
+    int end_y = encoder.decode_coordinate(data);
     int tile_id = encoder.decode_tile_id(data);
-    return {start_x, end_x, y, tile_id};
+    return {start_x, end_x, start_y, end_y, tile_id};
 }
 
 void EventsProtocol::send_map(const Event &event) {
@@ -511,7 +512,8 @@ void EventsProtocol::add_platforms(const Event &event,
     for (const auto &platform: event.get_platforms()) {
         offset += encoder.encode_coordinate(platform.get_start_x(), &data[offset]);
         offset += encoder.encode_coordinate(platform.get_end_x(), &data[offset]);
-        offset += encoder.encode_coordinate(platform.get_y(), &data[offset]);
+        offset += encoder.encode_coordinate(platform.get_start_y(), &data[offset]);
+        offset += encoder.encode_coordinate(platform.get_end_y(), &data[offset]);
         offset += encoder.encode_tile_id(platform.get_tile_id(), &data[offset]);
     }
 }
