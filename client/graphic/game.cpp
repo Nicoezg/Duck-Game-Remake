@@ -151,7 +151,7 @@ void Game::showScores(const Event &score) {
     renderer.SetDrawColor(0, 0, 0, 255);
     renderer.Clear();
     std::list<std::string> names = score.get_names();
-    std::list<uint8_t> scores = score.get_scores();
+    std::list<int> scores = score.get_scores();
     Uint32 startTime = SDL_GetTicks();
     bool flash = true;
     while (SDL_GetTicks() - startTime < 5000) { // Flash for 5 seconds
