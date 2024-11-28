@@ -88,7 +88,7 @@ std::list<std::string> Event::get_names() const {
     throw std::runtime_error("Has no names.");
 }
 
-std::list<uint8_t> Event::get_scores() const {
+std::list<int> Event::get_scores() const {
     throw std::runtime_error("Has no scores.");
 }
 
