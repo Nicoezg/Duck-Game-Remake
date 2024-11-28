@@ -8,9 +8,9 @@
 #include <QFileDialog>
 #include <iostream>
 #include <yaml-cpp/yaml.h>
-#define TOTAL_TILES 100
-#define SPAWN_TILE 96
-#define INTERACTUABLES_START 97
+#define TOTAL_TILES 52
+#define SPAWN_TILE 48
+#define INTERACTUABLES_START 49
 
 #define FILAS 30
 #define COLUMNAS 40
@@ -52,9 +52,9 @@ QStringList Editor::obtenerArchivosImagen(const QString &directorio) {
 
 void Editor::cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
                                  int &fila, int &columna) {
-  const int columnasMax = 8;  // Ajusta según la cantidad de columnas deseadas
+  const int columnasMax = 4;  // Ajusta según la cantidad de columnas deseadas
   const int tileSide = 16;    // Tamaño de cada tile
-  const int displaySize = 64; // Tamaño de visualización en la UI
+  const int displaySize = 128; // Tamaño de visualización en la UI
 
   QWidget *containerWidget = ui->scrollArea->widget();
   // Cargar el spritesheet completo

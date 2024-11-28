@@ -56,50 +56,10 @@ Map MapLoader::getNextMap() {
 
     for (auto structure: map["Structures"]) {
         int id = structure["tile"].as<int>();
-        int nivel_tile = id / 8;
-        int idTruncado = id - nivel_tile * 8;
-        std::set<int> nivelesPermitidos = {2, 6, 10};
-        std::set<int> nivelesSinRampas = {1, 3, 5, 7, 9, 11};
-
-        if (idTruncado >= 6 ||
-            (idTruncado >= 4 && idTruncado <= 5 && nivelesPermitidos.count(nivel_tile) > 0)) {
-            if (idTruncado == 7 || idTruncado == 5) {
-                if (nivelesPermitidos.count(nivel_tile) > 0) {
-                    mapa.rightRamps.emplace_back(structure["start_x"].as<int>(),
-                                                   structure["end_x"].as<int>(),
-                                                   structure["y"].as<int>(),
-                                                   id, 0);
-                } else {
-                    mapa.leftRamps.emplace_back(structure["start_x"].as<int>(),
-                                                  structure["end_x"].as<int>(),
-                                                  structure["y"].as<int>(),
-                                                  id, 1);
-                }
-            } else {
-                if (nivelesPermitidos.count(nivel_tile) > 0) {
-                    mapa.leftRamps.emplace_back(structure["start_x"].as<int>(),
-                                                  structure["end_x"].as<int>(),
-                                                  structure["y"].as<int>(),
-                                                  id, 0);
-                } else {
-                    mapa.rightRamps.emplace_back(structure["start_x"].as<int>(),
-                                                   structure["end_x"].as<int>(),
-                                                   structure["y"].as<int>(),
-                                                   id, 1);
-                }
-            }
-        } else {
-            mapa.structures.emplace_back(structure["start_x"].as<int>(),
-                                       structure["end_x"].as<int>(),
-                                       structure["y"].as<int>(),
-                                       id);
-        }
+        mapa.structures.emplace_back(structure["start_x"].as<int>(), structure["end_x"].as<int>(), structure["y"].as<int>(), id);
     }
     maps.push_back(mapa);
     lastMapIndex++;
-
-    std::cout << mapa.background << std::endl;
-    std::cout << mapa.structures.size() << std::endl;
     return mapa;
 }
 
@@ -113,12 +73,6 @@ MapDTO MapLoader::getNextMapDTO() {//en realidad devuelve al actual, pero hay qu
     std::list<Tile> tiles;
     for (auto structure: mapa.structures) {
         tiles.push_back({structure.start_x, structure.end_x, structure.y, structure.id});
-    }
-    for (auto ramp: mapa.leftRamps) {
-        tiles.push_back({ramp.start_x, ramp.end_x, ramp.y, ramp.id});
-    }
-    for (auto ramp: mapa.rightRamps) {
-        tiles.push_back({ramp.start_x, ramp.end_x, ramp.y, ramp.id});
     }
     int background ;
     if (mapa.background == "Forest") {

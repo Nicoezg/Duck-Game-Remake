@@ -5,135 +5,135 @@ Structures:
   - start_x: 12
     end_x: 12
     y: 3
-    tile: 24
+    tile: 0
   - start_x: 13
     end_x: 24
     y: 3
-    tile: 25
+    tile: 1
   - start_x: 25
     end_x: 25
     y: 3
-    tile: 26
+    tile: 2
   - start_x: 7
     end_x: 7
     y: 8
-    tile: 24
+    tile: 0
   - start_x: 8
     end_x: 29
     y: 8
-    tile: 25
+    tile: 1
   - start_x: 30
     end_x: 30
     y: 8
-    tile: 26
+    tile: 2
   - start_x: 0
     end_x: 0
     y: 12
-    tile: 24
+    tile: 0
   - start_x: 1
     end_x: 5
     y: 12
-    tile: 25
+    tile: 1
   - start_x: 6
     end_x: 6
     y: 12
-    tile: 26
+    tile: 2
   - start_x: 32
     end_x: 32
     y: 12
-    tile: 24
+    tile: 0
   - start_x: 33
     end_x: 38
     y: 12
-    tile: 25
+    tile: 1
   - start_x: 39
     end_x: 39
     y: 12
-    tile: 26
+    tile: 2
   - start_x: 8
     end_x: 8
     y: 16
-    tile: 24
+    tile: 0
   - start_x: 9
     end_x: 11
     y: 16
-    tile: 25
+    tile: 1
   - start_x: 12
     end_x: 12
     y: 16
-    tile: 26
+    tile: 2
   - start_x: 17
     end_x: 17
     y: 16
-    tile: 24
+    tile: 0
   - start_x: 18
     end_x: 20
     y: 16
-    tile: 25
+    tile: 1
   - start_x: 21
     end_x: 21
     y: 16
-    tile: 26
+    tile: 2
   - start_x: 26
     end_x: 26
     y: 16
-    tile: 24
+    tile: 0
   - start_x: 27
     end_x: 29
     y: 16
-    tile: 25
+    tile: 1
   - start_x: 30
     end_x: 30
     y: 16
-    tile: 26
+    tile: 2
   - start_x: 2
     end_x: 2
     y: 20
-    tile: 24
+    tile: 0
   - start_x: 3
     end_x: 7
     y: 20
-    tile: 25
+    tile: 1
   - start_x: 8
     end_x: 8
     y: 20
-    tile: 26
+    tile: 2
   - start_x: 12
     end_x: 12
     y: 20
-    tile: 24
+    tile: 0
   - start_x: 13
     end_x: 16
     y: 20
-    tile: 25
+    tile: 1
   - start_x: 17
     end_x: 17
     y: 20
-    tile: 26
+    tile: 2
   - start_x: 21
     end_x: 21
     y: 20
-    tile: 24
+    tile: 0
   - start_x: 22
     end_x: 25
     y: 20
-    tile: 25
+    tile: 1
   - start_x: 26
     end_x: 26
     y: 20
-    tile: 26
+    tile: 2
   - start_x: 30
     end_x: 30
     y: 20
-    tile: 24
+    tile: 0
   - start_x: 31
     end_x: 35
     y: 20
-    tile: 25
+    tile: 1
   - start_x: 36
     end_x: 36
     y: 20
-    tile: 26
+    tile: 2
   - start_x: 0
     end_x: 0
     y: 24
@@ -149,63 +149,63 @@ Structures:
   - start_x: 0
     end_x: 0
     y: 25
-    tile: 8
+    tile: 4
   - start_x: 1
     end_x: 38
     y: 25
-    tile: 9
+    tile: 5
   - start_x: 39
     end_x: 39
     y: 25
-    tile: 10
+    tile: 6
   - start_x: 0
     end_x: 0
     y: 26
-    tile: 8
+    tile: 4
   - start_x: 1
     end_x: 38
     y: 26
-    tile: 9
+    tile: 5
   - start_x: 39
     end_x: 39
     y: 26
-    tile: 10
+    tile: 6
   - start_x: 0
     end_x: 0
     y: 27
+    tile: 4
+  - start_x: 1
+    end_x: 38
+    y: 27
+    tile: 5
+  - start_x: 39
+    end_x: 39
+    y: 27
+    tile: 6
+  - start_x: 0
+    end_x: 0
+    y: 28
+    tile: 4
+  - start_x: 1
+    end_x: 38
+    y: 28
+    tile: 5
+  - start_x: 39
+    end_x: 39
+    y: 28
+    tile: 6
+  - start_x: 0
+    end_x: 0
+    y: 29
     tile: 8
   - start_x: 1
     end_x: 38
-    y: 27
+    y: 29
     tile: 9
   - start_x: 39
     end_x: 39
-    y: 27
+    y: 29
     tile: 10
-  - start_x: 0
-    end_x: 0
-    y: 28
-    tile: 8
-  - start_x: 1
-    end_x: 38
-    y: 28
-    tile: 9
-  - start_x: 39
-    end_x: 39
-    y: 28
-    tile: 10
-  - start_x: 0
-    end_x: 0
-    y: 29
-    tile: 16
-  - start_x: 1
-    end_x: 38
-    y: 29
-    tile: 17
-  - start_x: 39
-    end_x: 39
-    y: 29
-    tile: 18
 Spawns:
   - x: 18
     y: 2

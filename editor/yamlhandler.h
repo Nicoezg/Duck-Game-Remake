@@ -13,9 +13,9 @@
 
 
 
-#define TOTAL_TILES 100
-#define SPAWN_TILE 96
-#define INTERACTUABLES_START 97
+#define TOTAL_TILES 52
+#define SPAWN_TILE 48
+#define INTERACTUABLES_START 49
 #define EMPTY_TILE -1
 
 class YamlHandler{

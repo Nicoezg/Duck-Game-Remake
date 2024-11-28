@@ -89,75 +89,75 @@ Structures:
   - start_x: 9
     end_x: 9
     y: 20
-    tile: 40
+    tile: 36
   - start_x: 10
     end_x: 29
     y: 20
-    tile: 41
+    tile: 37
   - start_x: 30
     end_x: 30
     y: 20
-    tile: 42
+    tile: 38
   - start_x: 9
     end_x: 9
     y: 21
-    tile: 40
+    tile: 36
   - start_x: 10
     end_x: 29
     y: 21
-    tile: 41
+    tile: 37
   - start_x: 30
     end_x: 30
     y: 21
-    tile: 42
+    tile: 38
   - start_x: 9
     end_x: 9
     y: 22
-    tile: 40
+    tile: 36
   - start_x: 10
     end_x: 29
     y: 22
-    tile: 41
+    tile: 37
   - start_x: 30
     end_x: 30
     y: 22
-    tile: 42
+    tile: 38
   - start_x: 9
     end_x: 9
     y: 23
+    tile: 36
+  - start_x: 10
+    end_x: 29
+    y: 23
+    tile: 37
+  - start_x: 30
+    end_x: 30
+    y: 23
+    tile: 38
+  - start_x: 9
+    end_x: 9
+    y: 24
+    tile: 36
+  - start_x: 10
+    end_x: 29
+    y: 24
+    tile: 37
+  - start_x: 30
+    end_x: 30
+    y: 24
+    tile: 38
+  - start_x: 9
+    end_x: 9
+    y: 25
     tile: 40
   - start_x: 10
     end_x: 29
-    y: 23
+    y: 25
     tile: 41
   - start_x: 30
     end_x: 30
-    y: 23
+    y: 25
     tile: 42
-  - start_x: 9
-    end_x: 9
-    y: 24
-    tile: 40
-  - start_x: 10
-    end_x: 29
-    y: 24
-    tile: 41
-  - start_x: 30
-    end_x: 30
-    y: 24
-    tile: 42
-  - start_x: 9
-    end_x: 9
-    y: 25
-    tile: 48
-  - start_x: 10
-    end_x: 29
-    y: 25
-    tile: 49
-  - start_x: 30
-    end_x: 30
-    y: 25
-    tile: 50
 Spawns:
   - x: 2
     y: 2
