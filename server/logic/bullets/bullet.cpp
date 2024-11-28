@@ -1,5 +1,6 @@
 #include "bullet.h"
 #include "common/events/items/bullet_dto.h"
+#include "server/logic/hitBox.h"
 #include <cmath>
 #include <iostream>
 
@@ -20,7 +21,7 @@ void Bullet::update() {
 
   int deltaX =
       static_cast<int>(CONFIG.getBulletSpeed() * std::cos(radianAngle));
-  int deltaY = static_cast<int>(10 * std::sin(radianAngle));
+  int deltaY = static_cast<int>(5 * std::sin(radianAngle));
 
   if (upwards) {
     pos_x -= deltaX;
@@ -32,6 +33,9 @@ void Bullet::update() {
   } else {
     pos_x -= deltaX;
     pos_y -= deltaY;
+  }
+  if (id == BulletId::LASER_REBOUND) {
+    id = BulletId::LASER_BEAM;
   }
   int distanceMoved = std::sqrt(deltaX * deltaX + deltaY * deltaY);
   traveledDistance += distanceMoved;
@@ -45,7 +49,26 @@ bool Bullet::outOfRange() {
   return false;
 }
 
-void Bullet::bounce(int newAngle) { angle = newAngle; }
+void Bullet::bounce(bool isHorizontalCollision, bool isTopCollision) {
+    if (canBounce) {
+        id = BulletId::LASER_REBOUND; 
+
+        if (isHorizontalCollision) {
+            angle = 180 - angle;
+        } else {
+            if (isTopCollision) {
+                angle = 360 - angle; 
+            } else {
+                angle = 180 - angle;
+            }
+        }
+         if (angle < 0) {
+            angle += 360; 
+        } else if (angle >= 360) {
+            angle -= 360; 
+        }
+    }
+}
 
 int Bullet::getPosX() const { return pos_x; }
 
@@ -56,7 +79,6 @@ float Bullet::getAngle() const { return angle; }
 BulletId Bullet::getId() const { return id; }
 
 int Bullet::getOwnerId() const { return owner_Id; }
-
 
 BulletDTO Bullet::toDTO() const { return {pos_x, pos_y, id, angle, isRight}; }
 

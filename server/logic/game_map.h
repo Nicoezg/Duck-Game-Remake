@@ -67,6 +67,8 @@ public:
 
   bool checkCollisionsWithBorders(int playerId);
 
+  void bulletCollisionWithPlatforms();
+
   PlayerDTO getPlayerState(int playerId);
 
   void reapDead();

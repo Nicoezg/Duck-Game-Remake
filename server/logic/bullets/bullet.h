@@ -30,7 +30,7 @@ public:
 
     bool outOfRange();
 
-    void bounce(int newAngle);
+    void bounce(bool isHorizontalCollision, bool isTopCollision);
 
     int getPosX() const;
 
