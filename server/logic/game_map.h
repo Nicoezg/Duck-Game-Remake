@@ -119,7 +119,7 @@ public:
 
   bool isResetting();
 
-  uint8_t getPlayerWins(int playerId);
+  int getPlayerWins(int playerId);
 
   void killAll(int duckId);
 };

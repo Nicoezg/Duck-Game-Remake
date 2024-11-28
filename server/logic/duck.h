@@ -72,7 +72,7 @@ public:
   bool isAimingUpwards() const;
   const Weapon *getWeapon() const;
   bool isFalling() const;
-  uint8_t getWins() const;
+  int getWins() const;
   void increaseWins();
   void setWins();
   void replenishAmmo();

@@ -373,7 +373,7 @@ PlayerDTO Duck::toDTO() const {
 
 Duck::~Duck() {}
 
-uint8_t Duck::getWins() const { return wins; }
+int Duck::getWins() const { return wins; }
 
 void Duck::setWins() { wins = 200; }
 

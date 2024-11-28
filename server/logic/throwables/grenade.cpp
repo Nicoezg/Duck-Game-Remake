@@ -12,10 +12,10 @@ void ThrownGrenade::update() {
   if (!aimingUp) {
     if (isRight) {
       pos_x += 1;
-      angle+=0.5;
+      angle+=5;
     } else {
       pos_x -= 1;
-      angle-=0.5;
+      angle-=5;
   }
   }
   pos_y += CONFIG.getDuckConfig().getGravity();
