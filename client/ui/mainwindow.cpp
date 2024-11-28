@@ -261,4 +261,8 @@ void MainWindow::setupServerList() {
 }
 
 
+void MainWindow::closeEvent(QCloseEvent *event) {
+    exit();
 
+    event->accept();
+}   

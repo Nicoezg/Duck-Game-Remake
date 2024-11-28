@@ -6,6 +6,7 @@
 #include <QAudioOutput>
 #include <QMainWindow>
 #include <QMediaPlayer>
+#include <QCloseEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -67,6 +68,8 @@ private:
     void setupServerList();
 
     void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
+
+    void closeEvent(QCloseEvent *event) override;
 
 
     void setupAudio();
