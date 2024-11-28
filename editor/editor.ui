@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>786</width>
+    <width>1184</width>
     <height>582</height>
    </rect>
   </property>
@@ -183,7 +183,7 @@ QLineEdit, QComboBox {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>700</width>
+        <width>1098</width>
         <height>465</height>
        </rect>
       </property>
@@ -347,6 +347,11 @@ QLineEdit, QComboBox {
        <item>
         <property name="text">
          <string>Lava</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Nieve</string>
         </property>
        </item>
       </widget>

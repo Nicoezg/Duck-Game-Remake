@@ -152,6 +152,8 @@ void YamlHandler::load( QGridLayout *mapLayout, QComboBox *backgroundBox,
     backgroundBox->setCurrentIndex(0);
   } else if (background == "Lava") {
     backgroundBox->setCurrentIndex(1);
+  }else{
+    backgroundBox->setCurrentIndex(2);
   }
 
 

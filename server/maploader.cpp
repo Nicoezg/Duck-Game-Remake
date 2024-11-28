@@ -120,6 +120,13 @@ MapDTO MapLoader::getNextMapDTO() {//en realidad devuelve al actual, pero hay qu
     for (auto ramp: mapa.rightRamps) {
         tiles.push_back({ramp.start_x, ramp.end_x, ramp.y, ramp.id});
     }
-    int background = (mapa.background == "Forest") ? 0 : 1;
+    int background ;
+    if (mapa.background == "Forest") {
+        background = 0;
+    } else if (mapa.background == "Lava") {
+        background = 1;
+    } else {
+        background = 2;
+    }
     return MapDTO(std::move(tiles), background, mapa.width, mapa.height);
 }

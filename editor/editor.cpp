@@ -222,6 +222,7 @@ void Editor::cambiarFondo(int index) {
         "QWidget#mapWidget { border-image: url(:/images/lava.png) 0 0 0 0 "
         "stretch stretch; }");
   } else {
-    // Manejar otros casos
+    containerWidget->setStyleSheet("QWidget#mapWidget { border-image: url(:/images/nieve.png) 0 0 0 0 "
+        "stretch stretch; }");
   }
 }
