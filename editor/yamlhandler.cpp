@@ -148,7 +148,7 @@ for (int j = 0; j < mapLayout->columnCount(); j++) {
 for (int i = 0; i < mapLayout->rowCount(); i++) {
     for (int j = 0; j < mapLayout->columnCount(); j++) {
         QLabel *label = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
-        
+        std::cout <<"Tile id: " << label->property("tile_id").toInt() << std::endl;
         if (!label || label->pixmap().isNull() || 
             label->property("tile_id").toInt() == EMPTY_TILE || 
             label->property("tile_id").toInt() >= SPAWN_TILE) {
@@ -186,6 +186,7 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
         }
         
         if (esIndividual) {
+            std::cout << "Individual: " << i << " " << j << std::endl;
             ponerTile(out, j, j, i, i, label->property("tile_id").toInt());
         }
     }
