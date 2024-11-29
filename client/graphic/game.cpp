@@ -41,6 +41,8 @@ int Game::start() {
         ActionHandler actionHandler(client);
 
         auto rate = 1000 / 60; // 60 FPS
+        int id1 = client.get_player_id_1() - 1;
+        int id2 = client.get_player_id_2() - 1;
 
         while (true)
         {
@@ -53,7 +55,11 @@ int Game::start() {
                 pause = false;
                 continue;
             }
-            actionHandler.processEvents(); // Idea: podria ser otro hilo. como se podria parar el juego si se va?
+            if (id2 >= 1){
+                actionHandler.processEvents(ducks[id1]->getWeapon(), ducks[id2]->getWeapon());
+            } else {
+                actionHandler.processEvents(ducks[id1]->getWeapon(), WeaponId::NO_WEAPON);
+            }
             
             render(); // Renderizamos el juego
 
@@ -110,6 +116,7 @@ void Game::update_state() {
         update(*event);
     } else if (event->get_type() == MAP_LOAD) {
         map.load(*event);
+        pause = true;
     }
     else if (event->get_type() == GAME_OVER) {
         end(*event);

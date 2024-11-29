@@ -294,5 +294,7 @@ void Duck::loadTextures() {
 
 bool Duck::isDead() { return dead; }
 
+WeaponId Duck::getWeapon() { return weapon.getId(); }
+
 Duck::~Duck() {
 }

@@ -1,17 +1,36 @@
 #include <SDL2/SDL_keycode.h>
 #include <SDL_events.h>
 #include "action_handler.h"
+#include <iostream>
 
 ActionHandler::ActionHandler(Client &client) : client(client) {
 
 }
 
-void ActionHandler::processDuckEvents() {
+void ActionHandler::processDuckEvents(WeaponId weaponId1, WeaponId weaponId2) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
 
         if (event.type == SDL_QUIT) {
             throw std::exception(); // a cambiar
+        }
+        if ((weaponId1 == WeaponId::PEW_PEW_LASER || weaponId1 == WeaponId::COWBOY_PISTOL || weaponId1 == WeaponId::MAGNUM || weaponId1 == WeaponId::SNIPER || weaponId1 == WeaponId::SHOTGUN)
+        && event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_COMMA) {
+            if (event.key.repeat == 0){
+                std::shared_ptr<Action> action = std::make_shared<Shoot>(this->client.get_player_id_1(), true);
+                this->client.send_action(action);
+                return;
+            }
+            return;
+        }
+        if ((weaponId2 == WeaponId::PEW_PEW_LASER || weaponId2 == WeaponId::COWBOY_PISTOL || weaponId2 == WeaponId::MAGNUM || weaponId2 == WeaponId::SNIPER || weaponId2 == WeaponId::SHOTGUN)
+        && event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_g) {
+            if (event.key.repeat == 0){
+                std::shared_ptr<Action> action = std::make_shared<Shoot>(this->client.get_player_id_2(), true);
+                this->client.send_action(action);
+                return;
+            }
+            return;
         }
         if (event.type == SDL_KEYDOWN) {
             std::shared_ptr<Action> action = nullptr;
@@ -179,6 +198,6 @@ void ActionHandler::processDuckEvents() {
     }
 }
 
-void ActionHandler::processEvents() {
-    this->processDuckEvents();
+void ActionHandler::processEvents(WeaponId weaponId1, WeaponId weaponId2) {
+    this->processDuckEvents(weaponId1, weaponId2);
 }

@@ -39,7 +39,7 @@ class Duck
 
 		void loadTextures();
 
-		DrawWeapon& getWeapon() { return weapon; }
+		WeaponId getWeapon();
 
 		~Duck();
 

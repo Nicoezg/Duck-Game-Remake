@@ -18,17 +18,18 @@
 #include "../../common/actions/player/jump_flap.h"
 #include "../../common/actions/player/still.h"
 #include "../../common/actions/player/cheat.h"
+#include "../../common/events/items/weapon_macros.h"
 
 
 class ActionHandler{
     private:
     
-    void processDuckEvents();
+    void processDuckEvents(WeaponId weaponId1, WeaponId weaponId2);
     Client& client;
 
     public:
 
     ActionHandler(Client &client);
-    void processEvents();
+    void processEvents(WeaponId weaponId1, WeaponId weaponId2);
 };
 #endif
