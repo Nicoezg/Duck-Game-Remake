@@ -12,10 +12,18 @@ Grenade::Grenade(GameMap &map)
     : Weapon(map, AMMO, REACH, WeaponId::GRENADE) {}
 
 void Grenade::shoot(Duck *owner) {
-    if (hasAmmo()) {
-        createThrowable(map,owner,true);
-        ammo--;
+    if (unplugged && !dropped) {
+        dropped = true;
+        int framesToExplode = owner->getFramesToExplode();  
+        createThrowable(map,owner,true,framesToExplode);
+        owner->throwGrenade();
     }
+    if (!unplugged) {
+        unplugged = true;
+        ammo--;
+        owner->activateGrenade();
+    }
+
 }
 
 void Grenade::replenishAmmo(){

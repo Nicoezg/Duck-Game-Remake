@@ -4,8 +4,8 @@
 
 
 ThrownBanana::ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y,
-                           int reach,bool aimingUp)
-    : Throwable(map, isRight, pos_x, pos_y, reach,THROWN_BANANA_V2,false,aimingUp) {}
+                           bool aimingUp)
+    : Throwable(map, isRight, pos_x, pos_y, 150,THROWN_BANANA_V2,false,aimingUp) {}
 
 void ThrownBanana::update() {
     if (!aimingUp &&distance_travelled < reach && !onGround) {

@@ -5,10 +5,10 @@
 
 
 void ThrownGrenade::update() {
-  if (framesToExplode<150){
+  if (framesRemaining<framesToExplode){
     startThrow = false;
   }
-  framesToExplode--;
+  framesRemaining--;
   if (!aimingUp) {
     if (isRight) {
       pos_x += 1;
@@ -27,7 +27,7 @@ void ThrownGrenade::update() {
       pos_y = structure.start_y * 16 - 8;
     }
   } 
-    if (framesToExplode == 0) {
+    if (framesRemaining == 0) {
     consume();
   }
 }

@@ -61,6 +61,7 @@ void Duck::reset(int pos_x, int pos_y){
 
     shootingCooldown = 0;
     bananaEffectRemaining = 0;
+    framesToExplode = -1;
 
     state = State::BLANK;
     posX = pos_x;
@@ -139,6 +140,15 @@ void Duck::update() {
     posX += isRight ? 2 : -2;
   }else{
     posX += velX;
+  }
+
+  if (framesToExplode==0){
+    map.addExplosion(std::make_unique<Explosion>(map,posX, posY));
+    weapon = std::make_unique<NoWeapon>(map);
+    hasWeapon = false;
+  }
+  if (framesToExplode>=0){
+    framesToExplode--;
   }
 
   if ((velX < 0 && isRight) || (velX > 0 && !isRight)) {
@@ -243,7 +253,7 @@ void Duck::shoot() {
     weapon->shoot(this);
     shootingCooldown = 1;
     shooting = true;
-    if (weapon->getWeaponId() == WeaponId::GRENADE || weapon->getWeaponId() == WeaponId::BANANA) {
+    if ( weapon->getWeaponId() == WeaponId::BANANA) {
       weapon = std::make_unique<NoWeapon>(map);
       hasWeapon = false;
     }
@@ -305,8 +315,12 @@ void Duck::pickUp() {
 
 void Duck::drop() {
   if (hasWeapon) {
+    if (weapon->getWeaponId() == WeaponId::GRENADE) {
+      weapon->shoot(this);
+    }
     weapon = std::make_unique<NoWeapon>(map);
     hasWeapon = false;
+    framesToExplode = -1;
   }
 }
 
@@ -396,6 +410,20 @@ void Duck::replenishAmmo() {
   if (hasWeapon){
     weapon->replenishAmmo();
   }
+}
+
+int Duck::getFramesToExplode() const {
+  return framesToExplode;
+}
+
+void Duck::activateGrenade() {
+  framesToExplode = 150;
+}
+
+void Duck::throwGrenade() {
+  weapon = std::make_unique<NoWeapon>(map);
+  hasWeapon = false;
+  framesToExplode=-1;
 }
 
 /*bool Duck::impact(Bullet &bullet) {

@@ -7,7 +7,7 @@
 #include "weapons/weapon.h"
 #include <atomic>
 #include "hitBox.h"
-
+#include "explosion.h"
 
 class GameMap;
 
@@ -32,6 +32,7 @@ private:
   uint8_t wins;
   int bananaEffectRemaining;
   hitBox currentPlatformBox;
+  int framesToExplode;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
@@ -79,6 +80,9 @@ public:
   void replenishAmmo();
   void throwEverything();
   void die();
+  int getFramesToExplode() const;
+  void activateGrenade();
+  void throwGrenade();
 
   int shootingCooldown;
 

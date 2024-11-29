@@ -36,13 +36,13 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
 
 WeaponId Weapon::getWeaponId() const { return id; }
 
-void Weapon::createThrowable(GameMap &map,Duck *owner, bool isGrenade) {
+void Weapon::createThrowable(GameMap &map,Duck *owner, bool isGrenade,int framesToExplode) {  
   if (isGrenade) {
     map.addThrowable(std::make_unique<ThrownGrenade>(map, owner->getDirection(),owner->getPositionX(),
-                                               owner->getPositionY(), 150,owner->isAimingUpwards()));
+                                               owner->getPositionY(), framesToExplode,owner->isAimingUpwards()));
   }else{
     map.addThrowable(std::make_unique<ThrownBanana>(map, owner->getDirection(),owner->getPositionX(),
-                                               owner->getPositionY(), 150,owner->isAimingUpwards()));
+                                               owner->getPositionY(), owner->isAimingUpwards()));
   }
 }
 bool Weapon::isReadyToShoot() const {
