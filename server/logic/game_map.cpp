@@ -416,8 +416,11 @@ void GameMap::bulletCollisionsWithCrates() {
                 }
                 crateIt->shoot();
                 
-                if (crateIt->get_hp() == 0) {
+                if (crateIt->get_hp() == 0 && crateIt->get_content() != ItemSpawnId::EXPLOSION_SPAWN) {
                     itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
+                    break;
+                } else {
+                    addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx(), crateIt->get_posy()));
                     break;
                 }
                 
