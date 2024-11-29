@@ -48,6 +48,8 @@ public:
     void decreaseCooldown();
 
   virtual void replenishAmmo() = 0;
+
+  void reload();
 };
 
 #endif // WEAPON_H

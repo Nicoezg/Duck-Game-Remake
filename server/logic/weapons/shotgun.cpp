@@ -13,7 +13,9 @@ void Shotgun::shoot(Duck *owner) {
     for (int angle : angles) {
       createBullet(owner, angle, false, reach, BulletId::SHOT);
     }
+    increaseCooldown(COOLDOWN);
     ammo--;
+    isReloading = true;
 
     lastShotTime = 0;
   }
