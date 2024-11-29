@@ -42,6 +42,7 @@ Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
 
   shootingCooldown = 0;
   bananaEffectRemaining = 0;
+  framesToExplode = -1;
 
 }
 
