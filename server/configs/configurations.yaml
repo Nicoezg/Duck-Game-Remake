@@ -1,6 +1,6 @@
 duck:
   speed_x: 1  
-  speed_y: 15
+  speed_y: 16
   flapping: 1       
   gravity: 2
 
