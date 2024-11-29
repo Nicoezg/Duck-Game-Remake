@@ -207,12 +207,12 @@ void Duck::update() {
 
       if (hitBox::isColliding(duckBox, structureBox)) {
 
-          if (velX > 0 ) {
+          if (velX > 0  && !jumping && !flapping) {
               posX = structureBox.x - 32;
-          } else if (velX < 0 ) {
+          } else if (velX < 0 && !jumping && !flapping) {
               posX = structureBox.x + 32;
-          
           }
+          velX = 0;
           break;
       }
   }
