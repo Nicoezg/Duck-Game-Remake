@@ -148,12 +148,12 @@ void Duck::update() {
   hitBox duckBox = {posX + CENTER_X, posY + CENTER_Y, WIDTH, HEIGHT};
   isOnPlatform = false;
 
-  for (auto &crate : map.getMap().boxes) {
-      hitBox crateBox = {crate.get_posx()*16, crate.get_posy()*16, 16, 16};
+  for (auto &crate : map.getCratesState()) {
+      hitBox crateBox = {crate.get_position_x(), crate.get_position_y(), 16, 16};
 
         if (hitBox::isColliding(duckBox, crateBox)) {
             if (velY > 0) { 
-                posY = crate.get_posy()*16 - 32;
+                posY = crate.get_position_y() - 32;
                 velY = 0;
                 jumping = false;
                 flapping = false;
