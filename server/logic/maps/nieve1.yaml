@@ -1,39 +1,39 @@
-fondo: Lava
+fondo: Nieve
 alto: 30
 ancho: 40
 Structures:
-  - start_x: 3
-    end_x: 6
+  - start_x: 2
+    end_x: 7
     start_y: 3
     end_y: 3
     tile: 33
-  - start_x: 32
-    end_x: 35
+  - start_x: 31
+    end_x: 36
     start_y: 3
     end_y: 3
     tile: 33
-  - start_x: 3
-    end_x: 6
+  - start_x: 2
+    end_x: 7
     start_y: 9
     end_y: 9
     tile: 33
-  - start_x: 32
-    end_x: 35
+  - start_x: 31
+    end_x: 36
     start_y: 9
     end_y: 9
     tile: 33
-  - start_x: 3
-    end_x: 6
+  - start_x: 2
+    end_x: 7
     start_y: 15
     end_y: 15
     tile: 33
-  - start_x: 32
+  - start_x: 31
     end_x: 35
     start_y: 15
     end_y: 15
     tile: 33
-  - start_x: 10
-    end_x: 29
+  - start_x: 9
+    end_x: 30
     start_y: 19
     end_y: 19
     tile: 33
@@ -109,6 +109,11 @@ Structures:
     tile: 37
   - start_x: 17
     end_x: 17
+    start_y: 15
+    end_y: 19
+    tile: 33
+  - start_x: 17
+    end_x: 17
     start_y: 20
     end_y: 24
     tile: 37
@@ -141,6 +146,11 @@ Structures:
     end_x: 23
     start_y: 20
     end_y: 24
+    tile: 37
+  - start_x: 24
+    end_x: 24
+    start_y: 17
+    end_y: 18
     tile: 37
   - start_x: 24
     end_x: 24
@@ -177,75 +187,10 @@ Structures:
     start_y: 20
     end_y: 24
     tile: 38
-  - start_x: 2
-    end_x: 2
-    start_y: 3
-    end_y: 3
-    tile: 32
-  - start_x: 7
-    end_x: 7
-    start_y: 3
-    end_y: 3
-    tile: 34
-  - start_x: 31
-    end_x: 31
-    start_y: 3
-    end_y: 3
-    tile: 32
-  - start_x: 36
-    end_x: 36
-    start_y: 3
-    end_y: 3
-    tile: 34
-  - start_x: 2
-    end_x: 2
-    start_y: 9
-    end_y: 9
-    tile: 32
-  - start_x: 7
-    end_x: 7
-    start_y: 9
-    end_y: 9
-    tile: 34
-  - start_x: 31
-    end_x: 31
-    start_y: 9
-    end_y: 9
-    tile: 32
-  - start_x: 36
-    end_x: 36
-    start_y: 9
-    end_y: 9
-    tile: 34
-  - start_x: 2
-    end_x: 2
-    start_y: 15
-    end_y: 15
-    tile: 32
-  - start_x: 7
-    end_x: 7
-    start_y: 15
-    end_y: 15
-    tile: 34
-  - start_x: 31
-    end_x: 31
-    start_y: 15
-    end_y: 15
-    tile: 32
   - start_x: 36
     end_x: 36
     start_y: 15
     end_y: 15
-    tile: 34
-  - start_x: 9
-    end_x: 9
-    start_y: 19
-    end_y: 19
-    tile: 32
-  - start_x: 30
-    end_x: 30
-    start_y: 19
-    end_y: 19
     tile: 34
   - start_x: 9
     end_x: 9

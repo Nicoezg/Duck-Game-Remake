@@ -2,11 +2,12 @@
 #include <iostream>
 
 void ponerTile(YAML::Emitter &out, int columna_inicial, int columna_final,
-               int fila, int tile) {
+               int fila_inicial,int fila_final, int tile) {
   out << YAML::BeginMap;
   out << YAML::Key << "start_x" << YAML::Value << columna_inicial;
   out << YAML::Key << "end_x" << YAML::Value << columna_final;
-  out << YAML::Key << "y" << YAML::Value << fila;
+  out << YAML::Key << "start_y" << YAML::Value << fila_inicial;
+  out << YAML::Key << "end_y" << YAML::Value << fila_final;
   out << YAML::Key << "tile" << YAML::Value << tile;
   out << YAML::EndMap;
 }
@@ -30,6 +31,7 @@ int fila_inicial = -1;
 int columna_inicial = -1;
 int columna_final = -1;
 
+//procesar de forma horizontal
 for (int i = 0; i < mapLayout->rowCount(); i++) {
     for (int j = 0; j < mapLayout->columnCount(); j++) {
         QLabel *label = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
@@ -40,8 +42,11 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
             label->property("tile_id").toInt() >= SPAWN_TILE) {
             // Si había una estructura anterior, la guardamos antes de resetear
             if (anterior != nullptr) {
-                ponerTile(out, columna_inicial, columna_final, fila_inicial,
-                          anterior->property("tile_id").toInt());
+                // Solo guardar si el ancho es mayor a 1
+                if (columna_final - columna_inicial > 0) {
+                    ponerTile(out, columna_inicial, columna_final, fila_inicial, fila_inicial,
+                              anterior->property("tile_id").toInt());
+                }
                 anterior = nullptr;
                 fila_inicial = -1;
                 columna_inicial = -1;
@@ -55,8 +60,11 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
             label->property("tile_id").toInt() != anterior->property("tile_id").toInt()) {
             // Si había una estructura anterior, la guardamos
             if (anterior != nullptr) {
-                ponerTile(out, columna_inicial, columna_final, fila_inicial,
-                          anterior->property("tile_id").toInt());
+                // Solo guardar si el ancho es mayor a 1
+                if (columna_final - columna_inicial > 0) {
+                    ponerTile(out, columna_inicial, columna_final, fila_inicial, fila_inicial,
+                              anterior->property("tile_id").toInt());
+                }
             }
             
             // Reiniciamos con la nueva estructura
@@ -73,8 +81,11 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
 
     // Al final de cada fila, guardamos la última estructura si existe
     if (anterior != nullptr && anterior->property("tile_id").toInt() < SPAWN_TILE) {
-        ponerTile(out, columna_inicial, columna_final, fila_inicial,
-                  anterior->property("tile_id").toInt());
+        // Solo guardar si el ancho es mayor a 1
+        if (columna_final - columna_inicial > 0) {
+            ponerTile(out, columna_inicial, columna_final, fila_inicial, fila_inicial,
+                      anterior->property("tile_id").toInt());
+        }
     }
 
     // Reseteamos para la siguiente fila
@@ -83,6 +94,105 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
     columna_inicial = -1;
     columna_final = -1;
 }
+// Estructuras verticales de largo > 1
+for (int j = 0; j < mapLayout->columnCount(); j++) {
+    QLabel *anterior = nullptr;
+    int fila_inicial = -1;
+    int columna_inicial = j;
+    int fila_final = -1;
+
+    for (int i = 0; i < mapLayout->rowCount(); i++) {
+        QLabel *label = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
+        
+        if (!label || label->pixmap().isNull() || 
+            label->property("tile_id").toInt() == EMPTY_TILE || 
+            label->property("tile_id").toInt() >= SPAWN_TILE) {
+            if (anterior != nullptr) {
+                if (fila_final - fila_inicial > 0) {
+                    ponerTile(out, columna_inicial, columna_inicial, fila_inicial, fila_final,
+                              anterior->property("tile_id").toInt());
+                }
+                anterior = nullptr;
+                fila_inicial = -1;
+                fila_final = -1;
+            }
+            continue;
+        }
+
+        if (anterior == nullptr || 
+            label->property("tile_id").toInt() != anterior->property("tile_id").toInt()) {
+            if (anterior != nullptr) {
+                if (fila_final - fila_inicial > 0) {
+                    ponerTile(out, columna_inicial, columna_inicial, fila_inicial, fila_final,
+                              anterior->property("tile_id").toInt());
+                }
+            }
+            
+            anterior = label;
+            fila_inicial = i;
+            fila_final = i;
+        } 
+        else {
+            fila_final = i;
+        }
+    }
+
+    if (anterior != nullptr && anterior->property("tile_id").toInt() < SPAWN_TILE) {
+        if (fila_final - fila_inicial > 0) {
+            ponerTile(out, columna_inicial, columna_inicial, fila_inicial, fila_final,
+                      anterior->property("tile_id").toInt());
+        }
+    }
+}
+// Estructuras de largo 1
+for (int i = 0; i < mapLayout->rowCount(); i++) {
+    for (int j = 0; j < mapLayout->columnCount(); j++) {
+        QLabel *label = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
+        std::cout <<"Tile id: " << label->property("tile_id").toInt() << std::endl;
+        if (!label || label->pixmap().isNull() || 
+            label->property("tile_id").toInt() == EMPTY_TILE || 
+            label->property("tile_id").toInt() >= SPAWN_TILE) {
+            continue;
+        }
+
+        // Verificar si es de largo 1 (no tiene continuación horizontal)
+        bool esIndividual = true;
+        if (j > 0) {
+            QLabel *labelIzq = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j-1)->widget());
+            if (labelIzq && labelIzq->property("tile_id").toInt() == label->property("tile_id").toInt()) {
+                esIndividual = false;
+            }
+        }
+        
+        if (j < mapLayout->columnCount() - 1) {
+            QLabel *labelDer = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j+1)->widget());
+            if (labelDer && labelDer->property("tile_id").toInt() == label->property("tile_id").toInt()) {
+                esIndividual = false;
+            }
+        }
+
+        if (i>0){
+            QLabel *labelArriba = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i-1, j)->widget());
+            if (labelArriba && labelArriba->property("tile_id").toInt() == label->property("tile_id").toInt()) {
+                esIndividual = false;
+            }
+        }
+
+        if (i < mapLayout->rowCount() - 1) {
+            QLabel *labelAbajo = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i+1, j)->widget());
+            if (labelAbajo && labelAbajo->property("tile_id").toInt() == label->property("tile_id").toInt()) {
+                esIndividual = false;
+            }
+        }
+        
+        if (esIndividual) {
+            std::cout << "Individual: " << i << " " << j << std::endl;
+            ponerTile(out, j, j, i, i, label->property("tile_id").toInt());
+        }
+    }
+}
+
+
   out << YAML::EndSeq; // Termina la lista de tiles
 
   out << YAML::Key << "Spawns" << YAML::Value << YAML::BeginSeq;
@@ -101,6 +211,8 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
       }
     }
   }
+
+
 
   out << YAML::EndSeq; // Termina la lista de spawns
 
@@ -157,18 +269,19 @@ void YamlHandler::load( QGridLayout *mapLayout, QComboBox *backgroundBox,
   }
 
 
-
-  for (const auto &tile : doc["Structures"]) {
-    int start_x = tile["start_x"].as<int>();
-    int end_x = tile["end_x"].as<int>();
-    int y = tile["y"].as<int>();
-    int tile_id = tile["tile"].as<int>();
-
-    for (int i = start_x; i <= end_x; i++) {
-      QLabel *label =
-          qobject_cast<QLabel *>(mapLayout->itemAtPosition(y, i)->widget());
-      label->setPixmap(tiles[tile_id]);
-      label->setProperty("tile_id", tile_id);
+  for (const auto &structure : doc["Structures"]) {
+    int start_x = structure["start_x"].as<int>();
+    int end_x = structure["end_x"].as<int>();
+    int start_y = structure["start_y"].as<int>();
+    int end_y = structure["end_y"].as<int>();
+    int tile = structure["tile"].as<int>();
+    for (int i = start_y; i <= end_y; i++) {
+      for (int j = start_x; j <= end_x; j++) {
+        QLabel *label =
+            qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
+        label->setPixmap(tiles[tile]);
+        label->setProperty("tile_id", tile);
+      }
     }
   }
 

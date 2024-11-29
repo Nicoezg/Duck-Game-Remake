@@ -4,7 +4,8 @@
 struct Structure{
     int start_x;
     int end_x;
-    int y;
+    int start_y;
+    int end_y;
     int id;
 };
 

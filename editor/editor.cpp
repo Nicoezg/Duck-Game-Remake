@@ -86,6 +86,7 @@ void Editor::cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
       label->setProperty("tile_id", fila * columnasMax + columna);
       label->installEventFilter(this);
       tiles.push_back(scaledTile.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+      
 
       ui->tilesLayout->addWidget(label, fila, columna);
 
@@ -136,6 +137,7 @@ void Editor::crearMapaVacio(int filas, int columnas) {
           "background-color: transparent; border: 1px solid #FFA500;");
       label->installEventFilter(this);
       label->setProperty("grilla_id", 1);
+      label->setProperty("tile_id", EMPTY_TILE);
 
       mapaLayout->addWidget(label, i, j);
     }

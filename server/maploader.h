@@ -26,23 +26,13 @@ struct Map {
     int width;
 
    
-    int getGroundLevel() const {
-        int groundLevel = height; 
-       
-        for (const auto& structure : structures) {
-            if (structure.y < groundLevel) {
-                groundLevel = structure.y;
-            }
-        }
-        
-        return groundLevel;
-    }
 };
 
 class MapLoader{
     private:
         std::vector<std::string> maps_paths;
         std::vector<Map> maps;
+        std::vector<Map> logicMaps;
         size_t lastMapIndex;
     public:
         MapLoader();
@@ -50,6 +40,7 @@ class MapLoader{
 
         Map getNextMap();
         Map getactualMap();
+        Map getactualLogicMap();
         MapDTO getNextMapDTO();
 };
 

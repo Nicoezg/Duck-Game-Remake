@@ -21,10 +21,10 @@ void ThrownGrenade::update() {
   pos_y += CONFIG.getDuckConfig().getGravity();
   hitBox grenadeBox = {pos_x, pos_y, 8, 8};
   for (auto structure: map.getMap().structures) {
-    hitBox structureBox = {structure.start_x * 16, structure.y * 16,
-                           (structure.end_x + 1 - structure.start_x) * 16, 16};
+    hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
+                           (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y+1 - structure.start_y) * 16};
     if (hitBox::isColliding(grenadeBox, structureBox)) {
-      pos_y = structure.y * 16 - 8;
+      pos_y = structure.start_y * 16 - 8;
     }
   } 
     if (framesToExplode == 0) {

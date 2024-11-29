@@ -175,8 +175,8 @@ void GameMap::bulletCollisionWithPlatforms() {
         hitBox bulletBox = {bullet->getPosX(), bullet->getPosY(), 8, 1};
 
         for (auto &structure : map.structures) {
-            hitBox structureBox = {structure.start_x * 16, structure.y * 16,
-                                   (structure.end_x + 1 - structure.start_x) * 16, 16};
+            hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
+                                   (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y+1 - structure.start_y) * 16};
 
             if (hitBox::isColliding(bulletBox, structureBox)) {
                 bool isTopCollision = false; 
@@ -196,19 +196,6 @@ void GameMap::bulletCollisionWithPlatforms() {
     }
 }
 
-bool GameMap::playerCollisionWithBox(int id) {
-   auto player = findPlayer(id);
-
-    hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
-    for (auto &crate: crates) {
-        hitBox crateBox = {crate.get_posx(), crate.get_posy(), 16, 16};
-        if (hitBox::isColliding(duckBox, crateBox)) {
-            return true;
-        }
-    }
-    return false;
-    
-}
 
 void GameMap::process_action(std::shared_ptr<Action> &action) {
     int player_id = action->get_player_id();
