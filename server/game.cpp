@@ -75,13 +75,13 @@ void Game::run() {
                 notify_event(event);
             }
             gameMap.update();
-            checkNewRound();
             notify_state();
+            checkNewRound();
+            checkFinishGame();
             if (gameMap.isResetting()){
                 std::shared_ptr<Event> event = std::make_shared<MapDTO>(gameMap.getMapDTO());
                 notify_event(event);
             }
-            checkFinishGame();
         }
         // Este sleep es para que el game no cierre la conexión y le llegue el GameOver a los clientes
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
@@ -100,11 +100,18 @@ void Game::checkFinishGame() {
 
 void Game::checkNewRound() {
     if (gameMap.pauseForScores()){
+        std::vector<std::pair<int, std::string>> score_name_pairs;
+        for (auto player : players) {
+            score_name_pairs.emplace_back(gameMap.getPlayerWins(player.first), player.second);
+        }
+
+        std::sort(score_name_pairs.begin(), score_name_pairs.end(), std::greater<>());
+
         std::list<std::string> names;
         std::list<int> scores;
-        for (auto player: players) {
-            names.push_back(player.second);
-            scores.push_back(gameMap.getPlayerWins(player.first));
+        for (const auto &pair : score_name_pairs) {
+            scores.push_back(pair.first);
+            names.push_back(pair.second);
         }
         std::shared_ptr<Event> event = std::make_shared<Score>(names, scores);
         notify_event(event);

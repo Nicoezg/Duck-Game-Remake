@@ -158,18 +158,14 @@ void Game::showScores(const Event &score) {
         renderer.SetDrawColor(0, 0, 0, 255);
         renderer.Clear();
         if (flash) {
-            for (size_t i = 0; i < 4; ++i) {
-                std::string scoreText = "Player " + std::to_string(2);
-                SDL2pp::Texture scoreTexture(renderer,
-                                             font.RenderText_Blended(scoreText, SDL_Color{255, 255, 255, 255}));
+            auto nameIt = names.begin();
+            auto scoreIt = scores.begin();
+            for (int i = 0; nameIt != names.end() && scoreIt != scores.end(); ++i, ++nameIt, ++scoreIt) {
+                std::string scoreText = *nameIt + "        " + std::to_string(*scoreIt) + "    wins";
+                SDL2pp::Texture scoreTexture(renderer, font.RenderText_Blended(scoreText, SDL_Color{255, 255, 255, 255}));
                 renderer.Copy(scoreTexture, SDL2pp::NullOpt,
-                              SDL2pp::Rect(50, 50 + i * 30, scoreTexture.GetWidth(), scoreTexture.GetHeight()));
+                            SDL2pp::Rect(200, 100 + i * 30, scoreTexture.GetWidth(), scoreTexture.GetHeight()));
             }
-            std::string timer =
-                    "Time until next round: " + std::to_string((5000 - (SDL_GetTicks() - startTime)) / 1000);
-            SDL2pp::Texture timerTexture(renderer, font.RenderText_Blended(timer, SDL_Color{255, 255, 255, 255}));
-            renderer.Copy(timerTexture, SDL2pp::NullOpt,
-                          SDL2pp::Rect(50, 50 + 4 * 30, timerTexture.GetWidth(), timerTexture.GetHeight()));
         }
 
         renderer.Present();

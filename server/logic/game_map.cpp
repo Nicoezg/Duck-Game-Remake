@@ -554,7 +554,7 @@ bool GameMap::check_players_alive() {
 }
 
 bool GameMap::check_finished(){
-    if (rounds < 10){
+    if (rounds < 10 || rounds % 5 != 0) {
         return false;
     }
     uint8_t maxWins = 0;
