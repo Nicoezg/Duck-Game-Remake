@@ -33,13 +33,13 @@ weapons:
     cooldown: 5
 
   laserrifle:
-    reach: 10
-    ammo:  30
+    reach: 30
+    ammo:  10
     cooldown: 5
 
   ak47:
-    reach: 30
-    ammo:  13
+    reach: 13
+    ammo:  30
     cooldown: 5
 
   duelos:
@@ -64,6 +64,6 @@ weapons:
 
   sniper:
     reach: 64
-    ammo: 10
+    ammo: 3
     speed: 4
     cooldown: 40
