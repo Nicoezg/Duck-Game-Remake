@@ -48,7 +48,6 @@ public:
 
     bool is_connected() const;
 
-
     bool is_closed() const;
 
 };

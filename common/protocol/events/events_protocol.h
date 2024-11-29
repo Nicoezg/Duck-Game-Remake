@@ -170,9 +170,9 @@ public:
 
     Tile read_tile(std::vector<int8_t> &data);
 
-    std::list<std::string> read_names();
+    std::list<std::string> read_names(int len);
 
-    std::list<int> read_scores();
+    std::list<int> read_scores(int len);
 
     std::shared_ptr<Event> read_score();
 

@@ -1,7 +1,7 @@
 #include "score.h"
 
-Score::Score(std::list<std::string> &&names, std::list<int> &&scores)
-    : Event(SCORE), names(std::move(names)), scores(std::move(scores)) {}
+Score::Score(std::list<std::string> names, std::list<int> scores)
+    : Event(SCORE), names(names), scores(scores) {}
 
 std::list<std::string> Score::get_names() const { return names; }
 

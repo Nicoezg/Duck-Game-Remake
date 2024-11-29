@@ -3,6 +3,7 @@
 #include <list>
 #include <mutex>
 #include <utility>
+#include <cstring>
 
 #include "common/actions/base/action_macros.h"
 #include "common/actions/player/move.h"
@@ -16,6 +17,7 @@
 #include "common/events/score.h"
 
 #define TIME_LOOP 20
+#define TIME_PAUSE 4960
 
 Game::Game(int id, std::string name, int max_players)
         : id(id), name(name), commands(), notifier(&commands), running(true), next_player_id(0),
@@ -73,7 +75,7 @@ void Game::run() {
                 notify_event(event);
             }
             gameMap.update();
-            // checkNewRound();
+            checkNewRound();
             notify_state();
             if (gameMap.isResetting()){
                 std::shared_ptr<Event> event = std::make_shared<MapDTO>(gameMap.getMapDTO());
@@ -98,20 +100,15 @@ void Game::checkFinishGame() {
 
 void Game::checkNewRound() {
     if (gameMap.pauseForScores()){
-        std::map<int, std::string, std::greater<>> scoresMap;
-        for (auto player: players) {
-            scoresMap[gameMap.getPlayerWins(player.first)] = player.second;
-        }
         std::list<std::string> names;
         std::list<int> scores;
-        for (auto score: scoresMap) {
-            names.push_back(score.second);
-            scores.push_back(score.first);
+        for (auto player: players) {
+            names.push_back(player.second);
+            scores.push_back(gameMap.getPlayerWins(player.first));
         }
-        std::shared_ptr<Event> event = std::make_shared<Score>(std::move(names), std::move(scores));
-        std::cout << event->get_names().front() << std::endl;
-        std::cout << event->get_scores().front() << std::endl;
+        std::shared_ptr<Event> event = std::make_shared<Score>(names, scores);
         notify_event(event);
+        std::this_thread::sleep_for(std::chrono::milliseconds(TIME_PAUSE));
     }
 }
 

@@ -608,58 +608,59 @@ PlayerData EventsProtocol::read_player_data() {
 
 
 std::shared_ptr<Event> EventsProtocol::read_score() {
-    return std::make_shared<Score>(read_names(), read_scores());
-}
-
-std::list<std::string> EventsProtocol::read_names() {
     std::vector<int8_t> data(LEN_SIZE);
     read(data.data(), data.size());
     int len = encoder.decode_len(data);
 
-    std::list<std::string> scores;
+    std::list<int> scores = read_scores(len);
+    std::list<std::string> names = read_names(len);
+    return std::make_shared<Score>(names, scores);
+}
+
+std::list<std::string> EventsProtocol::read_names(int len) {
+    std::list<std::string> names;
     for (int i = 0; i < len; i++) {
-        int name_len = encoder.decode_len(data);
+        std::vector<int8_t> data_names(LEN_SIZE);
+        read(data_names.data(), data_names.size());
+        int name_len = encoder.decode_len(data_names);
         std::string name = read_name(name_len);
-        scores.push_back(name);
+        names.push_back(name);
     }
-    return scores;
+    return names;
 }
 
-std::list<int> EventsProtocol::read_scores() {
-    std::vector<int8_t> data(LEN_SIZE);
-    read(data.data(), data.size());
-    int len = encoder.decode_len(data);
-
+std::list<int> EventsProtocol::read_scores(int len) {
+    std::vector<int8_t> data_scores(len * SCORE_SIZE);
+    read(data_scores.data(), data_scores.size());
     std::list<int> scores;
     for (int i = 0; i < len; i++) {
-        int score = encoder.decode_score(data);
+        int score = encoder.decode_score(data_scores);
         scores.push_back(score);
     }
     return scores;
 }
 
 void EventsProtocol::send_score(const Event &event) {
-    size_t size_to_send = LEN_SIZE * 2;
+    size_t size_to_send = LEN_SIZE + EVENT_TYPE_SIZE;
     for (const auto &name: event.get_names()) {
         size_to_send += LEN_SIZE + name.size() + SCORE_SIZE;
     }
     std::vector<int8_t> data(size_to_send);
     size_t offset = 0;
     offset += encoder.encode_event_type(event.get_type(), &data[offset]);
-    add_names(data, offset, event.get_names());
+    offset += encoder.encode_len(event.get_names().size(), &data[offset]);
     add_scores(data, offset, event.get_scores());
+    add_names(data, offset, event.get_names());
     send(data.data(), data.size());
 }
 
 void EventsProtocol::add_names(std::vector<int8_t> &data, size_t &offset, const std::list<std::string> &names) {
-    offset += encoder.encode_len(names.size(), &data[offset]);
     for (const auto &name: names) {
         add_name(name, data, offset);
     }
 }
 
 void EventsProtocol::add_scores(std::vector<int8_t> &data, size_t &offset, const std::list<int> &scores) {
-    offset += encoder.encode_len(scores.size(), &data[offset]);
     for (const auto &score: scores) {
         offset += encoder.encode_score(score, &data[offset]);
     }

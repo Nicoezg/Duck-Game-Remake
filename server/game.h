@@ -94,8 +94,6 @@ public:
 
     void notify_state();
 
-    std::string get_name() const;
-
     std::list<PlayerData> get_players_data();
 
     GameRoom get_game_room() const;
