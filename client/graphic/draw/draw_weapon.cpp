@@ -15,6 +15,7 @@ DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id
     this->textures[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/magnum-w-wing-") + std::to_string(id) + ".png"));
     this->textures[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/shotgun-w-wing-") + std::to_string(id) + ".png"));
     this->textures[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/sniper-w-wing-") + std::to_string(id) + ".png"));
+    this->textures[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/grenade-no-safe-w-wing-") + std::to_string(id) + ".png"));
 
 
     this->sounds[2] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/pew-pew-laser.wav");
@@ -42,13 +43,20 @@ void DrawWeapon::render(int x, int y, int flipType){
     } else {
         x -= 1;
     }
-    std::shared_ptr<SDL2pp::Texture> texture = this->textures[weaponId - 1];
+    std::shared_ptr<SDL2pp::Texture> texture = nullptr;
+    std::cout << shoot << std::endl;
+    if (shoot && weaponId == WeaponId::GRENADE){
+        std::cout << "entro" << std::endl;
+        texture = this->textures[10];
+    } else {
+        texture = this->textures[weaponId - 1];
+    }
 
     
     SDL2pp::Rect dest(x, y + 6 , 38, 32);
     
     renderer.Copy(*texture, SDL2pp::NullOpt, dest, angle, SDL2pp::NullOpt, flipType);
-    if (shoot){
+    if (shoot && weaponId != WeaponId::GRENADE){
         sound.play();
         shoot = false;
     }
