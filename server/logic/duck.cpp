@@ -247,6 +247,8 @@ void Duck::shoot() {
       weapon = std::make_unique<NoWeapon>(map);
       hasWeapon = false;
     }
+  } else {
+    weapon->reload();
   }
 }
 

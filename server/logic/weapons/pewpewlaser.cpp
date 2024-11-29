@@ -12,7 +12,7 @@ PewPewLaser::PewPewLaser(GameMap &map)
 void PewPewLaser::shoot(Duck *owner) {
 
   if (hasAmmo()) {
-    int angles[3] = {0, 20, -20};
+    int angles[3] = {0, 12, -12};
     for (int angle : angles) {
       createBullet(owner, angle, false, reach, BulletId::LASER_BEAM);
     }

@@ -61,3 +61,7 @@ void Weapon::decreaseCooldown() {
     cooldown--;
   }
 }
+
+void Weapon::reload(){
+  isReloading = false;
+}

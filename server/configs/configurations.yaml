@@ -60,10 +60,10 @@ weapons:
   escopeta:
     reach: 8
     ammo: 2
-    cooldown: 5
+    cooldown: 40
 
   sniper:
     reach: 64
     ammo: 10
     speed: 4
-    cooldown: 5
+    cooldown: 40
