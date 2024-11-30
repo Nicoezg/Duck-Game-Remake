@@ -22,6 +22,7 @@ void Grenade::shoot(Duck *owner) {
         unplugged = true;
         ammo--;
         owner->activateGrenade();
+        id= WeaponId::ARMED_GRENADE;
     }
 
 }
