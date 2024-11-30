@@ -35,6 +35,16 @@ void Notifier::remove_closed_connections() {
   });
 }
 
+bool Notifier::any_connected() {
+    std::lock_guard<std::mutex> lock(mtx_client);
+    for (auto &client : clients) {
+        if (!client->is_connected()) {
+            return true;
+        }
+    }
+  return false;
+}
+
 void Notifier::notify(const std::shared_ptr<Event> &event) {
   std::lock_guard<std::mutex> lock(mtx_client);
   for (auto &client : clients) {

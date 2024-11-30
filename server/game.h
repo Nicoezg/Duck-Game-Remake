@@ -56,7 +56,7 @@ public:
      */
     void run() override;
 
-    bool is_running() const;
+    bool is_running();
 
     /**
      * @brief Cierra las colas de eventos, comandos y el Notifier.

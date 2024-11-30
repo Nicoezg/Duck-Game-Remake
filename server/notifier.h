@@ -59,6 +59,8 @@ public:
    * Finalmente limpia la lista de clientes.
    */
   void close();
+
+    bool any_connected();
 };
 
 #endif // TALLER_TP_NOTIFIER_H

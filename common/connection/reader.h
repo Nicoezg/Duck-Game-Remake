@@ -15,6 +15,7 @@ class Reader : public Thread {
 private:
     T *protocol;
     Queue<U> *queue;
+    std::atomic<bool> connected = true;
 
 public:
     explicit Reader(T *protocol, Queue<U> *queue)
@@ -35,10 +36,15 @@ public:
         } catch (...) {
             std::cerr << "Error desconocido reader thread" << std::endl;
         }
+        connected = false;
     }
 
     void close() {
         queue->close();
+    }
+
+    bool is_connected() {
+        return connected;
     }
 };
 

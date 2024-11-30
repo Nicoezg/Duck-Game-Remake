@@ -29,9 +29,9 @@ public:
 
     virtual void run() override {
        reader.start();
-            sender.run();
+       sender.run();
        reader.join();
-        was_closed = true;
+       was_closed = true;
     }
 
     bool is_open() { return reader.is_open() && sender.is_open(); }
@@ -39,6 +39,8 @@ public:
     void push(V element) { sender.push(element); }
 
     void push(U element) { reader.push(element); }
+
+    bool is_connected() { return reader.is_connected(); }
 
     bool is_closed() const { return was_closed; }
 

@@ -77,6 +77,8 @@ GameRoom MonitorGames::get_game_room(int& game_code) {
 }
 
 std::list<GameRoom> MonitorGames::get_not_started_games(){
+    clean_closed_games();
+
     std::lock_guard<std::mutex> lock(mtx);
 
     std::list<GameRoom> not_started_games;

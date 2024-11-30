@@ -149,8 +149,8 @@ void Game::close() {
     notifier.close();
 }
 
-bool Game::is_running() const {
-    return running;
+bool Game::is_running() {
+    return running && !notifier.any_connected();
 }
 
 int Game::get_max_players() const {
