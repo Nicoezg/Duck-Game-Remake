@@ -1,16 +1,14 @@
 #include "box.h"
-
 #include <cstdlib>
 #include <iostream>
 
-
 Box::Box(uint8_t hp, int pos_x, int pos_y)
     : pos_x(pos_x), pos_y(pos_y), hp(hp), is_hit(false) {
-  content = ItemSpawnId::EXPLOSION_SPAWN; 
+  content = generateRandomContent(); 
 }
 
 ItemSpawnId Box::generateRandomContent() {
-  int randomValue = (std::rand() % 13) + 1;
+  int randomValue = (std::rand() % 14) + 1;
   return static_cast<ItemSpawnId>(randomValue);
 }
 

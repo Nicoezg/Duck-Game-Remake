@@ -183,8 +183,7 @@ void GameMap::bulletCollisionWithPlatforms() {
                 bool isHorizontalCollision = false; 
                 if (bulletBox.y + bulletBox.height <= structureBox.y * 16) {
                     isTopCollision = true; 
-                } 
-                else if ((bulletBox.x + bulletBox.width <= structureBox.x * 16) || 
+                } else if ((bulletBox.x + bulletBox.width <= structureBox.x * 16) || 
                          (bulletBox.x >= structureBox.x * 16 + structureBox.width * 16)) {
                     isHorizontalCollision = true; 
                 } else {
@@ -416,18 +415,25 @@ void GameMap::bulletCollisionsWithCrates() {
                 }
                 crateIt->shoot();
                 
-                if (crateIt->get_hp() == 0 && crateIt->get_content() != ItemSpawnId::EXPLOSION_SPAWN) {
-                    itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
-                    break;
-                } else {
-                    addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx(), crateIt->get_posy()));
+                if (crateIt->get_hp() == 0) {
+                    if (crateIt->get_content() == ItemSpawnId::EXPLOSION_SPAWN) {
+                        addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx(), crateIt->get_posy()));
+                    } else {
+                        itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
+                    }
                     break;
                 }
+                /*if (crateIt->get_hp() == 0 && crateIt->get_content() != ItemSpawnId::EXPLOSION_SPAWN) {
+                    itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
+                    break;
+                } else if (crateIt->get_hp() == 0 && crateIt->get_content() == ItemSpawnId::EXPLOSION_SPAWN) {
+                    addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx(), crateIt->get_posy()));
+                    break;
+                } */
                 
                 bulletsToRemove.push_back(*bulletIt);
             }
         }
-
         for (auto& bullet : bulletsToRemove) {
             bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
         }
