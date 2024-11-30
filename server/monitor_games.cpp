@@ -61,7 +61,7 @@ void MonitorGames::clean_closed_games() {
       it->second->join();
       it = games.erase(it);
     } else {
-      ++it;
+      it++;
     }
   }
 }

@@ -17,6 +17,7 @@
 #include "common/events/score.h"
 
 #define TIME_LOOP 20
+#define FINISH_GAME 500
 #define TIME_PAUSE 4960
 
 Game::Game(int id, std::string name, int max_players)
@@ -84,7 +85,7 @@ void Game::run() {
             }
         }
         // Este sleep es para que el game no cierre la conexión y le llegue el GameOver a los clientes
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(FINISH_GAME));
     } catch (const ClosedQueue &e) {
     }
 }
