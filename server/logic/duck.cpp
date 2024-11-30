@@ -316,7 +316,7 @@ void Duck::pickUp() {
 
 void Duck::drop() {
   if (hasWeapon) {
-    if (weapon->getWeaponId() == WeaponId::GRENADE) {
+    if (weapon->getWeaponId() == WeaponId::ARMED_GRENADE) {
       weapon->shoot(this);
     }
     weapon = std::make_unique<NoWeapon>(map);
