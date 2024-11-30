@@ -417,7 +417,7 @@ void GameMap::bulletCollisionsWithCrates() {
                 
                 if (crateIt->get_hp() == 0) {
                     if (crateIt->get_content() == ItemSpawnId::EXPLOSION_SPAWN) {
-                        addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx(), crateIt->get_posy()));
+                        addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx() + 8, crateIt->get_posy() + 8));
                     } else {
                         itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
                     }

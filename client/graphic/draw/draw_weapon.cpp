@@ -43,20 +43,12 @@ void DrawWeapon::render(int x, int y, int flipType){
     } else {
         x -= 1;
     }
-    std::shared_ptr<SDL2pp::Texture> texture = nullptr;
-    std::cout << shoot << std::endl;
-    if (shoot && weaponId == WeaponId::GRENADE){
-        std::cout << "entro" << std::endl;
-        texture = this->textures[10];
-    } else {
-        texture = this->textures[weaponId - 1];
-    }
+    std::shared_ptr<SDL2pp::Texture> texture = this->textures[weaponId - 1];
 
-    
     SDL2pp::Rect dest(x, y + 6 , 38, 32);
     
     renderer.Copy(*texture, SDL2pp::NullOpt, dest, angle, SDL2pp::NullOpt, flipType);
-    if (shoot && weaponId != WeaponId::GRENADE){
+    if (shoot && weaponId != WeaponId::GRENADE  && weaponId != WeaponId::ARMED_GRENADE){
         sound.play();
         shoot = false;
     }
