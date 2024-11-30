@@ -4,6 +4,7 @@
 #include "common/events/items/weapon_macros.h"
 #include "common/events/items/throwable_macros.h"
 #include "common/events/items/throwable_dto.h"
+#include "common/configs/configurations.h"
 
 #define CONFIG Configurations::configurations()
 

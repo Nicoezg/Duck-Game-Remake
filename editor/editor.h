@@ -7,8 +7,9 @@
 #include <QWidget>
 #include <vector>
 
+#include "../common/configs/configurations.h"
 #include "yamlhandler.h"
-
+#define CONFIG Configurations::configurations()
 namespace Ui {
 class Editor;
 }

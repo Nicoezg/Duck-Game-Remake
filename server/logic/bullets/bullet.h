@@ -3,7 +3,7 @@
 
 #include "common/events/items/bullet_dto.h"
 #include "common/events/items/bullet_macros.h"
-#include "server/configs/configurations.h"
+#include "../../../common/configs/configurations.h"
 #include "server/logic/collisions/position.h"
 
 class Bullet {

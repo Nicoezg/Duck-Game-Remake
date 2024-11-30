@@ -1,5 +1,4 @@
 #include "duck.h"
-#include "server/configs/configurations.h"
 #include "server/logic/weapons/ak47.h"
 #include "server/logic/weapons/cowboy.h"
 #include "server/logic/weapons/duelos.h"

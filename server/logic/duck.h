@@ -1,7 +1,7 @@
 #ifndef DUCK_H
 #define DUCK_H
 
-#include "server/configs/configurations.h"
+#include "../../common/configs/configurations.h"
 #include "common/events/items/item_spawn.h" 
 #include "game_map.h"
 #include "weapons/weapon.h"

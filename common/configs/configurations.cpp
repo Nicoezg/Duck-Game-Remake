@@ -1,6 +1,6 @@
 #include "configurations.h"
 
-#define CONFIG_PATH "../server/configs/configurations.yaml"
+#define CONFIG_PATH "../common/configs/configurations.yaml"
 
 DuckConfig Configurations::read_duck_config(const YAML::Node &configurations) {
     auto duck_config = configurations["duck"];
@@ -34,7 +34,7 @@ std::map<std::string, BulletConfig> Configurations::read_weapons_configs(const Y
 }
 
 Configurations::Configurations(const YAML::Node &configurations) :
-        duck(read_duck_config(configurations)), weapons(read_weapons_configs(configurations)) {
+        duck(read_duck_config(configurations)), weapons(read_weapons_configs(configurations)), editor(read_editor_config(configurations)) {
 
     // bullets
     bullet_speed = configurations["bullet"]["speed"].as<int>();
@@ -58,4 +58,16 @@ const Configurations &Configurations::configurations() {
     static Configurations instance = Configurations(YAML::LoadFile(CONFIG_PATH));
 
     return instance;
+}
+
+EditorConfig Configurations::read_editor_config(const YAML::Node &configurations) {
+    auto editor_config = configurations["editor"];
+    return {
+            editor_config["width"].as<int>(),
+            editor_config["height"].as<int>()
+    };
+}
+
+const EditorConfig &Configurations::getEditorConfig() const {
+    return editor;
 }
