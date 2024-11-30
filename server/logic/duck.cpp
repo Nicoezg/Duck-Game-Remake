@@ -249,10 +249,10 @@ void Duck::update() {
 }
 
 void Duck::shoot() {
+  shooting = true;
   if (weapon && weapon->isReadyToShoot() && state != State::PLAYING_DEAD) {
     weapon->shoot(this);
     shootingCooldown = 1;
-    shooting = true;
     if ( weapon->getWeaponId() == WeaponId::BANANA) {
       weapon = std::make_unique<NoWeapon>(map);
       hasWeapon = false;
@@ -382,7 +382,7 @@ PlayerDTO Duck::toDTO() const {
           posY,
           isRight,
           state,
-          WeaponDTO(weapon->getWeaponId(), posX, posY, isShooting()),
+          WeaponDTO(weapon->getWeaponId(), posX, posY, isShooting(), weapon->hasAmmo()),
           HelmetDTO(hasHelmet ? KNIGHT : NO_HELMET),
           Chestplate(isWearingArmour())};
 }
