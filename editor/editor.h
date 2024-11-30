@@ -38,6 +38,8 @@ private:
   int tileID;
   std::vector<QPixmap> tiles;
   YamlHandler yamlHandler;
+  int filas;
+  int columnas;
   QStringList obtenerArchivosImagen(const QString &directorio);
   void cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
                            int &fila, int &columna);

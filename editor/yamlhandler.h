@@ -10,7 +10,7 @@
 #include <QLabel>
 #include <QComboBox>
 
-
+#include "../common/configs/editor_config.h"
 
 
 #define TOTAL_TILES 52
@@ -20,10 +20,16 @@
 
 class YamlHandler{
     public:
-        static void load( QGridLayout *layout, QComboBox *backgroundBox, std::vector<QPixmap> &tiles);
-        static void save( QGridLayout *layout, QComboBox *backgroundBox);
+        static void load( QString &filename,QGridLayout *layout, QComboBox *backgroundBox, std::vector<QPixmap> &tiles);
+        static void save( QString &filename,QGridLayout *layout, QComboBox *backgroundBox,int filas, int columnas);
+        QString getSavefilename();
+        QString getLoadfilename();
+        EditorConfig getEditorConfig(QString &filename);
         YamlHandler(){} ;
         ~YamlHandler(){};
+    private:
+        static void ponerTile(YAML::Emitter &out, int columna_inicial, int columna_final,
+                int fila_inicial,int fila_final, int tile);
 };
 
 #endif // YAMLHANDLER_H

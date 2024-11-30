@@ -1,7 +1,7 @@
 #include "yamlhandler.h"
 #include <iostream>
 
-void ponerTile(YAML::Emitter &out, int columna_inicial, int columna_final,
+void YamlHandler::ponerTile(YAML::Emitter &out, int columna_inicial, int columna_final,
                int fila_inicial,int fila_final, int tile) {
   out << YAML::BeginMap;
   out << YAML::Key << "start_x" << YAML::Value << columna_inicial;
@@ -12,18 +12,35 @@ void ponerTile(YAML::Emitter &out, int columna_inicial, int columna_final,
   out << YAML::EndMap;
 }
 
-void YamlHandler::save( QGridLayout *mapLayout,
-                             QComboBox *backgroundBox) {
-QString filename= QFileDialog::getSaveFileName(nullptr, QObject::tr("Save File"), "", QObject::tr("YAML Files (*.yaml)"));
 
+QString YamlHandler::getSavefilename() {
+  QString filename= QFileDialog::getSaveFileName(nullptr, QObject::tr("Save File"), "", QObject::tr("YAML Files (*.yaml)"));
+  return filename;
+}
+
+QString YamlHandler::getLoadfilename() {
+  QString filename= QFileDialog::getOpenFileName(nullptr, QObject::tr("Open File"), "", QObject::tr("YAML Files (*.yaml)"));
+  return filename;
+}
+
+EditorConfig YamlHandler::getEditorConfig(QString &filename) {
+  YAML::Node config = YAML::LoadFile(filename.toStdString());
+  return {config["ancho"].as<int>(), config["alto"].as<int>()};
+}
+
+void YamlHandler::save(QString &filename,QGridLayout *mapLayout,
+                             QComboBox *backgroundBox,int filas, int columnas) {
   YAML::Emitter out;
   out << YAML::BeginMap;
 
   // Propiedades generales del mapa
   out << YAML::Key << "fondo" << YAML::Value
       << backgroundBox->currentText().toStdString();
-  out << YAML::Key << "alto" << YAML::Value << mapLayout->rowCount();
-  out << YAML::Key << "ancho" << YAML::Value <<mapLayout->columnCount();
+  out << YAML::Key << "alto" << YAML::Value << filas;
+  out << YAML::Key << "ancho" << YAML::Value <<columnas;
+
+
+
   // Iniciar la lista de tiles
 out << YAML::Key << "Structures" << YAML::Value << YAML::BeginSeq;
 QLabel *anterior = nullptr;
@@ -32,8 +49,8 @@ int columna_inicial = -1;
 int columna_final = -1;
 
 //procesar de forma horizontal
-for (int i = 0; i < mapLayout->rowCount(); i++) {
-    for (int j = 0; j < mapLayout->columnCount(); j++) {
+for (int i = 0; i < filas; i++) {
+    for (int j = 0; j < columnas; j++) {
         QLabel *label = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
         
         // Si no hay label o es un tile no válido, saltamos
@@ -95,13 +112,13 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
     columna_final = -1;
 }
 // Estructuras verticales de largo > 1
-for (int j = 0; j < mapLayout->columnCount(); j++) {
+for (int j = 0; j < columnas; j++) {
     QLabel *anterior = nullptr;
     int fila_inicial = -1;
     int columna_inicial = j;
     int fila_final = -1;
 
-    for (int i = 0; i < mapLayout->rowCount(); i++) {
+    for (int i = 0; i < filas; i++) {
         QLabel *label = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
         
         if (!label || label->pixmap().isNull() || 
@@ -145,10 +162,9 @@ for (int j = 0; j < mapLayout->columnCount(); j++) {
     }
 }
 // Estructuras de largo 1
-for (int i = 0; i < mapLayout->rowCount(); i++) {
-    for (int j = 0; j < mapLayout->columnCount(); j++) {
+for (int i = 0; i < filas; i++) {
+    for (int j = 0; j < columnas; j++) {
         QLabel *label = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
-        std::cout <<"Tile id: " << label->property("tile_id").toInt() << std::endl;
         if (!label || label->pixmap().isNull() || 
             label->property("tile_id").toInt() == EMPTY_TILE || 
             label->property("tile_id").toInt() >= SPAWN_TILE) {
@@ -164,7 +180,7 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
             }
         }
         
-        if (j < mapLayout->columnCount() - 1) {
+        if (j < columnas - 1) {
             QLabel *labelDer = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j+1)->widget());
             if (labelDer && labelDer->property("tile_id").toInt() == label->property("tile_id").toInt()) {
                 esIndividual = false;
@@ -178,7 +194,7 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
             }
         }
 
-        if (i < mapLayout->rowCount() - 1) {
+        if (i < filas - 1) {
             QLabel *labelAbajo = qobject_cast<QLabel *>(mapLayout->itemAtPosition(i+1, j)->widget());
             if (labelAbajo && labelAbajo->property("tile_id").toInt() == label->property("tile_id").toInt()) {
                 esIndividual = false;
@@ -186,7 +202,6 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
         }
         
         if (esIndividual) {
-            std::cout << "Individual: " << i << " " << j << std::endl;
             ponerTile(out, j, j, i, i, label->property("tile_id").toInt());
         }
     }
@@ -197,8 +212,8 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
 
   out << YAML::Key << "Spawns" << YAML::Value << YAML::BeginSeq;
 
-  for (int i = 0; i < mapLayout->rowCount(); i++) {
-    for (int j = 0; j < mapLayout->columnCount(); j++) {
+  for (int i = 0; i < filas; i++) {
+    for (int j = 0; j < columnas; j++) {
       QLabel *label =
           qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
       if (label && !label->pixmap().isNull()) {
@@ -218,8 +233,8 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
 
   out << YAML::Key << "Interactuables" << YAML::Value << YAML::BeginSeq;
 
-  for (int i = 0; i < mapLayout->rowCount(); i++) {
-    for (int j = 0; j < mapLayout->columnCount(); j++) {
+  for (int i = 0; i < filas; i++) {
+    for (int j = 0; j < columnas; j++) {
       QLabel *label =
           qobject_cast<QLabel *>(mapLayout->itemAtPosition(i, j)->widget());
       if (label && !label->pixmap().isNull()) {
@@ -238,7 +253,6 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
   out << YAML::EndSeq; // Termina la lista de interactuables
 
   out << YAML::EndMap; // Termina el mapa raíz
-
   QFile file(filename);
   if (file.open(QIODevice::WriteOnly)) {
     QTextStream stream(&file);
@@ -247,10 +261,8 @@ for (int i = 0; i < mapLayout->rowCount(); i++) {
   }
 }
 
-void YamlHandler::load( QGridLayout *mapLayout, QComboBox *backgroundBox,
+void YamlHandler::load( QString &filename,QGridLayout *mapLayout, QComboBox *backgroundBox,
                             std::vector<QPixmap> &tiles) {
-      QString filename = QFileDialog::getOpenFileName(
-      nullptr, QObject::tr("Open File"), "", QObject::tr("YAML Files (*.yaml)"));
   QFile file(filename);
   if (!file.open(QIODevice::ReadOnly)) {
     return;
