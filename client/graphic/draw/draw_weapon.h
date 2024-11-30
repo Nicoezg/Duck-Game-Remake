@@ -24,6 +24,8 @@ class DrawWeapon {
 
     bool aimingUpwards;
 
+    bool hasAmmo;
+
     public:
     DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON, uint8_t id = 0);
 

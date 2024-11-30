@@ -21,6 +21,7 @@
 
 #define IS_SHOOTING_SIZE sizeof(uint8_t)
 #define WEAPON_ID_SIZE sizeof(uint8_t)
+#define HAS_AMMO_SIZE sizeof(uint8_t)
 
 #define BULLET_ID_SIZE sizeof(uint8_t)
 #define BULLET_IS_RIGHT_SIZE sizeof(uint8_t)
@@ -32,7 +33,7 @@
 #define SCORE_SIZE sizeof(uint16_t)
 
 
-#define WEAPONS_SIZE (WEAPON_ID_SIZE + COORDINATE_SIZE * 2 + IS_SHOOTING_SIZE)
+#define WEAPONS_SIZE (WEAPON_ID_SIZE + COORDINATE_SIZE * 2 + IS_SHOOTING_SIZE + HAS_AMMO_SIZE)
 
 #define PLAYER_DATA_SIZE (PLAYERS_DATA_ID_SIZE + LEN_SIZE)
 #define GAME_ROOM_SIZE (MAX_PLAYER_SIZE + ACTUAL_PLAYER_SIZE + GAME_CODE_SIZE + LEN_SIZE)

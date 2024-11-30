@@ -11,7 +11,7 @@ Duelos::Duelos(GameMap &map) : Weapon(map, AMMO, REACH, WeaponId::DUEL_PISTOL) {
 
 void Duelos::shoot(Duck *shooter) {
   if (hasAmmo()) {
-    createBullet(shooter, -10, true, reach, BulletId::SHOT);
+    createBullet(shooter, -15, false, reach, BulletId::SHOT);
     ammo--;
   }
 }

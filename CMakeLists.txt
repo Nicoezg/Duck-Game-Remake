@@ -89,6 +89,13 @@ add_library(COMMON STATIC
         common/actions/connection/start.h
         common/events/connection/player_data.cpp
         common/events/connection/player_data.h
+        common/configs/configurations.cpp
+        common/configs/bullet_config.cpp
+        common/configs/duck_config.cpp
+        common/configs/configurations.h
+        common/configs/bullet_config.h
+        common/configs/duck_config.h
+        common/configs/editor_config.h
 )
 
 # add the source files that make the lib
@@ -200,6 +207,7 @@ if(EDITOR)
     # Link the COMMON lib target
     target_link_libraries(EDITOR PRIVATE  Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia)
     target_link_libraries(EDITOR PRIVATE yaml-cpp)
+    target_link_libraries(EDITOR PRIVATE COMMON)
 
     qt_finalize_executable(EDITOR)
 

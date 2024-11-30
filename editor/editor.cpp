@@ -11,9 +11,7 @@
 #define TOTAL_TILES 52
 #define SPAWN_TILE 48
 #define INTERACTUABLES_START 49
-
-#define FILAS 30
-#define COLUMNAS 40
+#define FILAS 20
 #define EMPTY_TILE -1
 #define MAP_GRID_ID 1
 #define TILES_GRID_ID 0
@@ -24,7 +22,13 @@ Editor::Editor(QWidget *parent)
   
 
   cargarTodosLosTiles();
-  crearMapaVacio(FILAS, COLUMNAS);
+  
+  EditorConfig editorconfig = CONFIG.getEditorConfig();
+  filas=editorconfig.alto;
+  columnas=editorconfig.ancho;
+
+
+  crearMapaVacio(editorconfig.alto, editorconfig.ancho);
   connect(ui->backgroundBox, &QComboBox::currentIndexChanged, this,
           &Editor::cambiarFondo);
 }
@@ -123,29 +127,22 @@ void Editor::crearMapaVacio(int filas, int columnas) {
     delete item;
   }
 
-  QWidget *containerWidget = ui->scrollArea_2->widget();
-
   cambiarFondo(ui->backgroundBox->currentIndex());
 
   for (int i = 0; i < filas; i++) {
     for (int j = 0; j < columnas; j++) {
-      QLabel *label = new QLabel(containerWidget);
+      QLabel *label = new QLabel();
       label->setFixedSize(tileSide, tileSide);
-
-      // Configurar el QLabel con un fondo transparente
+      label->setProperty("grilla_id", MAP_GRID_ID);
+      label->setProperty("tile_id", EMPTY_TILE);
+      label->installEventFilter(this);
+            // Configurar el QLabel con un fondo transparente
       label->setStyleSheet(
           "background-color: transparent; border: 1px solid #FFA500;");
-      label->installEventFilter(this);
-      label->setProperty("grilla_id", 1);
-      label->setProperty("tile_id", EMPTY_TILE);
-
       mapaLayout->addWidget(label, i, j);
     }
   }
 
-  containerWidget->setFixedSize(columnas * tileSide, filas * tileSide);
-  ui->scrollArea_2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-  ui->scrollArea_2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 }
 
 bool Editor::eventFilter(QObject *obj, QEvent *event) {
@@ -197,7 +194,12 @@ void Editor::on_EraseButton_clicked() { cleanLayout(ui->mapLayout); }
 
 
 void Editor::on_SaveButton_clicked() {
-  yamlHandler.save(ui->mapLayout, ui->backgroundBox);
+  QString filename = yamlHandler.getSavefilename();
+  if (filename.isEmpty() || !filename.endsWith(".yaml")) {
+    return;
+  }
+
+  yamlHandler.save(filename,ui->mapLayout, ui->backgroundBox,filas, columnas);
 }
 
 void Editor::on_EraiserButton_clicked() {
@@ -208,9 +210,21 @@ void Editor::on_EraiserButton_clicked() {
 }
 
 void Editor::on_LoadButton_clicked() {
+  QString filename=yamlHandler.getLoadfilename();
+
+  if (filename.isEmpty() || !filename.endsWith(".yaml")) {
+    return;
+  }
+
   cleanLayout(ui->mapLayout);
-  crearMapaVacio(FILAS, COLUMNAS);
-  yamlHandler.load(ui->mapLayout, ui->backgroundBox,tiles);
+  EditorConfig editorconfig = yamlHandler.getEditorConfig(filename);
+
+  filas=editorconfig.alto;
+  columnas=editorconfig.ancho;
+
+  crearMapaVacio(editorconfig.alto, editorconfig.ancho);
+  
+  yamlHandler.load(filename,ui->mapLayout, ui->backgroundBox,tiles);
 }
 
 void Editor::cambiarFondo(int index) {

@@ -350,7 +350,8 @@ WeaponDTO EventsProtocol::read_weapon(std::vector<int8_t> &data) {
     int x = encoder.decode_coordinate(data);
     int y = encoder.decode_coordinate(data);
     bool shooting = encoder.decode_bool(data);
-    return {weapon_id, x, y, shooting};
+    bool hasAmmo = encoder.decode_bool(data);
+    return {weapon_id, x, y, shooting, hasAmmo};
 }
 
 void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon,
@@ -359,15 +360,8 @@ void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon,
     offset += encoder.encode_coordinate(weapon.get_position_x(), &data[offset]);
     offset += encoder.encode_coordinate(weapon.get_position_y(), &data[offset]);
     offset += encoder.encode_bool(weapon.is_shooting(), &data[offset]);
+    offset += encoder.encode_bool(weapon.has_ammo(), &data[offset]);
 }
-
-/*void EventsProtocol::add_player_weapon(std::vector<int8_t> &data, PlayerDTO
-player, size_t &offset) { WeaponDTO weapon = player.get_weapon(); offset +=
-encoder.encode_id(weapon.get_id(), &data[offset]); offset +=
-encoder.encode_coordinate(player.get_position_x(), &data[offset]); offset +=
-encoder.encode_coordinate(player.get_position_y(), &data[offset]); offset +=
-encoder.encode_bool(weapon.is_shooting(), &data[offset]);
-}*/
 
 HelmetDTO EventsProtocol::read_helmet(std::vector<int8_t> &data) {
     auto helmet_id = HelmetId(encoder.decode_id(data));

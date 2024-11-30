@@ -15,7 +15,7 @@ LaserRifle::LaserRifle(GameMap &map)
 void LaserRifle::shoot(Duck *owner) {
   if (isReadyToShoot()) {
 
-    int baseAngle = -45;
+    int baseAngle = 45;
     int angle = (baseAngle + (shotCount));
 
     if (hasAmmo()) {

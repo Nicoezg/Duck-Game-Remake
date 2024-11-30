@@ -3,7 +3,7 @@
 #include <iostream>
 #define DATA_PATH "../client/sprites/"
 
-DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id) : textures(), sounds(), renderer(renderer), weaponId(weaponId), sound(), shoot(false), aimingUpwards(false) {
+DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id) : textures(), sounds(), renderer(renderer), weaponId(weaponId), sound(), shoot(false), aimingUpwards(false), hasAmmo(false) {
 
     this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/grenade-w-wing-") + std::to_string(id) + ".png"));
     this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/banana-w-wing-") + std::to_string(id) + ".png"));
@@ -26,6 +26,7 @@ DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id
     this->sounds[7] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/magShot.wav");
     this->sounds[8] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/shotgunFire.wav");
     this->sounds[9] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/sniper.wav");
+    this->sounds[10] = std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/no-ammo.wav");
 }
 
 void DrawWeapon::render(int x, int y, int flipType){
@@ -48,7 +49,11 @@ void DrawWeapon::render(int x, int y, int flipType){
     SDL2pp::Rect dest(x, y + 6 , 38, 32);
     
     renderer.Copy(*texture, SDL2pp::NullOpt, dest, angle, SDL2pp::NullOpt, flipType);
-    if (shoot && weaponId != WeaponId::GRENADE  && weaponId != WeaponId::ARMED_GRENADE){
+    if (!hasAmmo){
+        sound.play();
+        return;
+    }
+    if (shoot){
         sound.play();
         shoot = false;
     }
@@ -57,11 +62,17 @@ void DrawWeapon::render(int x, int y, int flipType){
 void DrawWeapon::update(const WeaponDTO &weapon, bool aimingUpwards){
     WeaponId weaponId = weapon.get_id();
     this->aimingUpwards = aimingUpwards;
+    bool dtoAmmo = weapon.has_ammo();
     shoot = weapon.is_shooting();
-    if (weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA && shoot){
+    if (!dtoAmmo && dtoAmmo != hasAmmo && weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA && weaponId != ARMED_GRENADE){
+        sound.change(sounds[10]);
+    }
+    else if (weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA && weaponId != ARMED_GRENADE && shoot){
         sound.change(sounds[weaponId - 1], 0);
     }
     this->weaponId = weaponId;
+    hasAmmo = dtoAmmo;
+    
 }
 
 WeaponId DrawWeapon::getId(){

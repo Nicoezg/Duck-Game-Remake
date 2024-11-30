@@ -44,9 +44,6 @@ target_sources(SERVER
         logic/collisions/position.h
 
 
-        configs/configurations.cpp
-        configs/bullet_config.cpp
-        configs/duck_config.cpp
 
     PUBLIC
     # .h files
@@ -82,9 +79,6 @@ target_sources(SERVER
         logic/throwables/banana.h
 
 
-        configs/configurations.h
-        configs/bullet_config.h
-        configs/duck_config.h
     )
 
 find_package(yaml-cpp REQUIRED)
