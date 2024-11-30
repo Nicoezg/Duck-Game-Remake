@@ -96,6 +96,13 @@ void MainWindow::update_players_list(const Event &event) {
 }
 
 void MainWindow::show_connected_players(const Event &event) {
+    if (!event.is_connected()) {
+        ui->GameModeJoin->setCurrentIndex(0);
+        ui->GameModeJoin->activated(0);
+        on_Join_clicked();
+        return;
+    }
+
     GameRoom game_room = event.get_game_room();
     ui->lobbyTitle->setText(game_room.get_game_name().c_str());
     update_players_list(event);
@@ -251,6 +258,9 @@ void MainWindow::RefreshServerList(Event &event) {
 
                     // Establecer el código del juego seleccionado en el cliente
                     client->set_game_code(game.get_game_code());
+                    if (game.get_actual_players() + 1 >= game.get_max_players()) {
+                        ui->GameModeJoin->setEnabled(false);
+                    }
                 });
     }
 }

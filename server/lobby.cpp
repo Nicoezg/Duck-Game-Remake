@@ -62,6 +62,10 @@ void Lobby::set_players(const Action &action, int &player_id_1, int &player_id_2
     player_id_1 = games->get_player_id(game_code, action.get_game_mode(),
                                       action.get_player_name_1());
     player_id_2 = SIN_ASIGNAR;
+    if (player_id_1 == SIN_ASIGNAR) {
+        return;
+    }
+
     if (action.get_game_mode() == DOS_JUGADORES) {
         player_id_2 = games->get_player_id(game_code, action.get_game_mode() - 1,
                                            action.get_player_name_2());
@@ -77,7 +81,14 @@ std::shared_ptr<Event> Lobby::join_game(const Action &action) {
 
 
     GameRoom game_room = games->get_game_room(game_code);
+    if (game_room.get_game_code() == SIN_CODIGO){
+        return not_connected_to_game();
+    }
     std::list<PlayerData> players_data = games->get_players_data(game_code);
+
+    if (player_id_1 == SIN_ASIGNAR) {
+        return not_connected_to_game();
+    }
     return std::make_shared<GameJoin>(player_id_1, player_id_2, true, game_room, players_data);
 }
 

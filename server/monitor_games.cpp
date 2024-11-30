@@ -30,7 +30,7 @@ int MonitorGames::get_player_id(int game_id, int new_players, std::string player
   if (it != games.end() && !it->second->is_full(new_players)) {
     return it->second->get_next_player_id(player_name);
   }
-  throw std::runtime_error("Game not found or full");
+  return SIN_ASIGNAR;
 }
 
 void MonitorGames::add_to_game(int game_id, Socket &&client) {
@@ -73,7 +73,7 @@ GameRoom MonitorGames::get_game_room(int& game_code) {
     if (it != games.end()) {
         return it->second->get_game_room();
     }
-    throw std::runtime_error("Game not found");
+    return {};
 }
 
 std::list<GameRoom> MonitorGames::get_not_started_games(){

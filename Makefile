@@ -14,13 +14,13 @@ test: compile-debug
 	./build/TESTS
 
 server:
-	./build/SERVER 4040
+	@cd build && ./SERVER 4040
 
 editor:
-	./build/EDITOR
+	@cd build && ./EDITOR
 
 client:
-	./build/CLIENT localhost 4040
+	@cd build && ./CLIENT localhost 4040
 
 all: clean test
 
