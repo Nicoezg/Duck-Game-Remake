@@ -333,7 +333,7 @@ QLineEdit, QComboBox {
      <item>
       <widget class="QPushButton" name="EraiserButton">
        <property name="text">
-        <string>Eraiser</string>
+        <string>Eraser</string>
        </property>
       </widget>
      </item>

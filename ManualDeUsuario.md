@@ -1,167 +1,163 @@
-# Manual de Usuario
 
-![Titulo](client/ui/images/Main_logo.webp)
+# 🦆 **Manual de Usuario - Duck Game**
 
-## 1. Instalacion de dependencias y compilacion
+![Título](client/ui/images/Main_logo.webp)
 
-Para instalar las dependencias necesarias para el correcto funcionamiento del programa, se debe ejecutar el siguiente comando en la terminal:
+---
 
+## **1️⃣ Instalación de Dependencias y Compilación**
+
+### 🛠️ Instalación:
+Ejecuta el siguiente comando en la terminal para instalar todas las dependencias necesarias:
 ```bash
 chmod +x install_all.sh
 sudo ./install_all.sh
 ```
 
-Una vez esto, se debe compilar el programa. Para esto se debe ejecutar el siguiente comando en la terminal:
-
+### 🔨 Compilación:
+Una vez completada la instalación, compila el programa con el siguiente comando:
 ```bash
 chmod +x build_game.sh
 ./build_game.sh
 ```
 
-## 2. Ejecucion del juego
+---
 
-Para poder ejecutar el juego primero se va a tener que ejecutar el servidor y luego el cliente:
+## **2️⃣ Ejecución del Juego**
 
+### 🌐 **Servidor:**
+Primero, inicia el servidor:
 ```bash
 ./SERVER <puerto>
 ```
 
-Luego para ejecutar el cliente se debe ejecutar el siguiente comando:
-
+### 👥 **Cliente:**
+Luego, inicia el cliente:
 ```bash
 ./CLIENT <host> <puerto>
 ```
 
-Para ejecutar localmente se recomienda que host sea localhost y el puerto sea el mismo para ambos. Por ejemplo:
-
+Para una ejecución local, usa `localhost` como host y un puerto común, por ejemplo:
 ```bash
 ./SERVER 8080
 ./CLIENT localhost 8080
 ```
 
-Una vez hecho esto, se ejecutara y se abrira el lobby del juego.
-
-Tambien se puede ejecutar el editor del juego, para esto se debe ejecutar el siguiente comando en la terminal:
-
+### ✏️ **Editor del Juego:**
+Para abrir el editor de mapas, ejecuta:
 ```bash
 ./EDITOR
 ```
 
-## 3. Interfaz del Lobby
+---
 
-Una vez empieze la ejecucion se mostrara el siguiente menu:
+## **3️⃣ Interfaz del Lobby**
 
-![alt text](image.png)
+Al ejecutar el juego, verás el siguiente menú inicial:
 
-Tendremos 3 opciones:
+![Lobby Menu](common/manual_images/menu.png)
 
-- Crear una partida.
-- Unirse a una partida.
-- Salir del juego.
+### Opciones disponibles:
+1. **Crear una partida**: Presiona `Create`.
+   - Introduce un nombre para la partida.
+   - Elige el número de jugadores totales y locales.
+   - Haz clic en `Connect` para iniciar.
 
-Para crear una partida se debe apretar el boton Create. Una vez hecho esto tendremos este menu:
+   **Ejemplo del menú de creación:**
+   ![Crear Partida](common/manual_images/create.png)
 
-![alt text](common/manual_images/image-1.png)
+2. **Unirse a una partida**: Presiona `Join`.
+   - Selecciona una partida de la lista.
+   - Configura el número de jugadores locales.
 
-Podremos ponerle un nombre a la partida para que los demas jugadores puedan unirse e identicarla. Tambien podremos elegir la cantidad de jugadores que queremos que haya en la partida. Ademas deberemos la cantidad de jugadores locales que queremos que haya en la partida. Una vez hecho esto se debe apretar el boton Connect. Si se quiere volver atras se debe apretar el boton Volver.
+   **Ejemplo del menú para unirse:**
+   ![Unirse a Partida](common/manual_images/join.png)
 
-Para unirse a una partida se debe apretar el boton Join. Una vez hecho esto tendremos este menu:
+3. **Salir del juego**: Presiona `Exit`.
 
-![alt text](common/manual_images/image-2.png)
+Una vez que todos los jugadores estén conectados, el anfitrión podrá iniciar la partida desde este menú:
+![Menú Espera](common/manual_images/lobby.png)
 
-Se mostraran todas las partidas que estan disponibles para unirse. Se debe apretar, para unirse a una partida, se debe hacer click en la partida deseada. Si se quiere volver atras se debe apretar el boton Volver. Podemos apretar el boton Refresh para actualizar la lista de partidas.
-Una vez que decidimos unirnos a una partida se nos mostrara el siguiente menu:
-![alt text](common/manual_images/image-3.png)
+El color de tu pato sera el mismo que el color de tu nombre en el lobby.
 
-Vemos que nos deja seleccionar la cantidad de jugadores locales que queremos que haya en la partida. Puede ocurrir que no nos deje seleccionar 2 jugadores locales si la partida solo le queda un lugar. Una vez seleccionado la cantidad de jugadores locales se debe apretar el boton Connect.
+---
 
-Una vez hecho todos estos pasos se nos mostrara el siguiente menu:
+## **4️⃣ Juego**
 
-![alt text](common/manual_images/image-4.png)
+### 🎮 **Controles del Juego**
 
-En este menu se nos mostrara la cantidad de jugadores que hay en la partida, indicando su nombre, su ID y su color. El anfitrion de la partida podra iniciar la partida apretando el boton Iniciar Juego mientras que los demas jugadores no podran hacer esto y deberan espera a que el anfitrion inicie la partida.
+| **Acción**                     | **Jugador 1**       | **Jugador 2**       |
+|---------------------------------|---------------------|---------------------|
+| Moverse                         | → ← (flechas)       | A, D                |
+| Saltar                          | ↑                   | W                   |
+| Hacerse el muerto               | ↓                   | S                   |
+| Disparar                        | `,`                 | G                   |
+| Agarrar arma/objeto             | `.`                 | H                   |
+| Soltar arma                     | `-`                 | F                   |
+| Aletear (mantener)              | ↑                   | W                   |
+| Apuntar hacia arriba            | L                   | Y                   |
 
-## 4. Juego
+---
 
-### Controles del juego
+### 🎯 **Objetivo del Juego**
 
-Una vez que se inicie la partida se mostrara el juego. Una vez comienze seras un pato. Podras hacer los siguientes movimientos:
+¡Sé el último pato en pie! 💥  
+- Derrota a los demás jugadores y se el último en pie.  
+- Gana 10 rondas o más para convertirte en el campeón.
 
-- Flecha derecha e izquierda para mover
-- Flecha de arriba para saltar
-- Flecha de abajo para hacerse el muerto
-- Coma (,) para disparar
-- Punto (.) para agarrar un arma 
-- Guion (-) para soltar un arma
-- Mantener flecha de arribar para aletear
-- L para apuntar hacia arriba
+---
 
-Si se activa el modo de 2 jugadores locales, el segundo jugador podra hacer los mismos movimientos pero con las teclas:
+## **5️⃣ Servidor**
 
-- A, D para moverse.
-- W para saltar.
-- S para hacerse el muerto.
-- G para disparar.
-- F para soltar el arma.
-- H para recoger armas, armaduras y cascos.
-- Mantener W para aletear.
-- Y para apuntar hacia arriba.
+Para cerrar el servidor, escribe `q` en la terminal donde fue ejecutado.
 
-### Objetivo del juego
+---
 
-El objetivo del juego es ser el ultimo pato en pie. Para esto debera matar el resto de los patos y sobrevivir. Una vez que un pato gane o todos mueran en el mismo instante,
-comenzara una nueva ronda y el mapa cambiara. Cada 5 rondas se le informaran a los patos cuantas victorias tiene cada uno. Si algun pato gana 10 o mas rondas, se declarara ganador y terminara el juego.
-Esto ocurrira una vez que se verifique las victorias cada 5 rondas.
+## **6️⃣ Uso del Editor de Mapas**
 
-## 5. Server
+El editor te permite crear o modificar mapas personalizados. Sigue estos pasos:
 
-Para poder cerrar el servidor se debe mandar por consola la letra q en la terminal.
+### ✨ **Interfaz Principal del Editor:**
+Al iniciar el editor, verás este menú:
+![Editor Menu](common/manual_images/image-5.png)
 
-## 6. Como usar el editor para crear tus mapas o modificar los existentes
+### 🧱 **Colocación de estructuras:**
+1. Haz clic en el objeto deseado (plataforma, spawn, etc.).
+2. Colócalo en el mapa haciendo clic en la posición deseada.
+3. Para borrar una estructura, selecciona `Eraser` y haz clic en la estructura a eliminar.
 
-El editor es una herramienta que permite crear mapas para el juego. Se pueden crear mapas de dimensiones personalizadas. Es clave que los mapas tengan un tamaño acorde, se recomienda que el tamaño sea de 30x40. Esto se puede modificar en el archivos de configuraciones que se encuentra en common/configs/configurations.yaml. No se recomienda poner dimensiones muchos mas grandes que estas ni mucho mas chicas. Esto puede generar problemas en la visualizacion del mapa.
+---
 
-Una vez que se abre el editor se mostrara el siguiente menu:
+### 🛠️ **Estructuras Disponibles**
 
-![
-](common/manual_images/image-5.png)
+| **Tipo**          | **Descripción**                                                                                             | **Imagen**                                   |
+|--------------------|-----------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| **Plataformas**    | Permiten que los jugadores caminen y salten sobre ellas.                                                  | ![alt text](common/manual_images/TILE.png)                             |
+| **Spawn**          | Punto donde aparecen los jugadores al inicio.                                                             | ![Spawn](common/manual_images/spawn.png)  |
+| **Armaduras**      | Proveen protección adicional a los jugadores.                                                             | ![Armadura](common/manual_images/chestplate.png) |
+| **Cascos**         | Proveen resistencia adicional.                                                                            | ![Casco](common/manual_images/helmet.png)  |
+| **Armas**          | Spawners de armas aleatorias que los jugadores pueden recoger.                                           | ![Armas](common/manual_images/weapon.png)  |
+| **Cajas**          | Contienen objetos como armas, armaduras y cascos.                                                        | ![Cajas](common/manual_images/box.png) |
 
-Para poder colocar las estructuras se debera clickear en la estructura deseada y luego clickear en el mapa en la ubicacion deseada. Si se desea borrar una estructura se debera clickear el boton eraiser y luego clickear en la estructura que se desea borrar. 0
+---
 
-### Estructuras disponibles:
+### 💾 **Guardar y Cargar Mapas:**
 
-Tendremos multiples estructuras disponibles para colocar en el mapa. Estas son:
+- **Guardar**: Haz clic en `Save`, elige un nombre y usa la extensión `.yaml`.
+  Coloca el archivo en `server/logic/maps` para que sea jugable.
 
-- Plataformas: Se pueden colocar plataformas en el mapa. Estos son necesarios para que los jugadores puedan caminar por el mapa. Asi como se pueden de forma apilada para generar una estructura mas alta.
+- **Cargar**: Haz clic en `Load` y selecciona un archivo existente.
 
-- Spawn: Se puede colocar un spawn en el mapa. Este es el lugar donde los jugadores apareceran al inicio de la partida. Se debe tener en cuenta que el pato tiene 2 bloques de alto, se coloca de esta forma por un tema de simplicidad y mejor comprension.Este es representado asi:
+---
 
-![alt text](common/manual_images/image-6.png)
+### 🌄 **Selección de Fondo:**
+Puedes personalizar el fondo del mapa desde este menú:
+![Seleccionar Fondo](common/manual_images/forest.png)
 
-- Armaduras y cascos: Se pueden colocar armaduras y cascos en el mapa. Estos son necesarios para que los jugadores puedan recogerlos y asi tener mas vida y proteccion. Estos son representados asi:
+Selecciona entre las opciones disponibles:
+![Opciones de Fondo](common/manual_images/opciones.png)
 
-![alt text](common/manual_images/image-7.png)    ![alt text](common/manual_images/image-8.png)
 
-- Armas: Se pueden colocar spawners de armas aleatorias en el mapa. Estos son necesarios para que los jugadores puedan recogerlas y asi poder disparar. Estos son representados asi:
+##  **7️⃣ Configuración**
 
-![alt text](common/manual_images/image-9.png)
-
-- Cajas: Se pueden colocar cajas en el mapa. Estos son necesarios para que los jugadores puedan romperlas y asi obtener armas, armaduras y cascos. Estos son representados asi:
-
-![alt text](common/manual_images/image-11.png)
-
-### Guardar y cargar mapas
-
-Para guardar un mapa se debe apretar el boton Save. Se nos abrira nuestro sistema de archivos del sistema operativo y se nos pedira que pongamos un nombre al mapa. Se debe poner el nombre con extension .yaml. Por ejemplo: mapa1.yaml. Para poder jugar el mapa se debe poner el archivo en la carpeta server/logic/maps. 
-
-Para cargar un mapa se debe apretar el boton Load. Se nos abrira nuestro sistema de archivos del sistema operativo y deberemos seleccionar el archivo que queremos cargar. Si queremos cargar un mapa que ya esta en la carpeta server/logic/maps se debe seleccionar el archivo y apretar el boton Open. Despues podremos modificarlo y guardarlo con otro como sobreescribir el existente usando la opcion Save.
-
-### Seleccionar el fondo
-
-Se puede seleccionar el fondo que se desea que tenga el mapa. Para esto se debe elegir el fondo haciendo click y seleccionando el fondo deseado de esta forma:
-
-![alt text](common/manual_images/image13.png)
-
-Donde se desplagara las siguientes opciones y podra elegir:
-
-![alt text](common/manual_images/image12.png)
+Si se desea cambiar la configuración del juego, se puede hacer modificando el archivo `common/configs/configurations.yaml`. Este archivo contiene configuraciones para las armas, los patos como para las dimensiones del editor. Se recomienda no poner dimensiones muy grandes para el editor. Se recomienda usar valores cercanos a los que ya están en el archivo.
