@@ -9,7 +9,7 @@ void ThrownGrenade::update() {
     startThrow = false;
   }
   framesRemaining--;
-  if (!aimingUp) {
+  if (!aimingUp && distance_travelled/16 < reach) {
     if (isRight) {
       pos_x += 1;
       angle+=5;
@@ -17,6 +17,7 @@ void ThrownGrenade::update() {
       pos_x -= 1;
       angle-=5;
   }
+  distance_travelled+=1;
   }
   pos_y += CONFIG.getDuckConfig().getGravity();
   hitBox grenadeBox = {pos_x, pos_y, 8, 8};

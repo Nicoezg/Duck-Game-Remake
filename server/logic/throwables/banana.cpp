@@ -1,13 +1,14 @@
 #include "banana.h"
 #include "server/logic/duck.h"
 
+#define REACH CONFIG.getBulletConfig(BANANA_NAME).getReach()
 
 ThrownBanana::ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y,
                            bool aimingUp)
-    : Throwable(map, isRight, pos_x, pos_y, 150,THROWN_BANANA_V2,false,aimingUp) {}
+    : Throwable(map, isRight, pos_x, pos_y, REACH,THROWN_BANANA_V2,false,aimingUp) {}
 
 void ThrownBanana::update() {
-    if (!aimingUp &&distance_travelled < reach && !onGround) {
+    if (!aimingUp &&distance_travelled/16 < reach && !onGround) {
         if (isRight) {
             pos_x += 3;
         } else {

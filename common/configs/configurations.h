@@ -17,6 +17,7 @@
 #define COWBOY_NAME "cowboy"
 #define MAGNUM_NAME "magnum"
 #define SHOTGUN_NAME "escopeta"
+#define BANANA_NAME "banana"
 
 #define CONFIG Configurations::configurations()
 
