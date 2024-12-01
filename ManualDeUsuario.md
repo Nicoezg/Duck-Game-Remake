@@ -15,7 +15,7 @@ Una vez esto, se debe compilar el programa. Para esto se debe ejecutar el siguie
 
 ```bash
 chmod +x build_game.sh
-sudo ./build_game.sh
+./build_game.sh
 ```
 
 ## 2. Ejecucion del juego
@@ -81,14 +81,37 @@ Una vez hecho todos estos pasos se nos mostrara el siguiente menu:
 
 En este menu se nos mostrara la cantidad de jugadores que hay en la partida, indicando su nombre, su ID y su color. El anfitrion de la partida podra iniciar la partida apretando el boton Iniciar Juego mientras que los demas jugadores no podran hacer esto y deberan espera a que el anfitrion inicie la partida.
 
-## 4. Interfaz del Juego
+## 4. Juego
 
-Las mecanicas disponibles son muy acotadas pero se pueden realizar las siguientes acciones:
+### Controles del juego
 
-- Moverse con las flechas del teclado.
-- Disparar con la G.
-- Mirar para arriba con Y
-- Hacerse el muerto con la flecha hacia abajo.
+Una vez que se inicie la partida se mostrara el juego. Una vez comienze seras un pato. Podras hacer los siguientes movimientos:
+
+- Flecha derecha e izquierda para mover
+- Flecha de arriba para saltar
+- Flecha de abajo para hacerse el muerto
+- Coma (,) para disparar
+- Punto (.) para agarrar un arma 
+- Guion (-) para soltar un arma
+- Mantener flecha de arribar para aletear
+- L para apuntar hacia arriba
+
+Si se activa el modo de 2 jugadores locales, el segundo jugador podra hacer los mismos movimientos pero con las teclas:
+
+- A, D para moverse.
+- W para saltar.
+- S para hacerse el muerto.
+- G para disparar.
+- F para soltar el arma.
+- H para recoger armas, armaduras y cascos.
+- Mantener W para aletear.
+- Y para apuntar hacia arriba.
+
+### Objetivo del juego
+
+El objetivo del juego es ser el ultimo pato en pie. Para esto debera matar el resto de los patos y sobrevivir. Una vez que un pato gane o todos mueran en el mismo instante,
+comenzara una nueva ronda y el mapa cambiara. Cada 5 rondas se le informaran a los patos cuantas victorias tiene cada uno. Si algun pato gana 10 o mas rondas, se declarara ganador y terminara el juego.
+Esto ocurrira una vez que se verifique las victorias cada 5 rondas.
 
 ## 5. Server
 
@@ -103,7 +126,7 @@ Una vez que se abre el editor se mostrara el siguiente menu:
 ![
 ](common/manual_images/image-5.png)
 
-Para poder colocar las estructuras se debera clickear en la estructura deseada y luego clickear en el mapa en la ubicacion deseada. Si se desea borrar una estructura se debera clickear el boton eraiser y luego clickear en la estructura que se desea borrar. 
+Para poder colocar las estructuras se debera clickear en la estructura deseada y luego clickear en el mapa en la ubicacion deseada. Si se desea borrar una estructura se debera clickear el boton eraiser y luego clickear en la estructura que se desea borrar. 0
 
 ### Estructuras disponibles:
 
