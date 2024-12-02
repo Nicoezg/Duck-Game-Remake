@@ -119,7 +119,7 @@ El editor te permite crear o modificar mapas personalizados. Sigue estos pasos:
 
 ### ✨ **Interfaz Principal del Editor:**
 Al iniciar el editor, verás este menú:
-![Editor Menu](common/manual_images/image-5.png)
+![Editor Menu](common/manual_images/editor.png)
 
 ### 🧱 **Colocación de estructuras:**
 1. Haz clic en el objeto deseado (plataforma, spawn, etc.).
@@ -135,16 +135,16 @@ Al iniciar el editor, verás este menú:
 | **Plataformas**    | Permiten que los jugadores caminen y salten sobre ellas.                                                  | ![alt text](common/manual_images/TILE.png)                             |
 | **Spawn**          | Punto donde aparecen los jugadores al inicio.                                                             | ![Spawn](common/manual_images/spawn.png)  |
 | **Armaduras**      | Proveen protección adicional a los jugadores.                                                             | ![Armadura](common/manual_images/chestplate.png) |
-| **Cascos**         | Proveen resistencia adicional.                                                                            | ![Casco](common/manual_images/helmet.png)  |
+| **Cascos**         | Proveen protección adicional a los jugadores.                                                                                 | ![Casco](common/manual_images/helmet.png)  |
 | **Armas**          | Spawners de armas aleatorias que los jugadores pueden recoger.                                           | ![Armas](common/manual_images/weapon.png)  |
-| **Cajas**          | Contienen objetos como armas, armaduras y cascos.                                                        | ![Cajas](common/manual_images/box.png) |
+| **Cajas**          | Contienen objetos como armas, armaduras y cascos. Cuidado que pueden explotar!                                                        | ![Cajas](common/manual_images/box.png) |
 
 ---
 
 ### 💾 **Guardar y Cargar Mapas:**
 
 - **Guardar**: Haz clic en `Save`, elige un nombre y usa la extensión `.yaml`.
-  Coloca el archivo en `server/logic/maps` para que sea jugable.
+  Coloca el archivo en `server/logic/maps` para que sea jugable. Es importante aclarar, que si un mapa que creamos no tiene al menos un spawn, este sera ignorado. 
 
 - **Cargar**: Haz clic en `Load` y selecciona un archivo existente.
 
@@ -160,4 +160,4 @@ Selecciona entre las opciones disponibles:
 
 ##  **7️⃣ Configuración**
 
-Si se desea cambiar la configuración del juego, se puede hacer modificando el archivo `common/configs/configurations.yaml`. Este archivo contiene configuraciones para las armas, los patos como para las dimensiones del editor. Se recomienda no poner dimensiones muy grandes para el editor. Se recomienda usar valores cercanos a los que ya están en el archivo.
+Si se desea cambiar la configuración del juego, se puede hacer modificando el archivo `common/configs/configurations.yaml`. Este archivo contiene configuraciones para las armas como otros elementos del juego.
