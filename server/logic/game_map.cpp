@@ -118,6 +118,11 @@ void GameMap::update() {
     explosionCollisions();
     
     reset = false;
+    crates.erase(std::remove_if(crates.begin(), crates.end(),
+                                [](const Box &crate) {
+                                    return crate.get_hp() == 0;
+                                }),
+                 crates.end());
 
     bulletCollisionsWithCrates();
 
@@ -145,7 +150,7 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
 
 void GameMap::bulletCollisionWithPlatforms() {
     for (const auto &bullet : bullets) {
-        hitBox bulletBox = {bullet->getPosX(), bullet->getPosY(), 8, 1};
+        hitBox bulletBox = {bullet->getPosX(), bullet->getPosY(), 4, 1};
 
         for (auto &structure : map.structures) {
             hitBox structureBox = {structure.start_x * TILE_SIZE, structure.start_y * TILE_SIZE,
@@ -154,10 +159,18 @@ void GameMap::bulletCollisionWithPlatforms() {
             if (hitBox::isColliding(bulletBox, structureBox)) {
                 bool isTopCollision = false; 
                 bool isHorizontalCollision = false; 
-                if (bulletBox.y + bulletBox.height >= structureBox.y) {
-                    isTopCollision = true; 
-                } else if ((bulletBox.x + bulletBox.width >= structureBox.x) || 
-                         (bulletBox.x >= structureBox.x  + structureBox.width )) {
+                if ((bulletBox.y + bulletBox.height > structureBox.y && bulletBox.y < structureBox.y && bulletBox.x > structureBox.x && bulletBox.x + bulletBox.width < structureBox.x + structureBox.width)
+                    || (bulletBox.y < structureBox.y + structureBox.height && bulletBox.y + bulletBox.height > structureBox.y && bulletBox.x > structureBox.x && bulletBox.x + bulletBox.width < structureBox.x + structureBox.width))
+                {
+                    isTopCollision = true;
+                    std::cout << "VERTICAL COLLISION" << std::endl;
+                } else if ((bulletBox.x + bulletBox.width > structureBox.x && bulletBox.x < structureBox.x && bulletBox.y > structureBox.y && bulletBox.y + bulletBox.height < structureBox.y + structureBox.height) || 
+                         (bulletBox.x < structureBox.x  + structureBox.width && bulletBox.x + bulletBox.width > structureBox.x + structureBox.width && bulletBox.y > structureBox.y && bulletBox.y + bulletBox.height < structureBox.y + structureBox.height)) {
+                            std::cout << "Bullet x: " << bulletBox.x << " Bullet y: " << bulletBox.y << std::endl;
+                            std::cout << "Bullet width: " << bulletBox.width << " Bullet height: " << bulletBox.height << std::endl;
+                            std::cout << "Structure x: " << structureBox.x << " Structure y: " << structureBox.y << std::endl;
+                            std::cout << "Structure width: " << structureBox.width << " Structure height: " << structureBox.height << std::endl;
+                            std::cout << "HORIZONTAL COLLISION" << std::endl;
                     isHorizontalCollision = true; 
                 } else {
                     isTopCollision = false;
@@ -223,10 +236,6 @@ void GameMap::bulletCollisionsWithCrates() {
         for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt) {
             hitBox bulletBox = {(*bulletIt)->getPosX(), (*bulletIt)->getPosY(), 8, 1};
             if (hitBox::isColliding(crateBox, bulletBox)) {
-                if (crateIt->get_hp() == 0) {
-                    crateIt = crates.erase(crateIt);
-                    break;
-                }
                 crateIt->shoot();
                 
                 if (crateIt->get_hp() == 0) {

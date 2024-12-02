@@ -55,11 +55,11 @@ bool Bullet::outOfRange() {
 void Bullet::bounce(bool isHorizontalCollision, bool isTopCollision) {
     if (canBounce) {
         id = BulletId::LASER_REBOUND; 
-
         if (isHorizontalCollision) {
-            angle = HORIZONTAL_ANGLE - angle;
+          angle = angle - HORIZONTAL_ANGLE;
+            
         } else if (isTopCollision) {
-             angle = 360 - angle; 
+             angle = 360 - angle;
         }
 
         if (angle < 0) {
