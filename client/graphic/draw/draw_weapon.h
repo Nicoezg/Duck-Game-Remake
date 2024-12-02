@@ -26,6 +26,8 @@ class DrawWeapon {
 
     bool hasAmmo;
 
+    bool playNoAmmo;
+
     public:
     DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON, uint8_t id = 0);
 

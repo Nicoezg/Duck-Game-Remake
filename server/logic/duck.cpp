@@ -239,8 +239,8 @@ void Duck::update() {
 }
 
 void Duck::shoot() {
-  shooting = true;
   if (weapon && weapon->isReadyToShoot() && state != State::PLAYING_DEAD) {
+    shooting = true;
     weapon->shoot(this);
     shootingCooldown = 1;
     if ( weapon->getWeaponId() == WeaponId::BANANA) {

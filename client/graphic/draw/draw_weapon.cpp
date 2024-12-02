@@ -3,7 +3,7 @@
 #include <iostream>
 #define DATA_PATH "../client/sprites/"
 
-DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id) : textures(), sounds(), renderer(renderer), weaponId(weaponId), sound(), shoot(false), aimingUpwards(false), hasAmmo(false) {
+DrawWeapon::DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId, uint8_t id) : textures(), sounds(), renderer(renderer), weaponId(weaponId), sound(), shoot(false), aimingUpwards(false), hasAmmo(false), playNoAmmo(false) {
 
     this->textures[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/grenade-w-wing-") + std::to_string(id) + ".png"));
     this->textures[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(std::string("../client/sprites/weapons/banana-w-wing-") + std::to_string(id) + ".png"));
@@ -64,11 +64,15 @@ void DrawWeapon::update(const WeaponDTO &weapon, bool aimingUpwards){
     this->aimingUpwards = aimingUpwards;
     bool dtoAmmo = weapon.has_ammo();
     shoot = weapon.is_shooting();
-    if (!dtoAmmo && dtoAmmo != hasAmmo && weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA && weaponId != ARMED_GRENADE){
-        sound.change(sounds[10]);
+    if (playNoAmmo){
+        sound.change(sounds[10], 0);
+        playNoAmmo = false;
     }
-    else if (weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA && weaponId != ARMED_GRENADE && shoot){
+    if (weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA && weaponId != ARMED_GRENADE && shoot && !playNoAmmo){
         sound.change(sounds[weaponId - 1], 0);
+    }
+    if (!dtoAmmo && dtoAmmo != hasAmmo && shoot && weaponId != NO_WEAPON && weaponId != GRENADE && weaponId != BANANA && weaponId != ARMED_GRENADE){
+        playNoAmmo = true;
     }
     this->weaponId = weaponId;
     hasAmmo = dtoAmmo;
