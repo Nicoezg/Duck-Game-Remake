@@ -1,15 +1,4 @@
 #include "duck.h"
-#include "server/logic/weapons/ak47.h"
-#include "server/logic/weapons/cowboy.h"
-#include "server/logic/weapons/duelos.h"
-#include "server/logic/weapons/grenade.h"
-#include "server/logic/weapons/banana.h"
-#include "server/logic/weapons/laser_rifle.h"
-#include "server/logic/weapons/magnum.h"
-#include "server/logic/weapons/no_weapon.h"
-#include "server/logic/weapons/pewpewlaser.h"
-#include "server/logic/weapons/shotgun.h"
-#include "server/logic/weapons/sniper.h"
 #include "server/logic/weapon_factory.h"
 #include <iostream>
 
@@ -22,6 +11,8 @@ const int WIDTH = CONFIG.getDuckConfig().getWidth();
 const int HEIGHT = CONFIG.getDuckConfig().getHeight();
 const int CENTER_X = CONFIG.getDuckConfig().getCenterX();
 const int CENTER_Y = CONFIG.getDuckConfig().getCenterY();
+
+const int TILE_SIZE = 16;
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
     : id(id), posX(posX), posY(posY), map(map), state(State::BLANK), wins(0) {
@@ -158,11 +149,11 @@ void Duck::update() {
   isOnPlatform = false;
 
   for (auto &crate : map.getCratesState()) {
-      hitBox crateBox = {crate.get_position_x(), crate.get_position_y(), 16, 16};
+      hitBox crateBox = {crate.get_position_x(), crate.get_position_y(), TILE_SIZE, TILE_SIZE};
 
         if (hitBox::isColliding(duckBox, crateBox)) {
             if (velY > 0) { 
-                posY = crate.get_position_y() - 32;
+                posY = crate.get_position_y() - TILE_SIZE*2;
                 velY = 0;
                 jumping = false;
                 flapping = false;
@@ -179,12 +170,12 @@ void Duck::update() {
 
     duckBox = {posX + CENTER_X, posY + CENTER_Y, WIDTH, HEIGHT};
     for (const auto& structure : map.getMap().structures) {
-    hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
-                            (structure.end_x + 1 - structure.start_x) * 16 , (structure.end_y + 1 - structure.start_y) * 16 };
+    hitBox structureBox = {structure.start_x * TILE_SIZE, structure.start_y * TILE_SIZE,
+                            (structure.end_x + 1 - structure.start_x) * TILE_SIZE , (structure.end_y + 1 - structure.start_y) * TILE_SIZE };
 
     if (hitBox::isColliding(duckBox, structureBox)) {
         if (velY > 0 && structureBox.height <= 80) {  // son 5 tiles 
-            posY = structure.start_y * 16 - 32;
+            posY = structure.start_y * TILE_SIZE - TILE_SIZE*2;
             velY = 0;
             jumping = false;
             flapping = false;
@@ -206,8 +197,8 @@ void Duck::update() {
 
   duckBox = {posX + CENTER_X, posY + CENTER_Y, WIDTH, HEIGHT};
   for (const auto& structure : map.getMap().structures) {
-      hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
-                            (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y + 1 - structure.start_y) * 16};
+      hitBox structureBox = {structure.start_x * TILE_SIZE, structure.start_y * TILE_SIZE,
+                            (structure.end_x + 1 - structure.start_x) * TILE_SIZE, (structure.end_y + 1 - structure.start_y) * TILE_SIZE};
 
     
       if (hitBox::isEqual(currentPlatformBox, structureBox)) {
@@ -217,9 +208,9 @@ void Duck::update() {
       if (hitBox::isColliding(duckBox, structureBox)) {
 
           if (velX > 0  && !jumping && !flapping) {
-              posX = structureBox.x - 32;
+              posX = structureBox.x - TILE_SIZE*2;
           } else if (velX < 0 && !jumping && !flapping) {
-              posX = structureBox.x + 32;
+              posX = structureBox.x + TILE_SIZE*2;
           }
           velX = 0;
           break;
@@ -277,7 +268,6 @@ void Duck::takeDamage() {
   } else if (hasArmour) {
     hasArmour = false;
   } else {
-    // muere
     state = State::DEAD;
   }
 }
@@ -423,12 +413,3 @@ void Duck::throwGrenade() {
   hasWeapon = false;
   framesToExplode=-1;
 }
-
-/*bool Duck::impact(Bullet &bullet) {
-    Position position = Position(posX, posY, WIDTH, HEIGHT);
-    bool is_impact = bullet.impact(position, id);
-    if (is_impact) {
-        takeDamage();
-    }
-    return is_impact;
-} */

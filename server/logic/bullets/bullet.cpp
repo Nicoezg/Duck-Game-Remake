@@ -4,11 +4,13 @@
 #include <cmath>
 #include <iostream>
 
-const double PI = 3.14159265358979323846;
+const double PI = 3.14159;
 const int TILE_SIZE = 16;
-const int SPEED = CONFIG.getBulletSpeed();
+const int SPEED_X = CONFIG.getBulletSpeedX();
+const int SPEED_Y = CONFIG.getBulletSpeedY();
 const int HEIGHT = CONFIG.getBulletConfig(SNIPER_NAME).getHeight();
 const int WIDTH = CONFIG.getBulletConfig(SNIPER_NAME).getWidth();
+const int HORIZONTAL_ANGLE = 180;
 
 Bullet::Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
                int range, BulletId id, bool isRight, bool upwards)
@@ -17,16 +19,15 @@ Bullet::Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
       traveledDistance(0), upwards(upwards) {}
 
 void Bullet::update() {
-  double radianAngle = angle * (PI / 180.0);
+  double radianAngle = angle * (PI / HORIZONTAL_ANGLE);
 
   int deltaX =
-      static_cast<int>(CONFIG.getBulletSpeed() * std::cos(radianAngle));
-  int deltaY = static_cast<int>(10 * std::sin(radianAngle));
+      static_cast<int>(SPEED_X * std::cos(radianAngle));
+  int deltaY = static_cast<int>(SPEED_Y * std::sin(radianAngle));
 
   if (upwards) {
     pos_x -= deltaX;
-    pos_y -= CONFIG.getBulletSpeed();
-    ;
+    pos_y -= SPEED_Y;
   } else if (isRight) {
     pos_x += deltaX;
     pos_y += deltaY;
@@ -34,9 +35,11 @@ void Bullet::update() {
     pos_x -= deltaX;
     pos_y -= deltaY;
   }
+
   if (id == BulletId::LASER_REBOUND) {
     id = BulletId::LASER_BEAM;
   }
+
   int distanceMoved = std::sqrt(deltaX * deltaX + deltaY * deltaY);
   traveledDistance += distanceMoved;
 }
@@ -54,15 +57,12 @@ void Bullet::bounce(bool isHorizontalCollision, bool isTopCollision) {
         id = BulletId::LASER_REBOUND; 
 
         if (isHorizontalCollision) {
-            angle = 180 - angle;
-        } else {
-            if (isTopCollision) {
-                angle = 360 - angle; 
-            } else {
-                angle = 180 - angle;
-            }
+            angle = HORIZONTAL_ANGLE - angle;
+        } else if (isTopCollision) {
+             angle = 360 - angle; 
         }
-         if (angle < 0) {
+
+        if (angle < 0) {
             angle += 360; 
         } else if (angle >= 360) {
             angle -= 360; 

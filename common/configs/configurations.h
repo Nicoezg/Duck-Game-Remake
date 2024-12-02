@@ -23,7 +23,8 @@
 
 class Configurations {
 private:
-  int bullet_speed;
+  int bullet_speed_y;
+  int bullet_speed_x;
 
   DuckConfig duck;
 
@@ -34,12 +35,14 @@ private:
 public:
   static const Configurations &configurations();
 
-  int getBulletSpeed() const;
-
   const BulletConfig &getBulletConfig(const std::string &weapon_name) const;
 
   const DuckConfig &getDuckConfig() const;
 
+  int getBulletSpeedX() const;
+
+  int getBulletSpeedY() const;
+  
   explicit Configurations(const YAML::Node &configurations);
 
   DuckConfig read_duck_config(const YAML::Node &configurations);

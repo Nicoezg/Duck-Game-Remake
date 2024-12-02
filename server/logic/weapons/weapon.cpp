@@ -4,6 +4,11 @@
 #include "server/logic/throwables/banana.h"
 #include <iostream>
 
+const int ANGLE_ADJUSTMENT = 90;
+const int POS_X_UPWARDS_ADJUSTMENT = 10;
+const int POS_X_ADJUSTMENT = 15;
+const int POS_Y_ADJUSTMENT = 20;
+
 
 void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
                           BulletId id) {
@@ -11,24 +16,24 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
   int posX;
   int posY;
 
-  if (owner->isAimingUpwards() && owner->getDirection()) {
-    angle += 90;
-    posX = owner->getPositionX() + 10;
-    posY = owner->getPositionY() - 20;
-  } else if (owner->isAimingUpwards() && !owner->getDirection()) {
-    angle += 90;
-    posX = owner->getPositionX() + 23;
-    posY = owner->getPositionY() - 20;
+  
+  if (owner->isAimingUpwards()) {
+    angle += ANGLE_ADJUSTMENT;
+    posY = owner->getPositionY() - POS_Y_ADJUSTMENT;
+    if (owner->getDirection()) {
+      posX = owner->getPositionX() + POS_X_UPWARDS_ADJUSTMENT;
+    } else {
+      posX = owner->getPositionX() - POS_X_UPWARDS_ADJUSTMENT;
+    }
   } else {
+    posY = owner->getPositionY() + POS_Y_ADJUSTMENT;
     if (owner->getDirection()) {
       if (angle != 0) {
         angle = -angle;
       }
-      posX = owner->getPositionX() + 15;
-      posY = owner->getPositionY() + 20;
+      posX = owner->getPositionX() + POS_X_ADJUSTMENT;
     } else if (!owner->getDirection()) {
-      posX = owner->getPositionX() - 15;
-      posY = owner->getPositionY() + 20;
+      posX = owner->getPositionX() - POS_X_ADJUSTMENT;
     }
   }
 

@@ -8,7 +8,6 @@ const int COOLDOWN = CONFIG.getBulletConfig(NAME).getCooldown();
 
 LaserRifle::LaserRifle(GameMap &map)
     : Weapon(map, AMMO, REACH, WeaponId::LASER_RIFLE) {
-  reloadTime = 0.1f;
   shotCount = 0;
 }
 
@@ -23,7 +22,7 @@ void LaserRifle::shoot(Duck *owner) {
       ammo--;
       lastShotTime = 0;
       shotCount++;
-    }
+    } 
   }
 }
 

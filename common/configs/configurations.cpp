@@ -37,7 +37,8 @@ Configurations::Configurations(const YAML::Node &configurations) :
         duck(read_duck_config(configurations)), weapons(read_weapons_configs(configurations)), editor(read_editor_config(configurations)) {
 
     // bullets
-    bullet_speed = configurations["bullet"]["speed"].as<int>();
+    bullet_speed_x = configurations["bullet"]["speed_x"].as<int>();
+    bullet_speed_y = configurations["bullet"]["speed_y"].as<int>();
 
 }
 
@@ -49,8 +50,12 @@ const DuckConfig &Configurations::getDuckConfig() const {
     return duck;
 }
 
-int Configurations::getBulletSpeed() const {
-    return bullet_speed;
+int Configurations::getBulletSpeedX() const {
+    return bullet_speed_x;
+}
+
+int Configurations::getBulletSpeedY() const {
+    return bullet_speed_y;
 }
 
 

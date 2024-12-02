@@ -95,8 +95,6 @@ public:
 
     bool dropWeapon();
 
-    bool impact(Bullet &bullet);
-
     void reset(int pos_x, int pos_y);
 };
 

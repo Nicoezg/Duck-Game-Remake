@@ -36,15 +36,6 @@ target_sources(SERVER
         logic/throwables/grenade.cpp
         logic/throwables/banana.cpp
 
-        logic/collisions/collision_radius.cpp
-        logic/collisions/collision_radius.h
-        logic/collisions/coordinate.cpp
-        logic/collisions/coordinate.h
-        logic/collisions/position.cpp
-        logic/collisions/position.h
-
-
-
     PUBLIC
     # .h files
         game.h

@@ -1,4 +1,3 @@
-
 #include "game_map.h"
 #include "common/events/player.h"
 #include "explosion.h"
@@ -9,6 +8,7 @@
 #include <ctime>
 #include <random>
 
+const int TILE_SIZE = 16;
 
 GameMap::GameMap() : winner_id(0), rounds(0), reset(false) {
   loadMap();
@@ -28,7 +28,7 @@ void GameMap::addPlayer(int player_id) {
     int spawn_index = player_id % map.spawns.size();
     auto& spawn = map.spawns[spawn_index];
 
-    Duck *duck = new Duck(player_id, spawn.x * 16, spawn.y * 16, *this);
+    Duck *duck = new Duck(player_id, spawn.x * TILE_SIZE, spawn.y * TILE_SIZE, *this);
     players.push_back(duck);
 }
 
@@ -46,37 +46,23 @@ void GameMap::addExplosion(std::unique_ptr<Explosion> explosion) {
 
 void GameMap::addCrate() {
     for (auto &crate: map.boxes) {
-        crates.push_back({crate.get_hp(), crate.get_posx() *16, crate.get_posy() *16}); 
+        crates.push_back({crate.get_hp(), crate.get_posx() *TILE_SIZE, crate.get_posy() *TILE_SIZE}); 
     }
 }
 
 void GameMap::addSpawnItem() {
     for (auto &itemSpawn: map.armors) {
-        itemSpawns.push_back({itemSpawn.x * 16, itemSpawn.y *16, ItemSpawnId::CHESTPLATE_SPAWN, false}); 
+        itemSpawns.push_back({itemSpawn.x * TILE_SIZE, itemSpawn.y *TILE_SIZE, ItemSpawnId::CHESTPLATE_SPAWN, false}); 
     }
     for (auto &itemSpawn: map.helmets) {
-        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, ItemSpawnId::HELMET_SPAWN, false}); 
+        itemSpawns.push_back({itemSpawn.x *TILE_SIZE, itemSpawn.y *TILE_SIZE, ItemSpawnId::HELMET_SPAWN, false}); 
     }
 
     for (auto &itemSpawn: map.weaponSpawns) {
         ItemSpawnId weapon = getRandomWeapon();
-        itemSpawns.push_back({itemSpawn.x *16, itemSpawn.y *16, weapon, false}); 
+        itemSpawns.push_back({itemSpawn.x *TILE_SIZE, itemSpawn.y *TILE_SIZE, weapon, false}); 
     }
 } 
-
-ItemSpawnId GameMap::getRandomWeapon() {
-    int randomValue = std::rand() % 10 + 1;
-    return static_cast<ItemSpawnId>(randomValue);
-}
- 
-Duck *GameMap::findPlayer(int playerId) {
-    for (auto player: players) {
-        if (player->getId() == playerId) {
-            return player;
-        }
-    }
-    return nullptr;
-}
 
 void GameMap::update() {
 
@@ -98,7 +84,6 @@ void GameMap::update() {
                                  }),
                   bullets.end());
 
-    //checkBulletCollisionWithPlayers();
     bulletCollisions();
     bulletCollisionWithPlatforms();
 
@@ -141,30 +126,18 @@ void GameMap::update() {
     }
 }
 
-/*void GameMap::checkBulletCollisionWithPlayers() {
-    for (auto player: players) {
-        if (player->getState() == State::DEAD) {
-            continue;
-        }
-        for (auto it = bullets.begin(); it != bullets.end();) {
-            if (player->impact(**it)) {
-                it = bullets.erase(it);
-            } else {
-                it++;
-            }
-        }
-    }
-} */
+
+// colisiones 
 
 bool GameMap::checkCollisionsWithBorders(int playerId) {
     Duck *player = findPlayer(playerId);
     if (!player)
         return true;
 
-    if (player->getPositionX() >= map.width * 16 || player->getPositionX() <= -30) {
+    if (player->getPositionX() >= map.width * TILE_SIZE || player->getPositionX() <= -30) {
         return true;
     }
-    if (player->getPositionY() >= map.height * 16 ) {
+    if (player->getPositionY() >= map.height * TILE_SIZE ) {
         return true;
     }
     return false;
@@ -175,8 +148,8 @@ void GameMap::bulletCollisionWithPlatforms() {
         hitBox bulletBox = {bullet->getPosX(), bullet->getPosY(), 8, 1};
 
         for (auto &structure : map.structures) {
-            hitBox structureBox = {structure.start_x * 16, structure.start_y * 16,
-                                   (structure.end_x + 1 - structure.start_x) * 16, (structure.end_y+1 - structure.start_y) * 16};
+            hitBox structureBox = {structure.start_x * TILE_SIZE, structure.start_y * TILE_SIZE,
+                                   (structure.end_x + 1 - structure.start_x) * TILE_SIZE, (structure.end_y+1 - structure.start_y) * TILE_SIZE};
 
             if (hitBox::isColliding(bulletBox, structureBox)) {
                 bool isTopCollision = false; 
@@ -195,6 +168,303 @@ void GameMap::bulletCollisionWithPlatforms() {
     }
 }
 
+void GameMap::bulletCollisions() {
+
+    for (const auto &player: players) {
+
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
+
+        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+        for (auto it = bullets.begin(); it != bullets.end();) {
+
+            hitBox bulletBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 1};
+            if (hitBox::isColliding(duckBox, bulletBox) && player->getId() != (*it)->getOwnerId()) {
+
+                player->takeDamage();
+                it = bullets.erase(it);
+                break;
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
+ItemSpawnId GameMap::itemCollisions(int player_id) {
+
+    Duck *player = findPlayer(player_id);
+    ItemSpawnId item = ItemSpawnId::NOTHING_SPAWN;
+
+    hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+
+    for (auto &spawn: itemSpawns) {
+        if (!spawn.isAvailable()) {
+            continue;
+        }
+
+        hitBox itemBox = {spawn.getPosX(), spawn.getPosY(), TILE_SIZE, TILE_SIZE};
+
+        if (hitBox::isColliding(duckBox, itemBox) && player->canPickUp(spawn.getContent())) {
+            spawn.notAvailable();
+            return spawn.getContent();
+        }
+    }
+    
+    return item;
+}
+
+void GameMap::bulletCollisionsWithCrates() {
+    std::vector<std::shared_ptr<Bullet>> bulletsToRemove;
+
+    for (auto crateIt = crates.begin(); crateIt != crates.end();) {
+        hitBox crateBox = {crateIt->get_posx(), crateIt->get_posy(), TILE_SIZE, TILE_SIZE};
+        for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt) {
+            hitBox bulletBox = {(*bulletIt)->getPosX(), (*bulletIt)->getPosY(), 8, 1};
+            if (hitBox::isColliding(crateBox, bulletBox)) {
+                if (crateIt->get_hp() == 0) {
+                    crateIt = crates.erase(crateIt);
+                    break;
+                }
+                crateIt->shoot();
+                
+                if (crateIt->get_hp() == 0) {
+                    if (crateIt->get_content() == ItemSpawnId::EXPLOSION_SPAWN) {
+                        addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx() + 8, crateIt->get_posy() + 8));
+                    } else {
+                        itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
+                    }
+                    break;
+                }
+                
+                bulletsToRemove.push_back(*bulletIt);
+            }
+        }
+        for (auto& bullet : bulletsToRemove) {
+            bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
+        }
+        
+        bulletsToRemove.clear();
+
+        if (crateIt != crates.end()) {
+            ++crateIt;
+        }
+
+    }
+
+}
+
+void GameMap::explosionCollisions() {
+    for (const auto &player: players) {
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
+    
+        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+        for (auto it = explosions.begin(); it != explosions.end();) {
+            std::vector<Duck*> &damagedPlayers=(*it)->getPlayersDamaged();
+            bool damaged = false;
+            for (auto damagedPlayer: damagedPlayers) {
+                if (player->getId() == damagedPlayer->getId()) {
+                    damaged = true;
+                    break;
+                }
+            }
+            if (damaged) {
+                ++it;
+                continue;
+            }
+
+            hitBox explosionBox = {(*it)->getPosX(), (*it)->getPosY(), (*it)->getRadius(), (*it)->getRadius()};
+            if (hitBox::isColliding(duckBox, explosionBox)) {
+                player->takeDamage();
+                (*it)->addPlayerDamaged(player);
+            } 
+            ++it;
+        }
+    }
+}
+
+void GameMap::bananaCollisions() {
+    for (const auto &player: players) {
+        if (player->getState() == State::DEAD) {
+            continue;
+        }
+        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
+        for (auto it = throwables.begin(); it != throwables.end();) {
+            if ((*it)->getId() != THROWN_BANANA_V2) {
+                ++it;
+                continue;
+            }
+            if (!(*it)->isCollidable()) {
+                ++it;
+                continue;
+            }
+
+            hitBox bananaBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 4};
+            if (hitBox::isColliding(duckBox, bananaBox)) {
+                player->collideWithBanana();
+                (*it)->consume();   
+
+            }
+            ++it;
+        }
+    }
+}
+
+
+// estados
+
+std::list<BulletDTO> GameMap::getBulletsState() {
+    std::list<BulletDTO> bulletsList;
+
+    for (const auto &bullet: bullets) {
+        bulletsList.emplace_back(bullet->toDTO());
+    }
+
+    return bulletsList;
+}
+
+std::list<ExplosionDTO> GameMap::getExplosionsState() {
+    std::list<ExplosionDTO> explosionsList;
+    for (const auto &explosion: explosions) {
+        explosionsList.emplace_back(explosion->toDTO());
+    }
+    return explosionsList;
+}
+
+std::list<PlayerDTO> GameMap::getState() {
+    std::list<PlayerDTO> playersList;
+    for (auto player: players) {
+        playersList.emplace_back(player->toDTO());
+    }
+    return playersList;
+}
+
+std::list<CrateDTO> GameMap::getCratesState() {
+    std::list<CrateDTO> cratesList;
+    for (auto crateIt = crates.begin(); crateIt != crates.end();) {
+        cratesList.emplace_back(crateIt->toDto());
+        crateIt->resetHitState();
+        ++crateIt;
+    }
+    return cratesList;
+}
+
+std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
+    std::list<ItemSpawnDTO> itemSpawnsList;
+    for (const auto &itemSpawn: itemSpawns) {
+        if (itemSpawn.isAvailable()){
+            itemSpawnsList.emplace_back(itemSpawn.toDTO());
+        }
+    } 
+    return itemSpawnsList;
+}
+
+std::list<ThrowableDTO> GameMap::getThrowablesState() {
+    std::list<ThrowableDTO> throwablesList;
+     for (const auto &throwable: throwables) {
+        throwablesList.emplace_back(throwable->toDTO());
+    } 
+    return throwablesList;
+}
+
+MapDTO GameMap::getMapDTO() { return mapLoader.getNextMapDTO(); }
+
+Map GameMap::getMap() { return map; }
+
+
+// manejo de jugadores
+
+bool GameMap::check_players_alive() {
+    int playersAlive = players.size();
+    for (auto player: players) {
+        if (player->getState() == State::DEAD) {
+            playersAlive--;
+        }
+    }
+    if (playersAlive == 1) {
+        for (auto player: players) {
+            if (player->getState() != State::DEAD) {
+                player->increaseWins();
+            }
+        }
+    }
+    return playersAlive <= 1;
+}
+
+bool GameMap::check_finished(){
+    if (rounds < 10 || rounds % 5 != 0) {
+        return false;
+    }
+    uint8_t maxWins = 0;
+    bool draw = false;
+    for (auto player: players) {
+        int wins = player->getWins();
+        if (wins > maxWins && wins >= 10) {
+            winner_id = player->getId();
+            maxWins = wins;
+            draw = false;
+        }
+        else if (player->getWins() == maxWins){
+            draw = true;
+        }
+    }
+    if (winner_id && !draw){
+        return true;
+    }
+    return false;
+}
+
+void GameMap::reset_round() {
+    rounds++;
+    reset = true;
+
+    bullets.clear();
+    explosions.clear();
+    crates.clear();
+    throwables.clear();
+    itemSpawns.clear();
+
+    loadMap();
+
+    for (auto player: players) {
+        int id = player->getId();
+        int spawn_index = id % map.spawns.size();
+            auto& spawn = map.spawns[spawn_index];
+        player->reset(spawn.x * TILE_SIZE, spawn.y * TILE_SIZE);
+
+    }
+}
+
+void GameMap::killAll(int duckId) {
+    for (auto player: players) {
+        if (player->getId() != duckId){
+            player->die();
+        }
+    }
+}
+
+int GameMap::get_winner_id() { return winner_id; }
+
+int GameMap::getRounds() { return rounds;}
+
+bool GameMap::pauseForScores() {return reset && (rounds % 5) == 0;}
+
+int GameMap::getPlayerWins(int playerId) {
+    for (auto player: players) {
+        if (player->getId() == playerId) {
+            return player->getWins();
+        }
+    }
+    return 0;
+}
+
+bool GameMap::isResetting(){return reset;}
+
+
+// manejo de acciones
 
 void GameMap::process_action(std::shared_ptr<Action> &action) {
     int player_id = action->get_player_id();
@@ -300,222 +570,19 @@ void GameMap::process_action(std::shared_ptr<Action> &action) {
     }
 }
 
-std::list<BulletDTO> GameMap::getBulletsState() {
-    std::list<BulletDTO> bulletsList;
 
-    for (const auto &bullet: bullets) {
-        bulletsList.emplace_back(bullet->toDTO());
-    }
-
-    return bulletsList;
+ItemSpawnId GameMap::getRandomWeapon() {
+    int randomValue = std::rand() % 10 + 1;
+    return static_cast<ItemSpawnId>(randomValue);
 }
 
-std::list<ExplosionDTO> GameMap::getExplosionsState() {
-    std::list<ExplosionDTO> explosionsList;
-    for (const auto &explosion: explosions) {
-        explosionsList.emplace_back(explosion->toDTO());
-    }
-    return explosionsList;
-}
-
-std::list<PlayerDTO> GameMap::getState() {
-    std::list<PlayerDTO> playersList;
+Duck *GameMap::findPlayer(int playerId) {
     for (auto player: players) {
-        playersList.emplace_back(player->toDTO());
-    }
-    return playersList;
-}
-
-std::list<CrateDTO> GameMap::getCratesState() {
-    std::list<CrateDTO> cratesList;
-    for (auto crateIt = crates.begin(); crateIt != crates.end();) {
-        cratesList.emplace_back(crateIt->toDto());
-        crateIt->resetHitState();
-        ++crateIt;
-    }
-    return cratesList;
-}
-
-std::list<ItemSpawnDTO> GameMap::getItemSpawnsState() {
-    std::list<ItemSpawnDTO> itemSpawnsList;
-    for (const auto &itemSpawn: itemSpawns) {
-        if (itemSpawn.isAvailable()){
-            itemSpawnsList.emplace_back(itemSpawn.toDTO());
-        }
-    } 
-    return itemSpawnsList;
-}
-
-std::list<ThrowableDTO> GameMap::getThrowablesState() {
-    std::list<ThrowableDTO> throwablesList;
-     for (const auto &throwable: throwables) {
-        throwablesList.emplace_back(throwable->toDTO());
-    } 
-    return throwablesList;
-}
-
-void GameMap::bulletCollisions() {
-
-    for (const auto &player: players) {
-
-        if (player->getState() == State::DEAD) {
-            continue;
-        }
-
-        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
-        for (auto it = bullets.begin(); it != bullets.end();) {
-
-            hitBox bulletBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 1};
-            if (hitBox::isColliding(duckBox, bulletBox) && player->getId() != (*it)->getOwnerId()) {
-
-                player->takeDamage();
-                it = bullets.erase(it);
-                break;
-            } else {
-                ++it;
-            }
+        if (player->getId() == playerId) {
+            return player;
         }
     }
-}
-
-ItemSpawnId GameMap::itemCollisions(int player_id) {
-
-    Duck *player = findPlayer(player_id);
-    ItemSpawnId item = ItemSpawnId::NOTHING_SPAWN;
-
-    hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
-
-    for (auto &spawn: itemSpawns) {
-        if (!spawn.isAvailable()) {
-            continue;
-        }
-
-        hitBox itemBox = {spawn.getPosX(), spawn.getPosY(), 16, 16};
-
-        if (hitBox::isColliding(duckBox, itemBox) && player->canPickUp(spawn.getContent())) {
-            spawn.notAvailable();
-            return spawn.getContent();
-        }
-    }
-    
-    return item;
-}
-
-void GameMap::bulletCollisionsWithCrates() {
-    std::vector<std::shared_ptr<Bullet>> bulletsToRemove;
-
-    for (auto crateIt = crates.begin(); crateIt != crates.end();) {
-        hitBox crateBox = {crateIt->get_posx(), crateIt->get_posy(), 16, 16};
-        for (auto bulletIt = bullets.begin(); bulletIt != bullets.end(); ++bulletIt) {
-            hitBox bulletBox = {(*bulletIt)->getPosX(), (*bulletIt)->getPosY(), 8, 1};
-            if (hitBox::isColliding(crateBox, bulletBox)) {
-                if (crateIt->get_hp() == 0) {
-                    crateIt = crates.erase(crateIt);
-                    break;
-                }
-                crateIt->shoot();
-                
-                if (crateIt->get_hp() == 0) {
-                    if (crateIt->get_content() == ItemSpawnId::EXPLOSION_SPAWN) {
-                        addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx() + 8, crateIt->get_posy() + 8));
-                    } else {
-                        itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
-                    }
-                    break;
-                }
-                /*if (crateIt->get_hp() == 0 && crateIt->get_content() != ItemSpawnId::EXPLOSION_SPAWN) {
-                    itemSpawns.push_back({crateIt->get_posx(), crateIt->get_posy(), crateIt->get_content(), true});
-                    break;
-                } else if (crateIt->get_hp() == 0 && crateIt->get_content() == ItemSpawnId::EXPLOSION_SPAWN) {
-                    addExplosion(std::make_unique<Explosion>(*this, crateIt->get_posx(), crateIt->get_posy()));
-                    break;
-                } */
-                
-                bulletsToRemove.push_back(*bulletIt);
-            }
-        }
-        for (auto& bullet : bulletsToRemove) {
-            bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
-        }
-        
-        bulletsToRemove.clear();
-
-        if (crateIt != crates.end()) {
-            ++crateIt;
-        }
-
-    }
-
-}
-
-void GameMap::explosionCollisions() {
-    for (const auto &player: players) {
-        if (player->getState() == State::DEAD) {
-            continue;
-        }
-    
-        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
-        for (auto it = explosions.begin(); it != explosions.end();) {
-            std::vector<Duck*> &damagedPlayers=(*it)->getPlayersDamaged();
-            bool damaged = false;
-            for (auto damagedPlayer: damagedPlayers) {
-                if (player->getId() == damagedPlayer->getId()) {
-                    damaged = true;
-                    break;
-                }
-            }
-            if (damaged) {
-                ++it;
-                continue;
-            }
-
-            hitBox explosionBox = {(*it)->getPosX(), (*it)->getPosY(), (*it)->getRadius(), (*it)->getRadius()};
-            if (hitBox::isColliding(duckBox, explosionBox)) {
-                player->takeDamage();
-                (*it)->addPlayerDamaged(player);
-            } 
-            ++it;
-        }
-    }
-}
-
-void GameMap::bananaCollisions() {
-    for (const auto &player: players) {
-        if (player->getState() == State::DEAD) {
-            continue;
-        }
-        hitBox duckBox = {player->getPositionX(), player->getPositionY(), 32, 32};
-        for (auto it = throwables.begin(); it != throwables.end();) {
-            if ((*it)->getId() != THROWN_BANANA_V2) {
-                ++it;
-                continue;
-            }
-            if (!(*it)->isCollidable()) {
-                ++it;
-                continue;
-            }
-
-            hitBox bananaBox = {(*it)->getPosX(), (*it)->getPosY(), 8, 4};
-            if (hitBox::isColliding(duckBox, bananaBox)) {
-                player->collideWithBanana();
-                (*it)->consume();   
-
-            }
-            ++it;
-        }
-    }
-}
-
-void GameMap::reapDead() {
-    auto it = std::remove_if(players.begin(), players.end(), [](Duck *player) {
-        if (player->getState() == State::DEAD) {
-            delete player;
-            return true;
-        }
-        return false;
-    });
-
-    players.erase(it, players.end());
+    return nullptr;
 }
 
 GameMap::~GameMap() {
@@ -527,93 +594,3 @@ GameMap::~GameMap() {
         bullet.reset();
     }
 }
-
-MapDTO GameMap::getMapDTO() { return mapLoader.getNextMapDTO(); }
-
-Map GameMap::getMap() { return map; }
-
-bool GameMap::check_players_alive() {
-    int playersAlive = players.size();
-    for (auto player: players) {
-        if (player->getState() == State::DEAD) {
-            playersAlive--;
-        }
-    }
-    if (playersAlive == 1) {
-        for (auto player: players) {
-            if (player->getState() != State::DEAD) {
-                player->increaseWins();
-            }
-        }
-    }
-    return playersAlive <= 1;
-}
-
-bool GameMap::check_finished(){
-    if (rounds < 10 || rounds % 5 != 0) {
-        return false;
-    }
-    uint8_t maxWins = 0;
-    bool draw = false;
-    for (auto player: players) {
-        int wins = player->getWins();
-        if (wins > maxWins && wins >= 10) {
-            winner_id = player->getId();
-            maxWins = wins;
-            draw = false;
-        }
-        else if (player->getWins() == maxWins){
-            draw = true;
-        }
-    }
-    if (winner_id && !draw){
-        return true;
-    }
-    return false;
-}
-
-void GameMap::reset_round() {
-    rounds++;
-    reset = true;
-
-    bullets.clear();
-    explosions.clear();
-    crates.clear();
-    throwables.clear();
-    itemSpawns.clear();
-
-    loadMap();
-
-    for (auto player: players) {
-        int id = player->getId();
-        int spawn_index = id % map.spawns.size();
-            auto& spawn = map.spawns[spawn_index];
-        player->reset(spawn.x * 16, spawn.y * 16);
-
-    }
-}
-
-void GameMap::killAll(int duckId) {
-    for (auto player: players) {
-        if (player->getId() != duckId){
-            player->die();
-        }
-    }
-}
-
-int GameMap::get_winner_id() { return winner_id; }
-
-int GameMap::getRounds() { return rounds;}
-
-bool GameMap::pauseForScores() {return reset && (rounds % 5) == 0;}
-
-int GameMap::getPlayerWins(int playerId) {
-    for (auto player: players) {
-        if (player->getId() == playerId) {
-            return player->getWins();
-        }
-    }
-    return 0;
-}
-
-bool GameMap::isResetting(){return reset;}

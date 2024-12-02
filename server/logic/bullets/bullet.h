@@ -4,7 +4,7 @@
 #include "common/events/items/bullet_dto.h"
 #include "common/events/items/bullet_macros.h"
 #include "../../../common/configs/configurations.h"
-#include "server/logic/collisions/position.h"
+
 
 class Bullet {
 private:
@@ -44,9 +44,7 @@ public:
 
     BulletDTO toDTO() const;
 
-    bool impact(Position &other_position);
-
-    bool impact(Position &other_position, int owner);
+   
 };
 
 #endif // BULLET_H
