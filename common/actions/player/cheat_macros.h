@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_CHEAT_MACROS_H
 #define TALLER_TP_CHEAT_MACROS_H
 
-enum CheatId{
+enum CheatId {
   GET_GRENADE = 0x01,
   GET_BANANA = 0x02,
   GET_PEW_PEW_LASER = 0x03,

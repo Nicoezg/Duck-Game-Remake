@@ -2,12 +2,12 @@
 #define DUCK_H
 
 #include "../../common/configs/configurations.h"
-#include "common/events/items/item_spawn.h" 
+#include "common/events/items/item_spawn.h"
+#include "explosion.h"
 #include "game_map.h"
+#include "hitBox.h"
 #include "weapons/weapon.h"
 #include <atomic>
-#include "hitBox.h"
-#include "explosion.h"
 
 class GameMap;
 
@@ -52,7 +52,7 @@ public:
   void shoot();
   void equipHelmet();
   void equipArmour();
-  void equipWeapon(std::unique_ptr<Weapon>&& newWeapon);
+  void equipWeapon(std::unique_ptr<Weapon> &&newWeapon);
   void takeDamage();
   bool canPickUp(ItemSpawnId item);
   void pickUp();
@@ -89,13 +89,13 @@ public:
   PlayerDTO toDTO() const;
   ~Duck();
 
-    void dropHelmet();
+  void dropHelmet();
 
-    void dropArmour();
+  void dropArmour();
 
-    bool dropWeapon();
+  bool dropWeapon();
 
-    void reset(int pos_x, int pos_y);
+  void reset(int pos_x, int pos_y);
 };
 
 #endif // DUCK_H

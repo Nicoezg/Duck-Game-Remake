@@ -1,15 +1,15 @@
 #ifndef TALLER_TP_CHESTPLATE_H
 #define TALLER_TP_CHESTPLATE_H
 
-#include <string>
 #include "helmet_macros.h"
+#include <string>
 
 class Chestplate {
 private:
-    bool equipped;
-  
+  bool equipped;
+
 public:
-  Chestplate(bool equipped = false);
+  explicit Chestplate(bool equipped = false);
 
   bool is_equipped() const;
 };

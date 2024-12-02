@@ -10,9 +10,9 @@ private:
   int player_id_2;
   std::list<PlayerData> players_data;
 
-
 public:
-  GameCreation(GameRoom game_room, int player_id_1, int player_id_2, std::list<PlayerData> players_data);
+  GameCreation(GameRoom game_room, int player_id_1, int player_id_2,
+               std::list<PlayerData> players_data);
 
   GameRoom get_game_room() const override;
 
@@ -26,7 +26,7 @@ public:
 
   int get_max_players() const override;
 
-    int get_actual_players() const override;
+  int get_actual_players() const override;
 };
 
 #endif // TALLER_TP_GAME_CREATION_H

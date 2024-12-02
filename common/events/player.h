@@ -5,9 +5,9 @@
 #ifndef TALLER_TP_PLAYER_H
 #define TALLER_TP_PLAYER_H
 
+#include "common/events/items/weapon_dto.h"
 #include "items/chestplate.h"
 #include "items/helmet.h"
-#include "common/events/items/weapon_dto.h"
 #include "player_macros.h"
 #include <string>
 
@@ -23,8 +23,9 @@ private:
   Chestplate chestplate;
 
 public:
-  PlayerDTO(int player_id, int position_x, int position_y, bool right, State state, WeaponDTO weapon,
-            HelmetDTO helmet, Chestplate chestplate);
+  PlayerDTO(int player_id, int position_x, int position_y, bool right,
+            State state, WeaponDTO weapon, HelmetDTO helmet,
+            Chestplate chestplate);
 
   int get_player_id() const;
 
@@ -36,7 +37,7 @@ public:
 
   State get_state() const;
 
-    WeaponDTO get_weapon() const;
+  WeaponDTO get_weapon() const;
 
   HelmetDTO get_helmet() const;
 

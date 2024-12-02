@@ -7,15 +7,14 @@ const int AMMO = CONFIG.getBulletConfig(NAME).getAmmo();
 const int REACH = CONFIG.getBulletConfig(NAME).getReach();
 const int COOLDOWN = CONFIG.getBulletConfig(NAME).getCooldown();
 
-Duelos::Duelos(GameMap &map) : Weapon(map, AMMO, REACH, WeaponId::DUEL_PISTOL) {}
+Duelos::Duelos(GameMap &map)
+    : Weapon(map, AMMO, REACH, WeaponId::DUEL_PISTOL) {}
 
 void Duelos::shoot(Duck *shooter) {
   if (hasAmmo()) {
-    createBullet(shooter, -15, false, reach, BulletId::SHOT);
+    createBullet(shooter, -10, false, reach, BulletId::SHOT);
     ammo--;
   }
 }
 
-void Duelos::replenishAmmo(){
-  ammo = AMMO;
-}
+void Duelos::replenishAmmo() { ammo = AMMO; }

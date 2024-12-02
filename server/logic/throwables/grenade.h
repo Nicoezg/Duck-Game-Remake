@@ -4,8 +4,8 @@
 #include "throwable.h"
 
 class ThrownGrenade : public Throwable {
-private:      
-  int framesToExplode; 
+private:
+  int framesToExplode;
   int framesRemaining;
   bool ownerHasGrenade;
   float angle;
@@ -13,10 +13,14 @@ private:
   int distance_travelled = 0;
 
 public:
-  ThrownGrenade(GameMap &map,bool isRight,int pos_x,int pos_y,int framesToexplode,bool aimingUp):Throwable(map,isRight,pos_x,pos_y,CONFIG.getBulletConfig(GRENADE_NAME).getReach(),THROWN_GRENADE_V2,false,aimingUp) , 
-  framesToExplode(framesToexplode),angle(0) {
+  ThrownGrenade(GameMap &map, bool isRight, int pos_x, int pos_y,
+                int framesToexplode, bool aimingUp)
+      : Throwable(map, isRight, pos_x, pos_y,
+                  CONFIG.getBulletConfig(GRENADE_NAME).getReach(),
+                  THROWN_GRENADE_V2, false, aimingUp),
+        framesToExplode(framesToexplode), angle(0) {
     startThrow = true;
-    framesRemaining=framesToExplode;
+    framesRemaining = framesToExplode;
   }
   void update() override;
 
@@ -24,8 +28,7 @@ public:
 
   bool isOver() const override { return framesRemaining == 0; }
 
-  void consume() override ;
-  
+  void consume() override;
 };
 
 #endif // GRENADE_THROWABLE_H

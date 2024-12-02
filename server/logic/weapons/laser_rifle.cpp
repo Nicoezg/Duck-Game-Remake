@@ -22,11 +22,11 @@ void LaserRifle::shoot(Duck *owner) {
       ammo--;
       lastShotTime = 0;
       shotCount++;
-    } 
+    }
   }
 }
 
-void LaserRifle::replenishAmmo(){
+void LaserRifle::replenishAmmo() {
   ammo = AMMO;
   shotCount = 0;
 }

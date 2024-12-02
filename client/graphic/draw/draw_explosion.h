@@ -1,26 +1,25 @@
 #ifndef EXPLOSION_H
 #define EXPLOSION_H
 
+#include "../../../common/events/items/explosion.h"
+#include "../sound.h"
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
 #include <memory>
-#include "../sound.h"
-#include "../../../common/events/items/explosion.h"
 
-class DrawExplosion{
-    private:
+class DrawExplosion {
+private:
+  SDL2pp::Renderer &renderer;
 
-    SDL2pp::Renderer &renderer;
+  std::shared_ptr<SDL2pp::Texture> texture;
 
-    std::shared_ptr<SDL2pp::Texture> texture;
+  Sound sound;
 
-    Sound sound;
+  SDL2pp::Rect explosionClip[6];
 
-    SDL2pp::Rect explosionClip[6];
+public:
+  explicit DrawExplosion(SDL2pp::Renderer &renderer);
 
-    public:
-    DrawExplosion(SDL2pp::Renderer &renderer);
-
-    void render(const ExplosionDTO& explosion);
+  void render(const ExplosionDTO &explosion);
 };
 #endif

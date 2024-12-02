@@ -1,28 +1,28 @@
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
 
+#include "box.h"
 #include "bullets/bullet.h"
-#include "throwables/throwable.h"
 #include "common/actions/base/action.h"
 #include "common/events/items/bullet_dto.h"
 #include "common/events/player.h"
-#include "box.h"
-#include "server/maploader.h"
-#include <list>
-#include <memory>
-#include <vector>
 #include "itemspawn.h"
-#include "weapons/grenade.h"
+#include "server/maploader.h"
+#include "throwables/throwable.h"
+#include "weapons/ak47.h"
 #include "weapons/banana.h"
+#include "weapons/cowboy.h"
+#include "weapons/duelos.h"
+#include "weapons/grenade.h"
 #include "weapons/laser_rifle.h"
 #include "weapons/magnum.h"
-#include "weapons/duelos.h"
 #include "weapons/pewpewlaser.h"
 #include "weapons/shotgun.h"
 #include "weapons/sniper.h"
 #include "weapons/weapon.h"
-#include "weapons/ak47.h"
-#include "weapons/cowboy.h"
+#include <list>
+#include <memory>
+#include <vector>
 
 class Duck;
 class Explosion;
@@ -40,7 +40,6 @@ private:
   int winner_id;
   int rounds;
   bool reset;
-
 
 public:
   GameMap();
@@ -102,11 +101,11 @@ public:
   void bulletCollisionsWithCrates();
 
   MapDTO getMapDTO();
-  
+
   Map getMap();
 
   void checkBulletCollisionWithPlayers();
-  
+
   bool check_players_alive();
 
   int get_winner_id();

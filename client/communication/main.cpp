@@ -2,12 +2,12 @@
 // Created by cafrada on 22/04/23.
 //
 
-//Using SDL, SDL_image, standard IO, and strings
+// Using SDL, SDL_image, standard IO, and strings
 #include "graphic/game.h"
 #include <iostream>
 
-#include "client.h"
 #include "../../common/socket/liberror.h"
+#include "client.h"
 
 #define EXIT_CODE '|'
 

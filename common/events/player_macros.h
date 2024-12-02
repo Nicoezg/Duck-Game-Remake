@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_PLAYER_MACROS_H
 #define TALLER_TP_PLAYER_MACROS_H
 
-enum State{
+enum State {
   BLANK = 0x00,
   DEAD = 0x01,
   JUMPING = 0x02,

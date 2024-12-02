@@ -5,14 +5,12 @@
 #ifndef TALLER_TP_REFRESH_GAMES_H
 #define TALLER_TP_REFRESH_GAMES_H
 
-
 #include "common/actions/base/action.h"
 
 class RefreshGames : public Action {
 
 public:
-    RefreshGames();
+  RefreshGames();
 };
 
-
-#endif //TALLER_TP_REFRESH_GAMES_H
+#endif // TALLER_TP_REFRESH_GAMES_H

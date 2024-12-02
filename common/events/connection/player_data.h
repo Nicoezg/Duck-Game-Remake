@@ -5,20 +5,19 @@
 #ifndef TALLER_TP_PLAYER_DATA_H
 #define TALLER_TP_PLAYER_DATA_H
 
-
 #include <string>
 
 class PlayerData {
 private:
-    int id;
-    std::string name;
+  int id;
+  std::string name;
+
 public:
-    PlayerData(int id, std::string name);
+  PlayerData(int id, std::string name);
 
-    int get_id() const;
+  int get_id() const;
 
-    std::string get_name() const;
+  std::string get_name() const;
 };
 
-
-#endif //TALLER_TP_PLAYER_DATA_H
+#endif // TALLER_TP_PLAYER_DATA_H

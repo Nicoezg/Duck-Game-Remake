@@ -35,17 +35,16 @@ public:
 
   virtual bool isReadyToShoot() const;
 
-
   void createBullet(Duck *owner, int angle, bool canBounce, int reach,
                     BulletId id);
 
-  void createThrowable(GameMap &map,Duck *owner,bool isGrenade,int framesToExplode);
-  
+  void createThrowable(GameMap &map, Duck *owner, bool isGrenade,
+                       int framesToExplode);
 
   WeaponId getWeaponId() const;
 
-    void increaseCooldown(int cooldownToAdd);
-    void decreaseCooldown();
+  void increaseCooldown(int cooldownToAdd);
+  void decreaseCooldown();
 
   virtual void replenishAmmo() = 0;
 

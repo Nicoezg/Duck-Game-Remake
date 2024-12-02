@@ -30,26 +30,25 @@ public:
 
   void run();
 
-    void send_action(std::shared_ptr<Action> &action);
+  void send_action(std::shared_ptr<Action> &action);
 
-    void close();
+  void close();
 
-    void set_game_code(int code);
+  void set_game_code(int code);
 
-    int get_game_code() const;
+  int get_game_code() const;
 
-    int get_player_id_1() const;
+  int get_player_id_1() const;
 
-    int get_player_id_2() const;
+  int get_player_id_2() const;
 
-    std::shared_ptr<Event> read_event();
+  std::shared_ptr<Event> read_event();
 
-    std::shared_ptr<Event> try_read();
+  std::shared_ptr<Event> try_read();
 
-    bool is_connected() const;
+  bool is_connected() const;
 
-    bool is_closed() const;
-
+  bool is_closed() const;
 };
 
 #endif // TALLER_TP_CLIENT_H

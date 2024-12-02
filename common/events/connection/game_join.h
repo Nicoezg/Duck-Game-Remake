@@ -9,31 +9,31 @@
 
 class GameJoin : public Event {
 private:
-    int player_id_1;
-    int player_id_2;
+  int player_id_1;
+  int player_id_2;
 
-    bool connected;
+  bool connected;
 
-    GameRoom game_room;
-    std::list<PlayerData> players_data;
+  GameRoom game_room;
+  std::list<PlayerData> players_data;
 
 public:
-    GameJoin(int player_id_1, int player_id_2, bool connected,
-             GameRoom game_room, std::list<PlayerData> players_data);
+  GameJoin(int player_id_1, int player_id_2, bool connected, GameRoom game_room,
+           std::list<PlayerData> players_data);
 
-    int get_player_id_1() const override;
+  int get_player_id_1() const override;
 
-    int get_player_id_2() const override;
+  int get_player_id_2() const override;
 
-    bool is_connected() const override;
+  bool is_connected() const override;
 
-    GameRoom get_game_room() const override;
+  GameRoom get_game_room() const override;
 
-    std::list<PlayerData> get_players_data() const override;
+  std::list<PlayerData> get_players_data() const override;
 
-    int get_max_players() const override;
+  int get_max_players() const override;
 
-    int get_actual_players() const override;
+  int get_actual_players() const override;
 };
 
 #endif // TALLER_TP_GAME_JOIN_H

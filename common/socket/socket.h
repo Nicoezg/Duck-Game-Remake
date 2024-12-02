@@ -166,6 +166,6 @@ public:
    * */
   ~Socket();
 
-    int shutdown_and_close(int how);
+  int shutdown_and_close(int how);
 };
 #endif

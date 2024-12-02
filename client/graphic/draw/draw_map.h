@@ -1,36 +1,34 @@
+#include "../../../common/events/map.h"
+#include <SDL2pp/SDL2pp.hh>
+#include <iostream>
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
-#include <iostream>
 #include <yaml-cpp/yaml.h>
-#include <SDL2pp/SDL2pp.hh>
-#include "../../../common/events/map.h"
 
-class DrawMap{
-    private:
+class DrawMap {
+private:
+  std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
-    std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
+  SDL2pp::Renderer &renderer;
 
-    SDL2pp::Renderer& renderer;
+  std::list<Tile> platforms;
 
-    std::list<Tile> platforms;
+  int backgroundId;
 
-    int backgroundId;
+  int height;
 
-    int height;
+  int width;
 
-    int width;
+public:
+  explicit DrawMap(SDL2pp::Renderer &renderer);
 
-    public:
+  void load(const Event &map);
 
-    DrawMap(SDL2pp::Renderer& renderer);
+  void render();
 
-    void load(const Event& map);
+  int getHeight() const;
 
-    void render();
-
-    int getHeight() const;
-
-    int getWidth() const;
+  int getWidth() const;
 };

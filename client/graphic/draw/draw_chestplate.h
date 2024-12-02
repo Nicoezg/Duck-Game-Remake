@@ -1,27 +1,26 @@
 #ifndef CHESTPLATE_H
 #define CHESTPLATE_H
 
+#include "../../../common/events/items/chestplate.h"
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
 #include <memory>
-#include "../../../common/events/items/chestplate.h"
 
 class DrawChestplate {
-    private:
-    std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
+private:
+  std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
-    SDL2pp::Renderer &renderer;
+  SDL2pp::Renderer &renderer;
 
-    bool equipped;
+  bool equipped;
 
-    public:
-    DrawChestplate(SDL2pp::Renderer &renderer, bool equipped = false);
+public:
+  explicit DrawChestplate(SDL2pp::Renderer &renderer, bool equipped = false);
 
-    void render(int x, int y, bool direction);
+  void render(int x, int y, bool direction);
 
-    void update(const Chestplate &chestplate);
+  void update(const Chestplate &chestplate);
 
-    bool isEquipped();
-
+  bool isEquipped();
 };
 #endif

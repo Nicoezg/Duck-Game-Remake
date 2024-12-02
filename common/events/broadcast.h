@@ -20,12 +20,12 @@ class Broadcast : public Event {
 private:
   std::list<PlayerDTO> players;
 
-  std::list<BulletDTO>
-      bullets;
+  std::list<BulletDTO> bullets;
 
   std::list<CrateDTO> crates;
 
-  std::list<ItemSpawnDTO> item_spawns; // Estos son los items que pueden aparecer en el mapa o al romper cajas.
+  std::list<ItemSpawnDTO> item_spawns; // Estos son los items que pueden
+                                       // aparecer en el mapa o al romper cajas.
 
   std::list<ExplosionDTO> explosions;
 
@@ -34,8 +34,8 @@ private:
 public:
   Broadcast(std::list<PlayerDTO> &&players, std::list<BulletDTO> &&bullets,
             std::list<CrateDTO> &&crates, std::list<ItemSpawnDTO> &&item_spawns,
-            std::list<ExplosionDTO> &&explosions, std::list<ThrowableDTO> &&throwables);
-
+            std::list<ExplosionDTO> &&explosions,
+            std::list<ThrowableDTO> &&throwables);
 
   std::list<PlayerDTO> get_players() const override;
 

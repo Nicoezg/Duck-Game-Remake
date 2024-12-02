@@ -60,7 +60,7 @@ public:
    */
   void close();
 
-    bool any_connected();
+  bool any_connected();
 };
 
 #endif // TALLER_TP_NOTIFIER_H

@@ -15,8 +15,8 @@ private:
   bool action;
 
 public:
-  ThrowableDTO(int position_x, int position_y, ThrowableId throwable_id, float angle,
-            bool direction, bool action);
+  ThrowableDTO(int position_x, int position_y, ThrowableId throwable_id,
+               float angle, bool direction, bool action);
 
   int get_position_x() const;
 

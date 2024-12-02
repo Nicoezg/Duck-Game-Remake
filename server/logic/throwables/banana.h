@@ -5,10 +5,10 @@
 
 class ThrownBanana : public Throwable {
 private:
+  bool consumed = false;
+  int distance_travelled = 0;
+  bool onGround = false;
 
-    bool consumed = false;
-    int distance_travelled = 0;
-    bool onGround = false;
 public:
   ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y, bool aimingUp);
 

@@ -1,15 +1,15 @@
 #ifndef TALLER_TP_HELMET_H
 #define TALLER_TP_HELMET_H
 
-#include <string>
 #include "helmet_macros.h"
+#include <string>
 
 class HelmetDTO {
 private:
-    HelmetId helmet_id;
-  
+  HelmetId helmet_id;
+
 public:
-  HelmetDTO(HelmetId helmet_id = NO_HELMET);
+  explicit HelmetDTO(HelmetId helmet_id = NO_HELMET);
 
   HelmetId get_id() const;
 };

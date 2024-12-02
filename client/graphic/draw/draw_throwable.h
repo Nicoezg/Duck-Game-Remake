@@ -18,7 +18,7 @@ private:
   Sound sound;
 
 public:
-  DrawThrowable(SDL2pp::Renderer &renderer);
+  explicit DrawThrowable(SDL2pp::Renderer &renderer);
 
   void render(const ThrowableDTO &throwable);
 };

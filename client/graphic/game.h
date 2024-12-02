@@ -1,104 +1,103 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "../../common/events/base/event.h"
+#include "../../common/events/broadcast.h"
+#include "../../common/events/game_over.h"
+#include "../../common/events/map.h"
+#include "../../common/events/score.h"
+#include "../communication/client.h"
+#include "action_handler.h"
+#include "camera.h"
+#include "draw/draw_bullet.h"
+#include "draw/draw_chestplate.h"
+#include "draw/draw_crate.h"
+#include "draw/draw_explosion.h"
+#include "draw/draw_helmet.h"
+#include "draw/draw_item.h"
+#include "draw/draw_map.h"
+#include "draw/draw_throwable.h"
+#include "draw/draw_weapon.h"
+#include "duck.h"
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
 #include <memory>
-#include <vector>
 #include <mutex>
-#include "../communication/client.h"
-#include "duck.h"
-#include "action_handler.h"
-#include "../../common/events/broadcast.h"
-#include "draw/draw_weapon.h"
-#include "draw/draw_chestplate.h"
-#include "draw/draw_helmet.h"
-#include "draw/draw_bullet.h"
-#include "draw/draw_crate.h"
-#include "draw/draw_map.h"
-#include "draw/draw_explosion.h"
-#include "draw/draw_item.h"
-#include "draw/draw_throwable.h"
-#include "../../common/events/base/event.h"
-#include "../../common/events/map.h"
-#include "../../common/events/score.h"
-#include "../../common/events/game_over.h"
-#include "camera.h"
+#include <vector>
 
 using namespace SDL2pp;
 
-class Game{
-    private:
-        //SDLTTF ttf;
-        
-        Client &client;
+class Game {
+private:
+  // SDLTTF ttf;
 
-        SDL sdl; 
+  Client &client;
 
-        SDLTTF ttf;
-        
-        Font font;
+  SDL sdl;
 
-        Window window;
+  SDLTTF ttf;
 
-        Renderer renderer;
+  Font font;
 
-        CameraZoom camera;
+  Window window;
 
-        Mixer mixer;
+  Renderer renderer;
 
-        Chunk backgroundMusic;
+  CameraZoom camera;
 
-        Chunk victoryMusic;
+  Mixer mixer;
 
-        DrawMap map;
+  Chunk backgroundMusic;
 
-        std::vector<std::shared_ptr<Duck>> ducks;
+  Chunk victoryMusic;
 
-        std::list<CrateDTO> crates;
+  DrawMap map;
 
-        std::list<BulletDTO> bullets;
+  std::vector<std::shared_ptr<Duck>> ducks;
 
-        std::list<ItemSpawnDTO> itemSpawns;
+  std::list<CrateDTO> crates;
 
-        std::list<ExplosionDTO> explosions;
+  std::list<BulletDTO> bullets;
 
-        std::list<ThrowableDTO> throwables;
+  std::list<ItemSpawnDTO> itemSpawns;
 
-        DrawItemSpawn item;
+  std::list<ExplosionDTO> explosions;
 
-        DrawBullet bullet;
+  std::list<ThrowableDTO> throwables;
 
-        DrawCrate crate;
+  DrawItemSpawn item;
 
-        DrawExplosion explosion;
+  DrawBullet bullet;
 
-        DrawThrowable throwable;
+  DrawCrate crate;
 
-        bool stop;
+  DrawExplosion explosion;
 
-        bool pause;
+  DrawThrowable throwable;
 
-        void loadTextures(Renderer &renderer);
+  bool stop;
 
-        void render();
+  bool pause;
 
-        int processEvent();
+  void loadTextures(Renderer &renderer);
 
-        void showVictoryScreen(const Event& gameOver);
+  void render();
 
-    public:
-        Game(Client &client);
+  int processEvent();
 
-        void update(const Event &broadcast);
+  void showVictoryScreen(const Event &gameOver);
 
-        void showScores(const Event& score);
+public:
+  explicit Game(Client &client);
 
-        void end(const Event& gameOver);
-        
-        int start();
+  void update(const Event &broadcast);
 
+  void showScores(const Event &score);
 
-    void update_state();
+  void end(const Event &gameOver);
+
+  int start();
+
+  void update_state();
 };
 #endif

@@ -15,7 +15,7 @@ void DrawBullet::render(const BulletDTO &bullet) {
   std::shared_ptr<SDL2pp::Texture> texture = this->textures[bullet.get_id()];
   SDL2pp::Rect dest(bullet.get_position_x(), bullet.get_position_y(),
                     texture->GetWidth(), texture->GetHeight());
-  
+
   if (bullet.get_id() == 1) {
     dest.w = dest.w / 2;
     dest.h = dest.h / 2;
@@ -25,7 +25,6 @@ void DrawBullet::render(const BulletDTO &bullet) {
   if (bullet.get_direction() && bullet.get_angle() < 90) {
     flip = SDL_FLIP_HORIZONTAL;
   }
-
 
   renderer.Copy(*texture, SDL2pp::NullOpt, dest, bullet.get_angle(),
                 SDL2pp::Point(), flip);

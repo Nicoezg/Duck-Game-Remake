@@ -7,7 +7,6 @@ class Still : public Action {
 private:
   int player_id;
   bool still;
-  
 
 public:
   Still(int player_id, bool still);

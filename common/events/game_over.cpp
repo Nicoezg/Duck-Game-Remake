@@ -6,4 +6,3 @@ GameOver::GameOver(PlayerData winner, int score)
 PlayerData GameOver::get_winner() const { return winner; }
 
 int GameOver::get_score() const { return score; }
-

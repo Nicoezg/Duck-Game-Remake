@@ -1,11 +1,11 @@
 #ifndef TALLER_TP_ACTION_H
 #define TALLER_TP_ACTION_H
 
+#include "../player/cheat_macros.h"
 #include "action_macros.h"
 #include "common/game_mode.h"
 #include <string>
 #include <vector>
-#include "../player/cheat_macros.h"
 
 class Action {
 private:
@@ -42,8 +42,8 @@ public:
 
   virtual bool is_picking_dropping() const;
 
-    virtual int get_max_players() const;
-  
+  virtual int get_max_players() const;
+
   virtual bool is_still() const;
 
   virtual CheatId get_cheat_id() const;

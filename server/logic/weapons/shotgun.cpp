@@ -21,6 +21,4 @@ void Shotgun::shoot(Duck *owner) {
   }
 }
 
-void Shotgun::replenishAmmo(){
-  ammo = AMMO;
-}
+void Shotgun::replenishAmmo() { ammo = AMMO; }

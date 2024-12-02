@@ -21,8 +21,7 @@ Bullet::Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
 void Bullet::update() {
   double radianAngle = angle * (PI / HORIZONTAL_ANGLE);
 
-  int deltaX =
-      static_cast<int>(SPEED_X * std::cos(radianAngle));
+  int deltaX = static_cast<int>(SPEED_X * std::cos(radianAngle));
   int deltaY = static_cast<int>(SPEED_Y * std::sin(radianAngle));
 
   if (upwards) {
@@ -53,21 +52,21 @@ bool Bullet::outOfRange() {
 }
 
 void Bullet::bounce(bool isHorizontalCollision, bool isTopCollision) {
-    if (canBounce) {
-        id = BulletId::LASER_REBOUND; 
-        if (isHorizontalCollision) {
-          angle = angle - HORIZONTAL_ANGLE;
-            
-        } else if (isTopCollision) {
-             angle = 360 - angle;
-        }
+  if (canBounce) {
+    id = BulletId::LASER_REBOUND;
+    if (isHorizontalCollision) {
+      angle = angle - HORIZONTAL_ANGLE;
 
-        if (angle < 0) {
-            angle += 360; 
-        } else if (angle >= 360) {
-            angle -= 360; 
-        }
+    } else if (isTopCollision) {
+      angle = 360 - angle;
     }
+
+    if (angle < 0) {
+      angle += 360;
+    } else if (angle >= 360) {
+      angle -= 360;
+    }
+  }
 }
 
 int Bullet::getPosX() const { return pos_x; }

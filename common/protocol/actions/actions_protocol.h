@@ -5,13 +5,12 @@
 #ifndef TALLER_TP_ACTIONS_PROTOCOL_H
 #define TALLER_TP_ACTIONS_PROTOCOL_H
 
+#include "common/actions/player/cheat.h"
 #include "common/protocol/common/encoder.h"
 #include "common/protocol/common/protocol.h"
 #include "common/socket/socket.h"
-#include "common/actions/player/cheat.h"
 #include <atomic>
 #include <memory>
-
 
 #define ACTION_TYPE_SIZE sizeof(int8_t)
 #define GAME_CODE_SIZE sizeof(uint32_t)
@@ -43,7 +42,6 @@
 #define SEND_AIMING_UPWARDS_SIZE (ACTION_TYPE_SIZE + READ_AIMING_UPWARDS_SIZE)
 #define SEND_PICK_DROP_SIZE (ACTION_TYPE_SIZE + READ_PICK_DROP_SIZE)
 #define SEND_CHEAT_SIZE (ACTION_TYPE_SIZE + READ_CHEAT_SIZE)
-
 
 class ActionsProtocol : public Protocol {
 private:
@@ -110,9 +108,10 @@ public:
 
   void send_start(const Action &action);
 
-    std::string read_player_name();
+  std::string read_player_name();
 
-    void add_name(const std::string &name, std::vector<int8_t> &data, size_t &offset);
+  void add_name(const std::string &name, std::vector<int8_t> &data,
+                size_t &offset);
 };
 
 #endif // TALLER_TP_ACTIONS_PROTOCOL_H

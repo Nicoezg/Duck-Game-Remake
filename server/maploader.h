@@ -1,12 +1,11 @@
 #ifndef MAPLOADER_H
 #define MAPLOADER_H
 
-#include <vector>
-#include <string>
-#include "structure.h"
-#include "logic/box.h"
 #include "common/events/map.h"
-
+#include "logic/box.h"
+#include "structure.h"
+#include <string>
+#include <vector>
 
 #define HELMENT_ID 3
 #define ARMOR_ID 2
@@ -15,34 +14,32 @@
 
 // En Map.h
 struct Map {
-    std::vector<Structure> structures;  // Plataformas    
-    std::vector<Spawn> spawns;          
-    std::vector<Helmet> helmets;
-    std::vector<Armor> armors;
-    std::vector<WeaponSpawn> weaponSpawns;
-    std::vector<Box> boxes;
-    std::string background;
-    int height;
-    int width;
-
-   
+  std::vector<Structure> structures; // Plataformas
+  std::vector<Spawn> spawns;
+  std::vector<Helmet> helmets;
+  std::vector<Armor> armors;
+  std::vector<WeaponSpawn> weaponSpawns;
+  std::vector<Box> boxes;
+  std::string background;
+  int height;
+  int width;
 };
 
-class MapLoader{
-    private:
-        std::vector<std::string> maps_paths;
-        std::vector<Map> maps;
-        std::vector<Map> logicMaps;
-        size_t lastMapIndex;
-    public:
-        MapLoader();
-        ~MapLoader();
+class MapLoader {
+private:
+  std::vector<std::string> maps_paths;
+  std::vector<Map> maps;
+  std::vector<Map> logicMaps;
+  size_t lastMapIndex;
 
-        Map getNextMap();
-        Map getactualMap();
-        Map getactualLogicMap();
-        MapDTO getNextMapDTO();
+public:
+  MapLoader();
+  ~MapLoader();
+
+  Map getNextMap();
+  Map getactualMap();
+  Map getactualLogicMap();
+  MapDTO getNextMapDTO();
 };
-
 
 #endif // MAPLOADER_H

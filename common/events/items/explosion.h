@@ -1,16 +1,15 @@
 #ifndef TALLER_TP_EXPLOSION_H
 #define TALLER_TP_EXPLOSION_H
 
+#include "bullet_macros.h"
 #include <cstdint>
 #include <string>
-#include "bullet_macros.h"
 
 class ExplosionDTO {
 private:
   int position_x;
   int position_y;
   uint8_t currentDuration; // Duracion actual de la explosión, va de 0 a 5.
-
 
 public:
   ExplosionDTO(int position_x, int position_y, uint8_t currentDuration);

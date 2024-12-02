@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_ITEM_SPAWN_MACROS_H
 #define TALLER_TP_ITEM_SPAWN_MACROS_H
 
-enum ItemSpawnId{
+enum ItemSpawnId {
   GRENADE_SPAWN = 0x01,
   BANANA_SPAWN = 0x02,
   PEW_PEW_LASER_SPAWN = 0x03,

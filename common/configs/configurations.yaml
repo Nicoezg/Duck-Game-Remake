@@ -11,7 +11,7 @@ duck:
 
 # bullet
 bullet:
-  speed_x: 3
+  speed_x: 5
   speed_y: 10
   height: 10
   width: 15

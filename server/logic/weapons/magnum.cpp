@@ -15,9 +15,6 @@ void Magnum::shoot(Duck *owner) {
     owner->standBack(5);
     ammo--;
   }
-  
 }
 
-void Magnum::replenishAmmo(){
-  ammo = AMMO;
-}
+void Magnum::replenishAmmo() { ammo = AMMO; }

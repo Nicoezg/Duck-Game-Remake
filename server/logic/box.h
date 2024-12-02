@@ -1,9 +1,8 @@
-#include <cstdint>
 #include "common/events/items/crate.h"
 #include "common/events/items/item_spawn.h"
+#include <cstdint>
 #ifndef BOX_H
-#define BOX_H 
-
+#define BOX_H
 
 class Box {
 private:

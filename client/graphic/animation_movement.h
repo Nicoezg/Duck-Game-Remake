@@ -1,28 +1,26 @@
 #ifndef ANIMATION_MOVEMENT_H
 #define ANIMATION_MOVEMENT_H
-#include <algorithm>
 #include "../../common/events/player_macros.h"
+#include <algorithm>
 
 class AnimationMovement {
-    private:
-    State currentType;
-    int frameCount;
-    int frameDuration;
-    bool looping;
+private:
+  State currentType;
+  int frameCount;
+  int frameDuration;
+  bool looping;
 
-    int getDurationForState(State type);
+  int getDurationForState(State type);
 
-    public:
+public:
+  AnimationMovement();
 
-    AnimationMovement();
+  void changeState(State newType, bool shouldLoop = true);
 
-    void changeState(State newType, bool shouldLoop = true);
+  int getCurrentFrame();
 
-    int getCurrentFrame();
+  void update(int frame);
 
-    void update(int frame);
-
-    State getCurrentType() const;
-
+  State getCurrentType() const;
 };
 #endif

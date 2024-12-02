@@ -1,8 +1,8 @@
 #ifndef TALLER_TP_CHEAT_H
 #define TALLER_TP_CHEAT_H
 
-#include "common/actions/base/action.h"
 #include "cheat_macros.h"
+#include "common/actions/base/action.h"
 
 class Cheat : public Action {
 private:

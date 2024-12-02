@@ -8,8 +8,10 @@
 #include <iostream>
 #include <stdexcept>
 
-Join::Join(int &game_code, GameMode game_mode, std::string &player_name_1, std::string &player_name_2)
-        : Action(JOIN_REQUEST), game_code(game_code), game_mode(game_mode), player_name_1(player_name_1), player_name_2(player_name_2) {}
+Join::Join(int &game_code, GameMode game_mode, std::string &player_name_1,
+           std::string &player_name_2)
+    : Action(JOIN_REQUEST), game_code(game_code), game_mode(game_mode),
+      player_name_1(player_name_1), player_name_2(player_name_2) {}
 
 int Join::get_game_code() const { return game_code; }
 

@@ -3,11 +3,11 @@
 
 class MonitorLobby;
 
+#include "common/actions/connection/join.h"
 #include "common/socket/socket.h"
 #include "common/thread.h"
 #include "monitor_games.h"
 #include "server_protocol.h"
-#include "common/actions/connection/join.h"
 #include <atomic>
 
 const int SIN_CODIGO = 0;
@@ -29,7 +29,7 @@ public:
 
   void close();
 
-  std::shared_ptr<Event> create_game(const Action& action);
+  std::shared_ptr<Event> create_game(const Action &action);
 
   std::shared_ptr<Event> not_connected_to_game();
 
@@ -37,7 +37,8 @@ public:
 
   std::shared_ptr<Event> process_action(const Action &action, int &game_code);
 
-    void set_players(const Action &action, int &player_id_1, int &player_id_2, const int &game_code);
+  void set_players(const Action &action, int &player_id_1, int &player_id_2,
+                   const int &game_code);
 };
 
 #endif // TALLER_TP_LOBBY_H

@@ -10,12 +10,12 @@
 #include "../items/explosion.h"
 #include "../tile.h"
 #include "common/events/connection/game_room.h"
-#include "common/events/items/weapon_dto.h"
-#include "common/events/items/item_spawn.h"
-#include "common/events/player.h"
-#include "common/events/items/throwable_dto.h"
-#include "event_type.h"
 #include "common/events/connection/player_data.h"
+#include "common/events/items/item_spawn.h"
+#include "common/events/items/throwable_dto.h"
+#include "common/events/items/weapon_dto.h"
+#include "common/events/player.h"
+#include "event_type.h"
 #include <list>
 #include <vector>
 
@@ -27,7 +27,7 @@ private:
 public:
   explicit Event(EventType type);
 
-  EventType get_type() const ;
+  EventType get_type() const;
 
   virtual bool is_connected() const;
 

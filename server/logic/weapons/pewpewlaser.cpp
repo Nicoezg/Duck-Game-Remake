@@ -22,6 +22,4 @@ void PewPewLaser::shoot(Duck *owner) {
   }
 }
 
-void PewPewLaser::replenishAmmo(){
-  ammo = AMMO;
-}
+void PewPewLaser::replenishAmmo() { ammo = AMMO; }

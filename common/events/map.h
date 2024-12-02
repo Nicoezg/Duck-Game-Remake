@@ -1,10 +1,10 @@
 #ifndef TALLER_TP_MAP_H
 #define TALLER_TP_MAP_H
 
+#include "base/event.h"
+#include "tile.h"
 #include <string>
 #include <vector>
-#include "tile.h"
-#include "base/event.h"
 
 class MapDTO : public Event {
 private:
@@ -16,7 +16,6 @@ private:
 
   int length;
 
-
 public:
   MapDTO(std::list<Tile> &&platforms, int background_id, int width, int length);
 
@@ -27,8 +26,6 @@ public:
   int get_width() const override;
 
   int get_length() const override;
-
-
 };
 
 #endif // TALLER_TP_MAP_H

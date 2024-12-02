@@ -12,8 +12,7 @@
 #include "common/thread.h"
 
 Server::Server(const char *service_name)
-    : socket(service_name), lobby(), is_running(true) {
-}
+    : socket(service_name), lobby(), is_running(true) {}
 
 void Server::run() {
   try {
