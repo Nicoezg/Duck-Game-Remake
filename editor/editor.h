@@ -14,7 +14,7 @@ namespace Ui {
 class Editor;
 }
 
-class Editor : public QWidget{
+class Editor : public QWidget {
   Q_OBJECT
 
 public:
@@ -27,7 +27,6 @@ private slots:
   void on_SaveButton_clicked();
   void on_LoadButton_clicked();
   void on_EraiserButton_clicked();
-
 
 protected:
   bool eventFilter(QObject *obj, QEvent *event) override;
@@ -47,7 +46,6 @@ private:
   void crearMapaVacio(int filas, int columnas);
   void cleanLayout(QGridLayout *layout);
   void cambiarFondo(int index);
-
 };
 
 #endif // EDITOR_H

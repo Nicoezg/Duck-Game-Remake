@@ -2,10 +2,10 @@
 #include "ui_editor.h"
 #include <QDir>
 #include <QFile>
+#include <QFileDialog>
 #include <QGridLayout>
 #include <QLabel>
 #include <QStackedWidget>
-#include <QFileDialog>
 #include <iostream>
 #include <yaml-cpp/yaml.h>
 #define TOTAL_TILES 52
@@ -18,15 +18,14 @@
 #define TILES_GRID_ID 0
 
 Editor::Editor(QWidget *parent)
-    : QWidget(parent), ui(new Ui::Editor), sprite_actual(nullptr), tileID(EMPTY_TILE){
+    : QWidget(parent), ui(new Ui::Editor), sprite_actual(nullptr),
+      tileID(EMPTY_TILE) {
   ui->setupUi(this);
-  
 
   cargarTodosLosTiles();
-  
-  filas=FILAS;
-  columnas=COLUMNAS;
 
+  filas = FILAS;
+  columnas = COLUMNAS;
 
   crearMapaVacio(filas, columnas);
   connect(ui->backgroundBox, &QComboBox::currentIndexChanged, this,
@@ -56,8 +55,8 @@ QStringList Editor::obtenerArchivosImagen(const QString &directorio) {
 
 void Editor::cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
                                  int &fila, int &columna) {
-  const int columnasMax = 4;  // Ajusta según la cantidad de columnas deseadas
-  const int tileSide = 16;    // Tamaño de cada tile
+  const int columnasMax = 4;   // Ajusta según la cantidad de columnas deseadas
+  const int tileSide = 16;     // Tamaño de cada tile
   const int displaySize = 128; // Tamaño de visualización en la UI
 
   QWidget *containerWidget = ui->scrollArea->widget();
@@ -89,8 +88,8 @@ void Editor::cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
       label->setProperty("grilla_id", TILES_GRID_ID);
       label->setProperty("tile_id", fila * columnasMax + columna);
       label->installEventFilter(this);
-      tiles.push_back(scaledTile.scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-      
+      tiles.push_back(scaledTile.scaled(32, 32, Qt::KeepAspectRatio,
+                                        Qt::SmoothTransformation));
 
       ui->tilesLayout->addWidget(label, fila, columna);
 
@@ -136,25 +135,24 @@ void Editor::crearMapaVacio(int filas, int columnas) {
       label->setProperty("grilla_id", MAP_GRID_ID);
       label->setProperty("tile_id", EMPTY_TILE);
       label->installEventFilter(this);
-            // Configurar el QLabel con un fondo transparente
+      // Configurar el QLabel con un fondo transparente
       label->setStyleSheet(
           "background-color: transparent; border: 1px solid #FFA500;");
       mapaLayout->addWidget(label, i, j);
     }
   }
-
 }
 
 bool Editor::eventFilter(QObject *obj, QEvent *event) {
   if (event->type() == QEvent::MouseButtonPress) {
     QLabel *label = qobject_cast<QLabel *>(obj);
     if (label) {
-      int grilla_id = label->property("grilla_id").toInt() ;
+      int grilla_id = label->property("grilla_id").toInt();
 
       if (grilla_id == TILES_GRID_ID) {
         // El label es un tile de la grilla
-        const QPixmap currentPixmap = label->pixmap().scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
+        const QPixmap currentPixmap = label->pixmap().scaled(
+            32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         if (sprite_actual) {
           delete sprite_actual;
@@ -192,14 +190,13 @@ void Editor::on_ExitButton_clicked() { QApplication::quit(); }
 
 void Editor::on_EraseButton_clicked() { cleanLayout(ui->mapLayout); }
 
-
 void Editor::on_SaveButton_clicked() {
   QString filename = yamlHandler.getSavefilename();
   if (filename.isEmpty() || !filename.endsWith(".yaml")) {
     return;
   }
 
-  yamlHandler.save(filename,ui->mapLayout, ui->backgroundBox,filas, columnas);
+  yamlHandler.save(filename, ui->mapLayout, ui->backgroundBox, filas, columnas);
 }
 
 void Editor::on_EraiserButton_clicked() {
@@ -210,7 +207,7 @@ void Editor::on_EraiserButton_clicked() {
 }
 
 void Editor::on_LoadButton_clicked() {
-  QString filename=yamlHandler.getLoadfilename();
+  QString filename = yamlHandler.getLoadfilename();
 
   if (filename.isEmpty() || !filename.endsWith(".yaml")) {
     return;
@@ -218,10 +215,9 @@ void Editor::on_LoadButton_clicked() {
 
   cleanLayout(ui->mapLayout);
 
-
   crearMapaVacio(filas, columnas);
-  
-  yamlHandler.load(filename,ui->mapLayout, ui->backgroundBox,tiles);
+
+  yamlHandler.load(filename, ui->mapLayout, ui->backgroundBox, tiles);
 }
 
 void Editor::cambiarFondo(int index) {
@@ -235,7 +231,8 @@ void Editor::cambiarFondo(int index) {
         "QWidget#mapWidget { border-image: url(:/images/lava.png) 0 0 0 0 "
         "stretch stretch; }");
   } else {
-    containerWidget->setStyleSheet("QWidget#mapWidget { border-image: url(:/images/nieve.png) 0 0 0 0 "
+    containerWidget->setStyleSheet(
+        "QWidget#mapWidget { border-image: url(:/images/nieve.png) 0 0 0 0 "
         "stretch stretch; }");
   }
 }
