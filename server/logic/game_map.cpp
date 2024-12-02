@@ -162,49 +162,23 @@ void GameMap::bulletCollisionWithPlatforms() {
                  (structure.end_x + 1 - structure.start_x) * TILE_SIZE,
                  (structure.end_y + 1 - structure.start_y) * TILE_SIZE);
 
-      if (hitBox::isColliding(bulletBox, structureBox)) {
-        bool isTopCollision = false;
-        bool isHorizontalCollision = false;
-        if ((bulletBox.y + bulletBox.height > structureBox.y &&
-             bulletBox.y < structureBox.y && bulletBox.x > structureBox.x &&
-             bulletBox.x + bulletBox.width <
-                 structureBox.x + structureBox.width) ||
-            (bulletBox.y < structureBox.y + structureBox.height &&
-             bulletBox.y + bulletBox.height > structureBox.y &&
-             bulletBox.x > structureBox.x &&
-             bulletBox.x + bulletBox.width <
-                 structureBox.x + structureBox.width)) {
-          isTopCollision = true;
-          std::cout << "VERTICAL COLLISION" << std::endl;
-        } else if ((bulletBox.x + bulletBox.width > structureBox.x &&
-                    bulletBox.x < structureBox.x &&
-                    bulletBox.y > structureBox.y &&
-                    bulletBox.y + bulletBox.height <
-                        structureBox.y + structureBox.height) ||
-                   (bulletBox.x < structureBox.x + structureBox.width &&
-                    bulletBox.x + bulletBox.width >
-                        structureBox.x + structureBox.width &&
-                    bulletBox.y > structureBox.y &&
-                    bulletBox.y + bulletBox.height <
-                        structureBox.y + structureBox.height)) {
-          std::cout << "Bullet x: " << bulletBox.x
-                    << " Bullet y: " << bulletBox.y << std::endl;
-          std::cout << "Bullet width: " << bulletBox.width
-                    << " Bullet height: " << bulletBox.height << std::endl;
-          std::cout << "Structure x: " << structureBox.x
-                    << " Structure y: " << structureBox.y << std::endl;
-          std::cout << "Structure width: " << structureBox.width
-                    << " Structure height: " << structureBox.height
-                    << std::endl;
-          std::cout << "HORIZONTAL COLLISION" << std::endl;
-          isHorizontalCollision = true;
-        } else {
-          isTopCollision = false;
+            if (hitBox::isColliding(bulletBox, structureBox)) {
+                bool isTopCollision = false; 
+                bool isHorizontalCollision = false; 
+                if ((bulletBox.y + bulletBox.height > structureBox.y && bulletBox.y < structureBox.y && bulletBox.x > structureBox.x && bulletBox.x + bulletBox.width < structureBox.x + structureBox.width)
+                    || (bulletBox.y < structureBox.y + structureBox.height && bulletBox.y + bulletBox.height > structureBox.y && bulletBox.x > structureBox.x && bulletBox.x + bulletBox.width < structureBox.x + structureBox.width))
+                {
+                    isTopCollision = true;
+                } else if ((bulletBox.x + bulletBox.width > structureBox.x && bulletBox.x < structureBox.x && bulletBox.y > structureBox.y && bulletBox.y + bulletBox.height < structureBox.y + structureBox.height) || 
+                         (bulletBox.x < structureBox.x  + structureBox.width && bulletBox.x + bulletBox.width > structureBox.x + structureBox.width && bulletBox.y > structureBox.y && bulletBox.y + bulletBox.height < structureBox.y + structureBox.height)) {
+                    isHorizontalCollision = true; 
+                } else {
+                    isTopCollision = false;
+                }
+                bullet->bounce(isHorizontalCollision, isTopCollision);
+            }
         }
-        bullet->bounce(isHorizontalCollision, isTopCollision);
-      }
     }
-  }
 }
 
 void GameMap::bulletCollisions() {

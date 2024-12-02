@@ -49,6 +49,10 @@ public:
   virtual void replenishAmmo() = 0;
 
   void reload();
+
+  virtual void resetConsecutiveShots();
+
+  virtual void increaseConsecutiveShots();
 };
 
 #endif // WEAPON_H

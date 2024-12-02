@@ -1,4 +1,5 @@
 #include "draw_bullet.h"
+#include <cstdlib>
 
 #define DATA_PATH "../client/sprites/"
 
@@ -22,7 +23,7 @@ void DrawBullet::render(const BulletDTO &bullet) {
   }
 
   SDL_RendererFlip flip = SDL_FLIP_NONE;
-  if (bullet.get_direction() && bullet.get_angle() < 90) {
+  if (bullet.get_direction()) {
     flip = SDL_FLIP_HORIZONTAL;
   }
 

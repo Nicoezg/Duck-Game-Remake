@@ -108,6 +108,8 @@ void Duck::update() {
   shooting = shootingCooldown > 0;
   if (shooting) {
     shootingCooldown--;
+  } else {
+    weapon->resetConsecutiveShots();
   }
 
   if (state == State::PLAYING_DEAD) {
@@ -244,6 +246,7 @@ void Duck::shoot() {
   if (weapon && weapon->isReadyToShoot() && state != State::PLAYING_DEAD) {
     shooting = true;
     weapon->shoot(this);
+    weapon->increaseConsecutiveShots();
     shootingCooldown = 1;
     if (weapon->getWeaponId() == WeaponId::BANANA) {
       weapon = std::make_unique<NoWeapon>(map);
