@@ -181,10 +181,10 @@ void GameMap::bulletCollisionWithPlatforms() {
             if (hitBox::isColliding(bulletBox, structureBox)) {
                 bool isTopCollision = false; 
                 bool isHorizontalCollision = false; 
-                if (bulletBox.y + bulletBox.height <= structureBox.y * 16) {
+                if (bulletBox.y + bulletBox.height >= structureBox.y) {
                     isTopCollision = true; 
-                } else if ((bulletBox.x + bulletBox.width <= structureBox.x * 16) || 
-                         (bulletBox.x >= structureBox.x * 16 + structureBox.width * 16)) {
+                } else if ((bulletBox.x + bulletBox.width >= structureBox.x) || 
+                         (bulletBox.x >= structureBox.x  + structureBox.width )) {
                     isHorizontalCollision = true; 
                 } else {
                     isTopCollision = false;

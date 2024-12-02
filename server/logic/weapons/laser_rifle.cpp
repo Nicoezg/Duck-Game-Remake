@@ -29,4 +29,5 @@ void LaserRifle::shoot(Duck *owner) {
 
 void LaserRifle::replenishAmmo(){
   ammo = AMMO;
+  shotCount = 0;
 }

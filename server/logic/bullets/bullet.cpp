@@ -21,7 +21,7 @@ void Bullet::update() {
 
   int deltaX =
       static_cast<int>(CONFIG.getBulletSpeed() * std::cos(radianAngle));
-  int deltaY = static_cast<int>(5 * std::sin(radianAngle));
+  int deltaY = static_cast<int>(10 * std::sin(radianAngle));
 
   if (upwards) {
     pos_x -= deltaX;

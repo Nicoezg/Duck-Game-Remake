@@ -123,7 +123,6 @@ void Duck::update() {
 
   if (state == State::PLAYING_DEAD) {
     velX = 0;
-    velY = 0;
     return;
   }
 
@@ -328,7 +327,6 @@ void Duck::playDead() {
   if (state != PLAYING_DEAD && !isFalling()) {
     state = PLAYING_DEAD;
     velX = 0;
-    velY = 0;
   }
 }
 
