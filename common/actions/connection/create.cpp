@@ -7,7 +7,8 @@
 #include "common/events/connection/game_creation.h"
 
 Create::Create(GameMode game_mode, int max_players, std::string game_name,
-               std::string player_name_1, std::string player_name_2)
+               const std::string &player_name_1,
+               const std::string &player_name_2)
     : Action(CREATE_REQUEST), game_mode(game_mode), max_players(max_players),
       game_name(game_name), player_name_1(player_name_1),
       player_name_2(player_name_2) {}

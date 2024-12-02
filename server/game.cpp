@@ -107,6 +107,7 @@ void Game::checkNewRound() {
     std::vector<std::pair<int, std::string>> score_name_pairs;
     // cppcheck-suppress useStlAlgorithm
     for (auto &player : players) {
+      // cppcheck-suppress useStlAlgorithm
       score_name_pairs.emplace_back(gameMap.getPlayerWins(player.first),
                                     player.second);
     }
@@ -171,6 +172,7 @@ std::list<PlayerData> Game::get_players_data() {
   std::list<PlayerData> players_data;
   // cppcheck-suppress useStlAlgorithm
   for (auto &player : players) {
+    // cppcheck-suppress useStlAlgorithm
     players_data.emplace_back(player.first, player.second);
   }
   return players_data;

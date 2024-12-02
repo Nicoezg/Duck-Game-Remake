@@ -121,7 +121,7 @@ ActionType ActionsProtocol::read_action_type() {
 void ActionsProtocol::send_refresh_action(const Action &action) {
   std::vector<int8_t> data(ACTION_TYPE_SIZE);
   size_t offset = 0;
-  offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+  encoder.encode_action_type(action.get_type(), &data[offset]);
   send(data.data(), data.size());
 }
 
@@ -227,7 +227,7 @@ std::shared_ptr<Action> ActionsProtocol::read_move_action() {
 void ActionsProtocol::send_start(const Action &action) {
   std::vector<int8_t> data(ACTION_TYPE_SIZE);
   size_t offset = 0;
-  offset += encoder.encode_action_type(action.get_type(), &data[offset]);
+  encoder.encode_action_type(action.get_type(), &data[offset]);
   send(data.data(), data.size());
 }
 

@@ -1,7 +1,7 @@
 #include "maploader.h"
+#include <algorithm>
 #include <filesystem>
 #include <iostream>
-#include <algorithm> 
 #include <yaml-cpp/yaml.h>
 
 #define PATH "../server/logic/maps/"
@@ -9,6 +9,7 @@
 MapLoader::MapLoader() {
   // cppcheck-suppress useStlAlgorithm
   for (const auto &entry : std::filesystem::directory_iterator(PATH)) {
+    // cppcheck-suppress useStlAlgorithm
     maps_paths.push_back(entry.path());
   }
   lastMapIndex = 0;
@@ -24,17 +25,17 @@ Map MapLoader::getNextMap() {
     lastMapIndex++;
     return mapa;
   }
-    if (maps.size() == maps_paths.size()) {
-        lastMapIndex++;
-        return logicMaps[lastMapIndex-1];
-    }
+  if (maps.size() == maps_paths.size()) {
+    lastMapIndex++;
+    return logicMaps[lastMapIndex - 1];
+  }
 
- YAML::Node map = YAML::LoadFile(maps_paths[lastMapIndex]);
+  YAML::Node map = YAML::LoadFile(maps_paths[lastMapIndex]);
 
-    if (map["Spawns"].size()==0) {
-        maps_paths.erase(maps_paths.begin() + lastMapIndex);
-        return getNextMap();
-    }      
+  if (map["Spawns"].size() == 0) {
+    maps_paths.erase(maps_paths.begin() + lastMapIndex);
+    return getNextMap();
+  }
 
   mapa.height = map["alto"].as<int>();
   mapa.width = map["ancho"].as<int>();
@@ -113,8 +114,7 @@ Map MapLoader::getNextMap() {
     }
   }
 
-
-    std::cout<<"Procese"<<std::endl;
+  std::cout << "Procese" << std::endl;
   // Guardar las estructuras fusionadas en el mapa lógico
   logicMap.structures = std::move(fusedStructures);
 
@@ -150,6 +150,7 @@ MapLoader::getNextMapDTO() { // en realidad devuelve al actual, pero hay que
   std::list<Tile> tiles;
   // cppcheck-suppress useStlAlgorithm
   for (auto structure : mapa.structures) {
+    // cppcheck-suppress useStlAlgorithm
     tiles.push_back({structure.start_x, structure.end_x, structure.start_y,
                      structure.end_y, structure.id});
   }
