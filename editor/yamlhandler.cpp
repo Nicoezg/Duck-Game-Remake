@@ -22,12 +22,6 @@ QString YamlHandler::getLoadfilename() {
   QString filename= QFileDialog::getOpenFileName(nullptr, QObject::tr("Open File"), "", QObject::tr("YAML Files (*.yaml)"));
   return filename;
 }
-
-EditorConfig YamlHandler::getEditorConfig(QString &filename) {
-  YAML::Node config = YAML::LoadFile(filename.toStdString());
-  return {config["ancho"].as<int>(), config["alto"].as<int>()};
-}
-
 void YamlHandler::save(QString &filename,QGridLayout *mapLayout,
                              QComboBox *backgroundBox,int filas, int columnas) {
   YAML::Emitter out;

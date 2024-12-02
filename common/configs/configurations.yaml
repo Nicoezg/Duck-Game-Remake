@@ -68,9 +68,3 @@ weapons:
     ammo: 3
     speed: 4
     cooldown: 40
-
-#editor 
-editor:
-  width: 40
-  height: 30
-  

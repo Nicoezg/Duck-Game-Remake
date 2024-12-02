@@ -95,7 +95,6 @@ add_library(COMMON STATIC
         common/configs/configurations.h
         common/configs/bullet_config.h
         common/configs/duck_config.h
-        common/configs/editor_config.h
 )
 
 # add the source files that make the lib

@@ -10,7 +10,6 @@
 #include <QLabel>
 #include <QComboBox>
 
-#include "../common/configs/editor_config.h"
 
 
 #define TOTAL_TILES 52
@@ -24,7 +23,6 @@ class YamlHandler{
         static void save( QString &filename,QGridLayout *layout, QComboBox *backgroundBox,int filas, int columnas);
         QString getSavefilename();
         QString getLoadfilename();
-        EditorConfig getEditorConfig(QString &filename);
         YamlHandler(){} ;
         ~YamlHandler(){};
     private:

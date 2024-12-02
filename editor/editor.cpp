@@ -11,7 +11,8 @@
 #define TOTAL_TILES 52
 #define SPAWN_TILE 48
 #define INTERACTUABLES_START 49
-#define FILAS 20
+#define FILAS 30
+#define COLUMNAS 40
 #define EMPTY_TILE -1
 #define MAP_GRID_ID 1
 #define TILES_GRID_ID 0
@@ -23,12 +24,11 @@ Editor::Editor(QWidget *parent)
 
   cargarTodosLosTiles();
   
-  EditorConfig editorconfig = CONFIG.getEditorConfig();
-  filas=editorconfig.alto;
-  columnas=editorconfig.ancho;
+  filas=FILAS;
+  columnas=COLUMNAS;
 
 
-  crearMapaVacio(editorconfig.alto, editorconfig.ancho);
+  crearMapaVacio(filas, columnas);
   connect(ui->backgroundBox, &QComboBox::currentIndexChanged, this,
           &Editor::cambiarFondo);
 }
@@ -217,12 +217,9 @@ void Editor::on_LoadButton_clicked() {
   }
 
   cleanLayout(ui->mapLayout);
-  EditorConfig editorconfig = yamlHandler.getEditorConfig(filename);
 
-  filas=editorconfig.alto;
-  columnas=editorconfig.ancho;
 
-  crearMapaVacio(editorconfig.alto, editorconfig.ancho);
+  crearMapaVacio(filas, columnas);
   
   yamlHandler.load(filename,ui->mapLayout, ui->backgroundBox,tiles);
 }

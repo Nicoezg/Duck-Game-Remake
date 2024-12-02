@@ -31,7 +31,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
-    if (status == QMediaPlayer::EndOfMedia) {
+    if (status >= QMediaPlayer::EndOfMedia) {
         player->setPosition(0);
         player->play();
     }

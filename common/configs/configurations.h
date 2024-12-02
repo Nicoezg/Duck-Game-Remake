@@ -3,7 +3,6 @@
 
 #include "bullet_config.h"
 #include "duck_config.h"
-#include "editor_config.h"
 #include <string>
 #include <yaml-cpp/yaml.h>
 
@@ -30,7 +29,6 @@ private:
 
   std::map<std::string, BulletConfig> weapons;
   
-  EditorConfig editor;
 
 public:
   static const Configurations &configurations();
@@ -47,12 +45,9 @@ public:
 
   DuckConfig read_duck_config(const YAML::Node &configurations);
 
-  EditorConfig read_editor_config(const YAML::Node &configurations);
-
   std::map<std::string, BulletConfig>
   read_weapons_configs(const YAML::Node &configurations);
 
-  const EditorConfig &getEditorConfig() const;
 };
 
 #endif // CONFIGURATIONS_H
