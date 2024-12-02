@@ -1,6 +1,7 @@
 #include "maploader.h"
 #include <filesystem>
 #include <iostream>
+#include <algorithm> 
 #include <yaml-cpp/yaml.h>
 
 #define PATH "../server/logic/maps/"
@@ -15,8 +16,6 @@ MapLoader::MapLoader() {
 
 MapLoader::~MapLoader() {}
 
-#include <algorithm> // Para std::sort
-
 Map MapLoader::getNextMap() {
   Map mapa;
   if (lastMapIndex > maps_paths.size() - 1) {
@@ -25,7 +24,13 @@ Map MapLoader::getNextMap() {
     lastMapIndex++;
     return mapa;
   }
-  YAML::Node map = YAML::LoadFile(maps_paths[lastMapIndex]);
+
+ YAML::Node map = YAML::LoadFile(maps_paths[lastMapIndex]);
+
+    if (map["Spawns"].size()==0) {
+        maps_paths.erase(maps_paths.begin() + lastMapIndex);
+        return getNextMap();
+    }      
 
   mapa.height = map["alto"].as<int>();
   mapa.width = map["ancho"].as<int>();
@@ -104,6 +109,10 @@ Map MapLoader::getNextMap() {
     }
   }
 
+ for (auto structure : fusedStructures) {
+    std::cout << "start_x: " << structure.start_x << " end_x: " << structure.end_x << " start_y: " << structure.start_y << " end_y: " << structure.end_y << " id: " << structure.id << std::endl;
+    }
+    std::cout<<"---------"<<std::endl;
   // Guardar las estructuras fusionadas en el mapa lógico
   logicMap.structures = std::move(fusedStructures);
 
