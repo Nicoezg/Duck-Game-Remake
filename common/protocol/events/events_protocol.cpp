@@ -359,7 +359,7 @@ WeaponDTO EventsProtocol::read_weapon(std::vector<int8_t> &data) {
   int y = encoder.decode_coordinate(data);
   bool shooting = encoder.decode_bool(data);
   bool hasAmmo = encoder.decode_bool(data);
-  return {weapon_id, x, y, shooting, hasAmmo};
+  return WeaponDTO(weapon_id, x, y, shooting, hasAmmo);
 }
 
 void EventsProtocol::add_weapon(std::vector<int8_t> &data, WeaponDTO weapon,
