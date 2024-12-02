@@ -9,15 +9,22 @@
 #define BACKGROUND_MUSIC_CHANNEL 0
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
+#define VICTORY_MUSIC_VOLUME SDL_MIX_MAXVOLUME / 10
+
+#define FONT_PATH "../client/sprites/font.ttf"
+#define FONT_SIZE 24
+
+#define BACKGROUND_MUSIC_PATH "../client/graphic/audio/background-music.wav"
+#define VICTORY_MUSIC_PATH "../client/graphic/audio/challengeWin.wav"
 
 
 Game::Game(Client &client) try: client(client),
-                                sdl(SDL_INIT_VIDEO), font("../client/sprites/font.ttf", 24),
+                                sdl(SDL_INIT_VIDEO), font(FONT_PATH, FONT_SIZE),
                                 window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
                                        WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
-                                renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,640,480}), 
+                                renderer(window, -1, SDL_RENDERER_ACCELERATED), camera(renderer, SDL2pp::Rect{0,0,WINDOW_WIDTH,WINDOW_HEIGHT}), 
                                 mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096), 
-                                backgroundMusic("../client/graphic/audio/background-music.wav"),  map(renderer), ducks(), crates(),
+                                backgroundMusic(BACKGROUND_MUSIC_PATH), victoryMusic(VICTORY_MUSIC_PATH), map(renderer), ducks(), crates(),
                                 bullets(), itemSpawns(), explosions(),throwables(), item(renderer),
                                 bullet(renderer), crate(renderer), explosion(renderer), throwable(renderer), stop(false), pause(false) {
 } catch (std::exception &e) {
@@ -27,6 +34,7 @@ Game::Game(Client &client) try: client(client),
 int Game::start() {
     try {
         backgroundMusic.SetVolume(BACKGROUND_MUSIC_VOLUME);
+        victoryMusic.SetVolume(VICTORY_MUSIC_VOLUME);
 
         mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, backgroundMusic, -1);
 
@@ -85,9 +93,6 @@ int Game::start() {
             for (auto &duck: ducks) {
                 duck->updateFrame();
             }
-
-            // Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace
-            // 		 que se cuelgue el juego
 
         }
         return 0;
@@ -174,6 +179,7 @@ void Game::showScores(const Event &score) {
 
 void Game::showVictoryScreen(const Event &gameOver) {
     mixer.HaltChannel(BACKGROUND_MUSIC_CHANNEL);
+    mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, victoryMusic, 0);
     Uint32 startTime = SDL_GetTicks();
     bool flash = true;
     while (SDL_GetTicks() - startTime < 5000) {

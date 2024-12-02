@@ -16,11 +16,10 @@
 class Duck
 {
     public:
-		//The dimensions of the duck
 		static const int DUCK_WIDTH = 32;
+
 		static const int DUCK_HEIGHT = 32;
 
-		//Initializes the variables
 		Duck(SDL2pp::Renderer& renderer, int id);
 
 		void render();
@@ -33,11 +32,9 @@ class Duck
 
 		int getPosY();
 
-		bool isFacingRight();
-
-		bool isDead();
-
 		void loadTextures();
+
+		void setClips();
 
 		WeaponId getWeapon();
 

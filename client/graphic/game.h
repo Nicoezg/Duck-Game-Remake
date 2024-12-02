@@ -49,6 +49,8 @@ class Game{
 
         Chunk backgroundMusic;
 
+        Chunk victoryMusic;
+
         DrawMap map;
 
         std::vector<std::shared_ptr<Duck>> ducks;
