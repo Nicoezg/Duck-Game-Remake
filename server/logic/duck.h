@@ -33,6 +33,7 @@ private:
   int bananaEffectRemaining;
   hitBox currentPlatformBox;
   int framesToExplode;
+  int shootingCooldown;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
@@ -83,8 +84,6 @@ public:
   int getFramesToExplode() const;
   void activateGrenade();
   void throwGrenade();
-
-  int shootingCooldown;
 
   PlayerDTO toDTO() const;
   ~Duck();

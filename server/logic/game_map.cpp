@@ -44,6 +44,7 @@ void GameMap::addExplosion(std::unique_ptr<Explosion> explosion) {
 }
 
 void GameMap::addCrate() {
+  // cppcheck-suppress useStlAlgorithm
   for (auto &crate : map.boxes) {
     crates.push_back({crate.get_hp(), crate.get_posx() * TILE_SIZE,
                       crate.get_posy() * TILE_SIZE});
@@ -51,15 +52,17 @@ void GameMap::addCrate() {
 }
 
 void GameMap::addSpawnItem() {
+  // cppcheck-suppress useStlAlgorithm
   for (auto &itemSpawn : map.armors) {
     itemSpawns.push_back({itemSpawn.x * TILE_SIZE, itemSpawn.y * TILE_SIZE,
                           ItemSpawnId::CHESTPLATE_SPAWN, false});
   }
+  // cppcheck-suppress useStlAlgorithm
   for (auto &itemSpawn : map.helmets) {
     itemSpawns.push_back({itemSpawn.x * TILE_SIZE, itemSpawn.y * TILE_SIZE,
                           ItemSpawnId::HELMET_SPAWN, false});
   }
-
+  // cppcheck-suppress useStlAlgorithm
   for (auto &itemSpawn : map.weaponSpawns) {
     ItemSpawnId weapon = getRandomWeapon();
     itemSpawns.push_back(
@@ -162,23 +165,38 @@ void GameMap::bulletCollisionWithPlatforms() {
                  (structure.end_x + 1 - structure.start_x) * TILE_SIZE,
                  (structure.end_y + 1 - structure.start_y) * TILE_SIZE);
 
-            if (hitBox::isColliding(bulletBox, structureBox)) {
-                bool isTopCollision = false; 
-                bool isHorizontalCollision = false; 
-                if ((bulletBox.y + bulletBox.height > structureBox.y && bulletBox.y < structureBox.y && bulletBox.x > structureBox.x && bulletBox.x + bulletBox.width < structureBox.x + structureBox.width)
-                    || (bulletBox.y < structureBox.y + structureBox.height && bulletBox.y + bulletBox.height > structureBox.y && bulletBox.x > structureBox.x && bulletBox.x + bulletBox.width < structureBox.x + structureBox.width))
-                {
-                    isTopCollision = true;
-                } else if ((bulletBox.x + bulletBox.width > structureBox.x && bulletBox.x < structureBox.x && bulletBox.y > structureBox.y && bulletBox.y + bulletBox.height < structureBox.y + structureBox.height) || 
-                         (bulletBox.x < structureBox.x  + structureBox.width && bulletBox.x + bulletBox.width > structureBox.x + structureBox.width && bulletBox.y > structureBox.y && bulletBox.y + bulletBox.height < structureBox.y + structureBox.height)) {
-                    isHorizontalCollision = true; 
-                } else {
-                    isTopCollision = false;
-                }
-                bullet->bounce(isHorizontalCollision, isTopCollision);
-            }
+      if (hitBox::isColliding(bulletBox, structureBox)) {
+        bool isTopCollision = false;
+        bool isHorizontalCollision = false;
+        if ((bulletBox.y + bulletBox.height > structureBox.y &&
+             bulletBox.y < structureBox.y && bulletBox.x > structureBox.x &&
+             bulletBox.x + bulletBox.width <
+                 structureBox.x + structureBox.width) ||
+            (bulletBox.y < structureBox.y + structureBox.height &&
+             bulletBox.y + bulletBox.height > structureBox.y &&
+             bulletBox.x > structureBox.x &&
+             bulletBox.x + bulletBox.width <
+                 structureBox.x + structureBox.width)) {
+          isTopCollision = true;
+        } else if ((bulletBox.x + bulletBox.width > structureBox.x &&
+                    bulletBox.x < structureBox.x &&
+                    bulletBox.y > structureBox.y &&
+                    bulletBox.y + bulletBox.height <
+                        structureBox.y + structureBox.height) ||
+                   (bulletBox.x < structureBox.x + structureBox.width &&
+                    bulletBox.x + bulletBox.width >
+                        structureBox.x + structureBox.width &&
+                    bulletBox.y > structureBox.y &&
+                    bulletBox.y + bulletBox.height <
+                        structureBox.y + structureBox.height)) {
+          isHorizontalCollision = true;
+        } else {
+          isTopCollision = false;
         }
+        bullet->bounce(isHorizontalCollision, isTopCollision);
+      }
     }
+  }
 }
 
 void GameMap::bulletCollisions() {
@@ -281,6 +299,7 @@ void GameMap::explosionCollisions() {
 
     hitBox duckBox =
         hitBox(player->getPositionX(), player->getPositionY(), 32, 32);
+    // cppcheck-suppress useStlAlgorithm
     for (auto it = explosions.begin(); it != explosions.end();) {
       const auto &damagedPlayers = (*it)->getPlayersDamaged();
       bool damaged = false;
@@ -337,7 +356,7 @@ void GameMap::bananaCollisions() {
 
 std::list<BulletDTO> GameMap::getBulletsState() {
   std::list<BulletDTO> bulletsList;
-
+  // cppcheck-suppress useStlAlgorithm
   for (const auto &bullet : bullets) {
     bulletsList.emplace_back(bullet->toDTO());
   }
@@ -347,6 +366,7 @@ std::list<BulletDTO> GameMap::getBulletsState() {
 
 std::list<ExplosionDTO> GameMap::getExplosionsState() {
   std::list<ExplosionDTO> explosionsList;
+  // cppcheck-suppress useStlAlgorithm
   for (const auto &explosion : explosions) {
     explosionsList.emplace_back(explosion->toDTO());
   }
@@ -355,6 +375,7 @@ std::list<ExplosionDTO> GameMap::getExplosionsState() {
 
 std::list<PlayerDTO> GameMap::getState() {
   std::list<PlayerDTO> playersList;
+  // cppcheck-suppress useStlAlgorithm
   for (const auto player : players) {
     playersList.emplace_back(player->toDTO());
   }
@@ -363,6 +384,7 @@ std::list<PlayerDTO> GameMap::getState() {
 
 std::list<CrateDTO> GameMap::getCratesState() {
   std::list<CrateDTO> cratesList;
+  // cppcheck-suppress useStlAlgorithm
   for (auto crateIt = crates.begin(); crateIt != crates.end();) {
     cratesList.emplace_back(crateIt->toDto());
     crateIt->resetHitState();

@@ -18,7 +18,7 @@ public:
       : Throwable(map, isRight, pos_x, pos_y,
                   CONFIG.getBulletConfig(GRENADE_NAME).getReach(),
                   THROWN_GRENADE_V2, false, aimingUp),
-        framesToExplode(framesToexplode), angle(0) {
+        framesToExplode(framesToexplode), ownerHasGrenade(false), angle(0) {
     startThrow = true;
     framesRemaining = framesToExplode;
   }

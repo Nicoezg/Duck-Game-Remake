@@ -6,6 +6,7 @@
 class Ak47 : public Weapon {
 private:
   int consecutiveShots;
+
 public:
   explicit Ak47(GameMap &map);
 

@@ -29,6 +29,7 @@ public:
 
   ~MainWindow();
 
+  // cppcheck-suppress unknownMacro
 private slots:
 
   void on_Create_clicked();

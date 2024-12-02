@@ -10,8 +10,8 @@ const int RECOIL_X = 7;
 const int RECOIL_Y = 8;
 const int MAX_RECOIL_Y = 75;
 
-Ak47::Ak47(GameMap &map) : Weapon(map, AMMO, REACH, WeaponId::AK47), consecutiveShots(0) {
-}
+Ak47::Ak47(GameMap &map)
+    : Weapon(map, AMMO, REACH, WeaponId::AK47), consecutiveShots(0) {}
 
 void Ak47::shoot(Duck *owner) {
   if (hasAmmo()) {
@@ -22,19 +22,19 @@ void Ak47::shoot(Duck *owner) {
   }
 }
 
-void Ak47::replenishAmmo(){
+void Ak47::replenishAmmo() {
   ammo = AMMO;
   consecutiveShots = 0;
 }
 
-void Ak47::resetConsecutiveShots(){
+void Ak47::resetConsecutiveShots() {
   if (consecutiveShots > 0) {
     consecutiveShots--;
   }
 }
 
-void Ak47::increaseConsecutiveShots(){
-  if (consecutiveShots + RECOIL_Y < MAX_RECOIL_Y){
+void Ak47::increaseConsecutiveShots() {
+  if (consecutiveShots + RECOIL_Y < MAX_RECOIL_Y) {
     consecutiveShots += RECOIL_Y;
   }
 }

@@ -35,7 +35,7 @@ bool Game::is_full(int new_players) const {
   return actual_players + new_players > max_players;
 }
 
-int Game::get_next_player_id(std::string player_name) {
+int Game::get_next_player_id(const std::string &player_name) {
   next_player_id++;
   players[next_player_id] = player_name;
   gameMap.addPlayer(next_player_id);
@@ -44,7 +44,7 @@ int Game::get_next_player_id(std::string player_name) {
   return next_player_id;
 }
 
-void Game::notify_event(std::shared_ptr<Event> &event) {
+void Game::notify_event(const std::shared_ptr<Event> &event) {
   notifier.notify(event);
 }
 
@@ -105,7 +105,8 @@ void Game::checkFinishGame() {
 void Game::checkNewRound() {
   if (gameMap.pauseForScores()) {
     std::vector<std::pair<int, std::string>> score_name_pairs;
-    for (auto player : players) {
+    // cppcheck-suppress useStlAlgorithm
+    for (auto &player : players) {
       score_name_pairs.emplace_back(gameMap.getPlayerWins(player.first),
                                     player.second);
     }
@@ -168,7 +169,7 @@ GameRoom Game::get_game_room() const {
 
 std::list<PlayerData> Game::get_players_data() {
   std::list<PlayerData> players_data;
-
+  // cppcheck-suppress useStlAlgorithm
   for (auto &player : players) {
     players_data.emplace_back(player.first, player.second);
   }

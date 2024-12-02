@@ -26,7 +26,7 @@ void Weapon::createBullet(Duck *owner, int angle, bool canBounce, int reach,
     } else {
       posX = owner->getPositionX() + POS_X_UPWARDS_ADJUSTMENT_LEFT;
     }
-    if (owner->getDirection() && angle != 0){
+    if (owner->getDirection() && angle != 0) {
       angle = -angle;
     }
 
@@ -78,14 +78,12 @@ void Weapon::decreaseCooldown() {
   }
 }
 
-void Weapon::reload(){
-  isReloading = false;
-}
+void Weapon::reload() { isReloading = false; }
 
-void Weapon::resetConsecutiveShots(){
+void Weapon::resetConsecutiveShots() {
   // Do nothing
 }
 
-void Weapon::increaseConsecutiveShots(){
+void Weapon::increaseConsecutiveShots() {
   // Do nothing
 }

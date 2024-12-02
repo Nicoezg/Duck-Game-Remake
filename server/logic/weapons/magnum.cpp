@@ -10,7 +10,8 @@ const int RECOIL_X = 5;
 const int RECOIL_Y = 15;
 const int MAX_RECOIL_Y = 65;
 
-Magnum::Magnum(GameMap &map) : Weapon(map, AMMO, REACH, WeaponId::MAGNUM), consecutiveShots(0) {}
+Magnum::Magnum(GameMap &map)
+    : Weapon(map, AMMO, REACH, WeaponId::MAGNUM), consecutiveShots(0) {}
 
 void Magnum::shoot(Duck *owner) {
   if (hasAmmo() && isReadyToShoot()) {
@@ -21,18 +22,16 @@ void Magnum::shoot(Duck *owner) {
   }
 }
 
-void Magnum::replenishAmmo(){
-  ammo = AMMO;
-}
+void Magnum::replenishAmmo() { ammo = AMMO; }
 
-void Magnum::resetConsecutiveShots(){
+void Magnum::resetConsecutiveShots() {
   if (consecutiveShots > 0) {
     consecutiveShots--;
   }
 }
 
-void Magnum::increaseConsecutiveShots(){
-  if (consecutiveShots + RECOIL_Y < MAX_RECOIL_Y){
+void Magnum::increaseConsecutiveShots() {
+  if (consecutiveShots + RECOIL_Y < MAX_RECOIL_Y) {
     consecutiveShots += RECOIL_Y;
   }
 }

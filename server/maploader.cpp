@@ -7,7 +7,7 @@
 #define PATH "../server/logic/maps/"
 
 MapLoader::MapLoader() {
-
+  // cppcheck-suppress useStlAlgorithm
   for (const auto &entry : std::filesystem::directory_iterator(PATH)) {
     maps_paths.push_back(entry.path());
   }
@@ -148,6 +148,7 @@ MapLoader::getNextMapDTO() { // en realidad devuelve al actual, pero hay que
                              // llamar antes a get next map asi actualiza map
   Map mapa = getactualMap();
   std::list<Tile> tiles;
+  // cppcheck-suppress useStlAlgorithm
   for (auto structure : mapa.structures) {
     tiles.push_back({structure.start_x, structure.end_x, structure.start_y,
                      structure.end_y, structure.id});

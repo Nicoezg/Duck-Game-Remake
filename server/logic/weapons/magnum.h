@@ -6,6 +6,7 @@
 class Magnum : public Weapon {
 private:
   int consecutiveShots;
+
 public:
   explicit Magnum(GameMap &map);
 

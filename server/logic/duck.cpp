@@ -15,25 +15,12 @@ const int CENTER_Y = CONFIG.getDuckConfig().getCenterY();
 const int TILE_SIZE = 16;
 
 Duck::Duck(std::atomic<int> id, int posX, int posY, GameMap &map)
-    : id(id), posX(posX), posY(posY), map(map), state(State::BLANK), wins(0) {
-
-  velX = 0;
-  velY = 0;
-  jumping = false;
-  flapping = false;
-  shooting = false;
-  isRight = true;
-  aimingUpwards = false;
-  weapon = std::make_unique<NoWeapon>(map);
-  hasWeapon = false;
-  hasHelmet = false;
-  hasArmour = false;
-  isOnPlatform = false;
-
-  shootingCooldown = 0;
-  bananaEffectRemaining = 0;
-  framesToExplode = -1;
-}
+    : id(id), posX(posX), posY(posY), velX(0), velY(0), jumping(false),
+      flapping(false), shooting(false), map(map),
+      weapon(std::make_unique<NoWeapon>(map)), isRight(true),
+      aimingUpwards(false), state(State::BLANK), hasWeapon(false),
+      hasHelmet(false), hasArmour(false), isOnPlatform(false), wins(0),
+      bananaEffectRemaining(0), framesToExplode(-1), shootingCooldown(0) {}
 
 void Duck::reset(int pos_x, int pos_y) {
   velX = 0;
@@ -243,7 +230,7 @@ void Duck::update() {
 }
 
 void Duck::shoot() {
-  if (weapon && weapon->isReadyToShoot() && state != State::PLAYING_DEAD) {
+  if (weapon->isReadyToShoot() && state != State::PLAYING_DEAD) {
     shooting = true;
     weapon->shoot(this);
     weapon->increaseConsecutiveShots();
@@ -303,8 +290,8 @@ void Duck::pickUp() {
       equipArmour();
     } else if (ItemSpawnId::HELMET_SPAWN != item &&
                ItemSpawnId::CHESTPLATE_SPAWN != item) {
-      auto weapon = WeaponFactory::createWeapon(item, map);
-      equipWeapon(std::move(weapon));
+      auto pickedWeapon = WeaponFactory::createWeapon(item, map);
+      equipWeapon(std::move(pickedWeapon));
     }
   }
 }

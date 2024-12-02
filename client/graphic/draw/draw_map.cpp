@@ -31,11 +31,12 @@ void DrawMap::render() {
   SDL2pp::Rect src(0, 0, 16, 16);
   for (auto &platform : platforms) {
     SDL2pp::Texture &texture = *textures[platform.get_tile_id()];
-    int width = texture.GetWidth();
-    int height = texture.GetHeight();
+    int textureWidth = texture.GetWidth();
+    int textureHeight = texture.GetHeight();
     for (int i = platform.get_start_x(); i < platform.get_end_x() + 1; i++) {
       for (int j = platform.get_start_y(); j < platform.get_end_y() + 1; j++) {
-        SDL2pp::Rect dest(i * width, j * height, width, height);
+        SDL2pp::Rect dest(i * textureWidth, j * textureHeight, textureWidth,
+                          textureHeight);
         renderer.Copy(texture, src, dest);
       }
     }

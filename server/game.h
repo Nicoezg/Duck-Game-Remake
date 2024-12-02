@@ -70,14 +70,14 @@ public:
    */
   void add(Socket &&socket);
 
-  void notify_event(std::shared_ptr<Event> &event);
+  void notify_event(const std::shared_ptr<Event> &event);
 
   /**
    * @brief Incrementa el player_id del proximo jugador y lo devuelve.
    *
    * @return u_int16_t: player_id del proximo jugador.
    */
-  int get_next_player_id(std::string player_name);
+  int get_next_player_id(const std::string &player_name);
 
   int get_max_players() const;
 

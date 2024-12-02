@@ -111,9 +111,9 @@ void YamlHandler::save(QString &filename, QGridLayout *mapLayout,
   }
   // Estructuras verticales de largo > 1
   for (int j = 0; j < columnas; j++) {
-    QLabel *anterior = nullptr;
-    int fila_inicial = -1;
-    int columna_inicial = j;
+    anterior = nullptr;
+    fila_inicial = -1;
+    columna_inicial = j;
     int fila_final = -1;
 
     for (int i = 0; i < filas; i++) {

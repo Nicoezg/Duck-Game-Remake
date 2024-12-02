@@ -27,9 +27,9 @@ public:
         U element = queue->pop();
         protocol->send_element(element);
       }
-    } catch (ProtocolError &e) {
+    } catch (const ProtocolError &e) {
       // se cerro el protrocolo al terminar la conexion
-    } catch (ClosedQueue &e) {
+    } catch (const ClosedQueue &e) {
       // se cerro la cola de escritura
     } catch (std::exception &e) {
       std::cerr << "Error sender thread: " << e.what() << std::endl;

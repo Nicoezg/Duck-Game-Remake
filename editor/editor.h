@@ -21,6 +21,7 @@ public:
   explicit Editor(QWidget *parent = nullptr);
   ~Editor();
 
+  // cppcheck-suppress unknownMacro
 private slots:
   void on_ExitButton_clicked();
   void on_EraseButton_clicked();
