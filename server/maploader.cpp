@@ -17,6 +17,8 @@ MapLoader::MapLoader() {
 MapLoader::~MapLoader() {}
 
 
+#include <algorithm> // Para std::sort
+
 Map MapLoader::getNextMap() {
     Map mapa;
     if (lastMapIndex > maps_paths.size() - 1) {
@@ -31,11 +33,11 @@ Map MapLoader::getNextMap() {
     mapa.width = map["ancho"].as<int>();
     mapa.background = map["fondo"].as<std::string>();
 
-    for (auto spawn: map["Spawns"]) {
+    for (auto spawn : map["Spawns"]) {
         mapa.spawns.emplace_back(spawn["x"].as<int>(), spawn["y"].as<int>());
     }
 
-    for (auto interactuable: map["Interactuables"]) {
+    for (auto interactuable : map["Interactuables"]) {
         switch (interactuable["ID"].as<int>()) {
             case HELMENT_ID:
                 mapa.helmets.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
@@ -47,112 +49,77 @@ Map MapLoader::getNextMap() {
                 mapa.weaponSpawns.emplace_back(interactuable["x"].as<int>(), interactuable["y"].as<int>());
                 break;
             case BOX_ID:
-                mapa.boxes.emplace_back(4,interactuable["x"].as<int>(), interactuable["y"].as<int>());
+                mapa.boxes.emplace_back(4, interactuable["x"].as<int>(), interactuable["y"].as<int>());
                 break;
         }
     }
-    for (auto structure: map["Structures"]) {
+    for (auto structure : map["Structures"]) {
         mapa.structures.emplace_back(
-            structure["start_x"].as<int>(), 
-            structure["end_x"].as<int>(), 
+            structure["start_x"].as<int>(),
+            structure["end_x"].as<int>(),
             structure["start_y"].as<int>(),
-            structure["end_y"].as<int>(), 
+            structure["end_y"].as<int>(),
             structure["tile"].as<int>()
         );
     }
-    
+
     lastMapIndex++;
     maps.push_back(mapa);
 
-    
     Map logicMap;
     logicMap.height = mapa.height;
     logicMap.width = mapa.width;
     logicMap.background = mapa.background;
-// Primero, agrupar estructuras horizontales
-for (size_t i = 0; i < map["Structures"].size(); ++i) {
-    bool merged = false;
-    YAML::Node current = map["Structures"][i];
-    
-    for (size_t j = i + 1; j < map["Structures"].size(); ++j) {
-        YAML::Node other = map["Structures"][j];
-        
-        // Misma fila y consecutivas o superpuestas horizontalmente
-        if (current["start_y"].as<int>() == other["start_y"].as<int>() &&
-            (current["end_x"].as<int>() + 1 >= other["start_x"].as<int>() &&
-             current["start_x"].as<int>() <= other["end_x"].as<int>() + 1)) {
-            
-            // Fusionar estructuras
-            current["start_x"] = std::min(current["start_x"].as<int>(), other["start_x"].as<int>());
-            current["end_x"] = std::max(current["end_x"].as<int>(), other["end_x"].as<int>());
-            
-            // Eliminar la estructura fusionada
-            map["Structures"].remove(j);
-            j--;
-            merged = true;
+
+    // Fusionar estructuras adyacentes
+    std::vector<Structure> mergedStructures = mapa.structures;
+
+    // Ordenar por coordenadas para facilitar la fusión
+    std::sort(mergedStructures.begin(), mergedStructures.end(), [](const Structure& a, const Structure& b) {
+        if (a.start_y == b.start_y) return a.start_x < b.start_x;
+        return a.start_y < b.start_y;
+    });
+
+    // Fusión de estructuras adyacentes
+    std::vector<Structure> fusedStructures;
+    for (const auto& structure : mergedStructures) {
+        if (fusedStructures.empty()) {
+            fusedStructures.push_back(structure);
+        } else {
+            auto& last = fusedStructures.back();
+            // Verificar si son adyacentes horizontal o verticalmente
+            if ((last.end_x + 1 == structure.start_x && last.start_y == structure.start_y && last.end_y == structure.end_y) ||
+                (last.end_y + 1 == structure.start_y && last.start_x == structure.start_x && last.end_x == structure.end_x)) {
+                // Fusionar estructuras
+                last.end_x = std::max(last.end_x, structure.end_x);
+                last.end_y = std::max(last.end_y, structure.end_y);
+            } else {
+                fusedStructures.push_back(structure);
+            }
         }
     }
-    
-    if (merged) {
-        i--;  // Revisar el índice actual nuevamente
-    }
-}
 
-// Luego, agrupar estructuras verticales
-for (size_t i = 0; i < map["Structures"].size(); ++i) {
-    bool merged = false;
-    YAML::Node current = map["Structures"][i];
-    
-    for (size_t j = i + 1; j < map["Structures"].size(); ++j) {
-        YAML::Node other = map["Structures"][j];
-        
-        // Misma columna y consecutivas o superpuestas verticalmente
-        if (current["start_x"].as<int>() == other["start_x"].as<int>() &&
-            (current["end_y"].as<int>() + 1 >= other["start_y"].as<int>() &&
-             current["start_y"].as<int>() <= other["end_y"].as<int>() + 1)) {
-            
-            // Fusionar estructuras
-            current["start_y"] = std::min(current["start_y"].as<int>(), other["start_y"].as<int>());
-            current["end_y"] = std::max(current["end_y"].as<int>(), other["end_y"].as<int>());
-            
-            // Eliminar la estructura fusionada
-            map["Structures"].remove(j);
-            j--;
-            merged = true;
-        }
-    }
-    
-    if (merged) {
-        i--;  // Revisar el índice actual nuevamente
-    }
-}
+    // Guardar las estructuras fusionadas en el mapa lógico
+    logicMap.structures = std::move(fusedStructures);
 
-// Crear el vector de estructuras
-for (const auto& structure : map["Structures"]) {
-    int id = structure["tile"].as<int>();
-    logicMap.structures.emplace_back(
-        structure["start_x"].as<int>(), 
-        structure["end_x"].as<int>(), 
-        structure["start_y"].as<int>(),
-        structure["end_y"].as<int>(), 
-        id
-    );
-}
-    for (auto spawn: mapa.spawns) {
+    // Copiar los demás elementos al mapa lógico
+    for (auto spawn : mapa.spawns) {
         logicMap.spawns.emplace_back(spawn.x, spawn.y);
     }
-    for (auto helmet: mapa.helmets) {
+    for (auto helmet : mapa.helmets) {
         logicMap.helmets.emplace_back(helmet.x, helmet.y);
     }
-    for (auto armor: mapa.armors) {
+    for (auto armor : mapa.armors) {
         logicMap.armors.emplace_back(armor.x, armor.y);
     }
-    for (auto weapon: mapa.weaponSpawns) {
+    for (auto weapon : mapa.weaponSpawns) {
         logicMap.weaponSpawns.emplace_back(weapon.x, weapon.y);
     }
-    for (auto box: mapa.boxes) {
+    for (auto box : mapa.boxes) {
         logicMap.boxes.emplace_back(box.get_hp(), box.get_posx(), box.get_posy());
     }
+
+    // Guardar el mapa lógico
     logicMaps.push_back(logicMap);
 
     return logicMap;
