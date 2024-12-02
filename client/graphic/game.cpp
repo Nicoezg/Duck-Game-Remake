@@ -26,21 +26,13 @@ Game::Game(Client &client) try: client(client),
 
 int Game::start() {
     try {
-        // processEvent(); // Cargo el mapa
-        // SDL_SetWindowSize(window.Get(), map.getWidth(), map.getHeight());
-
-        // window.SetIcon(SDL2pp::Surface(DATA_PATH "icon.png").SetColorKey(true, 0)); // Creo que no funciona
-
-        // Inicializar musica
-
         backgroundMusic.SetVolume(BACKGROUND_MUSIC_VOLUME);
 
         mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, backgroundMusic, -1);
 
-        // Game Loop
         ActionHandler actionHandler(client);
 
-        auto rate = 1000 / 60; // 60 FPS
+        auto rate = 1000 / 60;
         int id1 = client.get_player_id_1() - 1;
         int id2 = client.get_player_id_2() - 1;
 
@@ -85,7 +77,6 @@ int Game::start() {
 
                 // Si 'rest' es mayor o igual a cero quiere decir que no nos estamos quedando atras
             } else {
-                // std::cout << rest << std::endl;
                 SDL_Delay(rest); // Descansamos el valor 'rest' antes de la proxima iteracion para
                 // mantener un ritmo constante
             }
@@ -99,10 +90,9 @@ int Game::start() {
             // 		 que se cuelgue el juego
 
         }
-
         return 0;
 
-    } catch (std::exception &e) { // 
+    } catch (std::exception &e) {
         return 1;
     }
 }
@@ -137,7 +127,7 @@ void Game::update(const Event &broadcast) {
         }
     }
     for (auto &player: broadcast.get_players()) {
-        ducks[player.get_player_id()-1]->update(player);
+        ducks[player.get_player_id() - 1]->update(player);
         if (player.get_state() != DEAD){
             playerRects.push_back(SDL2pp::Rect(player.get_position_x(), player.get_position_y(), Duck::DUCK_WIDTH, Duck::DUCK_HEIGHT));
         }
@@ -176,7 +166,7 @@ void Game::showScores(const Event &score) {
         }
 
         renderer.Present();
-        SDL_Delay(500); // Flash interval
+        SDL_Delay(500);
         flash = !flash;
     }
     mixer.PlayChannel(BACKGROUND_MUSIC_CHANNEL, backgroundMusic, -1);
@@ -186,7 +176,7 @@ void Game::showVictoryScreen(const Event &gameOver) {
     mixer.HaltChannel(BACKGROUND_MUSIC_CHANNEL);
     Uint32 startTime = SDL_GetTicks();
     bool flash = true;
-    while (SDL_GetTicks() - startTime < 5000) { // Flash for 5 seconds
+    while (SDL_GetTicks() - startTime < 5000) {
         renderer.SetDrawColor(0, 0, 0, 255);
         renderer.Clear();
         if (flash) {
@@ -196,7 +186,7 @@ void Game::showVictoryScreen(const Event &gameOver) {
                           SDL2pp::Rect(237, 227.5, victoryTexture.GetWidth(), victoryTexture.GetHeight()));
         }
         renderer.Present();
-        SDL_Delay(500); // Flash interval
+        SDL_Delay(500);
         flash = !flash;
     }
 }
@@ -223,10 +213,10 @@ void Game::render() {
     for (auto &bulletDTO: bullets) { // Dibujo las balas
         bullet.render(bulletDTO);
     }
-    for (auto &explosionDTO: explosions){
+    for (auto &explosionDTO: explosions){ // Dibujo las explosiones
         explosion.render(explosionDTO);
     }
-    for (auto &throwableDTO: throwables) {
+    for (auto &throwableDTO: throwables) { // Dibujo los throwables (granadas, bananas)
         throwable.render(throwableDTO);
     }
     renderer.Present();

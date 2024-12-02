@@ -18,8 +18,6 @@ void Sound::change(std::shared_ptr<SDL2pp::Chunk> nuevoSound, int loops) {
     this->loops = loops;
 }
 
-// El channel donde se reproduce el Sound se libera automaticamente una vez que el
-// Sound termino de reproducirse. No es necesario liberar explicitamente el channel.
 void Sound::play() {
     int nextChannel = Mix_GroupAvailable(-1);
     if (nextChannel == -1){

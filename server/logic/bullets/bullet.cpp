@@ -81,23 +81,3 @@ BulletId Bullet::getId() const { return id; }
 int Bullet::getOwnerId() const { return owner_Id; }
 
 BulletDTO Bullet::toDTO() const { return {pos_x, pos_y, id, angle, isRight}; }
-
-/*bool Bullet::impact(Position &other_position) {
-    Position position = Position(pos_x, pos_y, WIDTH, HEIGHT);
-    bool is_impact = position.is_colliding(other_position);
-
-    if (is_impact) {
-        std::cout << "Impact" << std::endl;
-    } else {
-        std::cout << "No impact self: " << position.print() << " other: " << other_position.print() <<  std::endl;
-    }
-    return is_impact;
-}
-
-bool Bullet::impact(Position &other_position, int owner) {
-    if (owner == owner_Id) {
-        std::cout << "Owner impact" << std::endl;
-        return false;
-    }
-    return impact(other_position);
-} */
