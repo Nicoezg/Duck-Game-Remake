@@ -24,6 +24,10 @@ Map MapLoader::getNextMap() {
     lastMapIndex++;
     return mapa;
   }
+    if (maps.size() == maps_paths.size()) {
+        lastMapIndex++;
+        return logicMaps[lastMapIndex-1];
+    }
 
  YAML::Node map = YAML::LoadFile(maps_paths[lastMapIndex]);
 
@@ -109,10 +113,8 @@ Map MapLoader::getNextMap() {
     }
   }
 
- for (auto structure : fusedStructures) {
-    std::cout << "start_x: " << structure.start_x << " end_x: " << structure.end_x << " start_y: " << structure.start_y << " end_y: " << structure.end_y << " id: " << structure.id << std::endl;
-    }
-    std::cout<<"---------"<<std::endl;
+
+    std::cout<<"Procese"<<std::endl;
   // Guardar las estructuras fusionadas en el mapa lógico
   logicMap.structures = std::move(fusedStructures);
 
@@ -140,8 +142,6 @@ Map MapLoader::getNextMap() {
 }
 
 Map MapLoader::getactualMap() { return maps[lastMapIndex - 1]; }
-
-Map MapLoader::getactualLogicMap() { return logicMaps[lastMapIndex - 1]; }
 
 MapDTO
 MapLoader::getNextMapDTO() { // en realidad devuelve al actual, pero hay que
