@@ -12,6 +12,10 @@
 
 class Game : public Thread {
 private:
+  int id;
+
+  std::string name;
+
   Queue<std::shared_ptr<Action>> commands;
 
   Notifier notifier;
@@ -19,8 +23,6 @@ private:
   std::atomic<bool> running;
 
   std::atomic<int> next_player_id;
-
-  std::map<int, PlayerDTO> players;
 
   std::atomic<int> actual_players;
 
@@ -31,6 +33,8 @@ private:
 
   GameMap gameMap;
 
+  std::map<int, std::string> players;
+
   /**
    * @brief Lee los eventos de la cola de eventos los ejecuta.
    */
@@ -39,7 +43,7 @@ private:
   void process_action(std::shared_ptr<Action> &action);
 
 public:
-  explicit Game(int max_players);
+  Game(int id, std::string name, int max_players);
 
   /**
    * @brief Inicia el hilo del notifier y al finalizar se encarga de
@@ -51,7 +55,7 @@ public:
    */
   void run() override;
 
-  bool is_running() const;
+  bool is_running();
 
   /**
    * @brief Cierra las colas de eventos, comandos y el Notifier.
@@ -66,18 +70,17 @@ public:
    */
   void add(Socket &&socket);
 
-  void notify_event(std::shared_ptr<Event> &event);
+  void notify_event(const std::shared_ptr<Event> &event);
 
   /**
    * @brief Incrementa el player_id del proximo jugador y lo devuelve.
    *
    * @return u_int16_t: player_id del proximo jugador.
    */
-  int get_next_player_id();
-
-  std::list<PlayerDTO> get_players();
+  int get_next_player_id(const std::string &player_name);
 
   int get_max_players() const;
+
   int get_actual_players() const;
 
   bool is_full(int new_players) const;
@@ -86,11 +89,17 @@ public:
 
   void start_game();
 
-  void add_admin_id(int id);
-
   void valid_start();
 
-    void notify_state();
+  void notify_state();
+
+  std::list<PlayerData> get_players_data();
+
+  GameRoom get_game_room() const;
+
+  void checkFinishGame();
+
+  void checkNewRound();
 };
 
 #endif // TALLER_TP_GAME_H

@@ -12,7 +12,7 @@ PewPewLaser::PewPewLaser(GameMap &map)
 void PewPewLaser::shoot(Duck *owner) {
 
   if (hasAmmo()) {
-    int angles[3] = {0, 20, -20};
+    const int angles[3] = {0, 20, -20};
     for (int angle : angles) {
       createBullet(owner, angle, false, reach, BulletId::LASER_BEAM);
     }
@@ -22,4 +22,4 @@ void PewPewLaser::shoot(Duck *owner) {
   }
 }
 
-// falta el bounce y la bala  va a ser LASER_REBOUND
+void PewPewLaser::replenishAmmo() { ammo = AMMO; }

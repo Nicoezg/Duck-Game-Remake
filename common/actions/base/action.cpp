@@ -11,6 +11,14 @@ int Action::get_game_code() const {
   throw std::runtime_error("Action is not a game code action.");
 }
 
+std::string Action::get_player_name_1() const {
+  throw std::runtime_error("Action is not a player name action.");
+}
+
+std::string Action::get_player_name_2() const {
+  throw std::runtime_error("Action is not a player name action.");
+}
+
 int Action::get_player_id() const {
   throw std::runtime_error("Action is not a player id action.");
 }
@@ -49,4 +57,12 @@ int Action::get_max_players() const {
 
 bool Action::is_still() const {
   throw std::runtime_error("Action is not a still action.");
+}
+
+std::string Action::get_game_name() const {
+  throw std::runtime_error("Action is not a game name action.");
+}
+
+CheatId Action::get_cheat_id() const {
+  throw std::runtime_error("Action is not a cheat action.");
 }

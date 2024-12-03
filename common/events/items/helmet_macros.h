@@ -1,10 +1,6 @@
 #ifndef TALLER_TP_HELMET_MACROS_H
 #define TALLER_TP_HELMET_MACROS_H
 
-enum HelmetId{
-  NO_HELMET = 0x00,
-  KNIGHT = 0x01,
-  BIKE = 0x02
-};
+enum HelmetId { NO_HELMET = 0x00, KNIGHT = 0x01 };
 
 #endif // TALLER_TP_HELMET_MACROS_H

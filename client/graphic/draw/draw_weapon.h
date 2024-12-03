@@ -1,37 +1,41 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
+#include "../sound.h"
+#include "common/events/items/weapon_dto.h"
+#include "common/events/items/weapon_macros.h"
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
 #include <memory>
-#include "../sound.h"
-#include "common/events/items/weapon_macros.h"
-#include "common/events/items/weapon_dto.h"
 
 class DrawWeapon {
-    private:
-    std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
+private:
+  std::map<int, std::shared_ptr<SDL2pp::Texture>> textures;
 
-    std::map<int, std::shared_ptr<SDL2pp::Chunk>> sounds;
+  std::map<int, std::shared_ptr<SDL2pp::Chunk>> sounds;
 
-    SDL2pp::Renderer &renderer;
+  SDL2pp::Renderer &renderer;
 
-    WeaponId weaponId;
+  WeaponId weaponId;
 
-    Sound sound;
+  Sound sound;
 
-    bool shoot;
+  bool shoot;
 
-    bool aimingUpwards;
+  bool aimingUpwards;
 
-    public:
-    DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON, uint8_t id = 0);
+  bool hasAmmo;
 
-    void render(int x, int y, int flipType);
+  bool playNoAmmo;
 
-    void update(const WeaponDTO &weapon, bool aimingUpwards);
+public:
+  explicit DrawWeapon(SDL2pp::Renderer &renderer, WeaponId weaponId = NO_WEAPON,
+                      uint8_t id = 0);
 
-    WeaponId getId();
+  void render(int x, int y, int flipType);
 
+  void update(const WeaponDTO &weapon, bool aimingUpwards);
+
+  WeaponId getId();
 };
 #endif

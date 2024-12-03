@@ -6,13 +6,13 @@
 #include <arpa/inet.h>
 #include <assert.h>
 #include <errno.h>
+#include <iostream>
 #include <netdb.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <iostream>
 
 #include "common/socket/liberror.h"
 #include "common/socket/resolver.h"
@@ -420,15 +420,15 @@ int Socket::close() {
 }
 
 int Socket::shutdown_and_close(int how) {
-    if (this->closed) {
-        return 0;
-    }
+  if (this->closed) {
+    return 0;
+  }
 
-    try {
-        shutdown(how);
-    } catch (const std::exception &e) {
-        std::cerr << "Error shutting down socket: " << e.what() << std::endl;
-    }
+  try {
+    shutdown(how);
+  } catch (const std::exception &e) {
+    std::cerr << "Error shutting down socket: " << e.what() << std::endl;
+  }
 
   this->closed = true;
   return ::close(this->skt);

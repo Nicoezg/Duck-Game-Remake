@@ -110,7 +110,7 @@ QListView::item:alternate {
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="Main">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -197,7 +197,7 @@ QListView::item:alternate {
              </sizepolicy>
             </property>
             <property name="text">
-             <string>PlayerDTO Limits</string>
+             <string>Player Limits</string>
             </property>
            </widget>
           </item>
@@ -254,7 +254,7 @@ QListView::item:alternate {
           <item row="0" column="1">
            <widget class="QLineEdit" name="LobbyName">
             <property name="text">
-             <string/>
+             <string>Sala 1</string>
             </property>
            </widget>
           </item>
@@ -356,7 +356,7 @@ QListView::item:alternate {
         <item>
          <widget class="QLineEdit" name="Player1NameJoin">
           <property name="text">
-           <string>Player 1 </string>
+           <string>Player 1</string>
           </property>
          </widget>
         </item>

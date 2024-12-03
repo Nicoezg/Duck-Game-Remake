@@ -16,7 +16,7 @@ private:
   Sound sound;
 
 public:
-  DrawBullet(SDL2pp::Renderer &renderer);
+  explicit DrawBullet(SDL2pp::Renderer &renderer);
 
   void render(const BulletDTO &bullet);
 };

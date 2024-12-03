@@ -9,12 +9,16 @@ Shotgun::Shotgun(GameMap &map) : Weapon(map, AMMO, REACH, WeaponId::SHOTGUN) {}
 
 void Shotgun::shoot(Duck *owner) {
   if (hasAmmo()) {
-    int angles[6] = {0, 10, -10, 20, -20, 15};
+    const int angles[6] = {0, 10, -10, 20, -20, 15};
     for (int angle : angles) {
       createBullet(owner, angle, false, reach, BulletId::SHOT);
     }
+    increaseCooldown(COOLDOWN);
     ammo--;
+    isReloading = true;
 
     lastShotTime = 0;
   }
 }
+
+void Shotgun::replenishAmmo() { ammo = AMMO; }

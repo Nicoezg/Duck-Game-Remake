@@ -4,7 +4,6 @@
 #include "common/events/items/weapon_macros.h"
 #include "server/logic/bullets/bullet.h"
 #include "server/logic/throwables/throwable.h"
-#include "server/logic/throwables/grenade.h"
 
 #include <memory>
 
@@ -34,19 +33,26 @@ public:
   bool hasAmmo() const { return ammo > 0; }
   int getAmmo() const { return ammo; }
 
-    virtual bool isReadyToShoot() const;
-
+  virtual bool isReadyToShoot() const;
 
   void createBullet(Duck *owner, int angle, bool canBounce, int reach,
                     BulletId id);
 
-  void createThrowable(Duck *owner,bool isGrenade);
-  
+  void createThrowable(GameMap &map, Duck *owner, bool isGrenade,
+                       int framesToExplode);
 
   WeaponId getWeaponId() const;
 
-    void increaseCooldown(int cooldownToAdd);
-    void decreaseCooldown();
+  void increaseCooldown(int cooldownToAdd);
+  void decreaseCooldown();
+
+  virtual void replenishAmmo() = 0;
+
+  void reload();
+
+  virtual void resetConsecutiveShots();
+
+  virtual void increaseConsecutiveShots();
 };
 
 #endif // WEAPON_H

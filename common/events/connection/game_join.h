@@ -14,23 +14,26 @@ private:
 
   bool connected;
 
-  int actual_players;
-  int max_players;
+  GameRoom game_room;
+  std::list<PlayerData> players_data;
 
 public:
-  GameJoin(int player_id_1, int player_id_2, bool connected, int actual, int max);
+  GameJoin(int player_id_1, int player_id_2, bool connected, GameRoom game_room,
+           std::list<PlayerData> players_data);
 
   int get_player_id_1() const override;
 
   int get_player_id_2() const override;
 
-  int get_game_code() const override;
-
   bool is_connected() const override;
 
-    int get_max_players() const override;
+  GameRoom get_game_room() const override;
 
-    int get_actual_players() const override;
+  std::list<PlayerData> get_players_data() const override;
+
+  int get_max_players() const override;
+
+  int get_actual_players() const override;
 };
 
 #endif // TALLER_TP_GAME_JOIN_H

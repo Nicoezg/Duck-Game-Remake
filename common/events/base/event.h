@@ -10,6 +10,9 @@
 #include "../items/explosion.h"
 #include "../tile.h"
 #include "common/events/connection/game_room.h"
+#include "common/events/connection/player_data.h"
+#include "common/events/items/item_spawn.h"
+#include "common/events/items/throwable_dto.h"
 #include "common/events/items/weapon_dto.h"
 #include "common/events/player.h"
 #include "event_type.h"
@@ -24,9 +27,11 @@ private:
 public:
   explicit Event(EventType type);
 
-  EventType get_type();
+  EventType get_type() const;
 
   virtual bool is_connected() const;
+
+  virtual std::list<PlayerData> get_players_data() const;
 
   virtual int get_game_code() const;
 
@@ -42,15 +47,19 @@ public:
 
   virtual std::list<CrateDTO> get_crates() const;
 
-  virtual std::list<WeaponDTO> get_weapons() const;
+  virtual std::list<ItemSpawnDTO> get_item_spawns() const;
 
-  virtual std::list<Explosion> get_explosions() const;
+  virtual std::list<ExplosionDTO> get_explosions() const;
+
+  virtual std::list<ThrowableDTO> get_throwables() const;
 
   virtual int get_max_players() const;
 
   virtual int get_actual_players() const;
 
-  virtual std::list<GameRoom> get_games();
+  virtual std::list<GameRoom> get_games() const;
+
+  virtual GameRoom get_game_room() const;
 
   virtual std::list<Tile> get_platforms() const;
 
@@ -60,11 +69,11 @@ public:
 
   virtual int get_length() const;
 
-  virtual std::vector<std::string> get_names() const;
+  virtual std::list<std::string> get_names() const;
 
-  virtual std::vector<int> get_scores() const;
+  virtual std::list<int> get_scores() const;
 
-  virtual std::string get_winner() const;
+  virtual PlayerData get_winner() const;
 
   virtual int get_score() const;
 

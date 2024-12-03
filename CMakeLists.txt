@@ -50,6 +50,8 @@ add_library(COMMON STATIC
         common/actions/player/shoot.h
         common/actions/player/still.cpp
         common/actions/player/still.h
+        common/actions/player/cheat.cpp
+        common/actions/player/cheat.h
         common/events/base/event.cpp
         common/events/base/event.h
         common/events/base/event_type.h
@@ -85,6 +87,14 @@ add_library(COMMON STATIC
         common/events/connection/start_game.h
         common/actions/connection/start.cpp
         common/actions/connection/start.h
+        common/events/connection/player_data.cpp
+        common/events/connection/player_data.h
+        common/configs/configurations.cpp
+        common/configs/bullet_config.cpp
+        common/configs/duck_config.cpp
+        common/configs/configurations.h
+        common/configs/bullet_config.h
+        common/configs/duck_config.h
 )
 
 # add the source files that make the lib
@@ -135,7 +145,7 @@ if(CLIENT)
             ${RESOURCES}
             client/ui/lobby_updater.cpp
             client/ui/lobby_updater.h
-           
+
     )
 
     # Make them depend on COMMON lib
@@ -196,6 +206,7 @@ if(EDITOR)
     # Link the COMMON lib target
     target_link_libraries(EDITOR PRIVATE  Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Multimedia)
     target_link_libraries(EDITOR PRIVATE yaml-cpp)
+    target_link_libraries(EDITOR PRIVATE COMMON)
 
     qt_finalize_executable(EDITOR)
 

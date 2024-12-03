@@ -10,6 +10,8 @@ public:
   explicit Duelos(GameMap &map);
 
   void shoot(Duck *shooter) override;
+
+  void replenishAmmo() override;
 };
 
 #endif // DUELOS_H

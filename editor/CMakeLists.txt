@@ -13,6 +13,7 @@ target_sources(EDITOR
         editor.cpp
         mainwindow.cpp
         main.cpp
+        yamlhandler.cpp
 
         PUBLIC
         # .h files
@@ -20,6 +21,7 @@ target_sources(EDITOR
         editor.ui
         mainwindow.h
         mainwindow.ui
+        yamlhandler.h
 
         resources.qrc
 )

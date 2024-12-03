@@ -1,85 +1,82 @@
 #ifndef DUCK_H
 #define DUCK_H
 
-#include <SDL2/SDL_rect.h>
-#include <SDL2pp/SDL2pp.hh>
 #include "animation_movement.h"
-#include "draw/draw_helmet.h"
+#include "common/events/player.h"
 #include "draw/draw_chestplate.h"
+#include "draw/draw_helmet.h"
 #include "draw/draw_weapon.h"
 #include "sound.h"
-#include "common/events/player.h"
+#include <SDL2/SDL_rect.h>
+#include <SDL2pp/SDL2pp.hh>
 #include <map>
 #include <memory>
 
+class Duck {
+public:
+  static const int DUCK_WIDTH = 32;
 
-class Duck
-{
-    public:
-		//The dimensions of the duck
-		static const int DUCK_WIDTH = 32;
-		static const int DUCK_HEIGHT = 32;
+  static const int DUCK_HEIGHT = 32;
 
-		//Initializes the variables
-		Duck(SDL2pp::Renderer& renderer, int id);
+  Duck(SDL2pp::Renderer &renderer, int id);
 
-		void render();
+  void render();
 
-		void update(const PlayerDTO &player);
+  void update(const PlayerDTO &player);
 
-		void updateFrame(int it = 1);
+  void updateFrame(int it = 1);
 
-		int getPosX();
+  int getPosX();
 
-		int getPosY();
+  int getPosY();
 
-		bool isFacingRight();
+  WeaponId getWeapon();
 
-		void loadTextures();
+  ~Duck();
 
-		DrawWeapon& getWeapon() { return weapon; }
+private:
+  int posX, posY;
 
-		~Duck();
+  uint8_t id;
 
-    private:
-		int posX, posY;
+  bool direction;
 
-		uint8_t id;
+  bool dead;
 
-		bool direction;
+  SDL2pp::Renderer &renderer;
 
-		bool dead;
+  std::shared_ptr<SDL2pp::Texture> weaponsTexture = nullptr;
 
-		SDL2pp::Renderer &renderer;
+  std::shared_ptr<SDL2pp::Texture> wingsTexture = nullptr;
 
-		std::shared_ptr<SDL2pp::Texture> weaponsTexture = nullptr;
+  std::map<int, std::shared_ptr<SDL2pp::Chunk>> sfx;
 
-		std::shared_ptr<SDL2pp::Texture> wingsTexture = nullptr;
+  AnimationMovement animationMovement;
 
-		std::map<int, std::shared_ptr<SDL2pp::Chunk>> sfx;
+  Sound sound;
 
-		AnimationMovement animationMovement;
+  DrawWeapon weapon;
 
-		Sound sound;
+  DrawHelmet helmet;
 
-		DrawWeapon weapon;
+  DrawChestplate chestplate;
 
-		DrawHelmet helmet;
+  SDL2pp::Rect walkClips[5];
+  SDL2pp::Rect jumpClip;
+  SDL2pp::Rect fallClip;
+  SDL2pp::Rect stillClipWings;
+  SDL2pp::Rect flappingClips[3];
+  SDL2pp::Rect playDeadClips[3];
 
-		DrawChestplate chestplate;
+  SDL2pp::Rect walkWeaponClips[4];
+  SDL2pp::Rect jumpWeaponClip;
+  SDL2pp::Rect fallWeaponClip;
+  SDL2pp::Rect stillClipWeapon;
+  SDL2pp::Rect aimingUpwardsClip;
+  SDL2pp::Rect recoilClip;
 
-		SDL2pp::Rect walkClips[5];
-		SDL2pp::Rect jumpClip;
-		SDL2pp::Rect fallClip;
-		SDL2pp::Rect stillClipWings;
-		SDL2pp::Rect flappingClips[3];
-		SDL2pp::Rect playDeadClips[3];
+  void loadTextures();
 
-		SDL2pp::Rect walkWeaponClips[4];
-		SDL2pp::Rect jumpWeaponClip;
-		SDL2pp::Rect fallWeaponClip;
-		SDL2pp::Rect stillClipWeapon;
-		SDL2pp::Rect aimingUpwardsClip;
-		SDL2pp::Rect recoilClip;
+  void setClips();
 };
 #endif

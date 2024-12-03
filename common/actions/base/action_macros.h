@@ -21,7 +21,8 @@ enum ActionType {
   PICK_DROP = 0x09,
   REFRESH_REQUEST = 0x0A,
   START = 0x0B,
-  STILL = 0x0C
+  STILL = 0x0C,
+  CHEAT = 0x0D
 };
 
 #endif // TALLER_TP_ACTION_MACROS_H

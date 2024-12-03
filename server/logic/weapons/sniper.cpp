@@ -9,9 +9,10 @@ Sniper::Sniper(GameMap &map) : Weapon(map, AMMO, REACH, WeaponId::SNIPER) {}
 
 void Sniper::shoot(Duck *owner) {
   if (hasAmmo()) {
-    createBullet(owner, 0, true, reach, BulletId::SHOT);
+    createBullet(owner, 0, false, reach, BulletId::SHOT);
     increaseCooldown(COOLDOWN);
     ammo--;
   }
 }
 
+void Sniper::replenishAmmo() { ammo = AMMO; }

@@ -5,14 +5,11 @@
 #ifndef TALLER_TP_START_H
 #define TALLER_TP_START_H
 
-
 #include "common/actions/base/action.h"
 
 class Start : public Action {
 public:
-    Start();
-
+  Start();
 };
 
-
-#endif //TALLER_TP_START_H
+#endif // TALLER_TP_START_H

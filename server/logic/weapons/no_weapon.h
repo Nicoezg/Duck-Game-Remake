@@ -5,18 +5,18 @@
 #ifndef TALLER_TP_NO_WEAPON_H
 #define TALLER_TP_NO_WEAPON_H
 
-
 #include "weapon.h"
 
 class NoWeapon : public Weapon {
 
 public:
-    NoWeapon(GameMap &map);
+  explicit NoWeapon(GameMap &map);
 
-    void shoot(Duck *) override;
+  void shoot(Duck *) override;
 
-    bool isReadyToShoot() const override;
+  bool isReadyToShoot() const override;
+
+  void replenishAmmo() override;
 };
 
-
-#endif //TALLER_TP_NO_WEAPON_H
+#endif // TALLER_TP_NO_WEAPON_H

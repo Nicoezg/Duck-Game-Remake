@@ -5,13 +5,11 @@
 #ifndef TALLER_TP_START_GAME_H
 #define TALLER_TP_START_GAME_H
 
-
 #include "common/events/base/event.h"
 
 class StartGame : public Event {
 public:
-    StartGame();
+  StartGame();
 };
 
-
-#endif //TALLER_TP_START_GAME_H
+#endif // TALLER_TP_START_GAME_H

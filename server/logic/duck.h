@@ -1,12 +1,13 @@
 #ifndef DUCK_H
 #define DUCK_H
 
-#include "server/configs/configurations.h"
+#include "../../common/configs/configurations.h"
+#include "common/events/items/item_spawn.h"
+#include "explosion.h"
 #include "game_map.h"
+#include "hitBox.h"
 #include "weapons/weapon.h"
 #include <atomic>
-#include "hitBox.h"
-
 
 class GameMap;
 
@@ -27,6 +28,12 @@ private:
   bool hasHelmet;
   bool hasArmour;
   bool isOnPlatform;
+  std::unique_ptr<Weapon> droppedWeapon;
+  uint8_t wins;
+  int bananaEffectRemaining;
+  hitBox currentPlatformBox;
+  int framesToExplode;
+  int shootingCooldown;
 
 public:
   Duck(std::atomic<int> id, int posX, int posY, GameMap &map);
@@ -38,20 +45,19 @@ public:
   void flap();
   void stopMoving();
   void update();
-  void resetJumpState();
-  hitBox getBoundingBox() const;
-  bool checkCollisionWithPlatform(const Structure &platform);
+  void collideWithBanana();
   void stopAiming();
   void shoot();
   void equipHelmet();
   void equipArmour();
-  void equipWeapon(std::unique_ptr<Weapon>&& newWeapon);
+  void equipWeapon(std::unique_ptr<Weapon> &&newWeapon);
   void takeDamage();
+  bool canPickUp(ItemSpawnId item);
   void pickUp();
-  void leave();
+  void drop();
   void playDead();
   void aimUpwards();
-  void standBack(int count);
+  void standBack(int newVelX);
   int getPositionX() const;
   int getPositionY() const;
   int getId() const;
@@ -64,17 +70,18 @@ public:
   bool isAimingUpwards() const;
   const Weapon *getWeapon() const;
   bool isFalling() const;
-
-  int shootingCooldown;
-
+  int getWins() const;
+  void increaseWins();
+  void setWins();
+  void replenishAmmo();
+  void throwEverything();
+  void die();
+  int getFramesToExplode() const;
+  void activateGrenade();
+  void throwGrenade();
   PlayerDTO toDTO() const;
+  void reset(int pos_x, int pos_y);
   ~Duck();
-
-    void dropHelmet();
-
-    void dropArmour();
-
-    bool dropWeapon();
 };
 
 #endif // DUCK_H

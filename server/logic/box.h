@@ -1,13 +1,8 @@
+#include "common/events/items/crate.h"
+#include "common/events/items/item_spawn.h"
 #include <cstdint>
 #ifndef BOX_H
 #define BOX_H
-
-enum BoxItem {
-  NOTHING = 0x00,
-  WEAPON = 0x01,
-  CHESTPLATE = 0x02,
-  HELMET = 0x03
-};
 
 class Box {
 private:
@@ -15,18 +10,21 @@ private:
   int pos_y;
   uint8_t hp;
   bool is_hit;
-  BoxItem content;
+  ItemSpawnId content;
 
-  BoxItem generateRandomContent();
+  ItemSpawnId generateRandomContent();
 
 public:
   Box(uint8_t hp, int pos_x, int pos_y);
 
   void shoot();
-  BoxItem get_content() const;
+  CrateDTO toDto();
+  ItemSpawnId get_content() const;
+  void resetHitState();
   int get_posx() const;
   int get_posy() const;
   bool was_hit() const;
+  uint8_t get_hp() const;
 };
 
 #endif // BOX_H

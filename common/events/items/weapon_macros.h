@@ -1,7 +1,7 @@
 #ifndef TALLER_TP_WEAPON_MACROS_H
 #define TALLER_TP_WEAPON_MACROS_H
 
-enum WeaponId{
+enum WeaponId {
   NO_WEAPON = 0x00,
   GRENADE = 0x01,
   BANANA = 0x02,
@@ -12,7 +12,8 @@ enum WeaponId{
   COWBOY_PISTOL = 0x07,
   MAGNUM = 0x08,
   SHOTGUN = 0x09,
-  SNIPER = 0x0A
+  SNIPER = 0x0A,
+  ARMED_GRENADE = 0x0B
 };
 
 #endif // TALLER_TP_WEAPON_MACROS_H

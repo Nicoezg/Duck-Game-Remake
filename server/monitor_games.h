@@ -19,7 +19,7 @@ public:
    * @brief Crea un nuevo juego y lo agrega al lobby.
    * @return El player_id del juego creado.
    */
-  int create_game(int max_players);
+  int create_game(std::string game_name, int max_players);
 
   /**
    * @brief Verifica si un juego existe.
@@ -38,7 +38,7 @@ public:
    * @param game_id El player_id del juego al que se va a unir el cliente.
    * @param player_id El player_id de jugador asignado.
    */
-  int get_player_id(int game_id, int new_players);
+  int get_player_id(int game_id, int new_players, std::string player_name);
 
   /**
    * @brief Agrega un cliente a un juego.
@@ -52,11 +52,11 @@ public:
    */
   void close_and_clean_games();
 
-    void get_max_and_actual_players(int game_code, int &actual, int &max);
+  GameRoom get_game_room(int &game_code);
 
-    std::list<GameRoom> get_not_active_games();
+  std::list<GameRoom> get_not_started_games();
 
-    int get_player_id_admin(int game_id, int new_players);
+  std::list<PlayerData> get_players_data(int game_code);
 };
 
 #endif // TALLER_TP_MONITOR_GAMES_H

@@ -1,6 +1,5 @@
 #include "crate.h"
 
-
 CrateDTO::CrateDTO(int position_x, int position_y, uint8_t hp, bool is_hit)
     : position_x(position_x), position_y(position_y), hp(hp), is_hit(is_hit) {}
 

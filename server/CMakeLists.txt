@@ -14,7 +14,10 @@ target_sources(SERVER
         logic/game_map.cpp
         logic/box.cpp
         logic/duck.cpp
-
+        logic/explosion.cpp
+        logic/itemspawn.cpp
+        logic/weapon_factory.cpp
+    
         logic/weapons/weapon.cpp
         logic/weapons/shotgun.cpp
         logic/weapons/ak47.cpp
@@ -26,14 +29,12 @@ target_sources(SERVER
         logic/weapons/sniper.cpp
         logic/weapons/grenade.cpp
         logic/weapons/no_weapon.cpp
+        logic/weapons/banana.cpp
         logic/weapons/no_weapon.h
         logic/bullets/bullet.cpp
         logic/throwables/throwable.cpp
         logic/throwables/grenade.cpp
-
-        configs/configurations.cpp
-        configs/bullet_config.cpp
-        configs/duck_config.cpp
+        logic/throwables/banana.cpp
 
     PUBLIC
     # .h files
@@ -49,6 +50,9 @@ target_sources(SERVER
         logic/game_map.h
         logic/duck.h
         logic/box.h
+        logic/explosion.h
+        logic/itemspawn.h
+        logic/weapon_factory.h
 
         logic/weapons/weapon.h
         logic/weapons/pewpewlaser.h
@@ -59,14 +63,13 @@ target_sources(SERVER
         logic/weapons/magnum.h
         logic/weapons/sniper.h
         logic/weapons/grenade.h
+        logic/weapons/banana.h
         logic/bullets/bullet.h
         logic/throwables/throwable.h
         logic/throwables/grenade.h
+        logic/throwables/banana.h
 
 
-        configs/configurations.h
-        configs/bullet_config.h
-        configs/duck_config.h
     )
 
 find_package(yaml-cpp REQUIRED)
