@@ -7,13 +7,18 @@
 #include <QMessageBox>
 #include <QPixmap>
 
+#define MENU_ID 0
+#define CREATE_ID 1
+#define SERVERS_ID 2
+#define JOIN_ID 3
+#define LOBBY_ID 4
+
 MainWindow::MainWindow(Client *client, QWidget *parent)
     : QMainWindow(parent), client(client), ui(new Ui::MainWindow) {
-  // Establecer un tamaño fijo para la ventana
 
   // Configurar la interfaz de usuario
   ui->setupUi(this);
-  this->setWindowTitle("Duck Game");
+  setWindowTitle("Duck Game");
   setupAudio();
 
   // Conectar la señal aboutToQuit a la ranura handleAboutToQuit
@@ -90,136 +95,6 @@ void MainWindow::update_players_list(const Event &event) {
   }
 }
 
-void MainWindow::show_connected_players(const Event &event) {
-  if (!event.is_connected()) {
-    ui->GameModeJoin->setCurrentIndex(0);
-    ui->GameModeJoin->activated(0);
-    on_Join_clicked();
-    return;
-  }
-
-  GameRoom game_room = event.get_game_room();
-  ui->lobbyTitle->setText(game_room.get_game_name().c_str());
-  update_players_list(event);
-}
-
-void MainWindow::on_Volver_clicked() { ui->stackedWidget->setCurrentIndex(0); }
-
-void MainWindow::on_BackButton_clicked() {
-  ui->stackedWidget->setCurrentIndex(0);
-}
-
-void MainWindow::on_leaveLobbyButton_clicked() {
-  ui->stackedWidget->setCurrentIndex(0);
-}
-
-void MainWindow::exit() {
-  client->close();
-  close();
-}
-
-void MainWindow::on_Exit_clicked() { exit(); }
-
-void MainWindow::handleAboutToQuit() {
-  if (client->is_closed()) {
-    return;
-  }
-  if (client->is_connected()) {
-    close();
-    return;
-  }
-  exit();
-}
-
-void MainWindow::on_Create_clicked() {
-  if (client->is_connected()) {
-    ui->stackedWidget->setCurrentIndex(4);
-    return;
-  }
-  if (ui->GameModeCreate->currentIndex() == 0) {
-    ui->player2namecreate->hide();
-  } else {
-    ui->player2namecreate->show();
-  }
-
-  ui->stackedWidget->setCurrentIndex(1);
-}
-
-void MainWindow::on_connectCreat_clicked() {
-  std::shared_ptr<Action> action;
-  std::string game_name = ui->LobbyName->text().toStdString();
-  int max_players = ui->LimitPlayerQuantity->currentText().toInt();
-  std::string player_name_1 = ui->player1namecreate->text().toStdString();
-  std::string player_name_2;
-
-  GameMode mode = UN_JUGADOR;
-  if (ui->GameModeCreate->currentIndex() != 0) {
-    mode = DOS_JUGADORES;
-    player_name_2 = ui->player2namecreate->text().toStdString();
-  }
-
-  action = std::make_shared<Create>(mode, max_players, game_name, player_name_1,
-                                    player_name_2);
-
-  client->send_action(action);
-
-  ui->stackedWidget->setCurrentIndex(4);
-}
-
-void MainWindow::on_GameModeCreate_activated(int index) {
-  if (index == 0) {
-    ui->player2namecreate->hide();
-  } else {
-    ui->player2namecreate->show();
-  }
-}
-
-void MainWindow::on_startGameButton_clicked() {
-  std::shared_ptr<Action> action = std::make_shared<Action>(START);
-  client->send_action(action);
-}
-
-void MainWindow::on_Join_clicked() {
-  if (client->is_connected()) {
-    ui->stackedWidget->setCurrentIndex(4);
-    return;
-  }
-  setupServerList();
-  ui->stackedWidget->setCurrentIndex(2);
-}
-
-void MainWindow::on_GameModeJoin_activated(int index) {
-  if (index == 0) {
-    ui->Player2NameJoin->hide();
-  } else {
-    ui->Player2NameJoin->show();
-  }
-}
-
-void MainWindow::on_refreshButton_clicked() {
-  std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
-  client->send_action(action);
-}
-
-void MainWindow::on_Connect_clicked() {
-  std::string player_name_1 = ui->Player1NameJoin->text().toStdString();
-  std::string player_name_2;
-
-  GameMode mode = UN_JUGADOR;
-  if (ui->GameModeJoin->currentIndex() != 0) {
-    mode = DOS_JUGADORES;
-    player_name_2 = ui->Player2NameJoin->text().toStdString();
-  }
-
-  int game_code = client->get_game_code();
-  std::shared_ptr<Action> action =
-      std::make_shared<Join>(game_code, mode, player_name_1, player_name_2);
-
-  client->send_action(action);
-
-  ui->stackedWidget->setCurrentIndex(4);
-}
-
 void MainWindow::RefreshServerList(Event &event) {
   ui->serverList->clear();
 
@@ -245,7 +120,7 @@ void MainWindow::RefreshServerList(Event &event) {
             [this, item, &game]() {
               // Cambiar al widget deseado
               ui->Player2NameJoin->hide();
-              ui->stackedWidget->setCurrentIndex(3);
+              ui->stackedWidget->setCurrentIndex(JOIN_ID);
               ui->Player1NameJoin->setText(
                   QString("Player %1").arg(game.get_actual_players() + 1));
               ui->Player2NameJoin->setText(
@@ -263,4 +138,135 @@ void MainWindow::RefreshServerList(Event &event) {
 void MainWindow::setupServerList() {
   std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
   client->send_action(action);
+}
+
+
+void MainWindow::show_connected_players(const Event &event) {
+  if (!event.is_connected()) {
+    ui->GameModeJoin->setCurrentIndex(0);
+    ui->GameModeJoin->activated(0);
+    on_Join_clicked();
+    return;
+  }
+
+  GameRoom game_room = event.get_game_room();
+  ui->lobbyTitle->setText(game_room.get_game_name().c_str());
+  update_players_list(event);
+}
+
+void MainWindow::on_GameModeCreate_activated(int index) {
+  if (index == 0) {
+    ui->player2namecreate->hide();
+  } else {
+    ui->player2namecreate->show();
+  }
+}
+
+void MainWindow::on_GameModeJoin_activated(int index) {
+  if (index == 0) {
+    ui->Player2NameJoin->hide();
+  } else {
+    ui->Player2NameJoin->show();
+  }
+}
+
+
+void MainWindow::on_Volver_clicked() { ui->stackedWidget->setCurrentIndex(0); }
+
+void MainWindow::on_BackButton_clicked() {
+  ui->stackedWidget->setCurrentIndex(MENU_ID);
+}
+
+void MainWindow::on_leaveLobbyButton_clicked() {
+  ui->stackedWidget->setCurrentIndex(MENU_ID);
+}
+void MainWindow::on_Exit_clicked() { exit(); }
+
+void MainWindow::handleAboutToQuit() {
+  if (client->is_closed()) {
+    return;
+  }
+  if (client->is_connected()) {
+    close();
+    return;
+  }
+  exit();
+}
+
+void MainWindow::on_Create_clicked() {
+  if (client->is_connected()) {
+    ui->stackedWidget->setCurrentIndex(LOBBY_ID);
+    return;
+  }
+  if (ui->GameModeCreate->currentIndex() == 0) {
+    ui->player2namecreate->hide();
+  } else {
+    ui->player2namecreate->show();
+  }
+
+  ui->stackedWidget->setCurrentIndex(CREATE_ID);
+}
+
+void MainWindow::on_connectCreat_clicked() {
+  std::shared_ptr<Action> action;
+  std::string game_name = ui->LobbyName->text().toStdString();
+  int max_players = ui->LimitPlayerQuantity->currentText().toInt();
+  std::string player_name_1 = ui->player1namecreate->text().toStdString();
+  std::string player_name_2;
+
+  GameMode mode = UN_JUGADOR;
+  if (ui->GameModeCreate->currentIndex() != 0) {
+    mode = DOS_JUGADORES;
+    player_name_2 = ui->player2namecreate->text().toStdString();
+  }
+
+  action = std::make_shared<Create>(mode, max_players, game_name, player_name_1,
+                                    player_name_2);
+
+  client->send_action(action);
+
+  ui->stackedWidget->setCurrentIndex(LOBBY_ID);
+}
+
+void MainWindow::on_startGameButton_clicked() {
+  std::shared_ptr<Action> action = std::make_shared<Action>(START);
+  client->send_action(action);
+}
+
+void MainWindow::on_Join_clicked() {
+  if (client->is_connected()) {
+    ui->stackedWidget->setCurrentIndex(LOBBY_ID);
+    return;
+  }
+  setupServerList();
+  ui->stackedWidget->setCurrentIndex(SERVERS_ID);
+}
+
+void MainWindow::on_refreshButton_clicked() {
+  std::shared_ptr<Action> action = std::make_shared<RefreshGames>();
+  client->send_action(action);
+}
+
+void MainWindow::on_Connect_clicked() {
+  std::string player_name_1 = ui->Player1NameJoin->text().toStdString();
+  std::string player_name_2;
+
+  GameMode mode = UN_JUGADOR;
+  if (ui->GameModeJoin->currentIndex() != 0) {
+    mode = DOS_JUGADORES;
+    player_name_2 = ui->Player2NameJoin->text().toStdString();
+  }
+
+  int game_code = client->get_game_code();
+  std::shared_ptr<Action> action =
+      std::make_shared<Join>(game_code, mode, player_name_1, player_name_2);
+
+  client->send_action(action);
+
+  ui->stackedWidget->setCurrentIndex(LOBBY_ID);
+}
+
+void MainWindow::exit() {
+  client->close();
+  close();
 }

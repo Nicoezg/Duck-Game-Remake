@@ -1,17 +1,6 @@
 #include "yamlhandler.h"
 #include <iostream>
 
-void YamlHandler::ponerTile(YAML::Emitter &out, int columna_inicial,
-                            int columna_final, int fila_inicial, int fila_final,
-                            int tile) {
-  out << YAML::BeginMap;
-  out << YAML::Key << "start_x" << YAML::Value << columna_inicial;
-  out << YAML::Key << "end_x" << YAML::Value << columna_final;
-  out << YAML::Key << "start_y" << YAML::Value << fila_inicial;
-  out << YAML::Key << "end_y" << YAML::Value << fila_final;
-  out << YAML::Key << "tile" << YAML::Value << tile;
-  out << YAML::EndMap;
-}
 
 QString YamlHandler::getSavefilename() {
   QString filename =
@@ -26,6 +15,19 @@ QString YamlHandler::getLoadfilename() {
                                    QObject::tr("YAML Files (*.yaml)"));
   return filename;
 }
+
+void YamlHandler::ponerTile(YAML::Emitter &out, int columna_inicial,
+                            int columna_final, int fila_inicial, int fila_final,
+                            int tile) {
+  out << YAML::BeginMap;
+  out << YAML::Key << "start_x" << YAML::Value << columna_inicial;
+  out << YAML::Key << "end_x" << YAML::Value << columna_final;
+  out << YAML::Key << "start_y" << YAML::Value << fila_inicial;
+  out << YAML::Key << "end_y" << YAML::Value << fila_final;
+  out << YAML::Key << "tile" << YAML::Value << tile;
+  out << YAML::EndMap;
+}
+
 void YamlHandler::save(QString &filename, QGridLayout *mapLayout,
                        QComboBox *backgroundBox, int filas, int columnas) {
   YAML::Emitter out;
@@ -109,6 +111,7 @@ void YamlHandler::save(QString &filename, QGridLayout *mapLayout,
     columna_inicial = -1;
     columna_final = -1;
   }
+
   // Estructuras verticales de largo > 1
   for (int j = 0; j < columnas; j++) {
     anterior = nullptr;

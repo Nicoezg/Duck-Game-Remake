@@ -8,7 +8,7 @@ void ThrownGrenade::update() {
     startThrow = false;
   }
   framesRemaining--;
-  if (!aimingUp && distance_travelled / 16 < reach) {
+  if (!aimingUp && distance_travelled / TILE_LENGTH < reach) {
     if (isRight) {
       pos_x += 1;
       angle += 5;
@@ -22,11 +22,11 @@ void ThrownGrenade::update() {
   hitBox grenadeBox = hitBox(pos_x, pos_y, 8, 8);
   for (auto structure : map.getMap().structures) {
     hitBox structureBox =
-        hitBox(structure.start_x * 16, structure.start_y * 16,
-               (structure.end_x + 1 - structure.start_x) * 16,
-               (structure.end_y + 1 - structure.start_y) * 16);
+        hitBox(structure.start_x * TILE_LENGTH, structure.start_y * TILE_LENGTH,
+               (structure.end_x + 1 - structure.start_x) * TILE_LENGTH,
+               (structure.end_y + 1 - structure.start_y) * TILE_LENGTH);
     if (hitBox::isColliding(grenadeBox, structureBox)) {
-      pos_y = structure.start_y * 16 - 8;
+      pos_y = structure.start_y * TILE_LENGTH - 8;
     }
   }
   if (framesRemaining == 0) {

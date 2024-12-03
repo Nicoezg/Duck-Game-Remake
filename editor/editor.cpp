@@ -6,7 +6,6 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QStackedWidget>
-#include <iostream>
 #include <yaml-cpp/yaml.h>
 #define TOTAL_TILES 52
 #define SPAWN_TILE 48
@@ -184,6 +183,23 @@ void Editor::cleanLayout(QGridLayout *layout) {
   }
 }
 
+void Editor::cambiarFondo(int index) {
+  QWidget *containerWidget = ui->scrollArea_2->widget();
+  if (index == 0) { // Índice 0 corresponde a "Forest"
+    containerWidget->setStyleSheet(
+        "QWidget#mapWidget { border-image: url(:/images/forest.png) 0 0 0 0 "
+        "stretch stretch; }");
+  } else if (index == 1) { // Índice 1 corresponde a "Lava"
+    containerWidget->setStyleSheet(
+        "QWidget#mapWidget { border-image: url(:/images/lava.png) 0 0 0 0 "
+        "stretch stretch; }");
+  } else {
+    containerWidget->setStyleSheet(
+        "QWidget#mapWidget { border-image: url(:/images/nieve.png) 0 0 0 0 "
+        "stretch stretch; }");
+  }
+}
+
 void Editor::on_ExitButton_clicked() { QApplication::quit(); }
 
 void Editor::on_EraseButton_clicked() { cleanLayout(ui->mapLayout); }
@@ -216,21 +232,4 @@ void Editor::on_LoadButton_clicked() {
   crearMapaVacio(filas, columnas);
 
   yamlHandler.load(filename, ui->mapLayout, ui->backgroundBox, tiles);
-}
-
-void Editor::cambiarFondo(int index) {
-  QWidget *containerWidget = ui->scrollArea_2->widget();
-  if (index == 0) { // Índice 0 corresponde a "Forest"
-    containerWidget->setStyleSheet(
-        "QWidget#mapWidget { border-image: url(:/images/forest.png) 0 0 0 0 "
-        "stretch stretch; }");
-  } else if (index == 1) { // Índice 1 corresponde a "Lava"
-    containerWidget->setStyleSheet(
-        "QWidget#mapWidget { border-image: url(:/images/lava.png) 0 0 0 0 "
-        "stretch stretch; }");
-  } else {
-    containerWidget->setStyleSheet(
-        "QWidget#mapWidget { border-image: url(:/images/nieve.png) 0 0 0 0 "
-        "stretch stretch; }");
-  }
 }

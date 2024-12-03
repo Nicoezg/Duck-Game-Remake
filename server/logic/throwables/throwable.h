@@ -6,6 +6,7 @@
 #include "common/events/items/throwable_macros.h"
 #include "common/events/items/weapon_macros.h"
 
+#define TILE_LENGTH 16
 #define CONFIG Configurations::configurations()
 
 class GameMap;

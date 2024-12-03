@@ -31,13 +31,13 @@ private:
   std::vector<Map> maps;
   std::vector<Map> logicMaps;
   size_t lastMapIndex;
+  Map getactualMap();
 
 public:
   MapLoader();
   ~MapLoader();
 
   Map getNextMap();
-  Map getactualMap();
   MapDTO getNextMapDTO();
 };
 

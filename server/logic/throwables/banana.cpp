@@ -9,7 +9,7 @@ ThrownBanana::ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y,
                 aimingUp) {}
 
 void ThrownBanana::update() {
-  if (!aimingUp && distance_travelled / 16 < reach && !onGround) {
+  if (!aimingUp && distance_travelled / TILE_LENGTH < reach && !onGround) {
     if (isRight) {
       pos_x += 3;
     } else {
@@ -26,11 +26,11 @@ void ThrownBanana::update() {
 
   for (auto structure : map.getMap().structures) {
     hitBox structureBox =
-        hitBox(structure.start_x * 16, structure.start_y * 16,
-               (structure.end_x + 1 - structure.start_x) * 16,
-               (structure.end_y + 1 - structure.start_y) * 16);
+        hitBox(structure.start_x * TILE_LENGTH, structure.start_y * TILE_LENGTH,
+               (structure.end_x + 1 - structure.start_x) * TILE_LENGTH,
+               (structure.end_y + 1 - structure.start_y) * TILE_LENGTH);
     if (hitBox::isColliding(bananaBox, structureBox)) {
-      pos_y = structure.start_y * 16 - 16;
+      pos_y = structure.start_y * TILE_LENGTH - TILE_LENGTH;
       onGround = true;
       collidable = true;
     }
