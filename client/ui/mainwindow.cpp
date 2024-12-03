@@ -140,7 +140,6 @@ void MainWindow::setupServerList() {
   client->send_action(action);
 }
 
-
 void MainWindow::show_connected_players(const Event &event) {
   if (!event.is_connected()) {
     ui->GameModeJoin->setCurrentIndex(0);
@@ -169,7 +168,6 @@ void MainWindow::on_GameModeJoin_activated(int index) {
     ui->Player2NameJoin->show();
   }
 }
-
 
 void MainWindow::on_Volver_clicked() { ui->stackedWidget->setCurrentIndex(0); }
 

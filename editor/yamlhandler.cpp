@@ -1,7 +1,6 @@
 #include "yamlhandler.h"
 #include <iostream>
 
-
 QString YamlHandler::getSavefilename() {
   QString filename =
       QFileDialog::getSaveFileName(nullptr, QObject::tr("Save File"), "",

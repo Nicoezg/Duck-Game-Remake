@@ -166,8 +166,9 @@ void GameMap::bulletCollisionWithPlatforms() {
         bool isHorizontalCollision = false;
 
         if (!bullet->canBounce()) {
-            bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
-            break;
+          bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet),
+                        bullets.end());
+          break;
         }
 
         if (bullet->getPrevPosY() < structureBox.y &&

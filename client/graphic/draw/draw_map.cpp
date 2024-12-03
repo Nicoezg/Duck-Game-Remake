@@ -12,11 +12,14 @@ DrawMap::DrawMap(SDL2pp::Renderer &renderer)
         std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(filePath));
   }
   this->textures[48] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface("../client/assets/sprites/maps/background/forest.png"));
+      renderer,
+      SDL2pp::Surface("../client/assets/sprites/maps/background/forest.png"));
   this->textures[49] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface("../client/assets/sprites/maps/background/lava.png"));
+      renderer,
+      SDL2pp::Surface("../client/assets/sprites/maps/background/lava.png"));
   this->textures[50] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface("../client/assets/sprites/maps/background/nieve.png"));
+      renderer,
+      SDL2pp::Surface("../client/assets/sprites/maps/background/nieve.png"));
 }
 
 void DrawMap::load(const Event &map) {
