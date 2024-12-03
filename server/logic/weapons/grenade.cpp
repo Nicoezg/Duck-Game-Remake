@@ -16,7 +16,7 @@ void Grenade::shoot(Duck *owner) {
     createThrowable(map, owner, true, framesToExplode);
     owner->throwGrenade();
   }
-  if (!unplugged) {
+  else if (!unplugged) {
     unplugged = true;
     ammo--;
     owner->activateGrenade();
