@@ -1,7 +1,8 @@
 
 # 🦆 **Manual de Usuario - Duck Game**
-
-![Título](client/ui/images/Main_logo.webp)
+<p align="center">
+  <img src="client/ui/images/Main_logo.webp">
+</p>
 
 ---
 
@@ -61,6 +62,7 @@ Al ejecutar el juego, verás el siguiente menú inicial:
 1. **Crear una partida**: Presiona `Create`.
    - Introduce un nombre para la partida.
    - Elige el número de jugadores totales y locales.
+   - Opcionalmente, se puede ingresar nombres para los jugadores locales. En caso contrario, se les otorgará uno por defecto.
    - Haz clic en `Connect` para iniciar.
 
    **Ejemplo del menú de creación:**
@@ -78,7 +80,7 @@ Al ejecutar el juego, verás el siguiente menú inicial:
 Una vez que todos los jugadores estén conectados, el anfitrión podrá iniciar la partida desde este menú:
 ![Menú Espera](common/manual_images/lobby.png)
 
-El color de tu pato sera el mismo que el color de tu nombre en el lobby.
+El color de tu pato dentro del juego será el mismo que el color de tu nombre en el lobby.
 
 ---
 
@@ -96,6 +98,32 @@ El color de tu pato sera el mismo que el color de tu nombre en el lobby.
 | Soltar arma                     | `-`                 | F                   |
 | Aletear (mantener)              | ↑                   | W                   |
 | Apuntar hacia arriba            | L                   | Y                   |
+
+---
+
+### :face_in_clouds: **Cheats**
+
+| **Acción**                              | **Jugador 1**       |
+|-----------------------------------------|---------------------|
+| Obtener Granada                         | F1                  |
+| Obtener Banana                          | F2                  |
+| Obtener Pew-Pew-Laser                   | F3                  |
+| Obtener Laser-Rifle                     | F4                  |
+| Obtener Ak-47                           | F5                  |
+| Obtener Pistola de Duelos               | F6                  |
+| Obtener Pistola Cowboy                  | F7                  |
+| Obtener Magnum                          | F8                  |
+| Obtener Escopeta                        | F9                  |
+| Obtener Sniper                          | F10                 |
+| Obtener Casco                           | F11                 |
+| Obtener Armadura                        | F12                 |
+| Ganar instantaneamente                  | 1                   |
+| Matar al resto de patos                 | 2                   |
+| Tirar todo                              | 3                   |
+| Pasar de ronda                          | 4                   |
+| Recargar munición                       | 5                   |
+
+Es importante notar que estos **cheats** solo funcionarán con el jugador 1 en cada cliente. El jugador numero 2 (si es que lo hay) no tiene acceso a dichos cheats.
 
 ---
 
