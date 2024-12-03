@@ -13,11 +13,11 @@ void ThrownBanana::update() {
     if (isRight) {
       pos_x += 3;
     } else {
-      pos_x -= 2;
+      pos_x -= 3;
     }
   }
 
-  distance_travelled += 2;
+  distance_travelled += 3;
   if (!onGround) {
     pos_y += CONFIG.getDuckConfig().getGravity();
   }
@@ -35,6 +35,10 @@ void ThrownBanana::update() {
       collidable = true;
     }
   }
+
+  
+
+
 }
 
 ThrowableDTO ThrownBanana::toDTO() const {
