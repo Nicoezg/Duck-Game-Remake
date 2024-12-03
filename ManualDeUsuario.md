@@ -1,25 +1,34 @@
 
 # 🦆 **Manual de Usuario - Duck Game**
-<p align="center">
-  <img src="client/ui/images/Main_logo.webp">
-</p>
+
+![Main logo](client/ui/images/Main_logo.webp)
 
 ---
 
 ## **1️⃣ Instalación de Dependencias y Compilación**
 
-### 🛠️ Instalación:
+### 🛠️ Instalación
+
 Ejecuta el siguiente comando en la terminal para instalar todas las dependencias necesarias:
+
 ```bash
 chmod +x install_all.sh
 sudo ./install_all.sh
 ```
 
-### 🔨 Compilación:
+### 🔨 Compilación
+
 Una vez completada la instalación, compila el programa con el siguiente comando:
+
 ```bash
 chmod +x build_game.sh
 ./build_game.sh
+```
+
+Puede ocurrir, que al ejecutar este script, no nos encontramos en la carpeta build. En este caso, se debe ejecutar el siguiente comando:
+
+```bash
+cd build
 ```
 
 ---
@@ -27,25 +36,32 @@ chmod +x build_game.sh
 ## **2️⃣ Ejecución del Juego**
 
 ### 🌐 **Servidor:**
+
 Primero, inicia el servidor:
+
 ```bash
 ./SERVER <puerto>
 ```
 
 ### 👥 **Cliente:**
+
 Luego, inicia el cliente:
+
 ```bash
 ./CLIENT <host> <puerto>
 ```
 
-Para una ejecución local, usa `localhost` como host y un puerto común, por ejemplo:
+Para una ejecución local, usa `localhost` como host y un puerto común, por ejemplo(en distintas terminales):
+
 ```bash
 ./SERVER 8080
 ./CLIENT localhost 8080
 ```
 
 ### ✏️ **Editor del Juego:**
+
 Para abrir el editor de mapas, ejecuta:
+
 ```bash
 ./EDITOR
 ```
@@ -53,7 +69,9 @@ Para abrir el editor de mapas, ejecuta:
 ---
 
 ### :test_tube: **Tests:**
+
 Para correr los tests, ejecuta:
+
 ```bash
 ./TESTS
 ```
@@ -66,7 +84,8 @@ Al ejecutar el juego, verás el siguiente menú inicial:
 
 ![Lobby Menu](common/manual_images/menu.png)
 
-### Opciones disponibles:
+### Opciones disponibles
+
 1. **Crear una partida**: Presiona `Create`.
    - Introduce un nombre para la partida.
    - Elige el número de jugadores totales y locales.
@@ -138,6 +157,7 @@ Es importante notar que estos **cheats** solo funcionarán con el jugador 1 en c
 ### 🎯 **Objetivo del Juego**
 
 ¡Sé el último pato en pie! 💥  
+
 - Derrota a los demás jugadores y se el último en pie.  
 - Gana 10 rondas o más para convertirte en el campeón.
 
@@ -154,10 +174,12 @@ Para cerrar el servidor, escribe `q` en la terminal donde fue ejecutado.
 El editor te permite crear o modificar mapas personalizados. Sigue estos pasos:
 
 ### ✨ **Interfaz Principal del Editor:**
+
 Al iniciar el editor, verás este menú:
 ![Editor Menu](common/manual_images/editor.png)
 
 ### 🧱 **Colocación de estructuras:**
+
 1. Haz clic en el objeto deseado (plataforma, spawn, etc.).
 2. Colócalo en el mapa haciendo clic en la posición deseada.
 3. Para borrar una estructura, selecciona `Eraser` y haz clic en la estructura a eliminar.
@@ -180,20 +202,20 @@ Al iniciar el editor, verás este menú:
 ### 💾 **Guardar y Cargar Mapas:**
 
 - **Guardar**: Haz clic en `Save`, elige un nombre y usa la extensión `.yaml`.
-  Coloca el archivo en `server/logic/maps` para que sea jugable. Es importante aclarar, que si un mapa que creamos no tiene al menos un spawn, este sera ignorado. 
+  Coloca el archivo en `server/logic/maps` para que sea jugable. Es importante aclarar, que si un mapa que creamos no tiene al menos un spawn, este sera ignorado.
 
 - **Cargar**: Haz clic en `Load` y selecciona un archivo existente.
 
 ---
 
 ### 🌄 **Selección de Fondo:**
+
 Puedes personalizar el fondo del mapa desde este menú:
 ![Seleccionar Fondo](common/manual_images/forest.png)
 
 Selecciona entre las opciones disponibles:
 ![Opciones de Fondo](common/manual_images/opciones.png)
 
-
-##  **7️⃣ Configuración**
+## **7️⃣ Configuración**
 
 Si se desea cambiar la configuración del juego, se puede hacer modificando el archivo `common/configs/configurations.yaml`. Este archivo contiene configuraciones para las armas como otros elementos del juego.
