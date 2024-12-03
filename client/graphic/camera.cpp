@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <cmath>
 
-#define WINDOW_HEIGHT 640
-#define WINDOW_WIDTH 480
+#define WINDOW_HEIGHT 480
+#define WINDOW_WIDTH 640
 
 CameraZoom::CameraZoom(SDL2pp::Renderer &renderer, const SDL2pp::Rect &viewport,
                        float minScale, float maxScale, float zoomSpeed)
