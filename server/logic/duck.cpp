@@ -324,13 +324,13 @@ void Duck::aimUpwards() {
   state = State::AIMING_UPWARDS;
 }
 
-void Duck::standBack(int count) {
+void Duck::standBack(int newVelX) {
 
   if (!aimingUpwards) {
     if (isRight) {
-      velX -= count;
+      velX -= newVelX;
     } else {
-      velX += count;
+      velX += newVelX;
     }
     state = State::RECOIL;
   }
@@ -373,15 +373,11 @@ PlayerDTO Duck::toDTO() const {
           Chestplate(isWearingArmour())};
 }
 
-Duck::~Duck() {}
-
 int Duck::getWins() const { return wins; }
 
 void Duck::setWins() { wins = 200; }
 
 void Duck::collideWithBanana() { bananaEffectRemaining = 100; }
-
-// void Duck::replenishAmmo() { weapon->replenishAmmo(); }
 
 void Duck::throwEverything() {
   weapon = std::make_unique<NoWeapon>(map);
@@ -407,3 +403,5 @@ void Duck::throwGrenade() {
   hasWeapon = false;
   framesToExplode = -1;
 }
+
+Duck::~Duck() {}

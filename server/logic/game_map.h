@@ -68,14 +68,6 @@ public:
 
   void bulletCollisionWithPlatforms();
 
-  bool playerCollisionWithBox(int id);
-
-  PlayerDTO getPlayerState(int playerId);
-
-  void reapDead();
-
-  ~GameMap();
-
   void process_action(std::shared_ptr<Action> &action);
 
   std::list<PlayerDTO> getState();
@@ -104,8 +96,6 @@ public:
 
   Map getMap();
 
-  void checkBulletCollisionWithPlayers();
-
   bool check_players_alive();
 
   int get_winner_id();
@@ -123,6 +113,8 @@ public:
   int getPlayerWins(int playerId);
 
   void killAll(int duckId);
+
+  ~GameMap();
 };
 
 #endif

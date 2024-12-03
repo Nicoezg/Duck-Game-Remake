@@ -45,10 +45,7 @@ public:
   void flap();
   void stopMoving();
   void update();
-  void resetJumpState();
   void collideWithBanana();
-  hitBox getBoundingBox() const;
-  bool checkCollisionWithPlatform(const Structure &platform);
   void stopAiming();
   void shoot();
   void equipHelmet();
@@ -57,12 +54,10 @@ public:
   void takeDamage();
   bool canPickUp(ItemSpawnId item);
   void pickUp();
-  void getWeapon(ItemSpawnId item);
   void drop();
   void playDead();
   void aimUpwards();
-  void standBack(int count);
-  bool isAlive() const;
+  void standBack(int newVelX);
   int getPositionX() const;
   int getPositionY() const;
   int getId() const;
@@ -84,17 +79,9 @@ public:
   int getFramesToExplode() const;
   void activateGrenade();
   void throwGrenade();
-
   PlayerDTO toDTO() const;
-  ~Duck();
-
-  void dropHelmet();
-
-  void dropArmour();
-
-  bool dropWeapon();
-
   void reset(int pos_x, int pos_y);
+  ~Duck();
 };
 
 #endif // DUCK_H
