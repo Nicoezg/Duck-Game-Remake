@@ -11,8 +11,8 @@ DrawThrowable::DrawThrowable(SDL2pp::Renderer &renderer)
   this->textures[2] = std::make_shared<SDL2pp::Texture>(
       renderer, SDL2pp::Surface(DATA_PATH "weapons/banana-stepped.png"));
 
-  this->sounds[0] = std::make_shared<SDL2pp::Chunk>(
-      "../client/assets/audio/grenadeFire.wav");
+  this->sounds[0] =
+      std::make_shared<SDL2pp::Chunk>("../client/assets/audio/grenadeFire.wav");
   this->sounds[1] =
       std::make_shared<SDL2pp::Chunk>("../client/assets/audio/slip.wav");
 }
