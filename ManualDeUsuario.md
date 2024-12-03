@@ -52,6 +52,14 @@ Para abrir el editor de mapas, ejecuta:
 
 ---
 
+### :test_tube: **Tests:**
+Para correr los tests, ejecuta:
+```bash
+./TESTS
+```
+
+---
+
 ## **3️⃣ Interfaz del Lobby**
 
 Al ejecutar el juego, verás el siguiente menú inicial:
