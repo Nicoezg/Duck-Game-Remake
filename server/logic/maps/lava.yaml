@@ -42,16 +42,6 @@ Structures:
     start_y: 21
     end_y: 21
     tile: 29
-  - start_x: 7
-    end_x: 8
-    start_y: 22
-    end_y: 22
-    tile: 31
-  - start_x: 30
-    end_x: 31
-    start_y: 22
-    end_y: 22
-    tile: 31
   - start_x: 12
     end_x: 13
     start_y: 23
@@ -247,6 +237,16 @@ Structures:
     start_y: 21
     end_y: 21
     tile: 30
+  - start_x: 8
+    end_x: 8
+    start_y: 22
+    end_y: 22
+    tile: 31
+  - start_x: 31
+    end_x: 31
+    start_y: 22
+    end_y: 22
+    tile: 31
   - start_x: 11
     end_x: 11
     start_y: 23

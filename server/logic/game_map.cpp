@@ -53,17 +53,17 @@ void GameMap::addCrate() {
 
 void GameMap::addSpawnItem() {
   // cppcheck-suppress useStlAlgorithm
-  for (auto &itemSpawn : map.armors) {
+  for (const auto &itemSpawn : map.armors) {
     itemSpawns.push_back({itemSpawn.x * TILE_SIZE, itemSpawn.y * TILE_SIZE,
                           ItemSpawnId::CHESTPLATE_SPAWN, false});
   }
   // cppcheck-suppress useStlAlgorithm
-  for (auto &itemSpawn : map.helmets) {
+  for (const auto &itemSpawn : map.helmets) {
     itemSpawns.push_back({itemSpawn.x * TILE_SIZE, itemSpawn.y * TILE_SIZE,
                           ItemSpawnId::HELMET_SPAWN, false});
   }
   // cppcheck-suppress useStlAlgorithm
-  for (auto &itemSpawn : map.weaponSpawns) {
+  for (const auto &itemSpawn : map.weaponSpawns) {
     ItemSpawnId weapon = getRandomWeapon();
     itemSpawns.push_back(
         {itemSpawn.x * TILE_SIZE, itemSpawn.y * TILE_SIZE, weapon, false});

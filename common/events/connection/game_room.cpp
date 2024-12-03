@@ -11,7 +11,7 @@ GameRoom::GameRoom(int game_code, std::string game_name, int actual_players,
     : game_code(game_code), game_name(game_name), max_players(max_players),
       actual_players(actual_players) {}
 
-std::string GameRoom::get_game_name() const { return game_name; }
+const std::string &GameRoom::get_game_name() const { return game_name; }
 
 int GameRoom::get_game_code() const { return game_code; }
 

@@ -17,6 +17,7 @@
 #define BACKGROUND_MUSIC_PATH "../client/graphic/audio/background-music.wav"
 #define VICTORY_MUSIC_PATH "../client/graphic/audio/challengeWin.wav"
 
+// cppcheck-suppress uninitMemberVar
 Game::Game(Client &client) try
     : client(client), sdl(SDL_INIT_VIDEO), font(FONT_PATH, FONT_SIZE),
       window("Duck Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

@@ -110,7 +110,7 @@ void DrawWeapon::render(int x, int y, int flipType) {
 }
 
 void DrawWeapon::update(const WeaponDTO &weapon, bool aimingUpwards) {
-  WeaponId weaponId = weapon.get_id();
+  this->weaponId = weapon.get_id();
   this->aimingUpwards = aimingUpwards;
   bool dtoAmmo = weapon.has_ammo();
   shoot = weapon.is_shooting();
@@ -126,7 +126,6 @@ void DrawWeapon::update(const WeaponDTO &weapon, bool aimingUpwards) {
       weaponId != GRENADE && weaponId != BANANA && weaponId != ARMED_GRENADE) {
     playNoAmmo = true;
   }
-  this->weaponId = weaponId;
   hasAmmo = dtoAmmo;
 }
 

@@ -12,7 +12,6 @@ private:
   int pos_y;
   float angle;
   int range;
-  bool isGrenade;
   bool canBounce;
   BulletId id;
   bool isRight;

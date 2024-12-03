@@ -9,4 +9,4 @@ PlayerData::PlayerData(int id, std::string name)
 
 int PlayerData::get_id() const { return id; }
 
-std::string PlayerData::get_name() const { return name; }
+const std::string &PlayerData::get_name() const { return name; }

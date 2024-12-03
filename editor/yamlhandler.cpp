@@ -215,7 +215,7 @@ void YamlHandler::save(QString &filename, QGridLayout *mapLayout,
     }
   }
 
-  out << YAML::EndSeq; // Termina la lista de tiles
+  out << YAML::EndSeq;
 
   out << YAML::Key << "Spawns" << YAML::Value << YAML::BeginSeq;
 
@@ -234,7 +234,7 @@ void YamlHandler::save(QString &filename, QGridLayout *mapLayout,
     }
   }
 
-  out << YAML::EndSeq; // Termina la lista de spawns
+  out << YAML::EndSeq;
 
   out << YAML::Key << "Interactuables" << YAML::Value << YAML::BeginSeq;
 

@@ -20,7 +20,7 @@ public:
 
   GameRoom();
 
-  std::string get_game_name() const;
+  const std::string &get_game_name() const;
 
   int get_game_code() const;
 

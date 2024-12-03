@@ -73,11 +73,9 @@ void Editor::cargarTilesEnGrilla(const QString &nombre, const QString &rutaBase,
       // Crear un label para este tile
       QLabel *label = new QLabel();
 
-      // Extraer el tile de 16x16 del spritesheet
       QPixmap tile =
           spritesheet.copy(x * tileSide, y * tileSide, tileSide, tileSide);
 
-      // Escalar el tile al tamaño de visualización (64x64)
       QPixmap scaledTile =
           tile.scaled(displaySize, displaySize, Qt::KeepAspectRatio,
                       Qt::FastTransformation);

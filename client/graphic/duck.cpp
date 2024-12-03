@@ -224,11 +224,12 @@ void Duck::setClips() {
     walkClips[i].y = 0;
     walkClips[i].w = DUCK_WIDTH;
     walkClips[i].h = DUCK_HEIGHT;
-
-    walkWeaponClips[i].x = (i + 1) * DUCK_WIDTH;
-    walkWeaponClips[i].y = 0;
-    walkWeaponClips[i].w = DUCK_WIDTH;
-    walkWeaponClips[i].h = DUCK_HEIGHT;
+    if (i < 4) {
+      walkWeaponClips[i].x = (i + 1) * DUCK_WIDTH;
+      walkWeaponClips[i].y = 0;
+      walkWeaponClips[i].w = DUCK_WIDTH;
+      walkWeaponClips[i].h = DUCK_HEIGHT;
+    }
   }
 
   stillClipWings.x = 0;
