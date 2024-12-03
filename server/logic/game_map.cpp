@@ -165,6 +165,11 @@ void GameMap::bulletCollisionWithPlatforms() {
         bool isTopCollision = false;
         bool isHorizontalCollision = false;
 
+        if (!bullet->canBounce()) {
+            bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
+            break;
+        }
+
         if (bullet->getPrevPosY() < structureBox.y &&
             bulletBox.y + bulletBox.height >= structureBox.y) {
           isTopCollision = true;

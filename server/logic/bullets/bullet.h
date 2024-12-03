@@ -12,7 +12,7 @@ private:
   int pos_y;
   float angle;
   int range;
-  bool canBounce;
+  bool bounces;
   BulletId id;
   bool isRight;
   int traveledDistance;
@@ -45,6 +45,8 @@ public:
   BulletId getId() const;
 
   int getOwnerId() const;
+
+  bool canBounce() const;
 
   BulletDTO toDTO() const;
 };

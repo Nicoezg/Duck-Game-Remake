@@ -44,7 +44,7 @@ weapons:
     cooldown: 5
 
   duelos:
-    reach: 10
+    reach: 5
     ammo: 1
     cooldown: 5
 

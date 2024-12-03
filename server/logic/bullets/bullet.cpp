@@ -15,7 +15,7 @@ const int HORIZONTAL_ANGLE = 180;
 Bullet::Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
                int range, BulletId id, bool isRight, bool upwards)
     : owner_Id(owner_Id), pos_x(pos_x), pos_y(pos_y), angle(angle),
-      range(range), canBounce(canBounce), id(id), isRight(isRight),
+      range(range), bounces(canBounce), id(id), isRight(isRight),
       traveledDistance(0), upwards(upwards), prev_pos_x(0), prev_pos_y(0) {}
 
 void Bullet::update() {
@@ -59,7 +59,7 @@ bool Bullet::outOfRange() {
 }
 
 void Bullet::bounce(bool isHorizontalCollision, bool isTopCollision) {
-  if (canBounce) {
+  if (bounces) {
     id = BulletId::LASER_REBOUND;
 
     if (isTopCollision) {
@@ -85,5 +85,7 @@ float Bullet::getAngle() const { return angle; }
 BulletId Bullet::getId() const { return id; }
 
 int Bullet::getOwnerId() const { return owner_Id; }
+
+bool Bullet::canBounce() const { return bounces; }
 
 BulletDTO Bullet::toDTO() const { return {pos_x, pos_y, id, angle, isRight}; }
