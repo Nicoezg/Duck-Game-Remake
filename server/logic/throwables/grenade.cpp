@@ -39,5 +39,5 @@ void ThrownGrenade::consume() {
 }
 
 ThrowableDTO ThrownGrenade::toDTO() const {
-  return {pos_x, pos_y, THROWN_GRENADE_V2, angle, isRight, startThrow};
+  return {pos_x, pos_y, THROWN_GRENADE, angle, isRight, startThrow};
 }

@@ -7,9 +7,7 @@
 #define PATH "../server/logic/maps/"
 
 MapLoader::MapLoader() {
-  // cppcheck-suppress useStlAlgorithm
   for (const auto &entry : std::filesystem::directory_iterator(PATH)) {
-    // cppcheck-suppress useStlAlgorithm
     maps_paths.push_back(entry.path());
   }
   lastMapIndex = 0;

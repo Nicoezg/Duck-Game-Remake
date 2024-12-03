@@ -9,7 +9,7 @@ class ExplosionDTO {
 private:
   int position_x;
   int position_y;
-  uint8_t currentDuration; // Duracion actual de la explosión, va de 0 a 5.
+  uint8_t currentDuration;
 
 public:
   ExplosionDTO(int position_x, int position_y, uint8_t currentDuration);

@@ -44,7 +44,6 @@ void GameMap::addExplosion(std::unique_ptr<Explosion> explosion) {
 }
 
 void GameMap::addCrate() {
-  // cppcheck-suppress useStlAlgorithm
   for (auto &crate : map.boxes) {
     crates.push_back({crate.get_hp(), crate.get_posx() * TILE_SIZE,
                       crate.get_posy() * TILE_SIZE});
@@ -52,17 +51,14 @@ void GameMap::addCrate() {
 }
 
 void GameMap::addSpawnItem() {
-  // cppcheck-suppress useStlAlgorithm
   for (const auto &itemSpawn : map.armors) {
     itemSpawns.push_back({itemSpawn.x * TILE_SIZE, itemSpawn.y * TILE_SIZE,
                           ItemSpawnId::CHESTPLATE_SPAWN, false});
   }
-  // cppcheck-suppress useStlAlgorithm
   for (const auto &itemSpawn : map.helmets) {
     itemSpawns.push_back({itemSpawn.x * TILE_SIZE, itemSpawn.y * TILE_SIZE,
                           ItemSpawnId::HELMET_SPAWN, false});
   }
-  // cppcheck-suppress useStlAlgorithm
   for (const auto &itemSpawn : map.weaponSpawns) {
     ItemSpawnId weapon = getRandomWeapon();
     itemSpawns.push_back(
@@ -293,7 +289,7 @@ void GameMap::explosionCollisions() {
 
     hitBox duckBox =
         hitBox(player->getPositionX(), player->getPositionY(), 32, 32);
-    // cppcheck-suppress useStlAlgorithm
+
     for (auto it = explosions.begin(); it != explosions.end();) {
       const auto &damagedPlayers = (*it)->getPlayersDamaged();
       bool damaged = false;
@@ -327,7 +323,7 @@ void GameMap::bananaCollisions() {
     hitBox duckBox =
         hitBox(player->getPositionX(), player->getPositionY(), 32, 32);
     for (auto it = throwables.begin(); it != throwables.end();) {
-      if ((*it)->getId() != THROWN_BANANA_V2) {
+      if ((*it)->getId() != THROWN_BANANA) {
         ++it;
         continue;
       }
@@ -350,7 +346,6 @@ void GameMap::bananaCollisions() {
 
 std::list<BulletDTO> GameMap::getBulletsState() {
   std::list<BulletDTO> bulletsList;
-  // cppcheck-suppress useStlAlgorithm
   for (const auto &bullet : bullets) {
     bulletsList.emplace_back(bullet->toDTO());
   }
@@ -360,7 +355,6 @@ std::list<BulletDTO> GameMap::getBulletsState() {
 
 std::list<ExplosionDTO> GameMap::getExplosionsState() {
   std::list<ExplosionDTO> explosionsList;
-  // cppcheck-suppress useStlAlgorithm
   for (const auto &explosion : explosions) {
     explosionsList.emplace_back(explosion->toDTO());
   }
@@ -369,7 +363,6 @@ std::list<ExplosionDTO> GameMap::getExplosionsState() {
 
 std::list<PlayerDTO> GameMap::getState() {
   std::list<PlayerDTO> playersList;
-  // cppcheck-suppress useStlAlgorithm
   for (const auto player : players) {
     playersList.emplace_back(player->toDTO());
   }
@@ -378,7 +371,6 @@ std::list<PlayerDTO> GameMap::getState() {
 
 std::list<CrateDTO> GameMap::getCratesState() {
   std::list<CrateDTO> cratesList;
-  // cppcheck-suppress useStlAlgorithm
   for (auto crateIt = crates.begin(); crateIt != crates.end();) {
     cratesList.emplace_back(crateIt->toDto());
     crateIt->resetHitState();

@@ -8,8 +8,7 @@ class CrateDTO {
 private:
   int position_x;
   int position_y;
-  uint8_t hp; // La "vida" de la caja. Si llega a 0, tira algo. Empieza con 4 de
-              // vida.
+  uint8_t hp;
   bool is_hit;
 
 public:

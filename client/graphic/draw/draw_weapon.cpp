@@ -104,7 +104,7 @@ void DrawWeapon::render(int x, int y, int flipType) {
   }
   std::shared_ptr<SDL2pp::Texture> texture = this->textures[weaponId - 1];
 
-  SDL2pp::Rect dest(x, y + 6, 38, 32);
+  SDL2pp::Rect dest(x, y + 6, texture->GetWidth(), texture->GetHeight());
 
   renderer.Copy(*texture, SDL2pp::NullOpt, dest, angle, SDL2pp::NullOpt,
                 flipType);

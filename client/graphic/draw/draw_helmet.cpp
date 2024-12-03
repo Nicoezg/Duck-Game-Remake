@@ -5,14 +5,12 @@
 DrawHelmet::DrawHelmet(SDL2pp::Renderer &renderer, HelmetId helmetId)
     : renderer(renderer), helmetId(helmetId) {
   this->textures[0] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface(DATA_PATH "equipment/knight-helmet.png"));
-  this->textures[1] = std::make_shared<SDL2pp::Texture>(
       renderer,
       SDL2pp::Surface(DATA_PATH "equipment/knight-helmet-equipped.png"));
 }
 
 void DrawHelmet::render(int x, int y, bool direction) {
-  std::shared_ptr<SDL2pp::Texture> texture = this->textures[helmetId];
+  std::shared_ptr<SDL2pp::Texture> texture = this->textures[helmetId - 1];
   if (direction) {
     x -= 2;
     y -= 7;

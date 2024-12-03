@@ -8,11 +8,11 @@
 
 class MapDTO : public Event {
 private:
-  std::list<Tile> platforms; // Contiene todos los tiles del mapa
+  std::list<Tile> platforms;
 
-  int background_id; // Id del background del mapa
+  int background_id;
 
-  int width; // Ancho del mapa
+  int width;
 
   int length;
 

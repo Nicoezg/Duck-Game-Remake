@@ -5,7 +5,7 @@
 
 ThrownBanana::ThrownBanana(GameMap &map, bool isRight, int pos_x, int pos_y,
                            bool aimingUp)
-    : Throwable(map, isRight, pos_x, pos_y, REACH, THROWN_BANANA_V2, false,
+    : Throwable(map, isRight, pos_x, pos_y, REACH, THROWN_BANANA, false,
                 aimingUp) {}
 
 void ThrownBanana::update() {
@@ -38,5 +38,5 @@ void ThrownBanana::update() {
 }
 
 ThrowableDTO ThrownBanana::toDTO() const {
-  return {pos_x, pos_y, THROWN_BANANA_V2, 0, isRight, consumed};
+  return {pos_x, pos_y, THROWN_BANANA, 0, isRight, consumed};
 }

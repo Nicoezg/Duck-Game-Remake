@@ -5,11 +5,9 @@
 DrawThrowable::DrawThrowable(SDL2pp::Renderer &renderer)
     : renderer(renderer), sound() {
   this->textures[0] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface(DATA_PATH "weapons/grenade-test.png"));
+      renderer, SDL2pp::Surface(DATA_PATH "weapons/grenade.png"));
   this->textures[1] = std::make_shared<SDL2pp::Texture>(
       renderer, SDL2pp::Surface(DATA_PATH "weapons/banana-placed.png"));
-  this->textures[2] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface(DATA_PATH "weapons/banana-stepped.png"));
 
   this->sounds[0] =
       std::make_shared<SDL2pp::Chunk>("../client/assets/audio/grenadeFire.wav");

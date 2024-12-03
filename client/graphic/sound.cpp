@@ -13,8 +13,8 @@ Sound::Sound()
                                             MIX_DEFAULT_CHANNELS, 4096)),
       played(true), loops(0), channel(1) {}
 
-void Sound::change(std::shared_ptr<SDL2pp::Chunk> nuevoSound, int loops) {
-  this->sound = nuevoSound;
+void Sound::change(std::shared_ptr<SDL2pp::Chunk> newSound, int loops) {
+  this->sound = newSound;
   this->played = false;
   this->loops = loops;
 }
@@ -25,7 +25,7 @@ void Sound::play() {
     return;
   }
 
-  if (not played) {
+  if (!played) {
     this->sound->SetVolume(SDL_MIX_MAXVOLUME / 10);
     this->channel =
         this->mixer->PlayChannel(nextChannel, *(this->sound), 0, this->loops);

@@ -24,8 +24,7 @@ private:
 
   std::list<CrateDTO> crates;
 
-  std::list<ItemSpawnDTO> item_spawns; // Estos son los items que pueden
-                                       // aparecer en el mapa o al romper cajas.
+  std::list<ItemSpawnDTO> item_spawns;
 
   std::list<ExplosionDTO> explosions;
 

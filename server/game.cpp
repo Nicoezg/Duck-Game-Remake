@@ -69,7 +69,6 @@ void Game::run() {
       if (!started) {
         continue;
       }
-      // Horrible pero funciona
       if (gameMap.isResetting()) {
         std::shared_ptr<Event> event =
             std::make_shared<MapDTO>(gameMap.getMapDTO());
@@ -105,9 +104,7 @@ void Game::checkFinishGame() {
 void Game::checkNewRound() {
   if (gameMap.pauseForScores()) {
     std::vector<std::pair<int, std::string>> score_name_pairs;
-    // cppcheck-suppress useStlAlgorithm
     for (auto &player : players) {
-      // cppcheck-suppress useStlAlgorithm
       score_name_pairs.emplace_back(gameMap.getPlayerWins(player.first),
                                     player.second);
     }
@@ -170,9 +167,7 @@ GameRoom Game::get_game_room() const {
 
 std::list<PlayerData> Game::get_players_data() {
   std::list<PlayerData> players_data;
-  // cppcheck-suppress useStlAlgorithm
   for (auto &player : players) {
-    // cppcheck-suppress useStlAlgorithm
     players_data.emplace_back(player.first, player.second);
   }
   return players_data;

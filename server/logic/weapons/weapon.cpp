@@ -81,9 +81,9 @@ void Weapon::decreaseCooldown() {
 void Weapon::reload() { isReloading = false; }
 
 void Weapon::resetConsecutiveShots() {
-  // Do nothing
+  // No hace nada
 }
 
 void Weapon::increaseConsecutiveShots() {
-  // Do nothing
+  // No hace nada
 }

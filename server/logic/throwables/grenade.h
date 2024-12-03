@@ -17,7 +17,7 @@ public:
                 int framesToexplode, bool aimingUp)
       : Throwable(map, isRight, pos_x, pos_y,
                   CONFIG.getBulletConfig(GRENADE_NAME).getReach(),
-                  THROWN_GRENADE_V2, false, aimingUp),
+                  THROWN_GRENADE, false, aimingUp),
         framesToExplode(framesToexplode), ownerHasGrenade(false), angle(0) {
     startThrow = true;
     framesRemaining = framesToExplode;
