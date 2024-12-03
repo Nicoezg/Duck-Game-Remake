@@ -17,7 +17,7 @@ void DrawBullet::render(const BulletDTO &bullet) {
   SDL2pp::Rect dest(bullet.get_position_x(), bullet.get_position_y(),
                     texture->GetWidth(), texture->GetHeight());
 
-  if (bullet.get_id() == 1) {
+  if (bullet.get_id() == BulletId::LASER_BEAM) {
     dest.w = dest.w / 2;
     dest.h = dest.h / 2;
   }

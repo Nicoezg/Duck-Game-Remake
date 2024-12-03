@@ -68,7 +68,7 @@ int Game::start() {
 
       /* IF BEHIND, KEEP WORKING */
       // Buscamos mantener un ritmo constante para ejecutar las funciones
-      // 'actualizar' y 'renderizar' a una velocidad especifica 'rate'
+      //  de update state, processEvents y render a una velocidad especifica rate
 
       auto t2 = SDL_GetTicks();    // Inicializamos 't2' con el tiempo actual en
                                    // milisegundos
@@ -80,14 +80,14 @@ int Game::start() {
       // Si 'rest' es menor a cero quiere decir que nos estamos retrasando en
       // comparacion con el ritmo deseado
       if (rest < 0) {
-        auto behind = -rest; // ¿Cuanto tiempo estamos retrasados?
-        auto lost = behind - behind % rate; // ¿Cuanto tiempo perdimos?
+        auto behind = -rest; // Representa cuanto tiempo estamos atrasados
+        auto lost = behind - behind % rate; // Representa cuanto tiempo perdimos
         t1 += lost; // Ajustamos 't1' para ponernos al dia con el tiempo perdido
         for (auto &duck : ducks) {
           duck->updateFrame(int(lost / rate));
         }
-        // Aumentamos 'it' para reflejar las iteraciones que se han perdido
-        // debido al retraso
+        // Aumentamos la cantidad de iteraciones del pato para reflejar las iteraciones 
+        // que se han perdido debido al retraso
 
         // Si 'rest' es mayor o igual a cero quiere decir que no nos estamos
         // quedando atras
@@ -100,7 +100,7 @@ int Game::start() {
       t1 +=
           rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
       for (auto &duck : ducks) {
-        duck->updateFrame();
+        duck->updateFrame(); // Aumentamos la cantidad de iteraciones en cada pato
       }
     }
     return 0;
@@ -129,12 +129,12 @@ void Game::update_state() {
 
 void Game::update(const Event &broadcast) {
   std::vector<SDL2pp::Rect> playerRects;
+  // Cargado de los patos por primera vez
   if (ducks.size() != broadcast.get_players().size()) {
     ducks.clear();
     for (const auto &player : broadcast.get_players()) {
       std::shared_ptr duck =
           std::make_shared<Duck>(renderer, player.get_player_id());
-      duck->loadTextures();
       ducks.push_back(duck);
     }
   }

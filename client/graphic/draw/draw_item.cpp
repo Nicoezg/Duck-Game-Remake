@@ -29,12 +29,10 @@ DrawItemSpawn::DrawItemSpawn(SDL2pp::Renderer &renderer)
       renderer, SDL2pp::Surface(DATA_PATH "items/knight-helmet-spawn.png"));
   this->textures[11] = std::make_shared<SDL2pp::Texture>(
       renderer, SDL2pp::Surface(DATA_PATH "items/chestplate-spawn.png"));
-  this->textures[12] = std::make_shared<SDL2pp::Texture>(
-      renderer, SDL2pp::Surface(DATA_PATH "items/helmet-spawn.png"));
 }
 
 void DrawItemSpawn::render(const ItemSpawnDTO &itemSpawn) {
-  if (itemSpawn.get_id() == 0x0D) {
+  if (itemSpawn.get_id() == ItemSpawnId::NOTHING_SPAWN) {
     return;
   }
   std::shared_ptr<SDL2pp::Texture> texture =

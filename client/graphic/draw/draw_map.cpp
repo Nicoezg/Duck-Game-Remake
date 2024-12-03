@@ -1,6 +1,8 @@
 #include "draw_map.h"
 
 #define DATA_PATH "../client/sprites/maps/tiles/"
+#define TILE_HEIGHT 16
+#define TILE_WIDTH 16
 
 DrawMap::DrawMap(SDL2pp::Renderer &renderer)
     : textures(), renderer(renderer), backgroundId(0), height(0), width(0) {
@@ -18,8 +20,8 @@ DrawMap::DrawMap(SDL2pp::Renderer &renderer)
 }
 
 void DrawMap::load(const Event &map) {
-  this->height = map.get_length() * 16;
-  this->width = map.get_width() * 16;
+  this->height = map.get_length() * TILE_HEIGHT;
+  this->width = map.get_width() * TILE_WIDTH;
   this->platforms = map.get_platforms();
   this->backgroundId = map.get_background_id();
 }
@@ -28,7 +30,7 @@ void DrawMap::render() {
   SDL2pp::Texture &background = *textures[backgroundId + 48];
   SDL2pp::Rect backgroundRect(0, 0, 640, 480);
   renderer.Copy(background, backgroundRect);
-  SDL2pp::Rect src(0, 0, 16, 16);
+  SDL2pp::Rect src(0, 0, TILE_WIDTH, TILE_HEIGHT);
   for (auto &platform : platforms) {
     SDL2pp::Texture &texture = *textures[platform.get_tile_id()];
     int textureWidth = texture.GetWidth();
@@ -42,7 +44,3 @@ void DrawMap::render() {
     }
   }
 }
-
-int DrawMap::getHeight() const { return height; }
-
-int DrawMap::getWidth() const { return width; }

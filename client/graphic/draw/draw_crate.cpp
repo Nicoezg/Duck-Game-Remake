@@ -1,5 +1,4 @@
 #include "draw_crate.h"
-#include <iostream>
 
 #define DATA_PATH "../client/sprites/props/"
 
@@ -26,7 +25,7 @@ void DrawCrate::render(const CrateDTO &crate) {
     sound.play();
     return;
   }
-  if (crate.was_hit()) { // Implementar en DTO
+  if (crate.was_hit()) {
     sound.change(hitSound, 0);
   }
   sound.play();

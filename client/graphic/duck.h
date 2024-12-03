@@ -30,10 +30,6 @@ public:
 
   int getPosY();
 
-  void loadTextures();
-
-  void setClips();
-
   WeaponId getWeapon();
 
   ~Duck();
@@ -78,5 +74,9 @@ private:
   SDL2pp::Rect stillClipWeapon;
   SDL2pp::Rect aimingUpwardsClip;
   SDL2pp::Rect recoilClip;
+
+  void loadTextures();
+
+  void setClips();
 };
 #endif

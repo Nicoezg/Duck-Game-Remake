@@ -1,7 +1,10 @@
 #include "camera.h"
 #include <algorithm>
 #include <cmath>
-#include <iostream>
+
+#define WINDOW_HEIGHT 640
+#define WINDOW_WIDTH 480
+
 CameraZoom::CameraZoom(SDL2pp::Renderer &renderer, const SDL2pp::Rect &viewport,
                        float minScale, float maxScale, float zoomSpeed)
     : renderer(renderer), viewport(viewport), minScale(minScale),
@@ -34,9 +37,9 @@ void CameraZoom::update(const std::vector<SDL2pp::Rect> &playerRects) {
   viewport.y = static_cast<int>(centerY - scaledViewportHeight / 2);
 
   viewport.x = -std::max(
-      0, std::min(viewport.x, 640 - static_cast<int>(scaledViewportWidth)));
+      0, std::min(viewport.x, WINDOW_WIDTH - static_cast<int>(scaledViewportWidth)));
   viewport.y = -std::max(
-      0, std::min(viewport.y, 480 - static_cast<int>(scaledViewportHeight)));
+      0, std::min(viewport.y, WINDOW_HEIGHT - static_cast<int>(scaledViewportHeight)));
 
   renderer.SetScale(scale, scale);
   renderer.SetViewport(viewport);
@@ -44,5 +47,5 @@ void CameraZoom::update(const std::vector<SDL2pp::Rect> &playerRects) {
 
 void CameraZoom::reset() {
   renderer.SetScale(1.0f, 1.0f);
-  renderer.SetViewport(SDL2pp::Rect{0, 0, 640, 480});
+  renderer.SetViewport(SDL2pp::Rect{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT});
 }

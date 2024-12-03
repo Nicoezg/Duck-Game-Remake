@@ -27,8 +27,4 @@ public:
   void load(const Event &map);
 
   void render();
-
-  int getHeight() const;
-
-  int getWidth() const;
 };

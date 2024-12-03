@@ -28,8 +28,8 @@
 using namespace SDL2pp;
 
 class Game {
+  
 private:
-  // SDLTTF ttf;
 
   Client &client;
 
@@ -87,17 +87,17 @@ private:
 
   void showVictoryScreen(const Event &gameOver);
 
-public:
-  explicit Game(Client &client);
-
   void update(const Event &broadcast);
 
   void showScores(const Event &score);
 
   void end(const Event &gameOver);
 
-  int start();
-
   void update_state();
+
+public:
+  explicit Game(Client &client);
+
+  int start();
 };
 #endif

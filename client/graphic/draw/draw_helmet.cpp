@@ -1,6 +1,5 @@
 #include "draw_helmet.h"
-#include <iostream>
-#include <memory>
+
 #define DATA_PATH "../client/sprites/"
 
 DrawHelmet::DrawHelmet(SDL2pp::Renderer &renderer, HelmetId helmetId)
@@ -10,10 +9,6 @@ DrawHelmet::DrawHelmet(SDL2pp::Renderer &renderer, HelmetId helmetId)
   this->textures[1] = std::make_shared<SDL2pp::Texture>(
       renderer,
       SDL2pp::Surface(DATA_PATH "equipment/knight-helmet-equipped.png"));
-  // this->textures[2] = std::make_shared<SDL2pp::Texture>(renderer,
-  // SDL2pp::Surface(DATA_PATH "equipment/helmet-equipped.png"));
-  // this->textures[3] = std::make_shared<SDL2pp::Texture>(renderer,
-  // SDL2pp::Surface(DATA_PATH "equipment/knight-helmet-equipped.png"));
 }
 
 void DrawHelmet::render(int x, int y, bool direction) {

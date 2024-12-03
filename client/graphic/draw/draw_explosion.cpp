@@ -1,5 +1,4 @@
 #include "draw_explosion.h"
-#include <iostream>
 
 DrawExplosion::DrawExplosion(SDL2pp::Renderer &renderer)
     : renderer(renderer),
@@ -27,5 +26,5 @@ void DrawExplosion::render(const ExplosionDTO &explosion) {
   }
   renderer.Copy(*texture,
                 explosionClip[(47 - int(explosion.get_current_duration())) / 8],
-                dest); // Puede cambiar
+                dest);
 }

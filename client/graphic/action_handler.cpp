@@ -10,7 +10,7 @@ void ActionHandler::processDuckEvents(WeaponId weaponId1, WeaponId weaponId2) {
   while (SDL_PollEvent(&event)) {
 
     if (event.type == SDL_QUIT) {
-      throw std::exception(); // a cambiar
+      throw std::exception();
     }
     if ((weaponId1 == WeaponId::PEW_PEW_LASER ||
          weaponId1 == WeaponId::COWBOY_PISTOL ||

@@ -1,6 +1,4 @@
 #include "draw_chestplate.h"
-#include <iostream>
-#include <memory>
 #define DATA_PATH "../client/sprites/"
 
 DrawChestplate::DrawChestplate(SDL2pp::Renderer &renderer, bool equipped)
