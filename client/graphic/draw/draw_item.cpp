@@ -1,6 +1,6 @@
 #include "draw_item.h"
 
-#define DATA_PATH "../client/sprites/"
+#define DATA_PATH "../client/assets/sprites/"
 
 DrawItemSpawn::DrawItemSpawn(SDL2pp::Renderer &renderer)
     : textures(), renderer(renderer) {

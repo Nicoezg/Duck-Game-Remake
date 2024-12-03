@@ -4,9 +4,9 @@ DrawExplosion::DrawExplosion(SDL2pp::Renderer &renderer)
     : renderer(renderer),
       texture(std::make_shared<SDL2pp::Texture>(
           renderer,
-          SDL2pp::Surface("../client/sprites/weapons/explosion.png"))),
+          SDL2pp::Surface("../client/assets/sprites/weapons/explosion.png"))),
       sound(std::make_shared<SDL2pp::Chunk>(
-          "../client/graphic/audio/explode.wav")),
+          "../client/assets/audio/explode.wav")),
       explosionClip() {
   for (int i = 0; i < 6; i++) {
     explosionClip[i].x = i * 64;

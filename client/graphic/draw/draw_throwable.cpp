@@ -1,6 +1,6 @@
 #include "draw_throwable.h"
 
-#define DATA_PATH "../client/sprites/"
+#define DATA_PATH "../client/assets/sprites/"
 
 DrawThrowable::DrawThrowable(SDL2pp::Renderer &renderer)
     : renderer(renderer), sound() {
@@ -12,9 +12,9 @@ DrawThrowable::DrawThrowable(SDL2pp::Renderer &renderer)
       renderer, SDL2pp::Surface(DATA_PATH "weapons/banana-stepped.png"));
 
   this->sounds[0] = std::make_shared<SDL2pp::Chunk>(
-      "../client/graphic/audio/grenadeFire.wav");
+      "../client/assets/audio/grenadeFire.wav");
   this->sounds[1] =
-      std::make_shared<SDL2pp::Chunk>("../client/graphic/audio/slip.wav");
+      std::make_shared<SDL2pp::Chunk>("../client/assets/audio/slip.wav");
 }
 
 void DrawThrowable::render(const ThrowableDTO &throwable) {

@@ -1,10 +1,10 @@
 #include "duck.h"
 #include <SDL2/SDL_render.h>
 
-#define JUMP_SOUND_PATH "../client/graphic/audio/jump.wav"
-#define DEATH_SOUND_PATH "../client/graphic/audio/death.wav"
+#define JUMP_SOUND_PATH "../client/assets/audio/jump.wav"
+#define DEATH_SOUND_PATH "../client/assets/audio/death.wav"
 
-#define PLAYERS_TEXTURE_PATH "../client/sprites/ducks/"
+#define PLAYERS_TEXTURE_PATH "../client/assets/sprites/ducks/"
 
 Duck::Duck(SDL2pp::Renderer &renderer, int id)
     : posX(0), posY(0), id(id), direction(), dead(false), renderer(renderer),

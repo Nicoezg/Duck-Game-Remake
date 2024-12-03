@@ -11,11 +11,11 @@
 #define WINDOW_HEIGHT 480
 #define VICTORY_MUSIC_VOLUME SDL_MIX_MAXVOLUME / 10
 
-#define FONT_PATH "../client/sprites/font.ttf"
+#define FONT_PATH "../client/assets/sprites/font.ttf"
 #define FONT_SIZE 24
 
-#define BACKGROUND_MUSIC_PATH "../client/graphic/audio/background-music.wav"
-#define VICTORY_MUSIC_PATH "../client/graphic/audio/challengeWin.wav"
+#define BACKGROUND_MUSIC_PATH "../client/assets/audio/background-music.wav"
+#define VICTORY_MUSIC_PATH "../client/assets/audio/challengeWin.wav"
 
 // cppcheck-suppress uninitMemberVar
 Game::Game(Client &client) try

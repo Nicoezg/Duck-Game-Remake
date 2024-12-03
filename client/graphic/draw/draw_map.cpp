@@ -1,6 +1,6 @@
 #include "draw_map.h"
 
-#define DATA_PATH "../client/sprites/maps/tiles/"
+#define DATA_PATH "../client/assets/sprites/maps/tiles/"
 #define TILE_HEIGHT 16
 #define TILE_WIDTH 16
 

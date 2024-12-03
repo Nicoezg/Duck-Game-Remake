@@ -1,6 +1,6 @@
 #include "draw_helmet.h"
 
-#define DATA_PATH "../client/sprites/"
+#define DATA_PATH "../client/assets/sprites/"
 
 DrawHelmet::DrawHelmet(SDL2pp::Renderer &renderer, HelmetId helmetId)
     : renderer(renderer), helmetId(helmetId) {

@@ -1,5 +1,5 @@
 #include "draw_chestplate.h"
-#define DATA_PATH "../client/sprites/"
+#define DATA_PATH "../client/assets/sprites/"
 
 DrawChestplate::DrawChestplate(SDL2pp::Renderer &renderer, bool equipped)
     : renderer(renderer), equipped(equipped) {

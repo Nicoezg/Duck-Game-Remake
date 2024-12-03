@@ -1,7 +1,7 @@
 #include "draw_bullet.h"
 #include <cstdlib>
 
-#define DATA_PATH "../client/sprites/"
+#define DATA_PATH "../client/assets/sprites/"
 
 DrawBullet::DrawBullet(SDL2pp::Renderer &renderer) : renderer(renderer) {
   this->textures[0] = std::make_shared<SDL2pp::Texture>(
