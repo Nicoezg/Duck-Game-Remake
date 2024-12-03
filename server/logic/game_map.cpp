@@ -152,6 +152,8 @@ bool GameMap::checkCollisionsWithBorders(int playerId) {
 }
 
 void GameMap::bulletCollisionWithPlatforms() {
+  std::vector<std::shared_ptr<Bullet>> bulletsToRemove;
+
   for (const auto &bullet : bullets) {
     hitBox bulletBox = hitBox(bullet->getPosX(), bullet->getPosY(), 4, 1);
 
@@ -166,8 +168,7 @@ void GameMap::bulletCollisionWithPlatforms() {
         bool isHorizontalCollision = false;
 
         if (!bullet->canBounce()) {
-          bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet),
-                        bullets.end());
+          bulletsToRemove.push_back(bullet);
           break;
         }
 
@@ -193,6 +194,13 @@ void GameMap::bulletCollisionWithPlatforms() {
       }
     }
   }
+
+  for (auto &bullet : bulletsToRemove) {
+    bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet),
+                  bullets.end());
+  }
+
+  bulletsToRemove.clear();
 }
 
 void GameMap::bulletCollisions() {
