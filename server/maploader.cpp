@@ -114,7 +114,6 @@ Map MapLoader::getNextMap() {
     }
   }
 
-  std::cout << "Procese" << std::endl;
   // Guardar las estructuras fusionadas en el mapa lógico
   logicMap.structures = std::move(fusedStructures);
 

@@ -10,8 +10,8 @@ ItemSpawn::ItemSpawn(int pos_x, int pos_y, ItemSpawnId content, bool wasInBox)
 }
 
 int ItemSpawn::getRespawnTime() const {
-  int respawnTime = 200 + std::rand() % 301;
-  return respawnTime;
+  int respawn = 200 + std::rand() % 301;
+  return respawn;
 }
 
 int ItemSpawn::getPosX() const { return pos_x; }

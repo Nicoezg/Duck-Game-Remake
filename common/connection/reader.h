@@ -26,9 +26,9 @@ public:
         U element = protocol->read_element();
         queue->push(element);
       }
-    } catch (ProtocolError &e) {
+    } catch (const ProtocolError &e) {
       // se cerro el protrocolo al terminar la conexion
-    } catch (ClosedQueue &e) {
+    } catch (const ClosedQueue &e) {
       // se cerro la cola de escritura
     } catch (std::exception &e) {
       std::cerr << "Error reader thread: " << e.what() << std::endl;

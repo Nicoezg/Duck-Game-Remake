@@ -463,7 +463,7 @@ std::shared_ptr<Event> EventsProtocol::read_new_player() {
 void EventsProtocol::send_start_game(const Event &event) {
   std::vector<int8_t> data(EVENT_TYPE_SIZE);
   size_t offset = 0;
-  offset += encoder.encode_event_type(event.get_type(), &data[offset]);
+  encoder.encode_event_type(event.get_type(), &data[offset]);
   send(data.data(), data.size());
 }
 

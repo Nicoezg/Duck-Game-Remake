@@ -168,32 +168,26 @@ void GameMap::bulletCollisionWithPlatforms() {
       if (hitBox::isColliding(bulletBox, structureBox)) {
         bool isTopCollision = false;
         bool isHorizontalCollision = false;
-        if ((bulletBox.y + bulletBox.height > structureBox.y &&
-             bulletBox.y < structureBox.y && bulletBox.x > structureBox.x &&
-             bulletBox.x + bulletBox.width <
-                 structureBox.x + structureBox.width) ||
-            (bulletBox.y < structureBox.y + structureBox.height &&
-             bulletBox.y + bulletBox.height > structureBox.y &&
-             bulletBox.x > structureBox.x &&
-             bulletBox.x + bulletBox.width <
-                 structureBox.x + structureBox.width)) {
+
+        if (bullet->getPrevPosY() < structureBox.y &&
+            bulletBox.y + bulletBox.height >= structureBox.y) {
           isTopCollision = true;
-        } else if ((bulletBox.x + bulletBox.width > structureBox.x &&
-                    bulletBox.x < structureBox.x &&
-                    bulletBox.y > structureBox.y &&
-                    bulletBox.y + bulletBox.height <
-                        structureBox.y + structureBox.height) ||
-                   (bulletBox.x < structureBox.x + structureBox.width &&
-                    bulletBox.x + bulletBox.width >
-                        structureBox.x + structureBox.width &&
-                    bulletBox.y > structureBox.y &&
-                    bulletBox.y + bulletBox.height <
-                        structureBox.y + structureBox.height)) {
-          isHorizontalCollision = true;
-        } else {
-          isTopCollision = false;
+        } else if (bullet->getPrevPosY() >
+                       structureBox.y + structureBox.height &&
+                   bulletBox.y <= structureBox.y + structureBox.height) {
+          isTopCollision = true;
         }
+        if (bullet->getPrevPosX() < structureBox.x &&
+            bulletBox.x + bulletBox.width >= structureBox.x) {
+          isHorizontalCollision = true;
+        } else if (bullet->getPrevPosX() >
+                       structureBox.x + structureBox.width &&
+                   bulletBox.x <= structureBox.x + structureBox.width) {
+          isHorizontalCollision = true;
+        }
+
         bullet->bounce(isHorizontalCollision, isTopCollision);
+        break;
       }
     }
   }

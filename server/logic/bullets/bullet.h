@@ -18,6 +18,8 @@ private:
   bool isRight;
   int traveledDistance;
   bool upwards;
+  int prev_pos_x;
+  int prev_pos_y;
 
 public:
   virtual ~Bullet() = default;
@@ -26,6 +28,10 @@ public:
          int range, BulletId id, bool isRight, bool upwards);
 
   void update();
+
+  int getPrevPosX() const;
+
+  int getPrevPosY() const;
 
   bool outOfRange();
 

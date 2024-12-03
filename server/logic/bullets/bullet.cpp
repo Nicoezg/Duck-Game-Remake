@@ -16,9 +16,13 @@ Bullet::Bullet(int owner_Id, int pos_x, int pos_y, float angle, bool canBounce,
                int range, BulletId id, bool isRight, bool upwards)
     : owner_Id(owner_Id), pos_x(pos_x), pos_y(pos_y), angle(angle),
       range(range), canBounce(canBounce), id(id), isRight(isRight),
-      traveledDistance(0), upwards(upwards) {}
+      traveledDistance(0), upwards(upwards), prev_pos_x(0), prev_pos_y(0) {}
 
 void Bullet::update() {
+
+  prev_pos_x = pos_x;
+  prev_pos_y = pos_y;
+
   double radianAngle = angle * (PI / HORIZONTAL_ANGLE);
 
   int deltaX = static_cast<int>(SPEED_X * std::cos(radianAngle));
@@ -43,6 +47,9 @@ void Bullet::update() {
   traveledDistance += distanceMoved;
 }
 
+int Bullet::getPrevPosX() const { return prev_pos_x; }
+int Bullet::getPrevPosY() const { return prev_pos_y; }
+
 bool Bullet::outOfRange() {
   int tilesMoved = traveledDistance / TILE_SIZE;
   if (tilesMoved >= range) {
@@ -54,11 +61,11 @@ bool Bullet::outOfRange() {
 void Bullet::bounce(bool isHorizontalCollision, bool isTopCollision) {
   if (canBounce) {
     id = BulletId::LASER_REBOUND;
-    if (isHorizontalCollision) {
-      angle = angle - HORIZONTAL_ANGLE;
 
-    } else if (isTopCollision) {
+    if (isTopCollision) {
       angle = 360 - angle;
+    } else if (isHorizontalCollision) {
+      angle = HORIZONTAL_ANGLE - angle;
     }
 
     if (angle < 0) {
