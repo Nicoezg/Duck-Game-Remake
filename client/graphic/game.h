@@ -28,9 +28,8 @@
 using namespace SDL2pp;
 
 class Game {
-  
-private:
 
+private:
   Client &client;
 
   SDL sdl;

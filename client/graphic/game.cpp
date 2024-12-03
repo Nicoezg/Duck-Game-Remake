@@ -69,7 +69,8 @@ int Game::start() {
 
       /* IF BEHIND, KEEP WORKING */
       // Buscamos mantener un ritmo constante para ejecutar las funciones
-      //  de update state, processEvents y render a una velocidad especifica rate
+      //  de update state, processEvents y render a una velocidad especifica
+      //  rate
 
       auto t2 = SDL_GetTicks();    // Inicializamos 't2' con el tiempo actual en
                                    // milisegundos
@@ -87,8 +88,8 @@ int Game::start() {
         for (auto &duck : ducks) {
           duck->updateFrame(int(lost / rate));
         }
-        // Aumentamos la cantidad de iteraciones del pato para reflejar las iteraciones 
-        // que se han perdido debido al retraso
+        // Aumentamos la cantidad de iteraciones del pato para reflejar las
+        // iteraciones que se han perdido debido al retraso
 
         // Si 'rest' es mayor o igual a cero quiere decir que no nos estamos
         // quedando atras
@@ -101,7 +102,8 @@ int Game::start() {
       t1 +=
           rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
       for (auto &duck : ducks) {
-        duck->updateFrame(); // Aumentamos la cantidad de iteraciones en cada pato
+        duck->updateFrame(); // Aumentamos la cantidad de iteraciones en cada
+                             // pato
       }
     }
     return 0;

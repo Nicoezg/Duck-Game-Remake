@@ -37,9 +37,11 @@ void CameraZoom::update(const std::vector<SDL2pp::Rect> &playerRects) {
   viewport.y = static_cast<int>(centerY - scaledViewportHeight / 2);
 
   viewport.x = -std::max(
-      0, std::min(viewport.x, WINDOW_WIDTH - static_cast<int>(scaledViewportWidth)));
+      0, std::min(viewport.x,
+                  WINDOW_WIDTH - static_cast<int>(scaledViewportWidth)));
   viewport.y = -std::max(
-      0, std::min(viewport.y, WINDOW_HEIGHT - static_cast<int>(scaledViewportHeight)));
+      0, std::min(viewport.y,
+                  WINDOW_HEIGHT - static_cast<int>(scaledViewportHeight)));
 
   renderer.SetScale(scale, scale);
   renderer.SetViewport(viewport);
