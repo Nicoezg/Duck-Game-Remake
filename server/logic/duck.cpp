@@ -317,6 +317,9 @@ void Duck::playDead() {
 bool Duck::isFalling() const { return jumping || flapping; }
 
 void Duck::aimUpwards() {
+  if (this->weapon->getWeaponId() == WeaponId::LASER_RIFLE) {
+    return;
+  }
   aimingUpwards = true;
   state = State::AIMING_UPWARDS;
 }
